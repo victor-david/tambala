@@ -1,0 +1,91 @@
+﻿<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Base style for all controls   -->
+    <Style TargetType="Control" x:Key="BaseControl">
+        <Setter Property="MinHeight" Value="{StaticResource MinControlHeight}" />
+        <Setter Property="Margin" Value="3" />
+        <Setter Property="FontSize" Value="{StaticResource ControlFontSize}"/>
+    </Style>
+    
+    <!-- Default style for CheckBox -->
+    <Style TargetType="CheckBox" BasedOn="{StaticResource BaseControl}">
+        <Setter Property="Foreground" Value="DarkBlue" />
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+        <Setter Property="Margin" Value="4,0,4,0" />
+        <Setter Property="Cursor" Value="Hand" />
+    </Style>
+
+    <!-- Default style for Label -->
+    <Style TargetType="Label" BasedOn="{StaticResource BaseControl}">
+        <Setter Property="Foreground" Value="{StaticResource LabelBrush}" />
+        <Setter Property="FontSize" Value="12.5" />
+        <Setter Property="Margin" Value="0" />
+    </Style>
+    
+    <!-- Default style for ComboBox-->
+    <Style TargetType="ComboBox" BasedOn="{StaticResource BaseControl}">
+        <Setter Property="Foreground" Value="Blue" />
+        <Setter Property="MinHeight" Value="24" />
+        <Setter Property="Height" Value="24" />
+        <Setter Property="Margin" Value="3,0"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+    </Style>
+
+    <!-- Default style for GroupBox-->
+    <Style TargetType="GroupBox">
+        <Setter Property="Foreground" Value="#FF173A18" />
+        <Setter Property="Margin" Value="4,2"/>
+    </Style>
+
+    <!-- Default style for RadioButton -->
+    <Style TargetType="RadioButton" BasedOn="{StaticResource BaseControl}">
+        <Setter Property="Foreground" Value="DarkBlue" />
+        <Setter Property="FontSize" Value="12.5" />
+        <Setter Property="Margin" Value="8,4" />
+        <Setter Property="Cursor" Value="Hand" />
+    </Style>
+
+
+    <!-- Default style for PasswordBox (can't base it on anything) -->
+    <Style TargetType="PasswordBox">
+        <Setter Property="MinHeight" Value="{StaticResource MinControlHeight}" />
+        <Setter Property="FontSize" Value="{StaticResource ControlFontSize}"/>
+        <Setter Property="Foreground" Value="Blue" />
+        <Setter Property="Background" Value="#FFF8F8DF" />
+        <Setter Property="Margin" Value="6,0,6,6" />
+    </Style>
+
+    <!-- Default style for ScrollViewer -->
+    <Style TargetType="ScrollViewer">
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+    </Style>
+
+    <!-- Default style for Expander -->
+    <Style TargetType="Expander">
+        <Setter Property="Margin" Value="2,6"/>
+        <Setter Property="Foreground" Value="#FF192B9B"/>
+        <Setter Property="FontSize" Value="12.5"/>
+        <Setter Property="Padding" Value="6,0"/>
+    </Style>
+    
+    <!-- 
+        Default style for MenuItem. 
+        Although this behavior would seem to be built-in, without this a menu image remain at full opacity 
+    -->
+    <Style TargetType="MenuItem">
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.40" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Default style for ProgressBar -->
+    <Style TargetType="ProgressBar">
+        <Setter Property="Height" Value="22"/>
+        <Setter Property="IsIndeterminate" Value="True"/>
+    </Style>
+
+</ResourceDictionary>

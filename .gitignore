@@ -1,0 +1,7 @@
+*.suo
+obj/
+bin/
+Docs/
+Help/
+packages/
+.vs/

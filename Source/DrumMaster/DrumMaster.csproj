@@ -1,0 +1,326 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4081706F-D84F-4471-9BA7-0FC697DAAF9C}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Restless.App.DrumMaster</RootNamespace>
+    <AssemblyName>DrumMaster</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>bin\Release\DrumMaster.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.Main.1.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="SharpDX, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.4.0.1\lib\net45\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.XAudio2, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.XAudio2.4.0.1\lib\net45\SharpDX.XAudio2.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="Resources\Dictionary\Brushes.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Dictionary\Button.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Dictionary\ControlDefault.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Dictionary\Images.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Dictionary\PageTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Dictionary\ItemsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Dictionary\TextBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Dictionary\Values.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TrackContainerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Window\DrumKit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Window\MainMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Window\MainNavigation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Window\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Audio\AudioManager.cs" />
+    <Compile Include="Core\FixedSizeObservableCollection.cs" />
+    <Compile Include="Core\GridValueCollection.cs" />
+    <Compile Include="Core\ObjectBase.cs" />
+    <Compile Include="Core\WindowFactory.cs" />
+    <Compile Include="Core\WorkspaceViewModel.cs" />
+    <Compile Include="Core\WorkspaceViewModelCollection.cs" />
+    <Compile Include="Drum\DrumPattern.cs" />
+    <Compile Include="Drum\DrumPiece.cs" />
+    <Compile Include="Drum\DrumPieceCollection.cs" />
+    <Compile Include="Drum\DrumPieceAudioSource.cs" />
+    <Compile Include="Drum\DrumPieceType.cs" />
+    <Compile Include="Drum\DrumTrack.cs" />
+    <Compile Include="Drum\DrumTrackCollection.cs" />
+    <Compile Include="Drum\DrumMatrixVoice.cs" />
+    <Compile Include="Core\BindableBase.cs" />
+    <Compile Include="Audio\SoundUtility.cs" />
+    <Compile Include="Resources\Strings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\DrumKitViewModel.cs" />
+    <Compile Include="Core\GridValue.cs" />
+    <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="ViewModel\TrackContainerViewModel.cs" />
+    <Compile Include="View\TrackContainerView.xaml.cs">
+      <DependentUpon>TrackContainerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Window\DrumKit.xaml.cs">
+      <DependentUpon>DrumKit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Window\MainMenu.xaml.cs">
+      <DependentUpon>MainMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Window\MainNavigation.xaml.cs">
+      <DependentUpon>MainNavigation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Window\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Strings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DrumMaster.Controls\DrumMaster.Controls.csproj">
+      <Project>{3ebc9768-d1cb-44a2-829e-b92752a10517}</Project>
+      <Name>DrumMaster.Controls</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Audio\HiHat\01.hihat.wav" />
+    <EmbeddedResource Include="Resources\Audio\HiHat\02.hihat.wav" />
+    <EmbeddedResource Include="Resources\Audio\HiHat\03.hihat.wav" />
+    <EmbeddedResource Include="Resources\Audio\Kick\01.kick.wav" />
+    <EmbeddedResource Include="Resources\Audio\Kick\02.kick.wav" />
+    <EmbeddedResource Include="Resources\Audio\Snare\01.snare.wav" />
+    <EmbeddedResource Include="Resources\Audio\Snare\02.snare.wav" />
+    <EmbeddedResource Include="Resources\Audio\Snare\03.snare.wav" />
+    <EmbeddedResource Include="Resources\Audio\Snare\04.snare.wav" />
+    <EmbeddedResource Include="Resources\Audio\Snare\05.snare.wav" />
+    <EmbeddedResource Include="Resources\Audio\Tom\01.tom.wav" />
+    <EmbeddedResource Include="Resources\Audio\Tom\02.tom.wav" />
+    <EmbeddedResource Include="Resources\Audio\Tom\03.tom.wav" />
+    <EmbeddedResource Include="Resources\Audio\Tom\04.tom.wav" />
+    <EmbeddedResource Include="Resources\Audio\Tom\05.tom.wav" />
+    <EmbeddedResource Include="Resources\Audio\Tom\06.tom.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Image.DrumSet.128.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icon.Main.1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ProjectNotes.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Image.Add.Layout.64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Audio\HiHat\04.hihat.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Audio\Cymbal\01.cymbal.wav" />
+    <EmbeddedResource Include="Resources\Audio\Cymbal\02.cymbal.wav" />
+    <EmbeddedResource Include="Resources\Audio\Cymbal\03.cymbal.wav" />
+    <EmbeddedResource Include="Resources\Audio\Cymbal\04.cymbal.wav" />
+    <EmbeddedResource Include="Resources\Audio\Cymbal\05.cymbal.wav" />
+    <EmbeddedResource Include="Resources\Audio\Cymbal\06.cymbal.wav" />
+    <EmbeddedResource Include="Resources\Audio\Cymbal\07.cymbal.wav" />
+    <EmbeddedResource Include="Resources\Audio\Cymbal\08.cymbal.wav" />
+    <EmbeddedResource Include="Resources\Audio\Cymbal\09.cymbal.wav" />
+    <EmbeddedResource Include="Resources\Audio\Cymbal\10.cymbal.wav" />
+    <EmbeddedResource Include="Resources\Audio\Cymbal\11.cymbal.wav" />
+    <EmbeddedResource Include="Resources\Audio\Cymbal\12.cymbal.wav" />
+    <EmbeddedResource Include="Resources\Audio\Cymbal\13.cymbal.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Audio\Kick\03.kick.wav" />
+    <EmbeddedResource Include="Resources\Audio\Kick\04.kick.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Image.Open.Layout.64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Audio\Percussion\01.percussion.wav" />
+    <EmbeddedResource Include="Resources\Audio\Percussion\02.percussion.wav" />
+    <EmbeddedResource Include="Resources\Audio\Percussion\03.percussion.wav" />
+    <EmbeddedResource Include="Resources\Audio\Percussion\04.percussion.wav" />
+    <EmbeddedResource Include="Resources\Audio\Percussion\05.percussion.wav" />
+    <EmbeddedResource Include="Resources\Audio\Percussion\06.percussion.wav" />
+    <EmbeddedResource Include="Resources\Audio\Percussion\07.percussion.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Image.Save.Layout.64.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>cmd /k copy $(SolutionDir)$(ConfigurationName)\XAudio2Library.dll $(SolutionDir)$(OutDir)</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
