@@ -11,11 +11,11 @@ using System.Windows.Shapes;
 
 namespace Restless.App.DrumMaster.Controls
 {
-    [TemplatePart(Name = PartGridHost, Type = typeof(Grid))]
+    [TemplatePart(Name = PartHostGrid, Type = typeof(Grid))]
     internal class EnvelopeControl : ContentControl
     {
-        private const string PartGridHost = "PART_GRID_HOST";
-        private Grid gridHost;
+        private const string PartHostGrid = "PART_HOST_GRID";
+        private Grid hostGrid;
 
         public int TotalSteps
         {
@@ -82,7 +82,7 @@ namespace Restless.App.DrumMaster.Controls
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            gridHost = GetTemplateChild(PartGridHost) as Grid;
+            hostGrid = GetTemplateChild(PartHostGrid) as Grid;
 
         }
         #endregion
@@ -94,24 +94,26 @@ namespace Restless.App.DrumMaster.Controls
         private void OnTotalStepsChanged()
         {
             Debug.WriteLine($"Envelope. Total steps changed to: {TotalSteps}");
-            if (gridHost != null)
+            if (hostGrid != null)
             {
-                int currentTotalSteps = gridHost.ColumnDefinitions.Count;
+                int currentTotalSteps = hostGrid.ColumnDefinitions.Count;
                 if (TotalSteps > currentTotalSteps)
                 {
                     int stepsToAdd = TotalSteps - currentTotalSteps;
                     double myWidth = BoxSize;
                     for (int k = 0; k < stepsToAdd; k++)
                     {
-                        gridHost.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(myWidth, GridUnitType.Pixel) });
-                        Line line = new Line();
-                        line.X1 = 0;
-                        line.X2 = myWidth - 2;
-                        line.Y1 = line.Y2 = gridHost.ActualHeight / 2;
+                        hostGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(myWidth, GridUnitType.Pixel) });
+                        Line line = new Line
+                        {
+                            X1 = 0,
+                            X2 = myWidth - 2
+                        };
+                        line.Y1 = line.Y2 = hostGrid.ActualHeight / 2;
                         line.Stroke = Brushes.Red;
                         line.StrokeThickness = 2;
                         Grid.SetColumn(line, k);
-                        gridHost.Children.Add(line);
+                        hostGrid.Children.Add(line);
                         //var box = CreateTrackBox();
 
                         //Grid.SetColumn(box, hostGrid.ColumnDefinitions.Count - 1);
@@ -123,8 +125,8 @@ namespace Restless.App.DrumMaster.Controls
                 {
                     while (currentTotalSteps > TotalSteps)
                     {
-                        gridHost.Children.RemoveAt(currentTotalSteps - 1);
-                        gridHost.ColumnDefinitions.RemoveAt(currentTotalSteps - 1);
+                        hostGrid.Children.RemoveAt(currentTotalSteps - 1);
+                        hostGrid.ColumnDefinitions.RemoveAt(currentTotalSteps - 1);
                         // Boxes.RemoveAt(currentTotalSteps - 1);
                         currentTotalSteps--;
                     }
@@ -134,14 +136,14 @@ namespace Restless.App.DrumMaster.Controls
 
         private void OnBoxSizeChanged()
         {
-            string gh = (gridHost == null) ? "NULL" : "NOT NULL";
+            string gh = (hostGrid == null) ? "NULL" : "NOT NULL";
             Debug.WriteLine($"Envelope. BoxSize changed to: {BoxSize} {gh}");
-            if (gridHost != null)
+            if (hostGrid != null)
             {
-                gridHost.ColumnDefinitions.Clear();
+                hostGrid.ColumnDefinitions.Clear();
                 for (int k =0; k < TotalSteps; k++)
                 {
-                    gridHost.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(BoxSize, GridUnitType.Pixel) });
+                    hostGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(BoxSize, GridUnitType.Pixel) });
                 }
             }
 

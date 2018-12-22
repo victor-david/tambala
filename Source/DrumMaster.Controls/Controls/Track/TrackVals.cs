@@ -42,7 +42,7 @@ namespace Restless.App.DrumMaster.Controls
             /// <summary>
             /// The minimum box size for the track header and the track's beats / steps.
             /// </summary>
-            public const double Min = 36;
+            public const double Min = 42;
 
             /// <summary>
             /// The maximum box size for the track header and the track's beats / steps.
@@ -213,6 +213,25 @@ namespace Restless.App.DrumMaster.Controls
         }
         #endregion
 
+
+        public static class VolumeBias
+        {
+            /// <summary>
+            /// The minimum volume bias allowed in decibels.
+            /// </summary>
+            public const float Min = -9.5f;
+
+            /// <summary>
+            /// The maximum volume bias allowed in decibels.
+            /// </summary>
+            public const float Max = 9.5f;
+
+            /// <summary>
+            /// The default volume bias, i.e. none.
+            /// </summary>
+            public const float Default = 0.0f;
+        }
+
         /************************************************************************/
 
         #region Pitch
@@ -278,7 +297,7 @@ namespace Restless.App.DrumMaster.Controls
             /// <summary>
             /// The default for is panning enabled.
             /// </summary>
-            public const bool IsEnabledDefault = false;
+            public const bool IsEnabledDefault = true;
         }
         #endregion
 

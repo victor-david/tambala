@@ -49,21 +49,6 @@ namespace Restless.App.DrumMaster.Controls
                 nameof(Text), typeof(string), typeof(TrackBox), new PropertyMetadata(null)
             );
 
-
-        ///// <summary>
-        ///// Gets or sets a value that indicates if this box is selected.
-        ///// </summary>
-        //public bool IsSelected
-        //{
-        //    get => (bool)GetValue(IsSelectedProperty);
-        //    set => SetValue(IsSelectedProperty, value);
-        //}
-
-        //public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register
-        //    (
-        //        nameof(IsSelected), typeof(bool), typeof(TrackBox), new PropertyMetadata(false, OnIsSelectedChanged)
-        //    );
-
         /// <summary>
         /// Gets or sets the play frequency.
         /// </summary>
@@ -78,8 +63,21 @@ namespace Restless.App.DrumMaster.Controls
                 nameof(PlayFrequency), typeof(StepPlayFrequency), typeof(TrackBox), new PropertyMetadata(StepPlayFrequency.Default, OnPlayFrequencyChanged )
             );
 
+
+        private static void OnPlayFrequencyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TrackBox c)
+            {
+                c.playFrequency = (StepPlayFrequency)e.NewValue;
+                if (c.owner.BoxType == TrackBoxType.TrackStep)
+                {
+                    c.SetIsChanged();
+                }
+            }
+        }
+
         /// <summary>
-        /// Gets or sets the brush that is used when <see cref="IsSelected"/> is true.
+        /// Gets or sets the brush that is used when <see cref="PlayFrequency"/> is a value other than None.
         /// </summary>
         public Brush SelectedBackgroundBrush
         {
@@ -102,14 +100,6 @@ namespace Restless.App.DrumMaster.Controls
         /************************************************************************/
 
         #region Internal properties
-        ///// <summary>
-        ///// Gets the thread safe value of <see cref="IsSelected"/>.
-        ///// </summary>
-        //internal bool IsSelectedInternal
-        //{
-        //    get;
-        //    private set;
-        //}
         #endregion
 
         /************************************************************************/
@@ -124,6 +114,7 @@ namespace Restless.App.DrumMaster.Controls
             this.owner = owner ?? throw new ArgumentNullException(nameof(owner));
             Height = Width = TrackVals.BoxSize.Default;
             Commands.Add("ToggleIsSelected", new RelayCommand(RunToggleIsSelectedCommand));
+            Commands.Add("SwitchFrequency", new RelayCommand(RunSwitchStepFrequencyCommand));
             playFrequency = StepPlayFrequency.Default;
         }
 
@@ -144,6 +135,7 @@ namespace Restless.App.DrumMaster.Controls
         {
             var element = new XElement(nameof(TrackBox));
             element.Add(new XElement(nameof(PlayFrequency), PlayFrequency));
+            element.Add(new XElement(nameof(VolumeBias), VolumeBias));
             return element;
         }
 
@@ -153,7 +145,6 @@ namespace Restless.App.DrumMaster.Controls
         /// <param name="element">The element</param>
         public override void RestoreFromXElement(XElement element)
         {
-
             IEnumerable<XElement> childList = from el in element.Elements() select el;
             foreach (XElement e in childList)
             {
@@ -164,6 +155,15 @@ namespace Restless.App.DrumMaster.Controls
                     if (Enum.TryParse(e.Value, out result))
                     {
                         PlayFrequency = result;
+                    }
+                }
+
+                if (e.Name == nameof(VolumeBias))
+                {
+                    float volBias = TrackVals.VolumeBias.Default;
+                    if (float.TryParse(e.Value, out volBias))
+                    {
+                        VolumeBias = volBias;
                     }
                 }
             }
@@ -195,11 +195,6 @@ namespace Restless.App.DrumMaster.Controls
         /************************************************************************/
 
         #region Protected methods
-        //protected override void OnBoxSizeChanged()
-        //{
-        //    Height = BoxSize;
-        //    Width = BoxSize;
-        //}
         #endregion
 
         /************************************************************************/
@@ -208,45 +203,14 @@ namespace Restless.App.DrumMaster.Controls
 
         private void RunToggleIsSelectedCommand(object parm)
         {
-            switch (playFrequency)
-            {
-                case StepPlayFrequency.None:
-                    PlayFrequency = StepPlayFrequency.EveryPass;
-                    break;
-                case StepPlayFrequency.EveryPass:
-                    PlayFrequency = StepPlayFrequency.OddPassOnly;
-                    break;
-                case StepPlayFrequency.OddPassOnly:
-                    PlayFrequency = StepPlayFrequency.EvenPassOnly;
-                    break;
-                case StepPlayFrequency.EvenPassOnly:
-                    PlayFrequency = StepPlayFrequency.None;
-                    break;
-            }
+            PlayFrequency = (playFrequency == StepPlayFrequency.None) ? StepPlayFrequency.EveryPass : StepPlayFrequency.None;
         }
-        #endregion
 
-        /************************************************************************/
-
-        #region Private methods (Static)
-
-        //private static void OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        //{
-        //    if (d is TrackBox c)
-        //    {
-        //        c.IsSelectedInternal = (bool)e.NewValue;
-        //    }
-        //}
-
-        private static void OnPlayFrequencyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private void RunSwitchStepFrequencyCommand(object parm)
         {
-            if (d is TrackBox c)
+            if (parm is StepPlayFrequency frequency)
             {
-                c.playFrequency = (StepPlayFrequency)e.NewValue;
-                if (c.owner.BoxType == TrackBoxType.TrackStep)
-                {
-                    c.SetIsChanged();
-                }
+                PlayFrequency = frequency;
             }
         }
         #endregion

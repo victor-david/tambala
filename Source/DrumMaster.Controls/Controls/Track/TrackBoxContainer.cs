@@ -19,6 +19,7 @@ namespace Restless.App.DrumMaster.Controls
         private Grid hostGrid;
         private TrackController controller;
         private XElement holdElement;
+        //private EnvelopeControl volumeEnvelope;
         #endregion
 
         /************************************************************************/
@@ -52,6 +53,21 @@ namespace Restless.App.DrumMaster.Controls
             (
                 nameof(TotalSteps), typeof(int), typeof(TrackBoxContainer), new PropertyMetadata(TrackVals.TotalSteps.Default, OnTotalStepsChanged, OnTotalStepsCoerce)
             );
+
+        private static void OnTotalStepsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TrackBoxContainer c)
+            {
+                c.OnTotalStepsChanged();
+                c.SetIsChanged();
+            }
+        }
+
+        private static object OnTotalStepsCoerce(DependencyObject d, object baseValue)
+        {
+            int proposed = (int)baseValue;
+            return Math.Min(TrackVals.TotalSteps.Max, Math.Max(TrackVals.TotalSteps.Min, proposed));
+        }
         #endregion
 
         /************************************************************************/
@@ -70,6 +86,10 @@ namespace Restless.App.DrumMaster.Controls
             (
                 nameof(SelectedBackgroundBrush), typeof(Brush), typeof(TrackBoxContainer), new PropertyMetadata(new SolidColorBrush(Colors.Red), OnSelectedBackgroundBrushChanged)
             );
+
+        private static void OnSelectedBackgroundBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+        }
         #endregion
 
         /************************************************************************/
@@ -212,7 +232,6 @@ namespace Restless.App.DrumMaster.Controls
         {
             foreach (var box in Boxes)
             {
-                //box.IsSelected = false;
                 box.PlayFrequency = StepPlayFrequency.None;
             }
         }
@@ -280,6 +299,8 @@ namespace Restless.App.DrumMaster.Controls
                         currentTotalSteps--;
                     }
                 }
+                
+                //Grid.SetColumnSpan(hostGrid.Children[0], TotalSteps);
 
                 RoutedEventArgs args = new RoutedEventArgs(TotalStepsChangedEvent);
                 RaiseEvent(args);
@@ -299,43 +320,6 @@ namespace Restless.App.DrumMaster.Controls
                 Height = e.NewSize.Height - 8;
             }
         }
-        #endregion
-
-        /************************************************************************/
-
-        #region Private methods (Static)
-
-        private static void OnTotalStepsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is TrackBoxContainer c)
-            {
-                c.OnTotalStepsChanged();
-                c.SetIsChanged();
-            }
-        }
-
-        private static object OnTotalStepsCoerce(DependencyObject d, object baseValue)
-        {
-            int proposed = (int)baseValue;
-            return Math.Min(TrackVals.TotalSteps.Max, Math.Max(TrackVals.TotalSteps.Min, proposed));
-        }
-
-        private static void OnSelectedBackgroundBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            //if (d is TrackBoxContainer c)
-            //{
-            //    c.OnBackgroundBrushChanged(TrackBoxHostControlType.Header);
-            //}
-        }
-
-        private static void OnStepBackgroundBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            //if (d is TrackBoxContainer c)
-            //{
-            //    c.OnBackgroundBrushChanged(TrackBoxHostControlType.TrackStep);
-            //}
-        }
-
         #endregion
     }
 }

@@ -107,6 +107,7 @@
     <Compile Include="Controls\Track\TrackBoxContainer.cs" />
     <Compile Include="Controls\Track\TrackController.cs" />
     <Compile Include="Core\CancelRoutedEventArgs.cs" />
+    <Compile Include="Controls\Converters\DoubleToPercentageDoubleConverter.cs" />
     <Compile Include="Core\IXElement.cs" />
     <Compile Include="Core\MaxSizeObservableCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -170,6 +171,10 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\Image.Slash.64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Image.Beat.Even.48.png" />
+    <Resource Include="Resources\Images\Image.Beat.Odd.48.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

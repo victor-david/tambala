@@ -6,6 +6,11 @@
     <!-- ############################# -->
     <!-- VALUES USED IN VARIOUS PLACES -->
     <!-- ############################# -->
+    <con:StepPlayFrequency x:Key="StepFrequencyNone">None</con:StepPlayFrequency>
+    <con:StepPlayFrequency x:Key="StepFrequencyEvery">EveryPass</con:StepPlayFrequency>
+    <con:StepPlayFrequency x:Key="StepFrequencyOdd">OddPassOnly</con:StepPlayFrequency>
+    <con:StepPlayFrequency x:Key="StepFrequencyEven">EvenPassOnly</con:StepPlayFrequency>
+    
     <!--<Thickness x:Key="TrackControlBorderThickness">1</Thickness>
     <Thickness x:Key="TrackControlBorderMargin">4</Thickness>
     <Thickness x:Key="TrackControlBorderPadding">6</Thickness>-->
@@ -100,7 +105,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="SliderRepeatButtonStyle" TargetType="RepeatButton">
+    <Style x:Key="MainSliderRepeatButtonStyle" TargetType="RepeatButton">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="IsTabStop" Value="False"/>
         <Setter Property="Focusable" Value="False"/>
@@ -113,7 +118,7 @@
         </Setter>
     </Style>
     
-    <Style x:Key="SliderThumbStyle" TargetType="Thumb">
+    <Style x:Key="MainSliderThumbStyle" TargetType="Thumb">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -147,7 +152,7 @@
         </Setter>
     </Style>
 
-    <ControlTemplate x:Key="VerticalSlider" TargetType="Slider">
+    <ControlTemplate x:Key="MainVerticalSliderTemplate" TargetType="Slider">
         <Grid Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -165,13 +170,13 @@
                 HorizontalAlignment="Center" Width="4" />
             <Track x:Name="PART_Track" Grid.Column="1">
                 <Track.DecreaseRepeatButton>
-                    <RepeatButton Command="{x:Static Slider.DecreaseLarge}"  Style="{StaticResource SliderRepeatButtonStyle}" />
+                    <RepeatButton Command="{x:Static Slider.DecreaseLarge}"  Style="{StaticResource MainSliderRepeatButtonStyle}" />
                 </Track.DecreaseRepeatButton>
                 <Track.IncreaseRepeatButton>
-                    <RepeatButton Command="{x:Static Slider.IncreaseLarge}" Style="{StaticResource SliderRepeatButtonStyle}"/>
+                    <RepeatButton Command="{x:Static Slider.IncreaseLarge}" Style="{StaticResource MainSliderRepeatButtonStyle}"/>
                 </Track.IncreaseRepeatButton>
                 <Track.Thumb>
-                    <Thumb x:Name="Thumb" Style="{StaticResource SliderThumbStyle}" />
+                    <Thumb x:Name="Thumb" Style="{StaticResource MainSliderThumbStyle}" />
                 </Track.Thumb>
             </Track>
             <TickBar x:Name="BottomTick" Grid.Column="2" Visibility="Collapsed" Fill="LightGray" Placement="Right"
@@ -191,7 +196,7 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <ControlTemplate x:Key="HorizontalSlider" TargetType="Slider">
+    <ControlTemplate x:Key="MainHorizontalSliderTemplate" TargetType="Slider">
         <Grid Margin="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -208,13 +213,13 @@
                 VerticalAlignment="Center" Height="4" />
             <Track x:Name="PART_Track" Grid.Row="1">
                 <Track.DecreaseRepeatButton>
-                    <RepeatButton Command="{x:Static Slider.DecreaseLarge}" Style="{StaticResource SliderRepeatButtonStyle}" />
+                    <RepeatButton Command="{x:Static Slider.DecreaseLarge}" Style="{StaticResource MainSliderRepeatButtonStyle}" />
                 </Track.DecreaseRepeatButton>
                 <Track.IncreaseRepeatButton>
-                    <RepeatButton Command="{x:Static Slider.IncreaseLarge}" Style="{StaticResource SliderRepeatButtonStyle}"/>
+                    <RepeatButton Command="{x:Static Slider.IncreaseLarge}" Style="{StaticResource MainSliderRepeatButtonStyle}"/>
                 </Track.IncreaseRepeatButton>
                 <Track.Thumb>
-                    <Thumb x:Name="Thumb" Style="{StaticResource SliderThumbStyle}" />
+                    <Thumb x:Name="Thumb" Style="{StaticResource MainSliderThumbStyle}" />
                 </Track.Thumb>
             </Track>
             <TickBar x:Name="BottomTick" Grid.Row="2" Visibility="Collapsed" Fill="LightGray" Placement="Bottom"
@@ -243,15 +248,72 @@
             <Trigger Property="Orientation" Value="Horizontal">
                 <Setter Property="MinWidth" Value="104" />
                 <Setter Property="MinHeight" Value="21" />
-                <Setter Property="Template" Value="{StaticResource HorizontalSlider}" />
+                <Setter Property="Template" Value="{StaticResource MainHorizontalSliderTemplate}" />
             </Trigger>
             <Trigger Property="Orientation" Value="Vertical">
                 <Setter Property="MinWidth" Value="21" />
                 <Setter Property="MinHeight" Value="104" />
-                <Setter Property="Template" Value="{StaticResource VerticalSlider}" />
+                <Setter Property="Template" Value="{StaticResource MainVerticalSliderTemplate}" />
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <Style x:Key="BoxVolumeSliderThumbStyle" TargetType="Thumb">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Thumb}">
+                    <Border
+                        Name="innerBorder"
+                        Background="#FF1D6FB4"
+                        Height="5" Width="22" 
+                        CornerRadius="1" />
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="innerBorder" Property="Background" Value="#FF0045D8" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="innerBorder" Property="Width" Value="16" />
+                            <Setter TargetName="innerBorder" Property="Height" Value="4" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <ControlTemplate x:Key="BoxVolumeSliderTemplate" TargetType="Slider">
+        <Grid Margin="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" MinWidth="{TemplateBinding MinWidth}"/>
+            </Grid.ColumnDefinitions>
+            <Border
+                Margin="0,1"
+                BorderThickness="2"
+                BorderBrush="{TemplateBinding Background}"
+                HorizontalAlignment="Center" Width="4" />
+            <Track x:Name="PART_Track">
+                <Track.Thumb>
+                    <Thumb x:Name="Thumb" Style="{StaticResource BoxVolumeSliderThumbStyle}" />
+                </Track.Thumb>
+            </Track>
+        </Grid>
+
+    </ControlTemplate>
+
+    <Style x:Key="BoxVolumeSliderStyle" TargetType="Slider">
+        <Setter Property="FocusVisualStyle" Value="{StaticResource SliderFocusVisualStyle}" />
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Orientation" Value="Vertical"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Background" Value="DarkGray"/>
+        <Setter Property="Template" Value="{StaticResource BoxVolumeSliderTemplate}"/>
+    </Style>
+    
 
     <!-- ################################ -->
     <!-- TRACK CONTAINER TEMPLATE / STYLE -->
@@ -658,7 +720,7 @@
                         BorderThickness="{TemplateBinding BorderThickness}"
                         Padding="{Binding Padding,RelativeSource={RelativeSource TemplatedParent}}">
                         <!-- Gets updated in code-->
-                        <Grid x:Name="PART_HOST_GRID"/>
+                        <Grid x:Name="PART_HOST_GRID" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -692,27 +754,94 @@
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Template" Value="{StaticResource FlatButtonTemplate}" />
     </Style>
-    
-     <ControlTemplate x:Key="TrackBoxStepControlTemplate" TargetType="{x:Type con:TrackBox}">
-            <Border x:Name="PART_BORDER" BorderBrush="DarkBlue" BorderThickness="2" Background="Transparent" Margin="3" CornerRadius="1">
+
+    <ControlTemplate x:Key="TrackBoxStepControlTemplate" TargetType="{x:Type con:TrackBox}">
+         <Border x:Name="PART_BORDER" BorderBrush="DarkBlue" BorderThickness="2" Background="Transparent" Margin="3" CornerRadius="0">
             <Grid>
                 <Grid.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="Height" Value="4"/>
+                        <Setter Property="Width" Value="4"/>
+                        <Setter Property="Margin" Value="2"/>
+                        <Setter Property="VerticalAlignment" Value="Top"/>
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                    </Style>
                     <Style TargetType="TextBlock">
+                        <Setter Property="Margin" Value="0"/>
                         <Setter Property="FontSize" Value="10"/>
-                        <Setter Property="Foreground" Value="DarkRed"/>
-                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="Padding" Value="1"/>
+                        <Setter Property="Foreground" Value="DarkGray"/>
                         <Setter Property="Visibility" Value="Collapsed"/>
                     </Style>
                 </Grid.Resources>
+                <Grid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem
+                            Header="Every pass"
+                            Command="{Binding Commands[SwitchFrequency], RelativeSource={RelativeSource TemplatedParent}}"
+                            CommandParameter="{StaticResource StepFrequencyEvery}"/>
+
+                        <MenuItem
+                            Header="Odd pass"
+                            Command="{Binding Commands[SwitchFrequency], RelativeSource={RelativeSource TemplatedParent}}"
+                            CommandParameter="{StaticResource StepFrequencyOdd}">
+                            <MenuItem.Icon>
+                                <Image Source="/DrumMaster.Controls;component/Resources/Images/Image.Beat.Odd.48.png" Height="18" Width="18"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+
+                        <MenuItem
+                            Header="Even pass"
+                            Command="{Binding Commands[SwitchFrequency], RelativeSource={RelativeSource TemplatedParent}}"
+                            CommandParameter="{StaticResource StepFrequencyEven}">
+                            <MenuItem.Icon>
+                                <Image Source="/DrumMaster.Controls;component/Resources/Images/Image.Beat.Even.48.png" Height="18" Width="18"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+
+                        <Separator/>
+                        
+                        <MenuItem
+                            Header="Off"
+                            Command="{Binding Commands[SwitchFrequency], RelativeSource={RelativeSource TemplatedParent}}"
+                            CommandParameter="{StaticResource StepFrequencyNone}"/>
+                    </ContextMenu>
+                </Grid.ContextMenu>
+                
+                <!-- Button to toggle selection off / on-->
                 <Button Style="{StaticResource StepButtonStyle}" Command="{Binding Commands[ToggleIsSelected], RelativeSource={RelativeSource TemplatedParent}}">
                     <Image Source="/DrumMaster.Controls;component/Resources/Images/Image.Step.48.png" />
                 </Button>
-                <TextBlock x:Name="PART_ODD" Text="Odd"/>
-                <TextBlock x:Name="PART_EVEN" Text="Even"/>
+                <!-- Slider to adjust the volume for this box -->
+                <Slider 
+                    x:Name="PART_VOL"
+                    Style="{StaticResource BoxVolumeSliderStyle}"
+                    Minimum="{Binding MinVolumeBias, RelativeSource={RelativeSource TemplatedParent}}"
+                    Maximum="{Binding MaxVolumeBias, RelativeSource={RelativeSource TemplatedParent}}"
+                    Value="{Binding VolumeBias, RelativeSource={RelativeSource TemplatedParent}}"/>
+
+                <!-- Indicator when the beat is for odd numbered pass only -->
+                <Border
+                    x:Name="PART_ODD"
+                    HorizontalAlignment="Left"
+                    Background="Red"
+                    Width="{Binding ActualWidth,ElementName=PART_BORDER,Converter={con:DoubleToPercentageDoubleConverter},ConverterParameter=0.10}"
+                    Height="{Binding Width,RelativeSource={RelativeSource Self}}"/>
+
+                <!-- Indicator when the beat is for even numbered pass only -->
+                <Border 
+                    x:Name="PART_EVEN"
+                    HorizontalAlignment="Right"
+                    Background="Blue"
+                    Width="{Binding ActualWidth,ElementName=PART_BORDER,Converter={con:DoubleToPercentageDoubleConverter},ConverterParameter=0.10}"
+                    Height="{Binding Width,RelativeSource={RelativeSource Self}}"/>
+
             </Grid>
         </Border>
         <ControlTemplate.Triggers>
+            <Trigger Property="PlayFrequency" Value="None">
+                <Setter Property="Background" TargetName="PART_VOL" Value="LightGray"/>
+            </Trigger>
             <Trigger Property="PlayFrequency" Value="EveryPass">
                 <Setter Property="Background" TargetName="PART_BORDER" Value="{Binding SelectedBackgroundBrush, RelativeSource={RelativeSource TemplatedParent}}"/>
             </Trigger>
@@ -749,8 +878,8 @@
     <!-- ENVELOPE TEMPLATE / STYLE     -->
     <!-- ############################# -->
     <ControlTemplate x:Key="EnvelopeControlTemplate" TargetType="{x:Type con:EnvelopeControl}">
-        <Grid x:Name="PART_GRID_HOST" ShowGridLines="True">
-            <!--<Border Height="2" BorderThickness="1" Margin="4,0" BorderBrush="Blue" />-->
+        <Grid x:Name="PART_HOST_GRID" ShowGridLines="True">
+            <Border Height="2" BorderThickness="1" Margin="4,0" BorderBrush="Blue" />
         </Grid>
     </ControlTemplate>
 

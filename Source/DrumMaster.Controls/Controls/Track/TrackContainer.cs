@@ -69,6 +69,11 @@ namespace Restless.App.DrumMaster.Controls
             get;
         }
 
+        //internal MaxSizeObservableCollection<EnvelopeControl> VolumeEnvelopes
+        //{
+        //    get;
+        //}
+
         /// <summary>
         /// Gets the track boxes
         /// </summary>
@@ -774,6 +779,7 @@ namespace Restless.App.DrumMaster.Controls
                 IsPitchEnabled = TrackVals.Pitch.IsEnabledDefault,
                 IsPanningEnabled = TrackVals.Panning.IsEnabledDefault,
             });
+
             TrackBoxes.Add(new TrackBoxContainer()
             {
                 Margin = new Thickness(4),
@@ -783,7 +789,7 @@ namespace Restless.App.DrumMaster.Controls
                 BoxType = TrackBoxType.TrackStep,
                 TotalSteps = TotalSteps,
                 BoxSize = BoxSize,
-                SelectedBackgroundBrush = new SolidColorBrush(Colors.LightGreen)
+                SelectedBackgroundBrush = new SolidColorBrush(Colors.LightBlue)
             });
             TrackBoxes[TrackCount - 1].SetController(TrackControllers[TrackCount - 1]);
             TrackControllers[TrackCount - 1].SetBoxContainer(TrackBoxes[TrackCount - 1]);

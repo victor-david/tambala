@@ -151,19 +151,7 @@ namespace Restless.App.DrumMaster.Controls
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-
             OnPanningChanged();
-            //gridTrack = GetTemplateChild(PartGridTrack) as Grid;
-
-            //envelopeHost = GetTemplateChild(PartEnvelopeHost) as Grid;
-            //if (envelopeHost != null)
-            //{
-            //    envelopeHost.Children.Clear();
-            //    volEnvelop = new EnvelopeControl();
-            //    envelopeHost.Children.Add(volEnvelop);
-            //}
-            //OnBoxSizeChanged();
-            // OnIsMutedChanged();
         }
 
         #endregion
@@ -277,7 +265,6 @@ namespace Restless.App.DrumMaster.Controls
             {
                 try
                 {
-                    //if (boxContainer.Boxes[step].IsSelectedInternal)
                     if (boxContainer.CanPlay(pass, step))
                     {
                         //float vol = (step % 5 == 0) ? 1.0F : 0.45F;
@@ -285,7 +272,6 @@ namespace Restless.App.DrumMaster.Controls
                         // vol = Boxes[step].VolumeInternal;
                         //voicePool.Play(vol, PitchInternal, operationSet);
                         voicePool.Play(boxContainer.Boxes[step].VolumeInternal, PitchInternal, operationSet);
-
                     }
                 }
                 catch { }
@@ -304,24 +290,24 @@ namespace Restless.App.DrumMaster.Controls
 
         private void RunShiftLeftCommand(object parm)
         {
-            //var boxes = boxContainer.Boxes;
-            //bool firstBoxSelected = boxes[0].IsSelected;
-            //for (int k = 0; k < boxes.Count - 1; k++)
-            //{
-            //    boxes[k].IsSelected = boxes[k + 1].IsSelected;
-            //}
-            //boxes[boxes.Count - 1].IsSelected = firstBoxSelected;
+            var boxes = boxContainer.Boxes;
+            StepPlayFrequency firstBoxFreq = boxes[0].PlayFrequency;
+            for (int k = 0; k < boxes.Count - 1; k++)
+            {
+                boxes[k].PlayFrequency = boxes[k + 1].PlayFrequency;
+            }
+            boxes[boxes.Count - 1].PlayFrequency = firstBoxFreq;
         }
 
         private void RunShiftRightCommand(object parm)
         {
-            //var boxes = boxContainer.Boxes;
-            //bool lastBoxSelected = boxes[boxes.Count - 1].IsSelected;
-            //for (int k = boxes.Count - 1; k > 0; k--)
-            //{
-            //    boxes[k].IsSelected = boxes[k - 1].IsSelected;
-            //}
-            //boxes[0].IsSelected = lastBoxSelected;
+            var boxes = boxContainer.Boxes;
+            StepPlayFrequency lastBoxFreq = boxes[boxes.Count - 1].PlayFrequency;
+            for (int k = boxes.Count - 1; k > 0; k--)
+            {
+                boxes[k].PlayFrequency = boxes[k - 1].PlayFrequency;
+            }
+            boxes[0].PlayFrequency = lastBoxFreq;
         }
 
         private void RunToggleTrackProps(object parm)
@@ -338,8 +324,6 @@ namespace Restless.App.DrumMaster.Controls
                 voicePool = AudioHost.Instance.CreateVoicePool(Piece.Audio, submixVoice);
             }
         }
-
-
 
         private const float PanAdjust = 1.15f;
 

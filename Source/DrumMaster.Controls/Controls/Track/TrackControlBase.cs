@@ -46,6 +46,59 @@ namespace Restless.App.DrumMaster.Controls
                 nameof(Volume), typeof(float), typeof(TrackControlBase), new PropertyMetadata(TrackVals.Volume.Default, OnVolumeChanged, OnVolumeCoerce)
             );
 
+        private static void OnVolumeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TrackControlBase c)
+            {
+                c.VolumeInternal = XAudio2.DecibelsToAmplitudeRatio((float)e.NewValue);
+                c.VolumeDecibelText = (c.Volume <= TrackVals.Volume.Min) ? "Off" : $"{c.Volume:N1}dB";
+                c.IsAutoMuted = c.Volume == TrackVals.Volume.Min;
+                c.OnVolumeChanged();
+                c.SetIsChanged();
+            }
+        }
+
+        private static object OnVolumeCoerce(DependencyObject d, object baseValue)
+        {
+            float proposed = (float)baseValue;
+            return Math.Min(TrackVals.Volume.Max, Math.Max(TrackVals.Volume.Min, proposed));
+        }
+
+        /// <summary>
+        /// Gets or sets the volume bias.
+        /// Volume bias is expressed as a dB value between <see cref="TrackVals.VolumeBias.Min"/> and <see cref="TrackVals.VolumeBias.Max"/>
+        /// </summary>
+        public float VolumeBias
+        {
+            get => (float)GetValue(VolumeBiasProperty);
+            set => SetValue(VolumeBiasProperty, value);
+        }
+
+        public static readonly DependencyProperty VolumeBiasProperty = DependencyProperty.Register
+            (
+                nameof(VolumeBias), typeof(float), typeof(TrackControlBase), new PropertyMetadata(TrackVals.VolumeBias.Default, OnVolumeBiasChanged, OnVolumeBiasCoerce)
+            );
+
+        private static void OnVolumeBiasChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TrackControlBase c)
+            {
+                float dbVol = c.Volume + (float)e.NewValue;
+                c.VolumeInternal = XAudio2.DecibelsToAmplitudeRatio(dbVol);
+                // c.VolumeDecibelText = (c.Volume <= TrackVals.Volume.Min) ? "Off" : $"{c.Volume:N1}dB";
+                // c.IsAutoMuted = c.Volume == TrackVals.Volume.Min;
+                c.OnVolumeChanged();
+                c.SetIsChanged();
+            }
+        }
+
+        private static object OnVolumeBiasCoerce(DependencyObject d, object baseValue)
+        {
+            float proposed = (float)baseValue;
+            return Math.Min(TrackVals.VolumeBias.Max, Math.Max(TrackVals.VolumeBias.Min, proposed));
+        }
+
+
         /// <summary>
         /// Gets or sets the volume text
         /// </summary>
@@ -89,6 +142,16 @@ namespace Restless.App.DrumMaster.Controls
                 nameof(IsMuted), typeof(bool), typeof(TrackControlBase), new PropertyMetadata(false, OnIsMutedChanged)
             );
 
+        private static void OnIsMutedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TrackControlBase c)
+            {
+                c.IsUserMuted = (bool)e.NewValue;
+                c.OnIsMutedChanged();
+                c.SetIsChanged();
+            }
+        }
+
         /// <summary>
         /// Gets the minimum volume allowed. Used for binding in the control template.
         /// </summary>
@@ -104,6 +167,26 @@ namespace Restless.App.DrumMaster.Controls
         {
             get => TrackVals.Volume.Max;
         }
+
+
+        /// <summary>
+        /// Gets the minimum volume bias allowed. Used for binding in the control template.
+        /// </summary>
+        public float MinVolumeBias
+        {
+            get => TrackVals.VolumeBias.Min;
+        }
+
+        /// <summary>
+        /// Gets the maximum volume allowed.Used for binding in the control template.
+        /// </summary>
+        public float MaxVolumeBias
+        {
+            get => TrackVals.VolumeBias.Max;
+        }
+
+
+
         #endregion
 
         /************************************************************************/
@@ -120,7 +203,7 @@ namespace Restless.App.DrumMaster.Controls
 
         public static readonly DependencyProperty IsPanningEnabledProperty = DependencyProperty.Register
             (
-                nameof(IsPanningEnabled), typeof(bool), typeof(TrackControlBase), new PropertyMetadata(false)
+                nameof(IsPanningEnabled), typeof(bool), typeof(TrackControlBase), new PropertyMetadata(TrackVals.Panning.IsEnabledDefault)
             );
 
         /// <summary>
@@ -136,6 +219,21 @@ namespace Restless.App.DrumMaster.Controls
             (
                 nameof(Panning), typeof(float), typeof(TrackControlBase), new PropertyMetadata(TrackVals.Panning.Default, OnPanningChanged, OnPanningCoerce)
             );
+
+        private static void OnPanningChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TrackControlBase c)
+            {
+                c.OnPanningChanged();
+                c.SetIsChanged();
+            }
+        }
+
+        private static object OnPanningCoerce(DependencyObject d, object baseValue)
+        {
+            float proposed = (float)baseValue;
+            return Math.Min(TrackVals.Panning.Max, Math.Max(TrackVals.Panning.Min, proposed));
+        }
 
         /// <summary>
         /// Gets the minimum panning allowed. Used for binding in the control template.
@@ -187,6 +285,22 @@ namespace Restless.App.DrumMaster.Controls
                 nameof(Pitch), typeof(float), typeof(TrackControlBase), new PropertyMetadata(TrackVals.Pitch.Default, OnPitchChanged, OnPitchCoerce)
             );
 
+        private static void OnPitchChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TrackControlBase c && c.IsPitchEnabled)
+            {
+                c.PitchInternal = XAudio2.SemitonesToFrequencyRatio((float)e.NewValue);
+                c.OnPitchChanged();
+                c.SetIsChanged();
+            }
+        }
+
+        private static object OnPitchCoerce(DependencyObject d, object baseValue)
+        {
+            float proposed = (float)baseValue;
+            return Math.Min(TrackVals.Pitch.Max, Math.Max(TrackVals.Pitch.Min, proposed));
+        }
+
         /// <summary>
         /// Gets the minimum pitch allowed. Used for binding in the control template.
         /// </summary>
@@ -234,6 +348,15 @@ namespace Restless.App.DrumMaster.Controls
             (
                 nameof(VoicedImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null, OnMutedImageSourceChanged)
             );
+
+        private static void OnMutedImageSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TrackControlBase c)
+            {
+                c.OnMutedImageSourceChanged();
+                c.OnIsMutedChanged();
+            }
+        }
 
         /// <summary>
         /// Gets the image source to use for the mute button.
@@ -585,81 +708,6 @@ namespace Restless.App.DrumMaster.Controls
         /************************************************************************/
 
         #region Private methods (Instance)
-        #endregion
-
-        /************************************************************************/
-
-        #region Private methods (static)
-
-        private static void OnVolumeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is TrackControlBase c)
-            {
-                c.VolumeInternal = XAudio2.DecibelsToAmplitudeRatio((float)e.NewValue);
-                c.VolumeDecibelText = (c.Volume <= TrackVals.Volume.Min) ? "Off" : $"{c.Volume:N1}dB";
-                c.IsAutoMuted = c.Volume == TrackVals.Volume.Min;
-                c.OnVolumeChanged();
-                c.SetIsChanged();
-            }
-        }
-
-        private static object OnVolumeCoerce(DependencyObject d, object baseValue)
-        {
-            float proposed = (float)baseValue;
-            return Math.Min(TrackVals.Volume.Max, Math.Max(TrackVals.Volume.Min, proposed));
-        }
-
-
-        private static void OnPanningChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is TrackControlBase c)
-            {
-                c.OnPanningChanged();
-                c.SetIsChanged();
-            }
-        }
-
-        private static object OnPanningCoerce(DependencyObject d, object baseValue)
-        {
-            float proposed = (float)baseValue;
-            return Math.Min(TrackVals.Panning.Max, Math.Max(TrackVals.Panning.Min, proposed));
-        }
-
-
-        private static void OnPitchChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is TrackControlBase c && c.IsPitchEnabled)
-            {
-                c.PitchInternal = XAudio2.SemitonesToFrequencyRatio((float)e.NewValue);
-                c.OnPitchChanged();
-                c.SetIsChanged();
-            }
-        }
-
-        private static object OnPitchCoerce(DependencyObject d, object baseValue)
-        {
-            float proposed = (float)baseValue;
-            return Math.Min(TrackVals.Pitch.Max, Math.Max(TrackVals.Pitch.Min, proposed));
-        }
-
-        private static void OnIsMutedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is TrackControlBase c)
-            {
-                c.IsUserMuted = (bool)e.NewValue;
-                c.OnIsMutedChanged();
-                c.SetIsChanged();
-            }
-        }
-
-        private static void OnMutedImageSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is TrackControlBase c)
-            {
-                c.OnMutedImageSourceChanged();
-                c.OnIsMutedChanged();
-            }
-        }
         #endregion
     }
 }
