@@ -320,6 +320,25 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
+
+        #region  Public properties (IsExpanded)
+        /// <summary>
+        /// Gets or sets a boolean value that indicates if the control is expanded (true) or collapsed (false).
+        /// </summary>
+        public bool IsExpanded
+        {
+            get => (bool)GetValue(IsExpandedProperty);
+            set => SetValue(IsExpandedProperty, value);
+        }
+
+        public static readonly DependencyProperty IsExpandedProperty = DependencyProperty.Register
+            (
+                nameof(IsExpanded), typeof(bool), typeof(TrackControlBase), new PropertyMetadata(true)
+            );
+        #endregion
+
+        /************************************************************************/
+
         #region Public properties (Image)
         /// <summary>
         /// Gets or sets the image source to use for the muted button (when muted).
@@ -332,7 +351,7 @@ namespace Restless.App.DrumMaster.Controls
 
         public static readonly DependencyProperty MutedImageSourceProperty = DependencyProperty.Register
             (
-                nameof(MutedImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null, OnMutedImageSourceChanged)
+                nameof(MutedImageSource), typeof(ImageSource), typeof(TrackControlBase), new PropertyMetadata(null, OnMutedImageSourceChanged)
             );
 
         /// <summary>
@@ -346,7 +365,7 @@ namespace Restless.App.DrumMaster.Controls
 
         public static readonly DependencyProperty VoicedImageSourceProperty = DependencyProperty.Register
             (
-                nameof(VoicedImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null, OnMutedImageSourceChanged)
+                nameof(VoicedImageSource), typeof(ImageSource), typeof(TrackControlBase), new PropertyMetadata(null, OnMutedImageSourceChanged)
             );
 
         private static void OnMutedImageSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -373,6 +392,58 @@ namespace Restless.App.DrumMaster.Controls
             );
 
         public static readonly DependencyProperty ActiveMutedImageSourceProperty = ActiveMutedImageSourcePropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Gets or sets the image source to use for the minimize button
+        /// </summary>
+        public ImageSource MinimizeImageSource
+        {
+            get => (ImageSource)GetValue(MinimizeImageSourceProperty);
+            set => SetValue(MinimizeImageSourceProperty, value);
+        }
+
+        public static readonly DependencyProperty MinimizeImageSourceProperty = DependencyProperty.Register
+            (
+                nameof(MinimizeImageSource), typeof(ImageSource), typeof(TrackControlBase), new PropertyMetadata(null, OnVisibilityStateChanged)
+            );
+
+        /// <summary>
+        /// Gets or sets the image source to use for the maximize button
+        /// </summary>
+        public ImageSource MaximizeImageSource
+        {
+            get => (ImageSource)GetValue(MaximizeImageSourceProperty);
+            set => SetValue(MaximizeImageSourceProperty, value);
+        }
+
+        public static readonly DependencyProperty MaximizeImageSourceProperty = DependencyProperty.Register
+            (
+                nameof(MaximizeImageSource), typeof(ImageSource), typeof(TrackControlBase), new PropertyMetadata(null, OnVisibilityStateChanged)
+            );
+
+        private static void OnVisibilityStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TrackControlBase control)
+            {
+                control.OnVisibilityImageSourceChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets image source that is currently for the mimimized / maximized state
+        /// </summary>
+        public ImageSource ActiveExpandedStateImageSource
+        {
+            get => (ImageSource)GetValue(ActiveExpandedStateImageSourceProperty);
+            private set => SetValue(ActiveExpandedStateImageSourcePropertyKey, value);
+        }
+
+        private static readonly DependencyPropertyKey ActiveExpandedStateImageSourcePropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(ActiveExpandedStateImageSource), typeof(ImageSource), typeof(TrackControlBase), new FrameworkPropertyMetadata(null)
+            );
+
+        public static readonly DependencyProperty ActiveExpandedStateImageSourceProperty = ActiveExpandedStateImageSourcePropertyKey.DependencyProperty;
         #endregion
 
         /************************************************************************/
@@ -549,7 +620,14 @@ namespace Restless.App.DrumMaster.Controls
             MutedImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Track.Muted.64.png", UriKind.Relative));
             VoicedImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Track.Voiced.64.png", UriKind.Relative));
             ActiveMutedImageSource = VoicedImageSource;
+
+            MinimizeImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Minimize.64.png", UriKind.Relative));
+            MaximizeImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Maximize.64.png", UriKind.Relative));
+            ActiveExpandedStateImageSource = MinimizeImageSource;
+
             Commands = new Dictionary<string, ICommand>();
+            Commands.Add("ToggleExpanded", new RelayCommand(RunToggleExpandedCommand));
+
             VolumeInternal = XAudio2.DecibelsToAmplitudeRatio(TrackVals.Volume.Default);
             PitchInternal = XAudio2.SemitonesToFrequencyRatio(TrackVals.Pitch.Default);
             VolumeDecibelText = (Volume <= TrackVals.Volume.Min) ? "Off" : $"{Volume:N1}dB";
@@ -708,6 +786,17 @@ namespace Restless.App.DrumMaster.Controls
         /************************************************************************/
 
         #region Private methods (Instance)
+
+        private void RunToggleExpandedCommand(object parm)
+        {
+            IsExpanded = !IsExpanded;
+            OnVisibilityImageSourceChanged();
+        }
+
+        private void OnVisibilityImageSourceChanged()
+        {
+            ActiveExpandedStateImageSource = (IsExpanded) ? MinimizeImageSource : MaximizeImageSource;
+        }
         #endregion
     }
 }

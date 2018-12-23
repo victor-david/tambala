@@ -1,20 +1,16 @@
-﻿using Microsoft.Win32;
-using Restless.App.DrumMaster.Controls.Core;
+﻿using Restless.App.DrumMaster.Controls.Core;
 using Restless.App.DrumMaster.Core;
 using Restless.App.DrumMaster.Resources;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Markup;
 using System.Windows.Threading;
 
 namespace Restless.App.DrumMaster.ViewModel
 {
+    /// <summary>
+    /// Represents the view model for the main window.
+    /// </summary>
     public class MainWindowViewModel : WorkspaceViewModel
     {
         #region Private
@@ -29,15 +25,22 @@ namespace Restless.App.DrumMaster.ViewModel
         }
         #endregion
 
-
-
         /************************************************************************/
 
         #region Public properties
         /// <summary>
+        /// Gets a boolean value that indicates if the window that is bound to this view model stays on top.
+        /// </summary>
+        public bool IsTopMost
+        {
+            // TODO: Make this configurable
+            get => false;
+        }
+
+        /// <summary>
         /// Gets the window that owns this VM
         /// </summary>
-        public System.Windows.Window WindowOwner
+        public Window WindowOwner
         {
             get;
         }
@@ -57,7 +60,7 @@ namespace Restless.App.DrumMaster.ViewModel
         /// <summary>
         /// Initializes a new instance of <see cref="MainWindowViewModel"/>.
         /// </summary>
-        public MainWindowViewModel(System.Windows.Window owner) : base (null)
+        public MainWindowViewModel(Window owner) : base (null)
         {
             WindowOwner = owner ?? throw new ArgumentNullException(nameof(owner));
             WindowOwner.Closing += MainWindowClosing;

@@ -27,6 +27,22 @@ namespace Restless.App.DrumMaster.Controls
                 nameof(BoxSize), typeof(double), typeof(TrackSized), new PropertyMetadata(TrackVals.BoxSize.Default, OnBoxSizeChanged, OnBoxSizeCoerce)
             );
 
+
+        private static void OnBoxSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TrackSized c)
+            {
+                c.OnBoxSizeChanged();
+                c.SetIsChanged();
+            }
+        }
+
+        private static object OnBoxSizeCoerce(DependencyObject d, object baseValue)
+        {
+            double proposed = (double)baseValue;
+            return Math.Min(TrackVals.BoxSize.Max, Math.Max(TrackVals.BoxSize.Min, proposed));
+        }
+
         /// <summary>
         /// Gets or sets the text used to display the box size
         /// </summary>
@@ -76,24 +92,5 @@ namespace Restless.App.DrumMaster.Controls
         #region Private methods (instance)
         #endregion
 
-        /************************************************************************/
-
-        #region Private methods (static)
-
-        private static void OnBoxSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is TrackSized c)
-            {
-                c.OnBoxSizeChanged();
-                c.SetIsChanged();
-            }
-        }
-
-        private static object OnBoxSizeCoerce(DependencyObject d, object baseValue)
-        {
-            double proposed = (double)baseValue;
-            return Math.Min(TrackVals.BoxSize.Max, Math.Max(TrackVals.BoxSize.Min, proposed));
-        }
-        #endregion
     }
 }

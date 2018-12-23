@@ -176,5 +176,12 @@
     <Resource Include="Resources\Images\Image.Beat.Even.48.png" />
     <Resource Include="Resources\Images\Image.Beat.Odd.48.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Working\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Image.Maximize.Blue.64.png" />
+    <Resource Include="Resources\Images\Image.Minimize.Blue.64.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

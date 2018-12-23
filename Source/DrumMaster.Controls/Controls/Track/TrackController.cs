@@ -23,8 +23,8 @@ namespace Restless.App.DrumMaster.Controls
         private TrackBoxContainer boxContainer;
         private SubmixVoice submixVoice;
         private VoicePool voicePool;
-        private int channelCount;
-        private float[] channelVolumes;
+        private readonly int channelCount;
+        private readonly float[] channelVolumes;
         #endregion
 
         /************************************************************************/
@@ -134,6 +134,10 @@ namespace Restless.App.DrumMaster.Controls
 
             ShiftLeftImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Shift.Left.64.png", UriKind.Relative));
             ShiftRightImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Shift.Right.64.png", UriKind.Relative));
+
+
+            MinimizeImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Minimize.Blue.64.png", UriKind.Relative));
+            MaximizeImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Maximize.Blue.64.png", UriKind.Relative));
         }
 
         static TrackController()

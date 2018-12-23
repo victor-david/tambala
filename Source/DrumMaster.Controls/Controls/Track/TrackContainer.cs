@@ -4,11 +4,9 @@ using SharpDX.XAudio2;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -19,6 +17,19 @@ namespace Restless.App.DrumMaster.Controls
     /// <summary>
     /// Represents the topmost container for a track layout control.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This control is the top level control for a series of tracks and controllers
+    /// that represent a single drum beat. It contains the upper controls such as tempo, beats, steps per beat,
+    /// master volume, etc. and a series of paired track controller / track box containers. Each track controller manages
+    /// the instrument for the track, the track volume, pan, pitch, etc. Each track box container holds the individual
+    /// beats.
+    /// </para>
+    /// <para>
+    /// This control is responsible for creating the controllers and the track box containers. It creates a series
+    /// of default tracks. The user can add more.
+    /// </para>
+    /// </remarks>
     [TemplatePart(Name = PartHeaderBoxes, Type = typeof(TrackBoxContainer))]
     public class TrackContainer : TrackSized
     {
@@ -48,31 +59,12 @@ namespace Restless.App.DrumMaster.Controls
 
         #region Public properties (Tracks)
         /// <summary>
-        /// Gets or sets a boolean value that indicates if the track list is visible.
-        /// </summary>
-        public bool IsTrackListVisible
-        {
-            get => (bool)GetValue(IsTrackListVisibleProperty);
-            set => SetValue(IsTrackListVisibleProperty, value);
-        }
-
-        public static readonly DependencyProperty IsTrackListVisibleProperty = DependencyProperty.Register
-            (
-                nameof(IsTrackListVisible), typeof(bool), typeof(TrackContainer), new PropertyMetadata(true)
-            );
-
-        /// <summary>
         /// Gets the track controllers
         /// </summary>
         public MaxSizeObservableCollection<TrackController> TrackControllers
         {
             get;
         }
-
-        //internal MaxSizeObservableCollection<EnvelopeControl> VolumeEnvelopes
-        //{
-        //    get;
-        //}
 
         /// <summary>
         /// Gets the track boxes
@@ -293,35 +285,6 @@ namespace Restless.App.DrumMaster.Controls
                 nameof(AddTrackImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null)
             );
 
-
-        /// <summary>
-        /// Gets or sets the image source to use for the minimize button
-        /// </summary>
-        public ImageSource MinimizeImageSource
-        {
-            get => (ImageSource)GetValue(MinimizeImageSourceProperty);
-            set => SetValue(MinimizeImageSourceProperty, value);
-        }
-
-        public static readonly DependencyProperty MinimizeImageSourceProperty = DependencyProperty.Register
-            (
-                nameof(MinimizeImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null, OnVisibilityStateChanged)
-            );
-
-        /// <summary>
-        /// Gets or sets the image source to use for the maximize button
-        /// </summary>
-        public ImageSource MaximizeImageSource
-        {
-            get => (ImageSource)GetValue(MaximizeImageSourceProperty);
-            set => SetValue(MaximizeImageSourceProperty, value);
-        }
-
-        public static readonly DependencyProperty MaximizeImageSourceProperty = DependencyProperty.Register
-            (
-                nameof(MaximizeImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null, OnVisibilityStateChanged)
-            );
-
         /// <summary>
         /// Gets or sets the image source to use for the close button
         /// </summary>
@@ -336,7 +299,6 @@ namespace Restless.App.DrumMaster.Controls
                 (
                     nameof(CloseImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null)
                 );
-
 
         /// <summary>
         /// Gets or sets the image to use for the metronone
@@ -389,7 +351,6 @@ namespace Restless.App.DrumMaster.Controls
         /************************************************************************/
 
         #region Public properties (Other)
-
         /// <summary>
         /// Gets or sets the display name for this track layout
         /// </summary>
@@ -425,21 +386,6 @@ namespace Restless.App.DrumMaster.Controls
 
         public static readonly DependencyProperty ActivePlayImageSourceProperty = ActivePlayImageSourcePropertyKey.DependencyProperty;
 
-        /// <summary>
-        /// Gets image source that is currently for the mimimized / maximized state
-        /// </summary>
-        public ImageSource ActiveVisibilityStateImageSource
-        {
-            get => (ImageSource)GetValue(ActiveVisibilityStateImageSourceProperty);
-            private set => SetValue(ActiveVisibilityStateImageSourcePropertyKey, value);
-        }
-
-        private static readonly DependencyPropertyKey ActiveVisibilityStateImageSourcePropertyKey = DependencyProperty.RegisterReadOnly
-            (
-                nameof(ActiveVisibilityStateImageSource), typeof(ImageSource), typeof(TrackContainer), new FrameworkPropertyMetadata(null)
-            );
-
-        public static readonly DependencyProperty ActiveVisibilityStateImageSourceProperty = ActiveVisibilityStateImageSourcePropertyKey.DependencyProperty;
 
         /// <summary>
         /// Gets a boolean value that indicates if the track layout is started (i.e. playing its pattern)
@@ -517,7 +463,9 @@ namespace Restless.App.DrumMaster.Controls
         /************************************************************************/
 
         #region Routed events
-
+        /// <summary>
+        /// Represents a routed event that is raised when the <see cref="TrackContainer"/> is closing.
+        /// </summary>
         public event CancelRoutedEventHandler Closing
         {
             add => AddHandler(ClosingEvent, value);
@@ -542,15 +490,11 @@ namespace Restless.App.DrumMaster.Controls
             AddTrackImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Track.Add.64.png", UriKind.Relative));
             StartImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Start.64.png", UriKind.Relative));
             StopImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Stop.64.png", UriKind.Relative));
+            ActivePlayImageSource = StartImageSource;
 
-            MinimizeImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Minimize.64.png", UriKind.Relative));
-            MaximizeImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Maximize.64.png", UriKind.Relative));
             CloseImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Close.64.png", UriKind.Relative));
             MetronomeImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Metronome.64.png", UriKind.Relative));
             SlashImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Slash.64.png", UriKind.Relative));
-
-            ActivePlayImageSource = StartImageSource;
-            ActiveVisibilityStateImageSource = MinimizeImageSource;
 
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
@@ -560,7 +504,7 @@ namespace Restless.App.DrumMaster.Controls
 
                 metronome = new Metronome(this);
 
-                Commands.Add("ToggleTrackList", new RelayCommand(RunIsTrackListVisibleCommand));
+                
                 Commands.Add("Close", new RelayCommand(RunCloseCommand));
                 Commands.Add("AddTrack", new RelayCommand(RunAddTrackCommand, CanRunAddTrackCommand));
                 Commands.Add("Play", new RelayCommand(RunPlayCommand));
@@ -736,18 +680,17 @@ namespace Restless.App.DrumMaster.Controls
             {
                 boxes.BoxSize = BoxSize;
             }
+
+            foreach (var tc in TrackControllers)
+            {
+                tc.MinHeight = BoxSize + 18;
+            }
         }
         #endregion
 
         /************************************************************************/
 
         #region Private methods (Instance)
-
-        private void RunIsTrackListVisibleCommand(object parm)
-        {
-            IsTrackListVisible = !IsTrackListVisible;
-            OnVisibilityImageSourceChanged();
-        }
 
         private void RunCloseCommand(object parm)
         {
@@ -773,6 +716,11 @@ namespace Restless.App.DrumMaster.Controls
         {
             TrackControllers.Add(new TrackController(this)
             {
+                Margin = new Thickness(4),
+                Padding = new Thickness(4),
+                BorderThickness = new Thickness(1,1,0,1),
+                BorderBrush = Brushes.LightSlateGray,
+                MinHeight = BoxSize + 18,
                 Piece = piece,
                 MutedImageSource = MutedImageSource,
                 VoicedImageSource = VoicedImageSource,
@@ -916,11 +864,6 @@ namespace Restless.App.DrumMaster.Controls
             ActivePlayImageSource = (IsStarted) ? StopImageSource : StartImageSource;
         }
 
-        private void OnVisibilityImageSourceChanged()
-        {
-            ActiveVisibilityStateImageSource = (IsTrackListVisible) ? MinimizeImageSource : MaximizeImageSource;
-        }
-
         private void OnTotalStepsChanged()
         {
             TotalSteps = totalSteps = Beats * StepsPerBeat;
@@ -1009,14 +952,6 @@ namespace Restless.App.DrumMaster.Controls
             {
                 c.OnIsStartedChanged();
                 c.OnPlayImageSourceChanged();
-            }
-        }
-
-        private static void OnVisibilityStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is TrackContainer c)
-            {
-                c.OnVisibilityImageSourceChanged();
             }
         }
 

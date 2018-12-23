@@ -205,7 +205,7 @@ namespace Restless.App.DrumMaster.Controls
 
         #region Protected methods
         /// <summary>
-        /// Called when the boz size is changed
+        /// Called when the box size is changed
         /// </summary>
         protected override void OnBoxSizeChanged()
         {
@@ -317,7 +317,7 @@ namespace Restless.App.DrumMaster.Controls
         {
             if (e.HeightChanged)
             {
-                Height = e.NewSize.Height - 8;
+                Height = e.NewSize.Height;
             }
         }
         #endregion
