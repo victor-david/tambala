@@ -51,7 +51,7 @@ namespace Restless.App.DrumMaster.Data.Core
         public AudioResourceMetadata(Assembly assembly, string resourceName)
         {
             if (assembly == null) throw new ArgumentNullException(nameof(assembly));
-            if (String.IsNullOrEmpty(resourceName)) throw new ArgumentNullException(nameof(resourceName));
+            if (string.IsNullOrEmpty(resourceName)) throw new ArgumentNullException(nameof(resourceName));
             GetMetadata(assembly, resourceName);
         }
 
@@ -119,7 +119,7 @@ namespace Restless.App.DrumMaster.Data.Core
                     return prop.ValueAsObject.ToString();
                 }
             }
-            return String.Empty;
+            return string.Empty;
         }
     }
 }

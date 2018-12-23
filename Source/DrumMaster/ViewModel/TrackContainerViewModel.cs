@@ -130,7 +130,7 @@ namespace Restless.App.DrumMaster.ViewModel
             try
             {
                 string filename = GetFileName();
-                if (!String.IsNullOrEmpty(filename))
+                if (!string.IsNullOrEmpty(filename))
                 {
                     Container.Save(filename);
                     return true;
@@ -184,7 +184,7 @@ namespace Restless.App.DrumMaster.ViewModel
 
         private string GetFileName()
         {
-            if (!String.IsNullOrEmpty(filename))
+            if (!string.IsNullOrEmpty(filename))
             {
                 return filename;
             }

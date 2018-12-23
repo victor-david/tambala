@@ -59,12 +59,12 @@ namespace Restless.App.DrumMaster.Controls
         /// <param name="command">The RelayCommand object</param>
         public void Add(string key, RelayCommand command)
         {
-            if (String.IsNullOrEmpty(key)) throw new ArgumentException(nameof(key));
+            if (string.IsNullOrEmpty(key)) throw new ArgumentException(nameof(key));
             if (command == null) throw new ArgumentNullException(nameof(command));
 
             if (ContainsKey(key))
             {
-                throw new InvalidOperationException(String.Format("The command with key {0} already exists.", key));
+                throw new InvalidOperationException(string.Format("The command with key {0} already exists.", key));
             }
 
             storage.Add(key, command);

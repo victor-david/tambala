@@ -19,7 +19,7 @@ namespace Restless.App.DrumMaster.Core
         {
             if (item is string)
             {
-                if (String.IsNullOrWhiteSpace((string)item))
+                if (string.IsNullOrWhiteSpace((string)item))
                 {
                     throw new ArgumentNullException(message);
                 }

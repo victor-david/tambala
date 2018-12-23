@@ -113,7 +113,7 @@ namespace Restless.App.DrumMaster.Controls.Audio
 
         private AudioPiece(string audioName, Assembly sourceAssembly, bool autoDetectProperties)
         {
-            if (String.IsNullOrEmpty(audioName)) throw new ArgumentNullException(nameof(audioName));
+            if (string.IsNullOrEmpty(audioName)) throw new ArgumentNullException(nameof(audioName));
             AudioName = audioName;
             this.sourceAssembly = sourceAssembly;
             Type = AudioPieceType.Unknown;

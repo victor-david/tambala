@@ -882,7 +882,7 @@ namespace Restless.App.DrumMaster.Controls
                 int beat = 1;
                 for (int k = 0; k < headerBoxes.Boxes.Count; k++)
                 {
-                    headerBoxes.Boxes[k].Text = (k % StepsPerBeat == 0) ? $"{beat++}" : String.Empty;
+                    headerBoxes.Boxes[k].Text = (k % StepsPerBeat == 0) ? $"{beat++}" : string.Empty;
                 }
             }
         }
