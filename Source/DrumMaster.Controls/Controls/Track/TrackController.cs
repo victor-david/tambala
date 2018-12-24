@@ -1,10 +1,13 @@
 ﻿using Restless.App.DrumMaster.Controls.Audio;
+using Restless.App.DrumMaster.Controls.Resources;
 using SharpDX.XAudio2;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml.Linq;
@@ -134,6 +137,44 @@ namespace Restless.App.DrumMaster.Controls
         /// Identifies the <see cref="ShiftRightImageSource"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ShiftRightImageSourceProperty = ShiftRightImageSourcePropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Get the tooltip text for the shift left command
+        /// </summary>
+        public string ShiftLeftToolTip
+        {
+            get => (string)GetValue(ShiftLeftToolTipProperty);
+            private set => SetValue(ShiftLeftToolTipPropertyKey, value);
+        }
+
+        private static readonly DependencyPropertyKey ShiftLeftToolTipPropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(ShiftLeftToolTip), typeof(string), typeof(TrackController), new PropertyMetadata(Strings.ToolTipShiftLeft)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="ShiftLeftToolTip"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ShiftLeftToolTipProperty = ShiftLeftToolTipPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Get the tooltip text for the shift right command
+        /// </summary>
+        public string ShiftRightToolTip
+        {
+            get => (string)GetValue(ShiftRightToolTipProperty);
+            private set => SetValue(ShiftRightToolTipPropertyKey, value);
+        }
+
+        private static readonly DependencyPropertyKey ShiftRightToolTipPropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(ShiftRightToolTip), typeof(string), typeof(TrackController), new PropertyMetadata(Strings.ToolTipShiftRight)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="ShiftRightToolTip"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ShiftRightToolTipProperty = ShiftRightToolTipPropertyKey.DependencyProperty;
 
         #endregion
 
@@ -322,24 +363,18 @@ namespace Restless.App.DrumMaster.Controls
 
         private void RunShiftLeftCommand(object parm)
         {
-            var boxes = boxContainer.Boxes;
-            StepPlayFrequency firstBoxFreq = boxes[0].PlayFrequency;
-            for (int k = 0; k < boxes.Count - 1; k++)
-            {
-                boxes[k].PlayFrequency = boxes[k + 1].PlayFrequency;
-            }
-            boxes[boxes.Count - 1].PlayFrequency = firstBoxFreq;
+            bool ctrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+            bool alt = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt);
+
+            boxContainer.Boxes.ShiftLeft(!alt, !ctrl || alt);
         }
 
         private void RunShiftRightCommand(object parm)
         {
-            var boxes = boxContainer.Boxes;
-            StepPlayFrequency lastBoxFreq = boxes[boxes.Count - 1].PlayFrequency;
-            for (int k = boxes.Count - 1; k > 0; k--)
-            {
-                boxes[k].PlayFrequency = boxes[k - 1].PlayFrequency;
-            }
-            boxes[0].PlayFrequency = lastBoxFreq;
+            bool ctrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+            bool alt = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt);
+
+            boxContainer.Boxes.ShiftRight(!alt, !ctrl || alt);
         }
 
         private void RunRemoveTrackCommand(object parm)

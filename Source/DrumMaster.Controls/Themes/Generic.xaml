@@ -593,7 +593,8 @@
                     <Button
                         Grid.Column="2"
                         Style="{StaticResource ButtonBaseFlat}" 
-                        Command="{Binding Commands[ShiftLeft], RelativeSource={RelativeSource TemplatedParent}}">
+                        Command="{Binding Commands[ShiftLeft], RelativeSource={RelativeSource TemplatedParent}}"
+                        ToolTip="{TemplateBinding ShiftLeftToolTip}">
                         <Image Source="{TemplateBinding ShiftLeftImageSource}" Height="14" />
                     </Button>
 
@@ -601,7 +602,8 @@
                     <Button
                         Grid.Column="3"
                         Style="{StaticResource ButtonBaseFlat}" 
-                        Command="{Binding Commands[ShiftRight], RelativeSource={RelativeSource TemplatedParent}}">
+                        Command="{Binding Commands[ShiftRight], RelativeSource={RelativeSource TemplatedParent}}"
+                        ToolTip="{TemplateBinding ShiftRightToolTip}">
                         <Image Source="{TemplateBinding ShiftRightImageSource}" Height="14" />
                     </Button>
 

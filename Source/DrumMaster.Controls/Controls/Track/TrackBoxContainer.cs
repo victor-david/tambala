@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Restless.App.DrumMaster.Controls.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -125,9 +126,9 @@ namespace Restless.App.DrumMaster.Controls
 
         #region Internal properties
         /// <summary>
-        /// Gets a list of boxes
+        /// Gets a collection of track boxes
         /// </summary>
-        internal List<TrackBox> Boxes
+        internal TrackBoxCollection Boxes
         {
             get;
         }
@@ -141,7 +142,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public TrackBoxContainer()
         {
-            Boxes = new List<TrackBox>();
+            Boxes = new TrackBoxCollection();
         }
 
         static TrackBoxContainer()
