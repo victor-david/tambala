@@ -9,9 +9,9 @@ using System.Windows.Media;
 
 namespace Restless.App.DrumMaster.Controls
 {
-    /// <summary>
-    /// Represents a track control that uses a set of <see cref="TrackBox"/> items.
-    /// </summary>
+    ///// <summary>
+    ///// Represents a track control that uses a set of <see cref="TrackBox"/> items.
+    ///// </summary>
     //public abstract class TrackBoxHostControl : TrackControlBase
     //{
     //    #region Private

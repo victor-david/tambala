@@ -22,11 +22,13 @@ namespace Restless.App.DrumMaster.Controls
             set => SetValue(BoxSizeProperty, value);
         }
 
+        /// <summary>
+        /// Identifies the <see cref="BoxSize"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty BoxSizeProperty = DependencyProperty.Register
             (
                 nameof(BoxSize), typeof(double), typeof(TrackSized), new PropertyMetadata(TrackVals.BoxSize.Default, OnBoxSizeChanged, OnBoxSizeCoerce)
             );
-
 
         private static void OnBoxSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -52,6 +54,9 @@ namespace Restless.App.DrumMaster.Controls
             set => SetValue(BoxSizeTextProperty, value);
         }
 
+        /// <summary>
+        /// Identifies the <see cref="BoxSizeText"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty BoxSizeTextProperty = DependencyProperty.Register
             (
                 nameof(BoxSizeText), typeof(string), typeof(TrackSized), new PropertyMetadata(TrackVals.BoxSize.DefaultText)

@@ -166,23 +166,13 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Audio\AudioManager.cs" />
     <Compile Include="Core\FixedSizeObservableCollection.cs" />
     <Compile Include="Core\GridValueCollection.cs" />
-    <Compile Include="Core\ObjectBase.cs" />
+    <Compile Include="Core\Utility.cs" />
     <Compile Include="Core\WindowFactory.cs" />
     <Compile Include="Core\WorkspaceViewModel.cs" />
     <Compile Include="Core\WorkspaceViewModelCollection.cs" />
-    <Compile Include="Drum\DrumPattern.cs" />
-    <Compile Include="Drum\DrumPiece.cs" />
-    <Compile Include="Drum\DrumPieceCollection.cs" />
-    <Compile Include="Drum\DrumPieceAudioSource.cs" />
-    <Compile Include="Drum\DrumPieceType.cs" />
-    <Compile Include="Drum\DrumTrack.cs" />
-    <Compile Include="Drum\DrumTrackCollection.cs" />
-    <Compile Include="Drum\DrumMatrixVoice.cs" />
     <Compile Include="Core\BindableBase.cs" />
-    <Compile Include="Audio\SoundUtility.cs" />
     <Compile Include="Resources\Strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

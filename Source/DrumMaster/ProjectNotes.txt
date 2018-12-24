@@ -10,6 +10,12 @@ Standard summary wording for constructor
 
 Initializes a new instance of the <see cref=""/> class.
 
+
+/// <summary>
+/// Identifies the <see cref=""/> dependency property.
+/// </summary>
+
+
         /// <AttachedPropertyComments>
         /// <summary>
         /// This attached property provides access to the view model that is associated with the window.

@@ -213,7 +213,12 @@ namespace Restless.App.DrumMaster.Controls
         }
         #endregion
 
+        /************************************************************************/
 
+        #region Volume Bias
+        /// <summary>
+        /// Provides static values that define volume bias.
+        /// </summary>
         public static class VolumeBias
         {
             /// <summary>
@@ -231,6 +236,7 @@ namespace Restless.App.DrumMaster.Controls
             /// </summary>
             public const float Default = 0.0f;
         }
+        #endregion
 
         /************************************************************************/
 
@@ -300,13 +306,5 @@ namespace Restless.App.DrumMaster.Controls
             public const bool IsEnabledDefault = true;
         }
         #endregion
-
-        //public static class PassFrequency
-        //{
-        //    public const int Min = -3;
-        //    public const int Max = 3;
-        //    public const int Default = -3;
-        //}
-
     }
 }

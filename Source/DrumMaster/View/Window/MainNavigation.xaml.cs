@@ -7,6 +7,9 @@ namespace Restless.App.DrumMaster.View
     /// </summary>
     public partial class MainNavigation : UserControl
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainNavigation"/> class.
+        /// </summary>
         public MainNavigation()
         {
             InitializeComponent();

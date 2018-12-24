@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Restless.App.DrumMaster.Core
 {
-    public class ObjectBase
+    /// <summary>
+    /// Provides static utility methods
+    /// </summary>
+    public static class Utility
     {
 
         /// <summary>
@@ -15,7 +14,7 @@ namespace Restless.App.DrumMaster.Core
         /// </summary>
         /// <param name="item">The item</param>
         /// <param name="message">The message</param>
-        protected void ValidateNull(object item, string message)
+        public static void ValidateNull(object item, string message)
         {
             if (item is string)
             {
@@ -35,18 +34,13 @@ namespace Restless.App.DrumMaster.Core
         /// </summary>
         /// <param name="condition">The condition</param>
         /// <param name="message">The message to use if an exception is thrown.</param>
-        protected void ValidateOperation(bool condition, string message)
+        public static void ValidateOperation(bool condition, string message)
         {
             if (condition)
             {
                 throw new InvalidOperationException(message);
             }
         }
-
-
-
-
-
 
     }
 }

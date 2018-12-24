@@ -87,6 +87,9 @@ namespace Restless.App.DrumMaster.Controls
             set => SetValue(TempoProperty, value);
         }
 
+        /// <summary>
+        /// Identifies the <see cref="Tempo"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty TempoProperty = DependencyProperty.Register
             (
                 nameof(Tempo), typeof(double), typeof(TrackContainer), new PropertyMetadata(TrackVals.Tempo.Default, OnTempoChanged, OnTempoCoerce)
@@ -101,6 +104,9 @@ namespace Restless.App.DrumMaster.Controls
             set => SetValue(TempoTextProperty, value);
         }
 
+        /// <summary>
+        /// Identifies the <see cref="TempoText"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty TempoTextProperty = DependencyProperty.Register
             (
                 nameof(TempoText), typeof(string), typeof(TrackContainer), new PropertyMetadata(TrackVals.Tempo.DefaultText)
@@ -132,6 +138,9 @@ namespace Restless.App.DrumMaster.Controls
             set => SetValue(BeatsProperty, value);
         }
 
+        /// <summary>
+        /// Identifies the <see cref="Beats"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty BeatsProperty = DependencyProperty.Register
             (
                 nameof(Beats), typeof(int), typeof(TrackContainer), new PropertyMetadata(TrackVals.Beats.Default, OnTotalStepsChanged, OnBeatsCoerce)
@@ -146,6 +155,9 @@ namespace Restless.App.DrumMaster.Controls
             set => SetValue(BeatsTextProperty, value);
         }
 
+        /// <summary>
+        /// Identifies the <see cref="BeatsText"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty BeatsTextProperty = DependencyProperty.Register
             (
                 nameof(BeatsText), typeof(string), typeof(TrackContainer), new PropertyMetadata(TrackVals.Beats.DefaultText)
@@ -176,6 +188,9 @@ namespace Restless.App.DrumMaster.Controls
             set => SetValue(StepsPerBeatProperty, value);
         }
 
+        /// <summary>
+        /// Identifies the <see cref="StepsPerBeat"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty StepsPerBeatProperty = DependencyProperty.Register
             (
                 nameof(StepsPerBeat), typeof(int), typeof(TrackContainer), new PropertyMetadata(TrackVals.StepsPerBeat.Default, OnTotalStepsChanged, OnStepsPerBeatCoerce)
@@ -190,6 +205,9 @@ namespace Restless.App.DrumMaster.Controls
             set => SetValue(StepsPerBeatTextProperty, value);
         }
 
+        /// <summary>
+        /// Identifies the <see cref="StepsPerBeatText"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty StepsPerBeatTextProperty = DependencyProperty.Register
             (
                 nameof(StepsPerBeatText), typeof(string), typeof(TrackContainer), new PropertyMetadata(TrackVals.StepsPerBeat.DefaultText)
@@ -225,15 +243,23 @@ namespace Restless.App.DrumMaster.Controls
                 nameof(TotalSteps), typeof(int), typeof(TrackContainer), new FrameworkPropertyMetadata(TrackVals.TotalSteps.Default)
             );
 
+        /// <summary>
+        /// Identifies the <see cref="TotalSteps"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty TotalStepsProperty = TotalStepsPropertyKey.DependencyProperty;
 
-
+        /// <summary>
+        /// Gets or sets a value that indicates if the metronome is active.
+        /// </summary>
         public bool IsMetronomeActive
         {
             get => (bool)GetValue(IsMetronomeActiveProperty);
             set => SetValue(IsMetronomeActiveProperty, value);
         }
 
+        /// <summary>
+        /// Identifies the <see cref="IsMetronomeActive"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty IsMetronomeActiveProperty = DependencyProperty.Register
             (
                 nameof(IsMetronomeActive), typeof(bool), typeof(TrackContainer), new PropertyMetadata(false, OnIsMetronomeActiveChanged)
@@ -252,6 +278,9 @@ namespace Restless.App.DrumMaster.Controls
             set => SetValue(StartImageSourceProperty, value);
         }
 
+        /// <summary>
+        /// Identifies the <see cref="StartImageSource"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty StartImageSourceProperty = DependencyProperty.Register
             (
                 nameof(StartImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null, OnPlayImageSourceChanged)
@@ -266,6 +295,9 @@ namespace Restless.App.DrumMaster.Controls
             set => SetValue(StopImageSourceProperty, value);
         }
 
+        /// <summary>
+        /// Identifies the <see cref="StopImageSource"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty StopImageSourceProperty = DependencyProperty.Register
             (
                 nameof(StopImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null, OnPlayImageSourceChanged)
@@ -280,6 +312,9 @@ namespace Restless.App.DrumMaster.Controls
             set => SetValue(AddTrackImageSourceProperty, value);
         }
 
+        /// <summary>
+        /// Identifies the <see cref="AddTrackImageSource"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty AddTrackImageSourceProperty = DependencyProperty.Register
             (
                 nameof(AddTrackImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null)
@@ -294,6 +329,9 @@ namespace Restless.App.DrumMaster.Controls
             set => SetValue(CloseImageSourceProperty, value);
         }
 
+        /// <summary>
+        /// Identifies the <see cref="CloseImageSource"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty CloseImageSourceProperty =
             DependencyProperty.Register
                 (
@@ -309,11 +347,13 @@ namespace Restless.App.DrumMaster.Controls
             set => SetValue(MetronomeImageSourceProperty, value);
         }
 
+        /// <summary>
+        /// Identifies the <see cref="MetronomeImageSource"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty MetronomeImageSourceProperty = DependencyProperty.Register
             (
                 nameof(MetronomeImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null)
             );
-
 
         /// <summary>
         /// Gets or sets the slash image
@@ -324,6 +364,9 @@ namespace Restless.App.DrumMaster.Controls
             set => SetValue(SlashImageSourceProperty, value);
         }
 
+        /// <summary>
+        /// Identifies the <see cref="SlashImageSource"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty SlashImageSourceProperty = DependencyProperty.Register
             (
                 nameof(SlashImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null)
@@ -342,6 +385,9 @@ namespace Restless.App.DrumMaster.Controls
             set => SetValue(DisplayNameProperty, value);
         }
 
+        /// <summary>
+        /// Identifies the <see cref="DisplayName"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty DisplayNameProperty = DependencyProperty.Register
             (
                 nameof(DisplayName), typeof(string), typeof(TrackContainer), new PropertyMetadata(null, OnDisplayNameChanged)
@@ -374,8 +420,10 @@ namespace Restless.App.DrumMaster.Controls
                 nameof(ActivePlayImageSource), typeof(ImageSource), typeof(TrackContainer), new FrameworkPropertyMetadata(null)
             );
 
+        /// <summary>
+        /// Identifies the <see cref="ActivePlayImageSourceProperty"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty ActivePlayImageSourceProperty = ActivePlayImageSourcePropertyKey.DependencyProperty;
-
 
         /// <summary>
         /// Gets a boolean value that indicates if the track layout is started (i.e. playing its pattern)
@@ -391,6 +439,9 @@ namespace Restless.App.DrumMaster.Controls
                 nameof(IsStarted), typeof(bool), typeof(TrackContainer), new FrameworkPropertyMetadata(false, OnIsStartedChanged)
             );
 
+        /// <summary>
+        /// Identifies the <see cref="IsStarted"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty IsStartedProperty = IsStartedPropertyKey.DependencyProperty;
 
         /// <summary>
@@ -407,6 +458,9 @@ namespace Restless.App.DrumMaster.Controls
                 nameof(CounterText), typeof(string), typeof(TrackContainer), new FrameworkPropertyMetadata(DefaultCounterText)
             );
 
+        /// <summary>
+        /// Identifies the <see cref="CounterText"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty CounterTextProperty = CounterTextPropertyKey.DependencyProperty;
 
         /// <summary>
@@ -423,6 +477,9 @@ namespace Restless.App.DrumMaster.Controls
                 nameof(PassText), typeof(string), typeof(TrackContainer), new FrameworkPropertyMetadata(DefaultPassText)
             );
 
+        /// <summary>
+        /// Identifies the <see cref="PassText"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty PassTextProperty = PassTextPropertyKey.DependencyProperty;
         #endregion
 
@@ -462,11 +519,13 @@ namespace Restless.App.DrumMaster.Controls
             remove => RemoveHandler(ClosingEvent, value);
         }
 
+        /// <summary>
+        /// Identifies the <see cref="Closing"/> routed event.
+        /// </summary>
         public static readonly RoutedEvent ClosingEvent = EventManager.RegisterRoutedEvent
             (
                 nameof(Closing), RoutingStrategy.Bubble, typeof(CancelRoutedEventHandler), typeof(TrackContainer)
             );
-
         #endregion
 
         /************************************************************************/
@@ -660,6 +719,9 @@ namespace Restless.App.DrumMaster.Controls
         /************************************************************************/
 
         #region Protected methods
+        /// <summary>
+        /// Called when <see cref="TrackControlBase.Volume"/> property is changed.
+        /// </summary>
         protected override void OnVolumeChanged()
         {
             base.OnVolumeChanged();
@@ -669,6 +731,9 @@ namespace Restless.App.DrumMaster.Controls
             }
         }
 
+        /// <summary>
+        /// Called when either <see cref="TrackControlBase.MutedImageSource"/> or <see cref="TrackControlBase.VoicedImageSource"/> are changed.
+        /// </summary>
         protected override void OnMutedImageSourceChanged()
         {
             base.OnMutedImageSourceChanged();
@@ -682,11 +747,17 @@ namespace Restless.App.DrumMaster.Controls
             }
         }
 
+        /// <summary>
+        /// Called when the <see cref="TrackControlBase.IsMuted"/> property is changed.
+        /// </summary>
         protected override void OnIsMutedChanged()
         {
             base.OnIsMutedChanged();
         }
 
+        /// <summary>
+        /// Called when the <see cref="TrackSized.BoxSize"/> property changes.
+        /// </summary>
         protected override void OnBoxSizeChanged()
         {
             foreach (var boxes in TrackBoxes)

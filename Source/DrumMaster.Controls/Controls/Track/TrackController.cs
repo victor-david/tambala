@@ -11,7 +11,9 @@ using System.Xml.Linq;
 
 namespace Restless.App.DrumMaster.Controls
 {
-
+    /// <summary>
+    /// Represents a track controller. This control manages the track with volume, pitch, panning, etc.
+    /// </summary>
     [TemplatePart(Name = PartGridTrack, Type = typeof(Grid))]
     public class TrackController : TrackControlBase
     {
@@ -47,11 +49,13 @@ namespace Restless.App.DrumMaster.Controls
             set => SetValue(PieceProperty, value);
         }
 
+        /// <summary>
+        /// Identifies the <see cref="Piece"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty PieceProperty = DependencyProperty.Register
             (
                 nameof(Piece), typeof(AudioPiece), typeof(TrackController), new PropertyMetadata(null, OnPieceChanged)
             );
-
 
         /// <summary>
         /// Gets or sets a boolean value that indicates if the controller is editing its properties.
@@ -62,6 +66,9 @@ namespace Restless.App.DrumMaster.Controls
             set => SetValue(IsEditPropertyModeProperty, value);
         }
 
+        /// <summary>
+        /// Identifies the <see cref="IsEditPropertyMode"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty IsEditPropertyModeProperty = DependencyProperty.Register
             (
                 nameof(IsEditPropertyMode), typeof(bool), typeof(TrackController), new PropertyMetadata(false)
@@ -85,6 +92,9 @@ namespace Restless.App.DrumMaster.Controls
                 nameof(IsAudioEnabled), typeof(bool), typeof(TrackController), new FrameworkPropertyMetadata(false)
             );
 
+        /// <summary>
+        /// Identifies the <see cref="IsAudioEnabled"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty IsAudioEnabledProperty = IsAudioEnabledPropertyKey.DependencyProperty;
 
         /// <summary>
@@ -222,7 +232,7 @@ namespace Restless.App.DrumMaster.Controls
 
         #region Protected methods
         /// <summary>
-        /// Called when <see cref="Volume"/> is changed.
+        /// Called when the <see cref="TrackControlBase.Volume"/> property is changed.
         /// </summary>
         protected override void OnVolumeChanged()
         {
@@ -232,6 +242,9 @@ namespace Restless.App.DrumMaster.Controls
             }
         }
 
+        /// <summary>
+        /// Called when the <see cref="TrackControlBase.Panning"/> property is changed.
+        /// </summary>
         protected override void OnPanningChanged()
         {
             if (IsPanningEnabled && channelCount == 2)
@@ -242,15 +255,6 @@ namespace Restless.App.DrumMaster.Controls
                 channelVolumes[1] = p.Item2;
                 submixVoice.SetChannelVolumes(channelCount, channelVolumes);
             }
-        }
-
-        /// <summary>
-        /// Called when the <see cref="IsMuted"/> property is changed.
-        /// </summary>
-        protected override void OnIsMutedChanged()
-        {
-            base.OnIsMutedChanged();
-            //MuteImageSource = (IsMuted) ? imageMuted : imageVoiced;
         }
         #endregion
 

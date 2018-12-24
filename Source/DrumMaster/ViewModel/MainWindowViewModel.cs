@@ -78,7 +78,7 @@ namespace Restless.App.DrumMaster.ViewModel
         /// <summary>
         /// Closes the track container.
         /// </summary>
-        /// <param name="parm">Not used</param>
+        /// <param name="e">Not used</param>
         public void CloseTrackContainer(CancelRoutedEventArgs e)
         {
             if (IsOkayToClose())

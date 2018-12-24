@@ -29,6 +29,9 @@ namespace Restless.App.DrumMaster.Controls
             set => SetValue(BoxTypeProperty, value);
         }
 
+        /// <summary>
+        /// Identifies the <see cref="BoxType"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty BoxTypeProperty = DependencyProperty.Register
             (
                 nameof(BoxType), typeof(TrackBoxType), typeof(TrackBox), new PropertyMetadata(TrackBoxType.Header)
@@ -44,6 +47,9 @@ namespace Restless.App.DrumMaster.Controls
             set => SetValue(TextProperty, value);
         }
 
+        /// <summary>
+        /// Identifies the <see cref="Text"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register
             (
                 nameof(Text), typeof(string), typeof(TrackBox), new PropertyMetadata(null)
@@ -58,6 +64,9 @@ namespace Restless.App.DrumMaster.Controls
             set => SetValue(PlayFrequencyProperty, value);
         }
 
+        /// <summary>
+        /// Identifies the <see cref="PlayFrequency"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty PlayFrequencyProperty = DependencyProperty.Register
             (
                 nameof(PlayFrequency), typeof(StepPlayFrequency), typeof(TrackBox), new PropertyMetadata(StepPlayFrequency.Default, OnPlayFrequencyChanged )
@@ -85,6 +94,9 @@ namespace Restless.App.DrumMaster.Controls
             set => SetValue(SelectedBackgroundBrushProperty, value);
         }
 
+        /// <summary>
+        /// Identifies the <see cref="SelectedBackgroundBrush"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty SelectedBackgroundBrushProperty = DependencyProperty.Register
             (
                 nameof(SelectedBackgroundBrush), typeof(Brush), typeof(TrackBox), new PropertyMetadata(new SolidColorBrush(Colors.RosyBrown))

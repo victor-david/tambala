@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Windows;
-using Restless.App.DrumMaster.Windows;
-using Restless.App.DrumMaster.ViewModel;
-using Restless.App.DrumMaster.Audio;
+﻿using Restless.App.DrumMaster.Controls.Audio;
 using Restless.App.DrumMaster.Core;
-using Restless.App.DrumMaster.Controls.Audio;
+using System;
 using System.Reflection;
+using System.Windows;
 
 namespace Restless.App.DrumMaster
 {

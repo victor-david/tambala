@@ -1,13 +1,8 @@
 ﻿using Microsoft.WindowsAPICodePack.Shell;
 using Microsoft.WindowsAPICodePack.Shell.PropertySystem;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using SysProps = Microsoft.WindowsAPICodePack.Shell.PropertySystem.SystemProperties;
 
 
@@ -18,43 +13,72 @@ namespace Restless.App.DrumMaster.Data.Core
     /// </summary>
     public class AudioResourceMetadata
     {
+        #region Public properties
+        /// <summary>
+        /// Gets the name of the audio resource.
+        /// </summary>
         public string Name
         {
             get;
             private set;
         }
 
+        /// <summary>
+        /// Gets the album name of the audio resource.
+        /// </summary>
         public string Album
         {
             get;
             private set;
         }
 
+        /// <summary>
+        /// Gets the comment of the audio resource.
+        /// </summary>
         public string Comment
         {
             get;
             private set;
         }
 
+        /// <summary>
+        /// Gets the track number of the audio resource.
+        /// </summary>
         public string TrackNumber
         {
             get;
             private set;
         }
 
+        /// <summary>
+        /// Gets the exception that occured while extracting the meta data of the audio resource, or null if none.
+        /// </summary>
         public Exception Exception
         {
             get;
             private set;
         }
+        #endregion
+        
+        /************************************************************************/
 
+        #region Constructor
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AudioResourceMetadata"/> class.
+        /// </summary>
+        /// <param name="assembly">The assembly that contains the audio resource.</param>
+        /// <param name="resourceName">The name of the audio resource</param>
         public AudioResourceMetadata(Assembly assembly, string resourceName)
         {
             if (assembly == null) throw new ArgumentNullException(nameof(assembly));
             if (string.IsNullOrEmpty(resourceName)) throw new ArgumentNullException(nameof(resourceName));
             GetMetadata(assembly, resourceName);
         }
+        #endregion
 
+        /************************************************************************/
+
+        #region Private methods
         private void GetMetadata(Assembly assembly, string resourceName)
         {
             string ext = Path.GetExtension(resourceName);
@@ -121,5 +145,6 @@ namespace Restless.App.DrumMaster.Data.Core
             }
             return string.Empty;
         }
+        #endregion
     }
 }

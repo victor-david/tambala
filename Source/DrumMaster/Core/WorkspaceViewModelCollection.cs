@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Restless.App.DrumMaster.Core
+﻿namespace Restless.App.DrumMaster.Core
 {
+    /// <summary>
+    /// Represents a collection of <see cref="WorkspaceViewModel"/> objects.
+    /// </summary>
     public class WorkspaceViewModelCollection : FixedSizeObservableCollection<WorkspaceViewModel>
     {
         #region Constructor

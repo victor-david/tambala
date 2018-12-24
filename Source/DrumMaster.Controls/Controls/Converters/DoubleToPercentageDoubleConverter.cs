@@ -17,7 +17,7 @@ namespace Restless.App.DrumMaster.Controls
         /// <param name="targetType">The target type.</param>
         /// <param name="parameter">The percentage</param>
         /// <param name="culture">Not used</param>
-        /// <returns>Either <see cref="Visibility.Visible"/> or <see cref="Visibility.Collapsed"/></returns>
+        /// <returns>A perecentage of <paramref name="value"/></returns>
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             if (value is double v && parameter != null && double.TryParse(parameter.ToString(), out double percent))

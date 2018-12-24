@@ -24,6 +24,9 @@
             set => SetProperty(ref row, value);
         }
 
+        /// <summary>
+        /// Gets or sets the column.
+        /// </summary>
         public int Col
         {
             get => col;

@@ -662,6 +662,9 @@ namespace Restless.App.DrumMaster.Controls
             remove => RemoveHandler(IsChangedSetEvent, value);
         }
 
+        /// <summary>
+        /// Identifies the <see cref="IsChangedSet"/> routed event.
+        /// </summary>
         public static readonly RoutedEvent IsChangedSetEvent = EventManager.RegisterRoutedEvent
             (
                 nameof(IsChangedSet), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(TrackControlBase)
@@ -676,6 +679,9 @@ namespace Restless.App.DrumMaster.Controls
             remove => RemoveHandler(IsChangedResetEvent, value);
         }
 
+        /// <summary>
+        /// Identifies the <see cref="IsChangedReset"/> routed event.
+        /// </summary>
         public static readonly RoutedEvent IsChangedResetEvent = EventManager.RegisterRoutedEvent
             (
                 nameof(IsChangedReset), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(TrackControlBase)
@@ -778,6 +784,7 @@ namespace Restless.App.DrumMaster.Controls
         {
 
         }
+
         /// <summary>
         /// Called when the <see cref="IsMuted"/> property is changed. A derived class can override this method to perform updates as needed.
         /// Before this method is called, all muted related properties such as <see cref="IsUserMuted"/> have been updated.

@@ -4,9 +4,9 @@ using System.Reflection;
 
 namespace Restless.App.DrumMaster.Data.Core
 {
-    /// <summary>
-    /// Represents a read only tag lib file abstraction for an embedded resource.
-    /// </summary>
+    ///// <summary>
+    ///// Represents a read only tag lib file abstraction for an embedded resource.
+    ///// </summary>
     //internal class AudioResourceAbstraction : TagLib.File.IFileAbstraction
     //{
     //    #region Private

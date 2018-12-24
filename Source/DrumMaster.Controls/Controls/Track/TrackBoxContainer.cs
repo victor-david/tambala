@@ -34,11 +34,13 @@ namespace Restless.App.DrumMaster.Controls
             set => SetValue(BoxTypeProperty, value);
         }
 
+        /// <summary>
+        /// Identifies the <see cref="BoxType"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty BoxTypeProperty = DependencyProperty.Register
             (
                 nameof(BoxType), typeof(TrackBoxType), typeof(TrackBoxContainer), new PropertyMetadata(TrackBoxType.Header)
             );
-
 
         /// <summary>
         /// Gets or sets the total steps, i.e. the total number of boxes
@@ -49,6 +51,9 @@ namespace Restless.App.DrumMaster.Controls
             set => SetValue(TotalStepsProperty, value);
         }
 
+        /// <summary>
+        /// Identifies the <see cref="TotalSteps"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty TotalStepsProperty = DependencyProperty.Register
             (
                 nameof(TotalSteps), typeof(int), typeof(TrackBoxContainer), new PropertyMetadata(TrackVals.TotalSteps.Default, OnTotalStepsChanged, OnTotalStepsCoerce)
@@ -82,6 +87,9 @@ namespace Restless.App.DrumMaster.Controls
             set => SetValue(SelectedBackgroundBrushProperty, value);
         }
 
+        /// <summary>
+        /// Identifies the <see cref="SelectedBackgroundBrush"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty SelectedBackgroundBrushProperty = DependencyProperty.Register
             (
                 nameof(SelectedBackgroundBrush), typeof(Brush), typeof(TrackBoxContainer), new PropertyMetadata(new SolidColorBrush(Colors.Red), OnSelectedBackgroundBrushChanged)
@@ -104,6 +112,9 @@ namespace Restless.App.DrumMaster.Controls
             remove => RemoveHandler(TotalStepsChangedEvent, value);
         }
 
+        /// <summary>
+        /// Identifies the <see cref="TotalStepsChanged"/> routed event.
+        /// </summary>
         public static readonly RoutedEvent TotalStepsChangedEvent = EventManager.RegisterRoutedEvent
             (
                 nameof(TotalStepsChanged), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(TrackBoxContainer)

@@ -97,8 +97,9 @@ namespace Restless.App.DrumMaster.Controls.Audio
         /// Initializes a new instance of the <see cref="AudioPiece"/> class.
         /// </summary>
         /// <param name="audioName">The name of the audio file or resource that contains the sound to use.</param>
-        /// <param name="audioSource">The audio source for this piece.</param>
-        /// <param name="type">The drum piece classification.</param>
+        /// <param name="displayName">The display name for the audio piece</param>
+        /// <param name="type">The type for the audio piece.</param>
+        /// <param name="sourceAssembly">The assembly when the audio piece is located.</param>
         internal AudioPiece(string audioName, string displayName, AudioPieceType type, Assembly sourceAssembly)
             : this (audioName, sourceAssembly, false)
         {
@@ -106,6 +107,11 @@ namespace Restless.App.DrumMaster.Controls.Audio
             Type = type;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AudioPiece"/> class.
+        /// </summary>
+        /// <param name="audioName">The name of the audio file or resource that contains the sound to use.</param>
+        /// <param name="sourceAssembly">The assembly when the audio piece is located.</param>
         internal AudioPiece(string audioName, Assembly sourceAssembly)
             : this(audioName, sourceAssembly, true)
         {

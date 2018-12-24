@@ -6,10 +6,12 @@ using System.Reflection;
 
 namespace Restless.App.DrumMaster.Controls.Audio
 {
+    /// <summary>
+    /// Manages the XAudio2 device, the mastering voice, and the voice pools for the audio.
+    /// </summary>
     public class AudioHost
     {
         #region Private
-        private static readonly AudioHost instance = new AudioHost();
         private MasteringVoice masteringVoice;
         private List<VoicePool> voicePools;
         private XAudio2 audioDevice;
@@ -44,12 +46,9 @@ namespace Restless.App.DrumMaster.Controls.Audio
 
         #region Singleton access and constructor
         /// <summary>
-        /// Gets the singleton instance of <see cref="AudioManager"/>
+        /// Gets the singleton instance of <see cref="AudioHost"/>
         /// </summary>
-        public static AudioHost Instance
-        {
-            get => instance;
-        }
+        public static AudioHost Instance { get; } = new AudioHost();
 
         private AudioHost()
         {
@@ -73,7 +72,7 @@ namespace Restless.App.DrumMaster.Controls.Audio
 
         #region Public methods
         /// <summary>
-        /// Initializes the audio manager.
+        /// Initializes the audio host.
         /// </summary>
         public void Initialize()
         {
