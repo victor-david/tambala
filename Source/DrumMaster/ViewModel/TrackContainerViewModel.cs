@@ -4,17 +4,9 @@ using Restless.App.DrumMaster.Controls.Core;
 using Restless.App.DrumMaster.Core;
 using Restless.App.DrumMaster.Resources;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Markup;
-using System.Xml;
-using System.Xml.Linq;
 
 namespace Restless.App.DrumMaster.ViewModel
 {
@@ -26,7 +18,6 @@ namespace Restless.App.DrumMaster.ViewModel
         #region Private
         private TrackContainer container;
         private bool isChanged;
-        private string filename;
         private const string FileExtension = "xml";
         private const string DottedFileExtension = ".xml";
         #endregion
@@ -59,6 +50,7 @@ namespace Restless.App.DrumMaster.ViewModel
         /// <summary>
         /// Initializes a new instance of the <see cref="TrackContainerViewModel"/> class.
         /// </summary>
+        /// <param name="displayName">The display name for the track container</param>
         /// <param name="owner">The owner of this VM.</param>
         public TrackContainerViewModel(string displayName, WorkspaceViewModel owner) : base(owner)
         {
@@ -105,7 +97,6 @@ namespace Restless.App.DrumMaster.ViewModel
                 if (dialog.ShowDialog() == true)
                 {
                     Container.Open(dialog.FileName);
-                    filename = dialog.FileName;
                     return true;
                 }
                 else
@@ -184,9 +175,9 @@ namespace Restless.App.DrumMaster.ViewModel
 
         private string GetFileName()
         {
-            if (!string.IsNullOrEmpty(filename))
+            if (!string.IsNullOrEmpty(Container.CurrentFile))
             {
-                return filename;
+                return Container.CurrentFile;
             }
 
             var dialog = new SaveFileDialog
@@ -218,6 +209,11 @@ namespace Restless.App.DrumMaster.ViewModel
             sb.AppendLine(mainMessage);
             sb.AppendLine();
             sb.AppendLine(ex.Message);
+            if (ex.InnerException != null)
+            {
+                sb.AppendLine();
+                sb.AppendLine(ex.InnerException.Message);
+            }
             MessageBox.Show(sb.ToString(), Strings.MessageDrumMaster);
         }
         #endregion

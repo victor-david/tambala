@@ -344,7 +344,7 @@
                             Grid.Column="0"
                             Style="{StaticResource ButtonBaseFlat}" 
                             Command="{Binding Commands[ToggleExpanded], RelativeSource={RelativeSource TemplatedParent}}">
-                            <Image Source="{Binding ActiveExpandedStateImageSource, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Image Source="{TemplateBinding ActiveExpandedStateImageSource}" />
                         </Button>
                         <!-- Close button -->
                         <Button
@@ -352,7 +352,7 @@
                             Margin="7,0"
                             Style="{StaticResource ButtonBaseFlat}" 
                             Command="{Binding Commands[Close], RelativeSource={RelativeSource TemplatedParent}}">
-                            <Image Source="{Binding CloseImageSource, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Image Source="{TemplateBinding CloseImageSource}" />
                         </Button>
                         <!-- Track caption -->
                         <TextBlock
@@ -360,7 +360,7 @@
                             FontSize="11.5"
                             Foreground="White"
                             VerticalAlignment="Center"
-                            Text="{Binding DisplayName, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            Text="{TemplateBinding DisplayName}"/>
                     </Grid>
                 </Border>
 

@@ -365,6 +365,14 @@ namespace Restless.App.DrumMaster.Controls
                 nameof(DisplayName), typeof(string), typeof(TrackContainer), new PropertyMetadata(null, OnDisplayNameChanged)
             );
 
+        /// <summary>
+        /// Gets the current file name for the container, or null if none.
+        /// </summary>
+        public string CurrentFile
+        {
+            get;
+            private set;
+        }
         #endregion
 
         /************************************************************************/
@@ -571,20 +579,43 @@ namespace Restless.App.DrumMaster.Controls
         /// <returns>The XDocument object</returns>
         public void Save(string filename)
         {
-            var doc = new XDocument(GetXElement());
-            System.IO.File.WriteAllText(filename, doc.ToString());
-            ResetIsChanged();
+            try
+            {
+                var doc = new XDocument(GetXElement());
+                System.IO.File.WriteAllText(filename, doc.ToString());
+                ResetIsChanged();
+                DisplayName = CurrentFile = filename;
+            }
+            catch (Exception ex)
+            {
+                throw new System.IO.IOException($"Unable to load {filename}", ex);
+            }
         }
 
+        /// <summary>
+        /// Opens the specified file and sets all tracks and values according to the contents.
+        /// </summary>
+        /// <param name="filename">The file name</param>
         public void Open(string filename)
         {
-            TrackControllers.Clear();
-            TrackBoxes.Clear();
-            XDocument doc = XDocument.Load(filename);
-            RestoreFromXElement(doc.Root);
-            ResetIsChanged();
+            try
+            {
+                TrackControllers.Clear();
+                TrackBoxes.Clear();
+                XDocument doc = XDocument.Load(filename);
+                RestoreFromXElement(doc.Root);
+                ResetIsChanged();
+                DisplayName = CurrentFile = filename;
+            }
+            catch (Exception ex)
+            {
+                throw new System.IO.IOException($"Unable to load {filename}", ex);
+            }
         }
 
+        /// <summary>
+        /// Shuts down the track container.
+        /// </summary>
         public void Shutdown()
         {
             StopPlayThread();
