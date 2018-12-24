@@ -320,7 +320,6 @@
     <Style x:Key="TextBlockCounter" TargetType="TextBlock">
         <Setter Property="FontSize" Value="26"/>
         <Setter Property="Foreground" Value="DarkBlue"/>
-        <!--<Setter Property="FontWeight" Value="Bold"/>-->
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
@@ -652,7 +651,7 @@
                     Grid.Row="2" Grid.Column="1"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Text="{Binding Panning, RelativeSource={RelativeSource TemplatedParent}, StringFormat=N1}"/>
+                    Text="{TemplateBinding PanningText}"/>
                 <Slider
                     Grid.Row="2"  Grid.Column="2"
                     Style="{StaticResource MainSliderStyle}"

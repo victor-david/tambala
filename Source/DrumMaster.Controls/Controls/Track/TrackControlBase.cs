@@ -65,6 +65,22 @@ namespace Restless.App.DrumMaster.Controls
         }
 
         /// <summary>
+        /// Gets the volume as a string expressed in decibels.
+        /// </summary>
+        public string VolumeDecibelText
+        {
+            get => (string)GetValue(VolumeDecibelTextProperty);
+            private set => SetValue(VolumeDecibelTextPropertyKey, value);
+        }
+
+        private static readonly DependencyPropertyKey VolumeDecibelTextPropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(VolumeDecibelText), typeof(string), typeof(TrackControlBase), new FrameworkPropertyMetadata(null)
+            );
+
+        public static readonly DependencyProperty VolumeDecibelTextProperty = VolumeDecibelTextPropertyKey.DependencyProperty;
+
+        /// <summary>
         /// Gets or sets the volume bias.
         /// Volume bias is expressed as a dB value between <see cref="TrackVals.VolumeBias.Min"/> and <see cref="TrackVals.VolumeBias.Max"/>
         /// </summary>
@@ -85,8 +101,6 @@ namespace Restless.App.DrumMaster.Controls
             {
                 float dbVol = c.Volume + (float)e.NewValue;
                 c.VolumeInternal = XAudio2.DecibelsToAmplitudeRatio(dbVol);
-                // c.VolumeDecibelText = (c.Volume <= TrackVals.Volume.Min) ? "Off" : $"{c.Volume:N1}dB";
-                // c.IsAutoMuted = c.Volume == TrackVals.Volume.Min;
                 c.OnVolumeChanged();
                 c.SetIsChanged();
             }
@@ -224,6 +238,7 @@ namespace Restless.App.DrumMaster.Controls
         {
             if (d is TrackControlBase c)
             {
+                c.SetPanningText();
                 c.OnPanningChanged();
                 c.SetIsChanged();
             }
@@ -234,6 +249,23 @@ namespace Restless.App.DrumMaster.Controls
             float proposed = (float)baseValue;
             return Math.Min(TrackVals.Panning.Max, Math.Max(TrackVals.Panning.Min, proposed));
         }
+
+        /// <summary>
+        /// Gets the panning text expressed as a percentage left or right
+        /// </summary>
+        public string PanningText
+        {
+            get => (string)GetValue(PanningTextProperty);
+            private set => SetValue(PanningTextPropertyKey, value);
+        }
+
+        private static readonly DependencyPropertyKey PanningTextPropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(PanningText), typeof(string), typeof(TrackControlBase), new FrameworkPropertyMetadata(null)
+            );
+
+        public static readonly DependencyProperty PanningTextProperty = PanningTextPropertyKey.DependencyProperty;
+
 
         /// <summary>
         /// Gets the minimum panning allowed. Used for binding in the control template.
@@ -465,21 +497,7 @@ namespace Restless.App.DrumMaster.Controls
 
         public static readonly DependencyProperty CommandsProperty = CommandsPropertyKey.DependencyProperty;
 
-        /// <summary>
-        /// Gets the volume as a string expressed in decibels.
-        /// </summary>
-        public string VolumeDecibelText
-        {
-            get => (string)GetValue(VolumeDecibelTextProperty);
-            private set => SetValue(VolumeDecibelTextPropertyKey, value);
-        }
 
-        private static readonly DependencyPropertyKey VolumeDecibelTextPropertyKey = DependencyProperty.RegisterReadOnly
-            (
-                nameof(VolumeDecibelText), typeof(string), typeof(TrackControlBase), new FrameworkPropertyMetadata(null)
-            );
-
-        public static readonly DependencyProperty VolumeDecibelTextProperty = VolumeDecibelTextPropertyKey.DependencyProperty;
 
 
         /// <summary>
@@ -631,7 +649,9 @@ namespace Restless.App.DrumMaster.Controls
             VolumeInternal = XAudio2.DecibelsToAmplitudeRatio(TrackVals.Volume.Default);
             PitchInternal = XAudio2.SemitonesToFrequencyRatio(TrackVals.Pitch.Default);
             VolumeDecibelText = (Volume <= TrackVals.Volume.Min) ? "Off" : $"{Volume:N1}dB";
+            SetPanningText();
             OnVolumeChanged();
+            OnPanningChanged();
             OnPitchChanged();
         }
         #endregion
@@ -796,6 +816,31 @@ namespace Restless.App.DrumMaster.Controls
         private void OnVisibilityImageSourceChanged()
         {
             ActiveExpandedStateImageSource = (IsExpanded) ? MinimizeImageSource : MaximizeImageSource;
+        }
+
+
+        private void SetPanningText()
+        {
+            // 0.0 = 100% left;
+            // 0.5 = Center
+            // 1.0 = 100% right
+            float pan = Panning * 100.0f;
+            if (pan == 50)
+            {
+                PanningText = "Center";
+            }
+            else if (pan < 50)
+            {
+                float pl = (50 - pan) / 50 * 100;
+                double pdl = Math.Round(pl, 0);
+                PanningText = $"{pdl}% left";
+            }
+            else
+            {
+                float pr = (pan - 50) / 50 * 100;
+                double pdr = Math.Round(pr, 0);
+                PanningText = $"{pdr}% right";
+            }
         }
         #endregion
     }

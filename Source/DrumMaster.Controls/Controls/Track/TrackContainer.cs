@@ -332,24 +332,6 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region Public properties (Commands)
-        ///// <summary>
-        ///// Gets or sets the command to be executed when the user clicks the close button.
-        ///// </summary>
-        //public ICommand CloseCommand
-        //{
-        //    get => (ICommand)GetValue(CloseCommandProperty);
-        //    set => SetValue(CloseCommandProperty, value);
-        //}
-
-        //public static readonly DependencyProperty CloseCommandProperty = DependencyProperty.Register
-        //    (
-        //        nameof(CloseCommand), typeof(ICommand), typeof(TrackContainer), new PropertyMetadata(null)
-        //    );
-        #endregion
-
-        /************************************************************************/
-
         #region Public properties (Other)
         /// <summary>
         /// Gets or sets the display name for this track layout
