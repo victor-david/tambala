@@ -183,5 +183,8 @@
     <Resource Include="Resources\Images\Image.Maximize.Blue.64.png" />
     <Resource Include="Resources\Images\Image.Minimize.Blue.64.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Image.Remove.64.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

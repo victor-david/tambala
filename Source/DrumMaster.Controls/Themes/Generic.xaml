@@ -562,21 +562,10 @@
             Padding="{TemplateBinding Padding}"
             BorderThickness="{TemplateBinding BorderThickness}"
             BorderBrush="{TemplateBinding BorderBrush}">
-            
-            <Grid x:Name="PART_GRID_MAIN">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="40"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="28"/>
-                    <RowDefinition Height="Auto" x:Name="PART_ROW_VOL"/>
-                    <RowDefinition Height="0" x:Name="PART_ROW_PAN"/>
-                    <RowDefinition Height="0" x:Name="PART_ROW_PITCH"/>
-                </Grid.RowDefinitions>
-                <!-- Top row grid with controls -->
-                <Grid Grid.ColumnSpan="3">
+
+            <StackPanel Margin="0,2,0,0">
+                <!-- Topmost controls -->
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="28"/>
                         <ColumnDefinition/>
@@ -584,14 +573,14 @@
                         <ColumnDefinition Width="28"/>
                         <ColumnDefinition Width="28"/>
                     </Grid.ColumnDefinitions>
-                    
+
                     <!-- Expand / collapse track -->
                     <Button
                         Grid.Column="0"
                         Style="{StaticResource ButtonBaseFlat}"
                         HorizontalAlignment="Left"
                         Command="{Binding Commands[ToggleExpanded], RelativeSource={RelativeSource TemplatedParent}}">
-                        <Image Source="{Binding ActiveExpandedStateImageSource, RelativeSource={RelativeSource TemplatedParent}}" Height="18"  Width="18"/>
+                        <Image Source="{TemplateBinding ActiveExpandedStateImageSource}" Height="18"  Width="18"/>
                     </Button>
 
                     <!-- Instrument selection for the track -->
@@ -605,101 +594,100 @@
                         Grid.Column="2"
                         Style="{StaticResource ButtonBaseFlat}" 
                         Command="{Binding Commands[ShiftLeft], RelativeSource={RelativeSource TemplatedParent}}">
-                        <Image Source="{Binding ShiftLeftImageSource, RelativeSource={RelativeSource TemplatedParent}}" Height="14" />
+                        <Image Source="{TemplateBinding ShiftLeftImageSource}" Height="14" />
                     </Button>
-                    
+
                     <!-- Shift all beats on the track to the right -->
                     <Button
                         Grid.Column="3"
                         Style="{StaticResource ButtonBaseFlat}" 
                         Command="{Binding Commands[ShiftRight], RelativeSource={RelativeSource TemplatedParent}}">
-                        <Image Source="{Binding ShiftRightImageSource, RelativeSource={RelativeSource TemplatedParent}}" Height="14" />
+                        <Image Source="{TemplateBinding ShiftRightImageSource}" Height="14" />
                     </Button>
-                    
+
                     <!-- Toggle mute for the track -->
                     <Button
                         Grid.Column="4"
                         Style="{StaticResource ButtonBaseFlat}" 
                         Command="{Binding Commands[ToggleMute], RelativeSource={RelativeSource TemplatedParent}}">
-                        <Image Source="{Binding ActiveMutedImageSource, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <Image Source="{TemplateBinding ActiveMutedImageSource}" />
                     </Button>
                 </Grid>
 
-                <!-- Volume -->
-                <TextBlock
-                    Grid.Row="1" Grid.Column="0"
-                    VerticalAlignment="Center"
-                    Text="{Binding ShortVolumeText, RelativeSource={RelativeSource TemplatedParent}}"/>
-                <TextBlock 
-                    Grid.Row="1" Grid.Column="1"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Text="{Binding VolumeDecibelText, RelativeSource={RelativeSource TemplatedParent}}"/>
-                <Slider
-                    Grid.Row="1"  Grid.Column="2"
-                    Style="{StaticResource MainSliderStyle}"
-                    Minimum="{Binding MinVolume, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}" 
-                    Maximum="{Binding MaxVolume, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
-                    Value="{Binding Volume, RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}" />
-
-                <!-- Panning -->
-                <TextBlock
-                    Grid.Row="2" Grid.Column="0"
-                    VerticalAlignment="Center"
-                    Text="Pan"/>
-                <TextBlock 
-                    Grid.Row="2" Grid.Column="1"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Text="{TemplateBinding PanningText}"/>
-                <Slider
-                    Grid.Row="2"  Grid.Column="2"
-                    Style="{StaticResource MainSliderStyle}"
-                    Minimum="{Binding MinPanning, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}" 
-                    Maximum="{Binding MaxPanning, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
-                    Value="{Binding Panning, RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}" />
-
-                <!-- Pitch -->
-                <TextBlock
-                    Grid.Row="3" Grid.Column="0"
-                    VerticalAlignment="Center"
-                    Text="Pitch"/>
-                <TextBlock 
-                    Grid.Row="3" Grid.Column="1"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Text="{Binding Pitch, RelativeSource={RelativeSource TemplatedParent}, StringFormat=N1}"/>
-                <Slider
-                    Grid.Row="3" Grid.Column="2"
-                    Style="{StaticResource MainSliderStyle}"
-                    Minimum="{Binding MinPitch, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}" 
-                    Maximum="{Binding MaxPitch, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
-                    Value="{Binding Pitch, RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}" />
-            </Grid>
-
-            <!-- Properties -->
-                <!--<Grid x:Name="PART_GRID_PROP" Visibility="Collapsed">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
+                <Grid x:Name="PART_GRID_MAIN" Background="Transparent">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="28"/>
+                        <ColumnDefinition Width="42"/>
+                        <ColumnDefinition Width="56"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Button
-                        Style="{StaticResource ButtonBaseFlat}" 
-                        Command="{Binding Commands[ToggleTrackProp], RelativeSource={RelativeSource TemplatedParent}}">
-                        <Image Source="{Binding ShiftLeftImageSource, RelativeSource={RelativeSource TemplatedParent}}" Height="14" />
-                    </Button>
-                    <TextBlock Grid.Column="1" Text="Piece" Margin="4,0" />
-                    <ComboBox 
-                        Grid.Row="1" Grid.Column="1" Margin="4,0"
-                        ItemsSource="{Binding AudioPieces, RelativeSource={RelativeSource TemplatedParent}}"
-                        SelectedItem="{Binding Piece, RelativeSource={RelativeSource TemplatedParent}}"/>
-                    
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" x:Name="PART_ROW_VOL"/>
+                        <RowDefinition Height="0" x:Name="PART_ROW_PAN"/>
+                        <RowDefinition Height="0" x:Name="PART_ROW_PITCH"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Remove Track" Command="{Binding Commands[RemoveTrack], RelativeSource={RelativeSource TemplatedParent}}">
+                                <MenuItem.Icon>
+                                    <Image Source="/DrumMaster.Controls;component/Resources/Images/Image.Remove.64.png" Height="18" Width="18"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </ContextMenu>
+                    </Grid.ContextMenu>
 
-                </Grid>-->
+                    <!-- Volume -->
+                    <TextBlock
+                        Grid.Row="0" Grid.Column="0"
+                        VerticalAlignment="Center"
+                        Text="{TemplateBinding ShortVolumeText}"/>
+                    <TextBlock 
+                        Grid.Row="0" Grid.Column="1"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="{TemplateBinding VolumeDecibelText}"/>
+                    <Slider
+                        Grid.Row="0"  Grid.Column="2"
+                        Style="{StaticResource MainSliderStyle}"
+                        Minimum="{Binding MinVolume, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}" 
+                        Maximum="{Binding MaxVolume, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
+                        Value="{Binding Volume, RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}"/>
+
+                    <!-- Panning -->
+                    <TextBlock
+                        Grid.Row="1" Grid.Column="0"
+                        VerticalAlignment="Center"
+                        Text="Pan"/>
+                    <TextBlock 
+                        Grid.Row="1" Grid.Column="1"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="{TemplateBinding PanningText}"/>
+                    <Slider
+                        Grid.Row="1"  Grid.Column="2"
+                        Style="{StaticResource MainSliderStyle}"
+                        Minimum="{Binding MinPanning, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}" 
+                        Maximum="{Binding MaxPanning, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
+                        Value="{Binding Panning, RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}" />
+
+                    <!-- Pitch -->
+                    <TextBlock
+                        Grid.Row="2" Grid.Column="0"
+                        VerticalAlignment="Center"
+                        Text="Pitch"/>
+                    <TextBlock 
+                        Grid.Row="2" Grid.Column="1"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="{Binding Pitch, RelativeSource={RelativeSource TemplatedParent}, StringFormat=N1}"/>
+                    <Slider
+                        Grid.Row="2" Grid.Column="2"
+                        Style="{StaticResource MainSliderStyle}"
+                        Minimum="{Binding MinPitch, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}" 
+                        Maximum="{Binding MaxPitch, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
+                        Value="{Binding Pitch, RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}" />
+
+                </Grid>
+            </StackPanel>
 
         </Border>
         <ControlTemplate.Triggers>
@@ -709,7 +697,7 @@
             <Trigger Property="IsPitchEnabled" Value="True">
                 <Setter Property="Height" TargetName="PART_ROW_PITCH" Value="Auto"/>
             </Trigger>
-            
+
             <Trigger Property="IsExpanded" Value="False">
                 <Setter Property="Height" TargetName="PART_ROW_VOL" Value="0"/>
                 <Setter Property="Height" TargetName="PART_ROW_PAN" Value="0"/>
@@ -718,6 +706,30 @@
 
         </ControlTemplate.Triggers>
     </ControlTemplate>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <Style TargetType="{x:Type con:TrackController}">
         <Setter Property="Template" Value="{StaticResource TrackControllerTemplateMain}"/>

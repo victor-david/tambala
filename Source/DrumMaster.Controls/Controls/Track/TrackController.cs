@@ -20,7 +20,7 @@ namespace Restless.App.DrumMaster.Controls
         #region Private
         private const string PartGridTrack = "PART_GRID_TRACK";
         private const string PartEnvelopeHost = "PART_ENVELOPE_HOST";
-        private TrackContainer owner;
+        private readonly TrackContainer owner;
         private bool isAudioEnabled;
         private TrackBoxContainer boxContainer;
         private SubmixVoice submixVoice;
@@ -102,16 +102,38 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public ImageSource ShiftLeftImageSource
         {
-            get;
+            get => (ImageSource)GetValue(ShiftLeftImageSourceProperty);
+            private set => SetValue(ShiftLeftImageSourcePropertyKey, value);
         }
+
+        private static readonly DependencyPropertyKey ShiftLeftImageSourcePropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(ShiftLeftImageSource), typeof(ImageSource), typeof(TrackController), new FrameworkPropertyMetadata(null)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="ShiftLeftImageSource"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ShiftLeftImageSourceProperty = ShiftLeftImageSourcePropertyKey.DependencyProperty;
 
         /// <summary>
         /// Gets the image used on the shift right button.
         /// </summary>
         public ImageSource ShiftRightImageSource
         {
-            get;
+            get => (ImageSource)GetValue(ShiftRightImageSourceProperty);
+            private set => SetValue(ShiftRightImageSourcePropertyKey, value);
         }
+
+        private static readonly DependencyPropertyKey ShiftRightImageSourcePropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(ShiftRightImageSource), typeof(ImageSource), typeof(TrackController), new FrameworkPropertyMetadata(null)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="ShiftRightImageSource"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ShiftRightImageSourceProperty = ShiftRightImageSourcePropertyKey.DependencyProperty;
 
         #endregion
 
@@ -141,6 +163,8 @@ namespace Restless.App.DrumMaster.Controls
             Commands.Add("ShiftLeft", new RelayCommand(RunShiftLeftCommand));
             Commands.Add("ShiftRight", new RelayCommand(RunShiftRightCommand));
             Commands.Add("ToggleTrackProp", new RelayCommand(RunToggleTrackProps));
+            Commands.Add("RemoveTrack", new RelayCommand(RunRemoveTrackCommand));
+
 
             ShiftLeftImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Shift.Left.64.png", UriKind.Relative));
             ShiftRightImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Shift.Right.64.png", UriKind.Relative));
@@ -316,6 +340,11 @@ namespace Restless.App.DrumMaster.Controls
                 boxes[k].PlayFrequency = boxes[k - 1].PlayFrequency;
             }
             boxes[0].PlayFrequency = lastBoxFreq;
+        }
+
+        private void RunRemoveTrackCommand(object parm)
+        {
+            owner.RemoveTrack(this);
         }
 
         private void RunToggleTrackProps(object parm)

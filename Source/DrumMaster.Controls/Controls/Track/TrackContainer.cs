@@ -26,8 +26,8 @@ namespace Restless.App.DrumMaster.Controls
     /// beats.
     /// </para>
     /// <para>
-    /// This control is responsible for creating the controllers and the track box containers. It creates a series
-    /// of default tracks. The user can add more.
+    /// This control is responsible for creating the controllers and the track box containers. Upon initialization,
+    /// it creates a series of default tracks. The user can add more.
     /// </para>
     /// </remarks>
     [TemplatePart(Name = PartHeaderBoxes, Type = typeof(TrackBoxContainer))]
@@ -769,6 +769,24 @@ namespace Restless.App.DrumMaster.Controls
             {
                 tc.MinHeight = BoxSize + 18;
             }
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region Internal method
+        /// <summary>
+        /// Removes the track that is controlled by the specified track controller.
+        /// </summary>
+        /// <param name="controller">The track controller</param>
+        internal void RemoveTrack(TrackController controller)
+        {
+            if (controller == null) throw new ArgumentNullException(nameof(controller));
+            int idx = TrackControllers.IndexOf(controller);
+            if (idx < 0) throw new ArgumentException("The specified controller is not included in the collection");
+            TrackControllers.RemoveAt(idx);
+            TrackBoxes.RemoveAt(idx);
+            SetIsChanged();
         }
         #endregion
 
