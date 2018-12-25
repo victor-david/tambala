@@ -101,6 +101,23 @@ namespace Restless.App.DrumMaster.Controls
             (
                 nameof(SelectedBackgroundBrush), typeof(Brush), typeof(TrackBox), new PropertyMetadata(new SolidColorBrush(Colors.RosyBrown))
             );
+
+        /// <summary>
+        /// Gets or sets a value that determines if the volume bias control for the <see cref="TrackBox"/> is visible.
+        /// </summary>
+        public bool IsVolumeVisible
+        {
+            get => (bool)GetValue(IsVolumeVisibleProperty);
+            set => SetValue(IsVolumeVisibleProperty, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="IsVolumeVisible"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsVolumeVisibleProperty = DependencyProperty.Register
+            (
+                nameof(IsVolumeVisible), typeof(bool), typeof(TrackBox), new PropertyMetadata(false)
+            );
         #endregion
 
         /************************************************************************/
@@ -148,6 +165,7 @@ namespace Restless.App.DrumMaster.Controls
             var element = new XElement(nameof(TrackBox));
             element.Add(new XElement(nameof(PlayFrequency), PlayFrequency));
             element.Add(new XElement(nameof(VolumeBias), VolumeBias));
+            element.Add(new XElement(nameof(IsVolumeVisible), IsVolumeVisible));
             return element;
         }
 
@@ -176,6 +194,14 @@ namespace Restless.App.DrumMaster.Controls
                     if (float.TryParse(e.Value, out volBias))
                     {
                         VolumeBias = volBias;
+                    }
+                }
+
+                if (e.Name == nameof(IsVolumeVisible))
+                {
+                    if (bool.TryParse(e.Value, out bool result))
+                    {
+                        IsVolumeVisible = result;
                     }
                 }
             }

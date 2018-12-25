@@ -319,12 +319,6 @@ namespace Restless.App.DrumMaster.Controls
             }
         }
 
-
-        private TrackBox CreateTrackBox()
-        {
-            return new TrackBox(this) { Height = BoxSize, Width = BoxSize, SelectedBackgroundBrush = SelectedBackgroundBrush };
-        }
-
         private void ControllerSizeChanged(object sender, SizeChangedEventArgs e)
         {
             if (e.HeightChanged)

@@ -76,6 +76,32 @@ namespace Restless.App.DrumMaster.Controls
             (
                 nameof(IsEditPropertyMode), typeof(bool), typeof(TrackController), new PropertyMetadata(false)
             );
+
+        /// <summary>
+        /// Gets or sets a value that determines if the track box volume controls for this track controller are visible.
+        /// </summary>
+        public bool IsTrackBoxVolumeVisible
+        {
+            get => (bool)GetValue(IsTrackBoxVolumeVisibleProperty);
+            set => SetValue(IsTrackBoxVolumeVisibleProperty, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="IsTrackBoxVolumeVisible"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsTrackBoxVolumeVisibleProperty = DependencyProperty.Register
+            (
+                nameof(IsTrackBoxVolumeVisible), typeof(bool), typeof(TrackController), new PropertyMetadata(false, OnIsTrackBoxVisibleChanged)
+            );
+
+
+        private static void OnIsTrackBoxVisibleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TrackController c)
+            {
+                c.boxContainer.Boxes.SetVolumeVisibility(c.IsTrackBoxVolumeVisible);
+            }
+        }
         #endregion
 
         /************************************************************************/
@@ -205,7 +231,7 @@ namespace Restless.App.DrumMaster.Controls
             Commands.Add("ShiftRight", new RelayCommand(RunShiftRightCommand));
             Commands.Add("ToggleTrackProp", new RelayCommand(RunToggleTrackProps));
             Commands.Add("RemoveTrack", new RelayCommand(RunRemoveTrackCommand));
-
+            Commands.Add("ToggleBeatVolume", new RelayCommand(RunToggleBeatVolumeCommand));
 
             ShiftLeftImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Shift.Left.64.png", UriKind.Relative));
             ShiftRightImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Shift.Right.64.png", UriKind.Relative));
@@ -232,7 +258,6 @@ namespace Restless.App.DrumMaster.Controls
             base.OnApplyTemplate();
             OnPanningChanged();
         }
-
         #endregion
 
         /************************************************************************/
@@ -251,6 +276,7 @@ namespace Restless.App.DrumMaster.Controls
             element.Add(new XElement(nameof(IsMuted), IsMuted));
             element.Add(new XElement(nameof(IsPanningEnabled), IsPanningEnabled));
             element.Add(new XElement(nameof(IsPitchEnabled), IsPitchEnabled));
+            element.Add(new XElement(nameof(IsTrackBoxVolumeVisible), IsTrackBoxVolumeVisible));
             element.Add(Piece.GetXElement());
             element.Add(boxContainer.GetXElement());
             return element;
@@ -262,6 +288,9 @@ namespace Restless.App.DrumMaster.Controls
         /// <param name="element">The element</param>
         public override void RestoreFromXElement(XElement element)
         {
+            // Need to hold onto this value until the box container is restored.
+            // bool isTrackBoxVolumeVisible = false;
+
             IEnumerable<XElement> childList = from el in element.Elements() select el;
 
             foreach (XElement e in childList)
@@ -284,11 +313,22 @@ namespace Restless.App.DrumMaster.Controls
                         }
                     }
                 }
+
                 if (e.Name == nameof(TrackBoxContainer))
                 {
                     boxContainer.RestoreFromXElement(e);
                 }
+
+
+                if (e.Name == nameof(IsTrackBoxVolumeVisible))
+                {
+                    if (bool.TryParse(e.Value, out bool result))
+                    {
+                        IsTrackBoxVolumeVisible = result;
+                    }
+                }
             }
+
             ResetIsChanged();
         }
         #endregion
@@ -380,6 +420,12 @@ namespace Restless.App.DrumMaster.Controls
         private void RunRemoveTrackCommand(object parm)
         {
             owner.RemoveTrack(this);
+        }
+
+        private void RunToggleBeatVolumeCommand(object parm)
+        {
+            IsTrackBoxVolumeVisible = !IsTrackBoxVolumeVisible;
+            SetIsChanged();
         }
 
         private void RunToggleTrackProps(object parm)

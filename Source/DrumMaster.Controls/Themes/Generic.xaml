@@ -629,6 +629,8 @@
                     </Grid.RowDefinitions>
                     <Grid.ContextMenu>
                         <ContextMenu>
+                            <MenuItem Header="View/hide beat volume" Command="{Binding Commands[ToggleBeatVolume], RelativeSource={RelativeSource TemplatedParent}}"/>
+                            <Separator/>
                             <MenuItem Header="Remove Track" Command="{Binding Commands[RemoveTrack], RelativeSource={RelativeSource TemplatedParent}}">
                                 <MenuItem.Icon>
                                     <Image Source="/DrumMaster.Controls;component/Resources/Images/Image.Remove.64.png" Height="18" Width="18"/>
@@ -847,7 +849,8 @@
                     Style="{StaticResource BoxVolumeSliderStyle}"
                     Minimum="{Binding MinVolumeBias, RelativeSource={RelativeSource TemplatedParent}}"
                     Maximum="{Binding MaxVolumeBias, RelativeSource={RelativeSource TemplatedParent}}"
-                    Value="{Binding VolumeBias, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    Value="{Binding VolumeBias, RelativeSource={RelativeSource TemplatedParent}}"
+                    Visibility="Collapsed"/>
 
                 <!-- Indicator when the beat is for odd numbered pass only -->
                 <Border
@@ -882,8 +885,9 @@
                 <Setter Property="Background" TargetName="PART_BORDER" Value="{Binding SelectedBackgroundBrush, RelativeSource={RelativeSource TemplatedParent}}"/>
                 <Setter Property="Visibility" TargetName="PART_EVEN" Value="Visible"/>
             </Trigger>
-
-
+            <Trigger Property="IsVolumeVisible" Value="True">
+                <Setter Property="Visibility" TargetName="PART_VOL" Value="Visible"/>
+            </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
 

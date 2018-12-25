@@ -89,5 +89,18 @@ namespace Restless.App.DrumMaster.Controls.Core
             }
         }
 
+        /// <summary>
+        /// Sets the volume control visibility of each <see cref="TrackBox"/> in this collection.
+        /// </summary>
+        /// <param name="isVisible">true to make the volume controls visible; otherwise, false.</param>
+        public void SetVolumeVisibility(bool isVisible)
+        {
+            foreach (TrackBox box in this)
+            {
+                box.IsVolumeVisible = isVisible;
+            }
+
+        }
+
     }
 }
