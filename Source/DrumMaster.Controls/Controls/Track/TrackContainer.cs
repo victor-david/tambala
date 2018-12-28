@@ -408,9 +408,6 @@ namespace Restless.App.DrumMaster.Controls
                     nameof(CloseImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null)
                 );
 
-
-
-
         /// <summary>
         /// Gets or sets the image source to use for the render button.
         /// </summary>
@@ -1227,7 +1224,7 @@ namespace Restless.App.DrumMaster.Controls
 
         private void OnPlayImageSourceChanged()
         {
-            ActivePlayImageSource = (IsStarted) ? StopImageSource : StartImageSource;
+            ActivePlayImageSource = IsStarted ? StopImageSource : StartImageSource;
         }
 
         private void OnTotalStepsChanged()
@@ -1328,8 +1325,6 @@ namespace Restless.App.DrumMaster.Controls
                 c.OnPlayImageSourceChanged();
             }
         }
-
-
 
         private static object OnTempoCoerce(DependencyObject d, object baseValue)
         {

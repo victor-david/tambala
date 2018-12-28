@@ -47,7 +47,6 @@ namespace Restless.App.DrumMaster.Controls.Audio
             private set;
         }
 
-
         /// <summary>
         /// Gets the drum piece type.
         /// </summary>
@@ -261,8 +260,6 @@ namespace Restless.App.DrumMaster.Controls.Audio
         {
             DisplayName = "TODO: File Sys";
         }
-
-
         #endregion
     }
 }

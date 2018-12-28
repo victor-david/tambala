@@ -11,19 +11,6 @@
                 <ResourceDictionary Source="Resources/Dictionary/Button.xaml"/>
                 <ResourceDictionary Source="Resources/Dictionary/TextBlock.xaml"/>
                 <ResourceDictionary Source="Resources/Dictionary/ItemsControl.xaml"/>
-                
-                <!-- <ResourceDictionary Source="Resources/Dictionary/TextBox.xaml"/>
-                <ResourceDictionary Source="Resources/Dictionary/Border.xaml"/>
-                <ResourceDictionary Source="Resources/Dictionary/DataGrid.xaml"/>
-                <ResourceDictionary Source="Resources/Dictionary/FrameworkElement.xaml"/>
-                <ResourceDictionary Source="Resources/Dictionary/Grid.xaml"/>
-                <ResourceDictionary Source="Resources/Dictionary/StackPanel.xaml"/>
-                <ResourceDictionary Source="Resources/Dictionary/Tab.xaml"/>
-                <ResourceDictionary Source="Resources/Dictionary/ToolBar.xaml"/>
-                <ResourceDictionary Source="Resources/Dictionary/HeaderedContentControl.xaml"/>
-                <ResourceDictionary Source="Resources/Dictionary/HeaderedItemsControl.xaml"/>
-                <ResourceDictionary Source="Resources/Dictionary/ListBox.xaml"/>
-                -->
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
