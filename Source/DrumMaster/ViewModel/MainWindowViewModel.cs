@@ -11,7 +11,7 @@ namespace Restless.App.DrumMaster.ViewModel
     /// <summary>
     /// Represents the view model for the main window.
     /// </summary>
-    public class MainWindowViewModel : WorkspaceViewModel
+    public class MainWindowViewModel : WindowViewModel
     {
         #region Private
         private const int MaxWorkspace = 2;
@@ -38,14 +38,6 @@ namespace Restless.App.DrumMaster.ViewModel
         }
 
         /// <summary>
-        /// Gets the window that owns this VM
-        /// </summary>
-        public Window WindowOwner
-        {
-            get;
-        }
-
-        /// <summary>
         /// Gets the collection of workspace view models
         /// </summary>
         public WorkspaceViewModelCollection Pages
@@ -60,9 +52,9 @@ namespace Restless.App.DrumMaster.ViewModel
         /// <summary>
         /// Initializes a new instance of <see cref="MainWindowViewModel"/>.
         /// </summary>
-        public MainWindowViewModel(Window owner) : base (null)
+        /// <param name="owner">The owner of this view model.</param>
+        public MainWindowViewModel(Window owner) : base (owner)
         {
-            WindowOwner = owner ?? throw new ArgumentNullException(nameof(owner));
             WindowOwner.Closing += MainWindowClosing;
             DisplayName = "Drum Master 3.0";
             Pages = new WorkspaceViewModelCollection(MaxWorkspace);

@@ -4,9 +4,12 @@ using SharpDX.XAudio2;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -48,6 +51,8 @@ namespace Restless.App.DrumMaster.Controls
         private bool isControlClosing;
         private int operationSet;
         private Metronome metronome;
+        private int maxRenderPass;
+        private bool isRendering;
         #endregion
 
         /************************************************************************/
@@ -264,6 +269,71 @@ namespace Restless.App.DrumMaster.Controls
             (
                 nameof(IsMetronomeActive), typeof(bool), typeof(TrackContainer), new PropertyMetadata(false, OnIsMetronomeActiveChanged)
             );
+
+        private static void OnIsMetronomeActiveChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TrackContainer c)
+            {
+                c.metronome.IsActive = c.IsMetronomeActive;
+            }
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region Public properties (Render)
+        /// <summary>
+        /// Gets a value that determines if render is requested.
+        /// </summary>
+        public bool IsRenderRequestMode
+        {
+            get => (bool)GetValue(IsRenderRequestModeProperty);
+            private set => SetValue(IsRenderRequestModePropertyKey, value);
+        }
+        
+        private static readonly DependencyPropertyKey IsRenderRequestModePropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(IsRenderRequestMode), typeof(bool), typeof(TrackContainer), new PropertyMetadata(false, OnIsRenderRequestModeChanged)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="IsRenderRequestMode"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsRenderRequestModeProperty = IsRenderRequestModePropertyKey.DependencyProperty;
+
+
+        private static void OnIsRenderRequestModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TrackContainer c)
+            {
+                c.OnIsRenderRequestModeChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a command that is executed when a render has been requested.
+        /// See remarks for more.
+        /// </summary>
+        /// <remarks>
+        /// Assign a command to this property to start the rending process by creating the 
+        /// rendering parms and then calling <see cref="StartRender(AudioRenderParameters)"/>.
+        /// If your command handler decides not to render (for instance, user cancels), simply 
+        /// return without starting the render. Once a render is started, it runs to completion
+        /// at which time the <see cref="RenderCompleted"/> event is raised.
+        /// </remarks>
+        public ICommand RequestRenderCommand
+        {
+            get => (ICommand)GetValue(RequestRenderCommandProperty);
+            set => SetValue(RequestRenderCommandProperty, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="RequestRenderCommand"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty RequestRenderCommandProperty = DependencyProperty.Register
+            (
+                nameof(RequestRenderCommand), typeof(ICommand), typeof(TrackContainer), new PropertyMetadata(null)
+            );
         #endregion
 
         /************************************************************************/
@@ -338,6 +408,45 @@ namespace Restless.App.DrumMaster.Controls
                     nameof(CloseImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null)
                 );
 
+
+
+
+        /// <summary>
+        /// Gets or sets the image source to use for the render button.
+        /// </summary>
+        public ImageSource RenderImageSource
+        {
+            get => (ImageSource)GetValue(RenderImageSourceProperty);
+            set => SetValue(RenderImageSourceProperty, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="RenderImageSource"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty RenderImageSourceProperty = DependencyProperty.Register
+            (
+                nameof(RenderImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null)
+            );
+
+
+        /// <summary>
+        /// Gets or sets the image source to use for thr render button when the render functionality has been activated.
+        /// </summary>
+        public ImageSource ActivatedRenderImageSource
+        {
+            get => (ImageSource)GetValue(ActivatedRenderImageSourceProperty);
+            set => SetValue(ActivatedRenderImageSourceProperty, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="ActivatedRenderImageSource"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ActivatedRenderImageSourceProperty = DependencyProperty.Register
+            (
+                nameof(ActivatedRenderImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null)
+            );
+
+
         /// <summary>
         /// Gets or sets the image to use for the metronone
         /// </summary>
@@ -395,12 +504,32 @@ namespace Restless.App.DrumMaster.Controls
 
         /// <summary>
         /// Gets the current file name for the container, or null if none.
+        /// This is the .xml file
         /// </summary>
-        public string CurrentFile
+        public string FileName
         {
             get;
             private set;
         }
+
+        /// <summary>
+        /// Gets the audio render parameters
+        /// </summary>
+        public AudioRenderParameters RenderParms
+        {
+            get;
+            private set;
+        }
+
+        ///// <summary>
+        ///// Gets the current rendering file name for the container, or null if none.
+        ///// This is the .wav file
+        ///// </summary>
+        //public string RenderFileName
+        //{
+        //    get;
+        //    private set;
+        //}
         #endregion
 
         /************************************************************************/
@@ -421,9 +550,28 @@ namespace Restless.App.DrumMaster.Controls
             );
 
         /// <summary>
-        /// Identifies the <see cref="ActivePlayImageSourceProperty"/> dependency property.
+        /// Identifies the <see cref="ActivePlayImageSource"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ActivePlayImageSourceProperty = ActivePlayImageSourcePropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Gets image source that is currently active for render (depends on render state)
+        /// </summary>
+        public ImageSource ActiveRenderImageSource
+        {
+            get => (ImageSource)GetValue(ActiveRenderImageSourceProperty);
+            private set => SetValue(ActiveRenderImageSourcePropertyKey, value);
+        }
+
+        private static readonly DependencyPropertyKey ActiveRenderImageSourcePropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(ActiveRenderImageSource), typeof(ImageSource), typeof(TrackContainer), new FrameworkPropertyMetadata(null)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="ActiveRenderImageSource"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ActiveRenderImageSourceProperty = ActiveRenderImageSourcePropertyKey.DependencyProperty;
 
         /// <summary>
         /// Gets a boolean value that indicates if the track layout is started (i.e. playing its pattern)
@@ -526,10 +674,21 @@ namespace Restless.App.DrumMaster.Controls
             (
                 nameof(Closing), RoutingStrategy.Bubble, typeof(CancelRoutedEventHandler), typeof(TrackContainer)
             );
+
         #endregion
 
         /************************************************************************/
-        
+
+        #region CLR events
+        /// <summary>
+        /// Raised when a render operation has completed.
+        /// This event is raised on the background play thread.
+        /// </summary>
+        public event EventHandler<AudioRenderEventArgs> RenderCompleted;
+        #endregion
+
+        /************************************************************************/
+
         #region Constructors
         /// <summary>
         /// Initializes a new instance of <see cref="TrackContainer"/>.
@@ -541,9 +700,16 @@ namespace Restless.App.DrumMaster.Controls
             StopImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Stop.64.png", UriKind.Relative));
             ActivePlayImageSource = StartImageSource;
 
+            RenderImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Render.64.png", UriKind.Relative));
+            ActivatedRenderImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Render.Active.64.png", UriKind.Relative));
+            ActiveRenderImageSource = RenderImageSource;
+
+
             CloseImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Close.64.png", UriKind.Relative));
             MetronomeImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Metronome.64.png", UriKind.Relative));
             SlashImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Slash.64.png", UriKind.Relative));
+
+            RenderParms = AudioRenderParameters.CreateDefault();
 
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
@@ -553,10 +719,10 @@ namespace Restless.App.DrumMaster.Controls
 
                 metronome = new Metronome(this);
 
-                
                 Commands.Add("Close", new RelayCommand(RunCloseCommand));
                 Commands.Add("AddTrack", new RelayCommand(RunAddTrackCommand, CanRunAddTrackCommand));
                 Commands.Add("Play", new RelayCommand(RunPlayCommand));
+                Commands.Add("Render", new RelayCommand(RunRequestRenderCommand));
                 Commands.Add("ToggleMute", new RelayCommand(RunToggleMuteCommand));
                 Commands.Add("ToggleMetronome", new RelayCommand(RunToggleMetronomeCommand));
 
@@ -625,7 +791,7 @@ namespace Restless.App.DrumMaster.Controls
                 var doc = new XDocument(GetXElement());
                 System.IO.File.WriteAllText(filename, doc.ToString());
                 ResetIsChanged();
-                DisplayName = CurrentFile = filename;
+                DisplayName = FileName = filename;
             }
             catch (Exception ex)
             {
@@ -646,12 +812,32 @@ namespace Restless.App.DrumMaster.Controls
                 XDocument doc = XDocument.Load(filename);
                 RestoreFromXElement(doc.Root);
                 ResetIsChanged();
-                DisplayName = CurrentFile = filename;
+                DisplayName = FileName = filename;
             }
             catch (Exception ex)
             {
                 throw new System.IO.IOException($"Unable to load {filename}", ex);
             }
+        }
+
+        /// <summary>
+        /// Starts the rendering process. This method may only be called when <see cref="IsRenderRequestMode"/> equals true.
+        /// </summary>
+        public void StartRender() 
+        {
+            if (!IsRenderRequestMode) throw new InvalidOperationException("Render request mode must be activated before calling this method");
+            RenderParms.Validate();
+
+            if (RenderParms.IsChanged)
+            {
+                SetIsChanged();
+            }
+
+            AudioHost.Instance.AudioCapture.RenderParms = RenderParms;
+
+            maxRenderPass = GetMaxRenderPass();
+            isRendering = true;
+            IsStarted = true;
         }
 
         /// <summary>
@@ -679,6 +865,7 @@ namespace Restless.App.DrumMaster.Controls
             element.Add(new XElement(nameof(Beats), Beats));
             element.Add(new XElement(nameof(StepsPerBeat), StepsPerBeat));
             element.Add(new XElement(nameof(BoxSize), BoxSize));
+            element.Add(RenderParms.GetXElement());
 
             foreach (var controller in TrackControllers)
             {
@@ -703,6 +890,11 @@ namespace Restless.App.DrumMaster.Controls
                 if (e.Name == nameof(Beats)) SetDependencyProperty(BeatsProperty, e.Value);
                 if (e.Name == nameof(StepsPerBeat)) SetDependencyProperty(StepsPerBeatProperty, e.Value);
                 if (e.Name == nameof(BoxSize)) SetDependencyProperty(BoxSizeProperty, e.Value);
+                if (e.Name == nameof(AudioRenderParameters))
+                {
+                    RenderParms.RestoreFromXElement(e);
+                    AudioHost.Instance.AudioCapture.RenderParms = RenderParms;
+                }
                 if (e.Name == nameof(TrackController))
                 {
                     AddTrack(null);
@@ -711,8 +903,6 @@ namespace Restless.App.DrumMaster.Controls
                     TrackControllers[TrackControllers.Count - 1].RestoreFromXElement(e);
                 }
             }
-
-
         }
         #endregion
 
@@ -861,6 +1051,59 @@ namespace Restless.App.DrumMaster.Controls
             IsStarted = !IsStarted;
         }
 
+        private void RunRequestRenderCommand(object parm)
+        {
+            // Simply toggles the property. All other action is handled by OnIsRenderModeActiveChanged()
+            IsRenderRequestMode = !IsRenderRequestMode;
+        }
+
+        private void OnIsRenderRequestModeChanged()
+        {
+            ActiveRenderImageSource = IsRenderRequestMode ? ActivatedRenderImageSource : RenderImageSource;
+            IsStarted = false;
+            if (IsRenderRequestMode)
+            {
+                if (RequestRenderCommand != null && RequestRenderCommand.CanExecute(null))
+                {
+                    RequestRenderCommand.Execute(null);
+                }
+                IsRenderRequestMode = false;
+            }
+        }
+
+        /// <summary>
+        /// Gets the number of passes needed to perform a complete render.
+        /// </summary>
+        /// <returns></returns>
+        private int GetMaxRenderPass()
+        {
+            int maxPass = 1;
+            foreach (TrackController controller in TrackControllers)
+            {
+                if (!controller.IsMuted)
+                {
+                    foreach (TrackBox box in controller.BoxContainer.Boxes)
+                    {
+                        switch (box.PlayFrequency)
+                        {
+                            case StepPlayFrequency.EveryOddPass:
+                            case StepPlayFrequency.EverySecondPass:
+                                maxPass = Math.Max(maxPass, 2);
+                                break;
+                            case StepPlayFrequency.EveryThirdPass:
+                                maxPass = Math.Max(maxPass, 3);
+                                break;
+                            case StepPlayFrequency.EveryFourthPass:
+                                maxPass = Math.Max(maxPass, 4);
+                                break;
+                        }
+                    }
+                }
+            }
+            return maxPass;
+
+        }
+
         private void RunToggleMuteCommand(object parm)
         {
             IsMuted = !IsMuted;
@@ -877,6 +1120,12 @@ namespace Restless.App.DrumMaster.Controls
             {
                 playSignaler.WaitOne();
                 int pass = 1;
+
+                if (isRendering)
+                {
+                    AudioHost.Instance.StartCapture();
+                }
+
                 if (!isControlClosing)
                 {
                     while (isStarted)
@@ -884,11 +1133,26 @@ namespace Restless.App.DrumMaster.Controls
                         int step = 0;
                         while (isStarted && step < totalSteps)
                         {
-                            
                             PlayOneStep(pass,step++);
                             Thread.Sleep(sleepTime);
                         }
+
                         ClearAllSteps();
+
+                        if (isRendering && pass == maxRenderPass)
+                        {
+                            isStarted = false;
+                            Dispatcher.BeginInvoke(DispatcherPriority.Send, new DispatcherOperationCallback
+                                ((args) =>
+                                {
+                                    IsStarted = false;
+                                    return null;
+                                }), null);
+
+                            AudioHost.Instance.EndCapture();
+                            isRendering = false;
+                            RenderCompleted?.Invoke(this, new AudioRenderEventArgs(AudioHost.Instance.AudioCapture.RenderParms));
+                        }
                         pass++;
                     }
                 }
@@ -1065,13 +1329,7 @@ namespace Restless.App.DrumMaster.Controls
             }
         }
 
-        private static void OnIsMetronomeActiveChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is TrackContainer c)
-            {
-                c.metronome.IsActive = c.IsMetronomeActive;
-            }
-        }
+
 
         private static object OnTempoCoerce(DependencyObject d, object baseValue)
         {

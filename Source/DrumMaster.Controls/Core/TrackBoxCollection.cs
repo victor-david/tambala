@@ -11,17 +11,18 @@ namespace Restless.App.DrumMaster.Controls.Core
     /// </summary>
     public class TrackBoxCollection : List<TrackBox>
     {
-
+        #region Constructor
         /// <summary>
         /// Initializes a new instance of the <see cref="TrackBoxCollection"/> class.
         /// </summary>
         internal TrackBoxCollection()
         {
-
         }
+        #endregion
 
         /************************************************************************/
 
+        #region Public methods
         /// <summary>
         /// Shifts the notes and/or volume in this collection to the left.
         /// </summary>
@@ -101,6 +102,19 @@ namespace Restless.App.DrumMaster.Controls.Core
             }
 
         }
+
+        /// <summary>
+        /// Sets all boxes in the collection to the specified play frequency.
+        /// </summary>
+        /// <param name="frequency">The play frequency.</param>
+        public void SetAllTo(StepPlayFrequency frequency)
+        {
+            foreach (TrackBox box in this)
+            {
+                box.PlayFrequency = frequency;
+            }
+        }
+        #endregion
 
     }
 }

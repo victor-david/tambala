@@ -16,22 +16,28 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         None,
         /// <summary>
-        /// If activated, a step will play on every pass.
+        /// A step will play on every pass. 
         /// </summary>
         EveryPass,
         /// <summary>
-        /// If activated, a step will play on odd numbered passes only.
+        /// A step will play on pass 1,3,5,7, etc.
         /// </summary>
-        OddPassOnly,
+        EveryOddPass,
         /// <summary>
-        /// If activated, a step will play on even numbered passes only.
+        /// A step will play on pass 2,4,6 etc.
         /// </summary>
-        EvenPassOnly,
+        EverySecondPass,
+        /// <summary>
+        /// A step will play on pass 3, 6, 9, etc.
+        /// </summary>
+        EveryThirdPass,
+        /// <summary>
+        /// A step will play every fourth pass.
+        /// </summary>
+        EveryFourthPass,
         /// <summary>
         /// The default.
         /// </summary>
         Default = None
-
-
     }
 }

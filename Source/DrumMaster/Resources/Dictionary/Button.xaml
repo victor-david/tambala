@@ -95,5 +95,22 @@
 
         </Style.Triggers>
     </Style>
-    
+
+    <Style x:Key="FlatButtonStyleRed" TargetType="Button" BasedOn="{StaticResource FlatButtonStyle}">
+        <Setter Property="Background" Value="#FFCC0000"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#CCCC0000"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="#EECC0000"/>
+                <Setter Property="Padding" Value="4,4,2,2"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.5"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
 </ResourceDictionary>

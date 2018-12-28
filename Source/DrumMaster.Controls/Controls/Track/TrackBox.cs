@@ -220,10 +220,14 @@ namespace Restless.App.DrumMaster.Controls
                     return false;
                 case StepPlayFrequency.EveryPass:
                     return true;
-                case StepPlayFrequency.EvenPassOnly:
+                case StepPlayFrequency.EverySecondPass:
                     return pass % 2 == 0;
-                case StepPlayFrequency.OddPassOnly:
+                case StepPlayFrequency.EveryOddPass:
                     return (pass + 1) % 2 == 0;
+                case StepPlayFrequency.EveryThirdPass:
+                    return pass % 3 == 0;
+                case StepPlayFrequency.EveryFourthPass:
+                    return pass % 4 == 0;
                 default:
                     return false;
             }

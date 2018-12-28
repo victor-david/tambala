@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using Restless.App.DrumMaster.Controls;
+using Restless.App.DrumMaster.Controls.Audio;
 using Restless.App.DrumMaster.Controls.Core;
 using Restless.App.DrumMaster.Core;
 using Restless.App.DrumMaster.Resources;
@@ -58,10 +59,10 @@ namespace Restless.App.DrumMaster.ViewModel
             Container = new TrackContainer()
             {
                 DisplayName = displayName,
-                Visibility = Visibility.Collapsed
+                Visibility = Visibility.Collapsed,
             };
 
-            // Container.CloseCommand = new RelayCommand(RunCloseLayoutCommand);
+            Container.RequestRenderCommand = new RelayCommand(RunRequestRenderCommand);
             Container.Closing += ContainerClosing;
             Container.IsChangedSet += ContainerIsChangedSet;
             Container.IsChangedReset += ContainerIsChangedReset;
@@ -91,7 +92,10 @@ namespace Restless.App.DrumMaster.ViewModel
                 {
                     Title = Strings.DialogTitleOpenFile,
                     DefaultExt = DottedFileExtension,
-                    Filter = $"{Strings.CaptionXmlFile} | *{DottedFileExtension}"
+                    Filter = $"{Strings.CaptionXmlFile} | *{DottedFileExtension}",
+#if DEBUG
+                    InitialDirectory = @"D:\vds\Music\Drum Patterns\Xml",
+#endif
                 };
 
                 if (dialog.ShowDialog() == true)
@@ -163,21 +167,35 @@ namespace Restless.App.DrumMaster.ViewModel
             }
         }
 
-        private void ContainerIsChangedSet(object sender, System.Windows.RoutedEventArgs e)
+        private void ContainerIsChangedSet(object sender, RoutedEventArgs e)
         {
             IsChanged = true;
         }
 
-        private void ContainerIsChangedReset(object sender, System.Windows.RoutedEventArgs e)
+        private void ContainerIsChangedReset(object sender, RoutedEventArgs e)
         {
             IsChanged = false;
         }
 
+        private void RunRequestRenderCommand(object parm)
+        {
+            try
+            {
+                var window = WindowFactory.AudioRender.Create(Container);
+                window.ShowDialog();
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
         private string GetFileName()
         {
-            if (!string.IsNullOrEmpty(Container.CurrentFile))
+            if (!string.IsNullOrEmpty(Container.FileName))
             {
-                return Container.CurrentFile;
+                return Container.FileName;
             }
 
             var dialog = new SaveFileDialog
@@ -186,7 +204,10 @@ namespace Restless.App.DrumMaster.ViewModel
                 AddExtension = true,
                 DefaultExt = DottedFileExtension,
                 Filter = $"{Strings.CaptionXmlFile} | *{DottedFileExtension}",
-                OverwritePrompt = true
+                OverwritePrompt = true,
+#if DEBUG
+                InitialDirectory = @"D:\vds\Music\Drum Patterns\Xml",
+#endif
             };
 
             if (dialog.ShowDialog() == true)

@@ -61,6 +61,15 @@ namespace Restless.App.DrumMaster.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Wave files.
+        /// </summary>
+        public static string CaptionWaveFile {
+            get {
+                return ResourceManager.GetString("CaptionWaveFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Xml files.
         /// </summary>
         public static string CaptionXmlFile {

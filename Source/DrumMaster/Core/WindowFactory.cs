@@ -1,10 +1,6 @@
-﻿using Restless.App.DrumMaster.ViewModel;
-using Restless.App.DrumMaster.Windows;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Restless.App.DrumMaster.Controls;
+using Restless.App.DrumMaster.View;
+using Restless.App.DrumMaster.ViewModel;
 using System.Windows;
 
 namespace Restless.App.DrumMaster.Core
@@ -14,10 +10,6 @@ namespace Restless.App.DrumMaster.Core
     /// </summary>
     public static class WindowFactory
     {
-
-
-
-
         #region Main
         /// <summary>
         /// Provides static methods for creating the main application window.
@@ -33,6 +25,28 @@ namespace Restless.App.DrumMaster.Core
                 var window = new MainWindow();
                 TextOptions.SetTextFormattingMode(window);
                 var viewModel = new MainWindowViewModel(window);
+                window.DataContext = viewModel;
+                return window;
+            }
+        }
+
+        /// <summary>
+        /// Provides static methods for creating the audio render window.
+        /// </summary>
+        public static class AudioRender
+        {
+            /// <summary>
+            /// Creates an instance of AudioRenderWindow and its corresponding view model.
+            /// </summary>
+            /// <returns>The window</returns>
+            public static AudioRenderWindow Create(TrackContainer trackContainer)
+            {
+                var window = new AudioRenderWindow
+                {
+                    Owner = Application.Current.MainWindow
+                };
+                TextOptions.SetTextFormattingMode(window);
+                var viewModel = new AudioRenderWindowViewModel(window, trackContainer);
                 window.DataContext = viewModel;
                 return window;
             }

@@ -146,7 +146,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Window\DrumKit.xaml">
+    <Page Include="View\Window\AudioRenderWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -178,15 +178,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\DrumKitViewModel.cs" />
+    <Compile Include="ViewModel\AudioRenderWindowViewModel.cs" />
     <Compile Include="Core\GridValue.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\TrackContainerViewModel.cs" />
+    <Compile Include="ViewModel\WindowViewModel.cs" />
     <Compile Include="View\TrackContainerView.xaml.cs">
       <DependentUpon>TrackContainerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Window\DrumKit.xaml.cs">
-      <DependentUpon>DrumKit.xaml</DependentUpon>
+    <Compile Include="View\Window\AudioRenderWindow.xaml.cs">
+      <DependentUpon>AudioRenderWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Window\MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>

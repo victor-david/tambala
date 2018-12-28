@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Restless.App.DrumMaster.Windows
+namespace Restless.App.DrumMaster.View
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

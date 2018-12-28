@@ -228,24 +228,12 @@ namespace Restless.App.DrumMaster.Controls
             }
         }
 
-        //protected virtual void OnBackgroundBrushChanged(TrackBoxHostControlType controlType)
-        //{
-        //    Brush brush = (controlType == TrackBoxHostControlType.Header) ? SelectedBackgroundBrush : StepBackgroundBrush;
-        //    foreach (var box in Boxes)
-        //    {
-        //        box.SelectedBackgroundBrush = brush;
-        //    }
-        //}
-
         /// <summary>
         /// Deselects all boxes.
         /// </summary>
         public void DeselectAllBoxes()
         {
-            foreach (var box in Boxes)
-            {
-                box.PlayFrequency = StepPlayFrequency.None;
-            }
+            Boxes.SetAllTo(StepPlayFrequency.None);
         }
         #endregion
 

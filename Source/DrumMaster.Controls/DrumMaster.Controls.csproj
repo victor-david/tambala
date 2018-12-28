@@ -68,6 +68,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NAudio, Version=1.8.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.1.8.5\lib\net35\NAudio.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="SharpDX, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
@@ -91,10 +94,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Audio\AudioBuffer.cs" />
+    <Compile Include="Audio\AudioCaptureEffect.cs" />
     <Compile Include="Audio\AudioHost.cs" />
     <Compile Include="Audio\AudioPiece.cs" />
     <Compile Include="Audio\AudioPieceCollection.cs" />
     <Compile Include="Audio\AudioPieceType.cs" />
+    <Compile Include="Audio\AudioRenderEventArgs.cs" />
+    <Compile Include="Audio\AudioRenderParameters.cs" />
     <Compile Include="Audio\VoicePool.cs" />
     <Compile Include="Controls\Button\ImageButton.cs" />
     <Compile Include="Commands\CommandDictionary.cs" />
@@ -179,8 +185,8 @@
     <Resource Include="Resources\Images\Image.Slash.64.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Images\Image.Beat.Even.48.png" />
-    <Resource Include="Resources\Images\Image.Beat.Odd.48.png" />
+    <Resource Include="Resources\Images\Image.Beat.Pass.2.48.png" />
+    <Resource Include="Resources\Images\Image.Beat.Pass.1.48.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Working\" />
@@ -197,6 +203,16 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Strings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Image.Render.64.png" />
+    <Resource Include="Resources\Images\Image.Render.Active.64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Image.Beat.Pass.3.48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Image.Beat.Pass.4.48.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

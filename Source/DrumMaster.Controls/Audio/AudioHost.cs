@@ -1,4 +1,5 @@
 ﻿using SharpDX.XAudio2;
+using SharpDX.XAudio2.Fx;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +16,12 @@ namespace Restless.App.DrumMaster.Controls.Audio
         private MasteringVoice masteringVoice;
         private List<VoicePool> voicePools;
         private XAudio2 audioDevice;
-        
+        private readonly EffectDescriptor audioCaptureEffectDescriptor;
         #endregion
 
         /************************************************************************/
 
-        #region Public properties
+        #region Properties
         /// <summary>
         /// Gets the audio device.
         /// </summary>
@@ -40,6 +41,14 @@ namespace Restless.App.DrumMaster.Controls.Audio
         {
             get;
         }
+
+        /// <summary>
+        /// From this assembly, gets the audio capture effect.
+        /// </summary>
+        internal AudioCaptureEffect AudioCapture
+        {
+            get;
+        }
         #endregion
 
         /************************************************************************/
@@ -56,6 +65,16 @@ namespace Restless.App.DrumMaster.Controls.Audio
             masteringVoice = new MasteringVoice(AudioDevice);
             AudioPieces = new AudioPieceCollection();
             voicePools = new List<VoicePool>();
+
+            //reverb = new Reverb(AudioDevice);
+            //reverbEffectDescriptor = new EffectDescriptor(reverb);
+
+            AudioCapture = new AudioCaptureEffect();
+            audioCaptureEffectDescriptor = new EffectDescriptor(AudioCapture);
+
+            masteringVoice.SetEffectChain(audioCaptureEffectDescriptor);
+            masteringVoice.DisableEffect(0);
+
             AudioDevice.StartEngine();
         }
 
@@ -143,6 +162,29 @@ namespace Restless.App.DrumMaster.Controls.Audio
         /************************************************************************/
 
         #region Internal methods
+        ///// <summary>
+        ///// Sets the rendering parameters.
+        ///// </summary>
+        ///// <param name="parms">The rendering parms</param>
+        //internal void SetRenderingParameters(AudioRenderParameters parms)
+        //{
+        //    if (parms == null) throw new ArgumentNullException(nameof(parms));
+        //    parms.Validate();
+        //    //audioCapture.RenderParms = parms;
+        //}
+
+        internal void StartCapture()
+        {
+            masteringVoice.EnableEffect(0);
+            AudioCapture.StartCapture();
+        }
+
+        internal void EndCapture()
+        {
+            masteringVoice.DisableEffect(0);
+            AudioCapture.StopCapture();
+        }
+
         /// <summary>
         /// Gets an audio piece of the specified type.
         /// </summary>
