@@ -11,7 +11,7 @@
 
     <Style TargetType="TextBlock" x:Key="TextBlockLabel" BasedOn="{StaticResource {x:Type TextBlock}}">
         <Setter Property="FontSize" Value="11.5"/>
-        <Setter Property="Foreground" Value="#FF808080" />
+        <Setter Property="Foreground" Value="{StaticResource TextBlockLabelBrush}" />
         <Setter Property="Margin" Value="4" />
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>

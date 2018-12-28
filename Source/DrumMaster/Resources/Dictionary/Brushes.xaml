@@ -77,15 +77,15 @@
     </LinearGradientBrush>
 
     <!-- Solid Brushes -->
-    <SolidColorBrush x:Key="AlternationBrushSecondary" Color="#FFDFDFDF" />
-    <SolidColorBrush x:Key="DisabledBorderBrush" Color="#AAA" />
-    <SolidColorBrush x:Key="SolidBorderBrush" Color="#888" />
-    <SolidColorBrush x:Key="LightBorderBrush" Color="#AAA" />
-    <SolidColorBrush x:Key="DisabledForegroundBrush" Color="#888" />
-    <SolidColorBrush x:Key="DisabledBackgroundBrush" Color="#EEE" />
-    <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#FFF" />
-    <SolidColorBrush x:Key="SelectedBackgroundBrush" Color="#DDD" />
-
+    <SolidColorBrush x:Key="AlternationBrushSecondary" Color="#FFDFDFDF"/>
+    <SolidColorBrush x:Key="DisabledBorderBrush" Color="#AAA"/>
+    <SolidColorBrush x:Key="SolidBorderBrush" Color="#888"/>
+    <SolidColorBrush x:Key="LightBorderBrush" Color="#AAA"/>
+    <SolidColorBrush x:Key="DisabledForegroundBrush" Color="#888"/>
+    <SolidColorBrush x:Key="DisabledBackgroundBrush" Color="#EEE"/>
+    <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#FFF"/>
+    <SolidColorBrush x:Key="SelectedBackgroundBrush" Color="#DDD"/>
+    <SolidColorBrush x:Key="TextBlockLabelBrush" Color="#FF808080"/>
     <SolidColorBrush x:Key="DataGridColumnHeaderBrush" Color="Blue"/>
     <SolidColorBrush x:Key="PositiveAmountBrush" Color="Blue"/>
     <SolidColorBrush x:Key="NegativeAmountBrush" Color="Red"/>

@@ -937,13 +937,6 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-
-    <!-- ############################# -->
-    <!-- ENVELOPE TEMPLATE / STYLE     -->
-    <!-- ############################# -->
-    
-    
-    
     
     <!-- ############################# -->
     <!-- ENVELOPE TEMPLATE / STYLE     -->
@@ -957,6 +950,53 @@
 
     <Style TargetType="{x:Type con:EnvelopeControl}">
         <Setter Property="Template" Value="{StaticResource EnvelopeControlTemplate}"/>
+    </Style>
+
+    <!-- ############################### -->
+    <!-- IMAGECHECKBOX TEMPLATE / STYLE  -->
+    <!-- ############################### -->
+    <ControlTemplate x:Key="ImageCheckBoxControlTemplate" TargetType="con:BoxCheckBox">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Border
+                Background="Transparent"
+                Height="{TemplateBinding BoxSize}"
+                Width="{TemplateBinding BoxSize}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="2">
+
+                <Border
+                    x:Name="PART_Inner"
+                    Background="{TemplateBinding CheckedBrush}"  
+                    Height="{TemplateBinding BoxSize, Converter={con:DoubleToPercentageDoubleConverter}, ConverterParameter=0.55}"  
+                    Width="{TemplateBinding BoxSize, Converter={con:DoubleToPercentageDoubleConverter}, ConverterParameter=0.55}"
+                    CornerRadius="2"
+                    Visibility="Collapsed" />
+
+            </Border>
+            <ContentPresenter Grid.Column="1" Margin="8,0,0,0" VerticalAlignment="Center"/>
+        </Grid>
+        
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter TargetName="PART_Inner" Property="Visibility" Value="Visible"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.5"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style TargetType="con:BoxCheckBox">
+        <Setter Property="Template" Value="{StaticResource ImageCheckBoxControlTemplate}"/>
+        <Setter Property="Cursor" Value="Hand"/>
     </Style>
 
     <!-- ############################# -->
@@ -979,9 +1019,5 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-
-
-
 
 </ResourceDictionary>

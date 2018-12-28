@@ -106,6 +106,7 @@
     <Compile Include="Commands\CommandDictionary.cs" />
     <Compile Include="Commands\CommandSupported.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Controls\CheckBox\BoxCheckBox.cs" />
     <Compile Include="Controls\Envelope\EnvelopeControl.cs" />
     <Compile Include="Audio\Metronome.cs" />
     <Compile Include="Controls\Track\StepPlayFrequency.cs" />
