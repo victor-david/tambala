@@ -11,6 +11,7 @@
                 <ResourceDictionary Source="Resources/Dictionary/Button.xaml"/>
                 <ResourceDictionary Source="Resources/Dictionary/TextBlock.xaml"/>
                 <ResourceDictionary Source="Resources/Dictionary/ItemsControl.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -7,7 +7,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -53,6 +52,7 @@ namespace Restless.App.DrumMaster.Controls
         private Metronome metronome;
         private int maxRenderPass;
         private bool isRendering;
+        private Stopwatch loopTimer;
         #endregion
 
         /************************************************************************/
@@ -708,6 +708,8 @@ namespace Restless.App.DrumMaster.Controls
 
             RenderParms = AudioRenderParameters.CreateDefault();
 
+            loopTimer = new Stopwatch();
+
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
                 TrackControllers = new MaxSizeObservableCollection<TrackController>(TrackVals.Track.Max);
@@ -1120,13 +1122,14 @@ namespace Restless.App.DrumMaster.Controls
 
                 if (isRendering)
                 {
-                    AudioHost.Instance.StartCapture();
+                    AudioHost.Instance.AudioCapture.StartCapture();
                 }
 
                 if (!isControlClosing)
                 {
                     while (isStarted)
                     {
+                        loopTimer.Restart();
                         int step = 0;
                         while (isStarted && step < totalSteps)
                         {
@@ -1135,6 +1138,9 @@ namespace Restless.App.DrumMaster.Controls
                         }
 
                         ClearAllSteps();
+
+                        loopTimer.Stop();
+                        Debug.WriteLine($"{pass}. {loopTimer.ElapsedMilliseconds}");
 
                         if (isRendering && pass == maxRenderPass)
                         {
@@ -1146,10 +1152,11 @@ namespace Restless.App.DrumMaster.Controls
                                     return null;
                                 }), null);
 
-                            AudioHost.Instance.EndCapture();
+                            AudioHost.Instance.AudioCapture.FadeAndStopCapture();
                             isRendering = false;
                             RenderCompleted?.Invoke(this, new AudioRenderEventArgs(AudioHost.Instance.AudioCapture.RenderParms));
                         }
+
                         pass++;
                     }
                 }
@@ -1252,8 +1259,7 @@ namespace Restless.App.DrumMaster.Controls
 
         private void CalculateThreadSafeValues()
         {
-            sleepTime = (MilliSecondsPerMinute / (int)Tempo) / 4; //  StepsPerBeat;
-            //Debug.WriteLine($"Sleep: {sleepTime}");
+            sleepTime = MilliSecondsPerMinute / (int)Tempo / 4; 
         }
 
         private void DispatcherShutdownStarted(object sender, EventArgs e)

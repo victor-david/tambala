@@ -54,13 +54,23 @@
                 SelectedItem="{Binding Container.RenderParms.Channels}"
                 />
         </StackPanel>
-        <StackPanel Grid.Row="1" Grid.ColumnSpan="4">
+        <StackPanel Grid.Column="3">
+            <TextBlock>
+                <Run Text="Fade Time"/>
+                <Run Text="{Binding Container.RenderParms.FadeTime, FallbackValue=0}"/>
+                <Run Text="-"/>
+                <Run Text="{Binding Container.RenderParms.FadeSamples, Mode=OneWay, FallbackValue=0}"/>
+                <Run Text="samples"/>
+            </TextBlock>
+            <Slider Style="{StaticResource MainSliderStyle}" Minimum="0" Maximum="2000" Value="{Binding Container.RenderParms.FadeTime}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="5">
             <TextBlock Text="Output File"/>
             <TextBlock Foreground="DarkRed" Text="{Binding Container.RenderParms.RenderFileName}"/>
         </StackPanel>
 
         <con:BoxCheckBox
-            Grid.Row="2" Grid.ColumnSpan="4"
+            Grid.Row="2" Grid.ColumnSpan="5"
             Margin="4"
             BoxSize="22"
             FontSize="11.5"
@@ -68,7 +78,7 @@
             IsEnabled="{Binding AreControlsEnabled}"
             IsChecked="{Binding Container.RenderParms.ParmsInFileName}" Content="Use parms in file name"/>
 
-        <StackPanel Grid.Row="4" Grid.ColumnSpan="4" Orientation="Horizontal">
+        <StackPanel Grid.Row="4" Grid.ColumnSpan="5" Orientation="Horizontal">
             <Button
                 Content="Change Output"
                 Margin="4,4,16,4"

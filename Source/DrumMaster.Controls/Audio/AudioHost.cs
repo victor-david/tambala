@@ -162,28 +162,17 @@ namespace Restless.App.DrumMaster.Controls.Audio
         /************************************************************************/
 
         #region Internal methods
-        ///// <summary>
-        ///// Sets the rendering parameters.
-        ///// </summary>
-        ///// <param name="parms">The rendering parms</param>
-        //internal void SetRenderingParameters(AudioRenderParameters parms)
+        //internal void StartCapture()
         //{
-        //    if (parms == null) throw new ArgumentNullException(nameof(parms));
-        //    parms.Validate();
-        //    //audioCapture.RenderParms = parms;
+        //    masteringVoice.EnableEffect(0);
+        //    AudioCapture.StartCapture();
         //}
 
-        internal void StartCapture()
-        {
-            masteringVoice.EnableEffect(0);
-            AudioCapture.StartCapture();
-        }
-
-        internal void EndCapture()
-        {
-            masteringVoice.DisableEffect(0);
-            AudioCapture.StopCapture();
-        }
+        //internal void StopCapture(int fadeSamples)
+        //{
+        //    masteringVoice.DisableEffect(0);
+        //    AudioCapture.StopCapture(fadeSamples);
+        //}
 
         /// <summary>
         /// Gets an audio piece of the specified type.

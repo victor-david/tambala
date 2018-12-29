@@ -21,8 +21,18 @@ namespace Restless.App.DrumMaster.Controls.Audio
     internal class AudioCaptureEffect : AudioProcessorBase<AudioCaptureParameters>
     {
         #region Private
-        private bool isCaptureEnabled;
+        private CaptureState captureState;
         private List<float> captureSamples;
+        private Stopwatch captureTimer;
+        private int fadeSampleCount;
+
+        private enum CaptureState
+        {
+            Off,
+            On,
+            Fade,
+            Save,
+        }
         #endregion
 
         /************************************************************************/
@@ -58,8 +68,9 @@ namespace Restless.App.DrumMaster.Controls.Audio
                 Flags = PropertyFlags.Default
             };
 
-
+            captureState = CaptureState.Off;
             captureSamples = new List<float>();
+            captureTimer = new Stopwatch();
         }
         #endregion
 
@@ -74,7 +85,7 @@ namespace Restless.App.DrumMaster.Controls.Audio
         /// <param name="isEnabled">Whether the effect is enabled. Not used.</param>
         public override void Process(BufferParameters[] inputProcessParameters, BufferParameters[] outputProcessParameters, bool isEnabled)
         {
-            if (isCaptureEnabled)
+            if (captureState == CaptureState.On || captureState == CaptureState.Fade)
             {
                 int frameCount = inputProcessParameters[0].ValidFrameCount;
 
@@ -95,7 +106,25 @@ namespace Restless.App.DrumMaster.Controls.Audio
                         float sum = left + right;
                         captureSamples.Add(sum / 2);
                     }
+
+                    if (captureState == CaptureState.Fade)
+                    {
+                        fadeSampleCount += RenderParms.Channels;
+                        // Note: FadeSamples must always be an even number.
+                        // This is handled in the AudioRenderParameters class.
+                        if (fadeSampleCount == RenderParms.FadeSamples)
+                        {
+                            captureState = CaptureState.Save;
+                            break;
+                        }
+                    }
                 }
+            }
+
+            if (captureState == CaptureState.Save)
+            {
+                captureState = CaptureState.Off;
+                PerformFinalRendering();
             }
         }
         #endregion
@@ -109,19 +138,28 @@ namespace Restless.App.DrumMaster.Controls.Audio
         internal void StartCapture()
         {
             captureSamples.Clear();
-            isCaptureEnabled = true;
+            captureState = CaptureState.On;
+            captureTimer.Restart();
         }
 
         /// <summary>
-        /// Stops the capturing process and saves the .wav file.
+        /// Fades out the capture, then saves the .wav file.
         /// </summary>
-        internal void StopCapture()
+        internal void FadeAndStopCapture()
         {
-            
-#if DEBUG
-            //RenderParms.FileName = @"F:\Temp\DrumMasterTest\drum.wav";
-            //RenderParms.ParmsInFileName = true;
-#endif
+            captureState = (RenderParms.FadeSamples > 0) ? CaptureState.Fade : CaptureState.Save;
+            captureTimer.Stop();
+            fadeSampleCount = 0;
+        }
+
+        private void PerformFinalRendering()
+        {
+            float[] samples = captureSamples.ToArray();
+            if (RenderParms.FadeSamples > 0)
+            {
+                MixLoopFadeSamples(samples);
+            }
+
             WaveFormat format;
             if (RenderParms.BitDepth == 32)
             {
@@ -132,12 +170,30 @@ namespace Restless.App.DrumMaster.Controls.Audio
                 format = new WaveFormat(RenderParms.SampleRate, RenderParms.BitDepth, RenderParms.Channels);
             }
 
-            float[] samples = captureSamples.ToArray();
-            Debug.WriteLine($"DONE. Have {samples.Length} samples");
+            Debug.WriteLine($"Channels: {RenderParms.Channels}  Samples: {samples.Length} Fade samples: {RenderParms.FadeSamples} Milliseconds: {captureTimer.ElapsedMilliseconds}");
 
             using (var writer = new WaveFileWriter(RenderParms.RenderFileName, format))
             {
-                writer.WriteSamples(samples, 0, samples.Length);
+                writer.WriteSamples(samples, 0, samples.Length - RenderParms.FadeSamples);
+            }
+        }
+
+        private void MixLoopFadeSamples(float[] samples)
+        {
+            int fadeSamples = RenderParms.FadeSamples;
+            if (samples.Length > fadeSamples * 2)
+            {
+                int len = samples.Length;
+                for (int k=0; k < fadeSamples; k++)
+                {
+                    float front = samples[k];
+                    float back = samples[len - fadeSamples + k];
+                    float mixed = front + back;
+                    mixed *= 0.95f;
+                    if (mixed > 1.0f) mixed = 1.0f;
+                    if (mixed < -1.0f) mixed = -1.0f;
+                    samples[k] = mixed;
+                }
             }
         }
         #endregion

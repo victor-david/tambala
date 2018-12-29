@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -20,6 +19,8 @@ namespace Restless.App.DrumMaster.Controls.Audio
         private int sampleRate;
         private int bitDepth;
         private int channels;
+        private int fadeTime;
+        private int fadeSamples;
         private string fileName;
         private bool parmsInFileName;
         #endregion
@@ -44,6 +45,10 @@ namespace Restless.App.DrumMaster.Controls.Audio
             /// The default value for number of channels
             /// </summary>
             public const int Channels = 2;
+            /// <summary>
+            /// The default for fade time
+            /// </summary>
+            public const int FadeTime = 0;
             /// <summary>
             /// The default value for parms in file name.
             /// </summary>
@@ -103,6 +108,24 @@ namespace Restless.App.DrumMaster.Controls.Audio
         {
             get => channels;
             set => SetProperty(ref channels, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the number milliseconds to fade. Clamped between 0 and 2000
+        /// </summary>
+        public int FadeTime
+        {
+            get => fadeTime;
+            set => SetProperty(ref fadeTime, Math.Min(Math.Max(value, 0), 2000));
+        }
+
+        /// <summary>
+        /// Gets the number of fade samples.
+        /// </summary>
+        public int FadeSamples
+        {
+            get => fadeSamples;
+            private set => SetProperty(ref fadeSamples, value);
         }
 
         /// <summary>
@@ -170,6 +193,7 @@ namespace Restless.App.DrumMaster.Controls.Audio
             OnPropertyChanged(propertyName);
             SetRenderFileName();
             OnPropertyChanged(nameof(RenderFileName));
+            SetFadeSamples();
             IsChanged = true;
             return true;
         }
@@ -198,7 +222,7 @@ namespace Restless.App.DrumMaster.Controls.Audio
             SupportedBitDepth = new List<int>();
             SupportedChannels = new List<int>();
             SupportedSampleRate.Add(44100);
-            SupportedSampleRate.Add(48000);
+            //SupportedSampleRate.Add(48000);
             SupportedBitDepth.Add(16);
             SupportedBitDepth.Add(24);
             SupportedBitDepth.Add(32);
@@ -207,6 +231,7 @@ namespace Restless.App.DrumMaster.Controls.Audio
             SampleRate = Default.SampleRate;
             BitDepth = Default.BitDepth;
             Channels = Default.Channels;
+            FadeTime = Default.FadeTime;
             IsChanged = false;
         }
         #endregion
@@ -234,7 +259,7 @@ namespace Restless.App.DrumMaster.Controls.Audio
         /// <returns>A string that shows the properties.</returns>
         public override string ToString()
         {
-            return $"Rate: {SampleRate} Bits: {BitDepth} Channels: {Channels} File: {FileName} Render: {RenderFileName}";
+            return $"Rate: {SampleRate} Bits: {BitDepth} Channels: {Channels} Fade: {FadeTime} File: {FileName} Render: {RenderFileName}";
         }
 
         /// <summary>
@@ -255,6 +280,7 @@ namespace Restless.App.DrumMaster.Controls.Audio
                 p.SampleRate == SampleRate &&
                 p.BitDepth == BitDepth &&
                 p.Channels == Channels &&
+                p.FadeTime == FadeTime &&
                 p.FileName == FileName &&
                 p.ParmsInFileName == ParmsInFileName;
         }
@@ -268,10 +294,10 @@ namespace Restless.App.DrumMaster.Controls.Audio
             unchecked
             {
                 int hash = 17;
-                // Suitable nullity checks etc, of course :)
                 hash = hash * 23 + SampleRate.GetHashCode();
                 hash = hash * 23 + BitDepth.GetHashCode();
                 hash = hash * 23 + Channels.GetHashCode();
+                hash = hash * 23 + FadeTime.GetHashCode();
                 hash = hash * 23 + ParmsInFileName.GetHashCode();
                 if (FileName != null)
                 {
@@ -295,11 +321,16 @@ namespace Restless.App.DrumMaster.Controls.Audio
             element.Add(new XElement(nameof(SampleRate), SampleRate));
             element.Add(new XElement(nameof(BitDepth), BitDepth));
             element.Add(new XElement(nameof(Channels), Channels));
+            element.Add(new XElement(nameof(FadeTime), FadeTime));
             element.Add(new XElement(nameof(FileName), FileName));
             element.Add(new XElement(nameof(ParmsInFileName), ParmsInFileName));
             return element;
         }
 
+        /// <summary>
+        /// Restores the state of this object from the specified element
+        /// </summary>
+        /// <param name="element">The element</param>
         public void RestoreFromXElement(XElement element)
         {
             IEnumerable<XElement> childList = from el in element.Elements() select el;
@@ -309,6 +340,7 @@ namespace Restless.App.DrumMaster.Controls.Audio
                 if (e.Name == nameof(SampleRate)) SampleRate = GetIntValue(e.Value, Default.SampleRate);
                 if (e.Name == nameof(BitDepth)) BitDepth = GetIntValue(e.Value, Default.BitDepth);
                 if (e.Name == nameof(Channels)) Channels = GetIntValue(e.Value, Default.Channels);
+                if (e.Name == nameof(FadeTime)) FadeTime = GetIntValue(e.Value, Default.FadeTime);
                 if (e.Name == nameof(FileName)) FileName = e.Value;
                 if (e.Name == nameof(ParmsInFileName)) ParmsInFileName = GetBoolValue(e.Value, Default.ParmsInFileName);
             }
@@ -367,6 +399,15 @@ namespace Restless.App.DrumMaster.Controls.Audio
                 file = $"{file}_{SampleRate}_{BitDepth}_{Channels}{ext}";
                 RenderFileName = Path.Combine(dir, file);
             }
+        }
+
+        private void SetFadeSamples()
+        {
+            // Fade samples must always be an even number.
+            double fadeSamples = SampleRate * (FadeTime / 1000.0) * Channels;
+            int fadeInt = (int)fadeSamples;
+            if (fadeInt % 2 != 0) fadeInt++;
+            FadeSamples = fadeInt;
         }
 
         private int GetIntValue(string str, int defaultValue)
