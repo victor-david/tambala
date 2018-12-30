@@ -8,18 +8,12 @@
     <!-- ############################# -->
     <con:StepPlayFrequency x:Key="StepFrequencyNone">None</con:StepPlayFrequency>
     <con:StepPlayFrequency x:Key="StepFrequencyEvery">EveryPass</con:StepPlayFrequency>
-    <con:StepPlayFrequency x:Key="StepFrequencyOdd">EveryOddPass</con:StepPlayFrequency>
-    <con:StepPlayFrequency x:Key="StepFrequencySecond">EverySecondPass</con:StepPlayFrequency>
-    <con:StepPlayFrequency x:Key="StepFrequencyThird">EveryThirdPass</con:StepPlayFrequency>
-    <con:StepPlayFrequency x:Key="StepFrequencyFourth">EveryFourthPass</con:StepPlayFrequency>
+    <con:StepPlayFrequency x:Key="StepFrequencyOdd">OddPass</con:StepPlayFrequency>
+    <con:StepPlayFrequency x:Key="StepFrequencySecond">SecondPass</con:StepPlayFrequency>
+    <con:StepPlayFrequency x:Key="StepFrequencyThird3">ThirdPass3</con:StepPlayFrequency>
+    <con:StepPlayFrequency x:Key="StepFrequencyThird4">ThirdPass4</con:StepPlayFrequency>
+    <con:StepPlayFrequency x:Key="StepFrequencyFourth">FourthPass</con:StepPlayFrequency>
     
-    <!--<Thickness x:Key="TrackControlBorderThickness">1</Thickness>
-    <Thickness x:Key="TrackControlBorderMargin">4</Thickness>
-    <Thickness x:Key="TrackControlBorderPadding">6</Thickness>-->
-
-    <!--<GridLength x:Key="TrackLeftColumnWidth">280</GridLength>-->
-    <!-- Must be Thickness(left)+Margin(left)+Padding(left) more than TrackLeftColumnWidth -->
-    <!--<GridLength x:Key="HeaderLeftColumnWidth">291</GridLength>-->
 
     <!-- ############################# -->
     <!-- BRUSH DEFINITIONS             -->
@@ -268,8 +262,9 @@
                 <ControlTemplate TargetType="{x:Type Thumb}">
                     <Border
                         Name="innerBorder"
+                        SnapsToDevicePixels="True"
                         Background="#FF1D6FB4"
-                        Height="5" Width="12" 
+                        Height="4" Width="12" 
                         CornerRadius="1" />
 
                     <ControlTemplate.Triggers>
@@ -292,10 +287,11 @@
                 <ColumnDefinition Width="Auto" MinWidth="{TemplateBinding MinWidth}"/>
             </Grid.ColumnDefinitions>
             <Border
-                Margin="0,1"
-                BorderThickness="2"
+                SnapsToDevicePixels="True"
+                Margin="0,2"
+                BorderThickness="1.5"
                 BorderBrush="{TemplateBinding Background}"
-                HorizontalAlignment="Center" Width="4" />
+                HorizontalAlignment="Center" Width="3" />
             <Track x:Name="PART_Track">
                 <Track.Thumb>
                     <Thumb x:Name="Thumb" Style="{StaticResource BoxVolumeSliderThumbStyle}" />
@@ -314,7 +310,6 @@
         <Setter Property="Background" Value="DarkGray"/>
         <Setter Property="Template" Value="{StaticResource BoxVolumeSliderTemplate}"/>
     </Style>
-    
 
     <!-- ################################ -->
     <!-- TRACK CONTAINER TEMPLATE / STYLE -->
@@ -396,8 +391,6 @@
                                 <Setter Property="TickFrequency" Value="1"/>
                                 <Setter Property="Margin" Value="0"/>
                                 <Setter Property="Orientation" Value="Horizontal"/>
-                                <!--<Setter Property="HorizontalAlignment" Value="Left"/>
-                                <Setter Property="VerticalAlignment" Value="Center"/>-->
                             </Style>
                             <Style TargetType="StackPanel">
                                 <Setter Property="Margin" Value="2,0"/>
@@ -434,7 +427,7 @@
                         <!-- Volume adjustment slider -->
                         <StackPanel Grid.Column="5">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Style="{StaticResource TextBlockLabel}" Text="{Binding VolumeText, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                <TextBlock Style="{StaticResource TextBlockLabel}" Text="{TemplateBinding VolumeText}"/>
                                 <TextBlock Style="{StaticResource TextBlockValue}" Text="{Binding VolumeDecibelText, RelativeSource={RelativeSource TemplatedParent}}"/>
                             </StackPanel>
                             <Slider
@@ -447,7 +440,7 @@
                         <!-- Tempo adjustment slider -->
                         <StackPanel Grid.Column="6">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Style="{StaticResource TextBlockLabel}" Text="{Binding TempoText, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                <TextBlock Style="{StaticResource TextBlockLabel}" Text="{TemplateBinding TempoText}"/>
                                 <TextBlock Style="{StaticResource TextBlockValue}" Text="{Binding Tempo, RelativeSource={RelativeSource TemplatedParent}}"/>
                             </StackPanel>
                             <Slider
@@ -459,7 +452,7 @@
                         <!-- Number of beats adjustment slider-->
                         <StackPanel Grid.Column="7">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Style="{StaticResource TextBlockLabel}" Text="{Binding BeatsText, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                <TextBlock Style="{StaticResource TextBlockLabel}" Text="{TemplateBinding BeatsText}"/>
                                 <TextBlock Style="{StaticResource TextBlockValue}" Text="{Binding Beats, RelativeSource={RelativeSource TemplatedParent}}"/>
                             </StackPanel>
                             <Slider 
@@ -471,7 +464,7 @@
                         <!-- Number of steps per beat adjustment slider -->
                         <StackPanel Grid.Column="8">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Style="{StaticResource TextBlockLabel}" Text="{Binding StepsPerBeatText, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                <TextBlock Style="{StaticResource TextBlockLabel}" Text="{TemplateBinding StepsPerBeatText}"/>
                                 <TextBlock Style="{StaticResource TextBlockValue}" Text="{Binding StepsPerBeat, RelativeSource={RelativeSource TemplatedParent}}"/>
                             </StackPanel>
                             <Slider
@@ -480,10 +473,22 @@
                                 Value="{Binding StepsPerBeat, RelativeSource={RelativeSource TemplatedParent}}" />
                         </StackPanel>
 
+                        <!-- Measures adjustment slider -->
+                        <!--<StackPanel Grid.Column="9">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Style="{StaticResource TextBlockLabel}" Text="{TemplateBinding MeasuresText}"/>
+                                <TextBlock Style="{StaticResource TextBlockValue}" Text="{Binding Measures, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            </StackPanel>
+                            <Slider
+                                Minimum="{Binding MinMeasures, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
+                                Maximum="{Binding MaxMeasures, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
+                                Value="{Binding ProposedMeasures, RelativeSource={RelativeSource TemplatedParent}}" />
+                        </StackPanel>-->
+
                         <!-- Box size adjustment slider -->
                         <StackPanel Grid.Column="9">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Style="{StaticResource TextBlockLabel}" Text="{Binding BoxSizeText, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                <TextBlock Style="{StaticResource TextBlockLabel}" Text="{TemplateBinding BoxSizeText}"/>
                                 <TextBlock Style="{StaticResource TextBlockValue}" Text="{Binding BoxSize, RelativeSource={RelativeSource TemplatedParent}}"/>
                             </StackPanel>
                             <Slider 
@@ -768,6 +773,92 @@
         <Setter Property="Template" Value="{StaticResource FlatButtonTemplate}" />
     </Style>
 
+    <ControlTemplate x:Key="StepPlayMarkerControlTemplate" TargetType="{x:Type con:StepPlayMarker}">
+        <Border Width="{TemplateBinding Width}" Height="{TemplateBinding Width}" Background="{TemplateBinding Background}" CornerRadius="{TemplateBinding CornerRadius}">
+            <Border 
+                Margin="0"
+                Width="{TemplateBinding Width, Converter={con:DoubleToPercentageDoubleConverter},ConverterParameter=0.45}"
+                Height="{TemplateBinding Width, Converter={con:DoubleToPercentageDoubleConverter},ConverterParameter=0.45}"
+                Background="{TemplateBinding InnerBrush}"/>
+        </Border>
+    </ControlTemplate>
+
+    <Style TargetType="con:StepPlayMarker">
+        <Setter Property="Template" Value="{StaticResource StepPlayMarkerControlTemplate}"/>
+        <Setter Property="Margin" Value="2"/>
+    </Style>
+
+    <!-- Step play marker (common, for menu) -->
+    <Style x:Key="PFMenu" TargetType="con:StepPlayMarker">
+        <Setter Property="Width" Value="18"/>
+        <Setter Property="CornerRadius" Value="9"/>
+    </Style>
+
+    <!-- Step play marker (odd) -->
+    <Style x:Key="PF1" TargetType="con:StepPlayMarker" BasedOn="{StaticResource PFMenu}">
+        <Setter Property="Background" Value="Red"/>
+        <Setter Property="InnerBrush" Value="Red"/>
+    </Style>
+    
+    <Style x:Key="PF1M" TargetType="con:StepPlayMarker" BasedOn="{StaticResource PF1}">
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="CornerRadius" Value="0"/>
+        <Setter Property="Visibility" Value="Collapsed"/>
+    </Style>
+
+    <!-- Step play marker (second) -->
+    <Style x:Key="PF2" TargetType="con:StepPlayMarker" BasedOn="{StaticResource PFMenu}">
+        <Setter Property="Background" Value="Blue"/>
+        <Setter Property="InnerBrush" Value="Blue"/>
+    </Style>
+
+    <Style x:Key="PF2M" TargetType="con:StepPlayMarker" BasedOn="{StaticResource PF2}">
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="CornerRadius" Value="0"/>
+        <Setter Property="Visibility" Value="Collapsed"/>
+    </Style>
+
+    <!-- Step play marker (3, 3 phrase) -->
+    <Style x:Key="PF33" TargetType="con:StepPlayMarker" BasedOn="{StaticResource PFMenu}">
+        <Setter Property="Background" Value="DarkRed"/>
+        <Setter Property="InnerBrush" Value="White"/>
+    </Style>   
+    
+    <Style x:Key="PF33M" TargetType="con:StepPlayMarker" BasedOn="{StaticResource PF33}">
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="CornerRadius" Value="0"/>
+        <Setter Property="Visibility" Value="Collapsed"/>
+    </Style>
+    
+    <!-- Step play marker (3, 4 phrase) -->
+    <Style x:Key="PF34" TargetType="con:StepPlayMarker" BasedOn="{StaticResource PFMenu}">
+        <Setter Property="Background" Value="Green"/>
+        <Setter Property="InnerBrush" Value="Yellow"/>
+    </Style>
+
+    <Style x:Key="PF34M" TargetType="con:StepPlayMarker" BasedOn="{StaticResource PF34}">
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="CornerRadius" Value="0"/>
+        <Setter Property="Visibility" Value="Collapsed"/>
+    </Style>
+    
+    <!-- Step play marker (fourth) -->
+    <Style x:Key="PF4" TargetType="con:StepPlayMarker" BasedOn="{StaticResource PFMenu}">
+        <Setter Property="Background" Value="DarkBlue"/>
+        <Setter Property="InnerBrush" Value="White"/>
+    </Style>
+    
+    <Style x:Key="PF4M" TargetType="con:StepPlayMarker" BasedOn="{StaticResource PF4}">
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+        <Setter Property="CornerRadius" Value="0"/>
+        <Setter Property="Visibility" Value="Collapsed"/>
+    </Style>
+
     <ControlTemplate x:Key="TrackBoxStepControlTemplate" TargetType="{x:Type con:TrackBox}">
          <Border x:Name="PART_BORDER" BorderBrush="DarkBlue" BorderThickness="2" Background="Transparent" Margin="3" CornerRadius="0">
             <Grid>
@@ -799,7 +890,7 @@
                             Command="{Binding Commands[SwitchFrequency], RelativeSource={RelativeSource TemplatedParent}}"
                             CommandParameter="{StaticResource StepFrequencyOdd}">
                             <MenuItem.Icon>
-                                <Image Source="/DrumMaster.Controls;component/Resources/Images/Image.Beat.Pass.1.48.png" Height="18" Width="18"/>
+                                <con:StepPlayMarker Style="{StaticResource PF1}"/>
                             </MenuItem.Icon>
                         </MenuItem>
 
@@ -808,28 +899,37 @@
                             Command="{Binding Commands[SwitchFrequency], RelativeSource={RelativeSource TemplatedParent}}"
                             CommandParameter="{StaticResource StepFrequencySecond}">
                             <MenuItem.Icon>
-                                <Image Source="/DrumMaster.Controls;component/Resources/Images/Image.Beat.Pass.2.48.png" Height="18" Width="18"/>
+                                <con:StepPlayMarker Style="{StaticResource PF2}"/>
                             </MenuItem.Icon>
                         </MenuItem>
 
                         <MenuItem
-                            Header="Third pass"
+                            Header="Third pass (3 phrase)"
                             Command="{Binding Commands[SwitchFrequency], RelativeSource={RelativeSource TemplatedParent}}"
-                            CommandParameter="{StaticResource StepFrequencyThird}">
+                            CommandParameter="{StaticResource StepFrequencyThird3}">
                             <MenuItem.Icon>
-                                <Image Source="/DrumMaster.Controls;component/Resources/Images/Image.Beat.Pass.3.48.png" Height="18" Width="18"/>
+                                <con:StepPlayMarker Style="{StaticResource PF33}"/>
                             </MenuItem.Icon>
                         </MenuItem>
-
+                        
+                        <MenuItem
+                            Header="Third pass (4 phrase)"
+                            Command="{Binding Commands[SwitchFrequency], RelativeSource={RelativeSource TemplatedParent}}"
+                            CommandParameter="{StaticResource StepFrequencyThird4}">
+                            <MenuItem.Icon>
+                                <con:StepPlayMarker Style="{StaticResource PF34}"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        
                         <MenuItem
                             Header="Fourth pass"
                             Command="{Binding Commands[SwitchFrequency], RelativeSource={RelativeSource TemplatedParent}}"
                             CommandParameter="{StaticResource StepFrequencyFourth}">
                             <MenuItem.Icon>
-                                <Image Source="/DrumMaster.Controls;component/Resources/Images/Image.Beat.Pass.4.48.png" Height="18" Width="18"/>
+                                <con:StepPlayMarker Style="{StaticResource PF4}"/>
                             </MenuItem.Icon>
                         </MenuItem>
-
+                        
                         <Separator/>
                         
                         <MenuItem
@@ -853,75 +953,68 @@
                     Visibility="Collapsed"/>
 
                 <!-- Indicator when the beat is for odd numbered pass only -->
-                <Border
-                    x:Name="PART_FREQ1"
-                    HorizontalAlignment="Left"
-                    Background="Transparent"
-                    Width="{Binding ActualWidth,ElementName=PART_BORDER,Converter={con:DoubleToPercentageDoubleConverter},ConverterParameter=0.20}"
-                    Height="{Binding Width,RelativeSource={RelativeSource Self}}">
+                <con:StepPlayMarker
+                    x:Name="PART_PF1"
+                    Style="{StaticResource PF1M}"
+                    Width="{Binding ActualWidth,ElementName=PART_BORDER,Converter={con:DoubleToPercentageDoubleConverter},ConverterParameter=0.20}">
                     
-                    <Image Source="/DrumMaster.Controls;component/Resources/Images/Image.Beat.Pass.1.48.png" />
-                    
-                </Border>
+                </con:StepPlayMarker>
 
                 <!-- Indicator when the beat is for every second pass -->
-                <Border 
-                    x:Name="PART_FREQ2"
-                    HorizontalAlignment="Right"
-                    Background="Transparent"
-                    Width="{Binding ActualWidth,ElementName=PART_BORDER,Converter={con:DoubleToPercentageDoubleConverter},ConverterParameter=0.20}"
-                    Height="{Binding Width,RelativeSource={RelativeSource Self}}">
+                <con:StepPlayMarker 
+                    x:Name="PART_PF2"
+                    Style="{StaticResource PF2M}"
+                    Width="{Binding ActualWidth,ElementName=PART_BORDER,Converter={con:DoubleToPercentageDoubleConverter},ConverterParameter=0.20}">
+                </con:StepPlayMarker>
 
-                    <Image Source="/DrumMaster.Controls;component/Resources/Images/Image.Beat.Pass.2.48.png" />
-                </Border>
-
-                <!-- Indicator when the beat is for every third pass -->
-                <Border
-                    x:Name="PART_FREQ3"
-                    HorizontalAlignment="Left"
-                    Background="Transparent"
-                    Width="{Binding ActualWidth,ElementName=PART_BORDER,Converter={con:DoubleToPercentageDoubleConverter},ConverterParameter=0.20}"
-                    Height="{Binding Width,RelativeSource={RelativeSource Self}}">
-
-                    <Image Source="/DrumMaster.Controls;component/Resources/Images/Image.Beat.Pass.3.48.png" />
-                </Border>
+                <!-- Indicator when the beat is for every third pass (3 phrase) -->
+                <con:StepPlayMarker
+                    x:Name="PART_PF33"
+                    Style="{StaticResource PF33M}"
+                    Width="{Binding ActualWidth,ElementName=PART_BORDER,Converter={con:DoubleToPercentageDoubleConverter},ConverterParameter=0.20}">
+                </con:StepPlayMarker>
+                
+                 <!-- Indicator when the beat is for third pass (4 phrase) -->
+                <con:StepPlayMarker
+                    x:Name="PART_PF34"
+                    Style="{StaticResource PF34M}"
+                    Width="{Binding ActualWidth,ElementName=PART_BORDER,Converter={con:DoubleToPercentageDoubleConverter},ConverterParameter=0.20}">
+                </con:StepPlayMarker>               
                 
                 <!-- Indicator when the beat is for every fourth pass -->
-                <Border 
-                    x:Name="PART_FREQ4"
-                    HorizontalAlignment="Right"
-                    Background="Transparent"
-                    Width="{Binding ActualWidth,ElementName=PART_BORDER,Converter={con:DoubleToPercentageDoubleConverter},ConverterParameter=0.20}"
-                    Height="{Binding Width,RelativeSource={RelativeSource Self}}">
-                    
-                    <Image Source="/DrumMaster.Controls;component/Resources/Images/Image.Beat.Pass.4.48.png" />
-                    
-                </Border>
-
+                <con:StepPlayMarker
+                    x:Name="PART_PF4"
+                    Style="{StaticResource PF4M}"
+                    Width="{Binding ActualWidth,ElementName=PART_BORDER,Converter={con:DoubleToPercentageDoubleConverter},ConverterParameter=0.20}">
+                </con:StepPlayMarker>
             </Grid>
         </Border>
         <ControlTemplate.Triggers>
             <Trigger Property="PlayFrequency" Value="None">
                 <Setter Property="Background" TargetName="PART_VOL" Value="LightGray"/>
             </Trigger>
-            <Trigger Property="PlayFrequency" Value="EveryPass">
+            <Trigger Property="PlayFrequency" Value="{StaticResource StepFrequencyEvery}">
                 <Setter Property="Background" TargetName="PART_BORDER" Value="{Binding SelectedBackgroundBrush, RelativeSource={RelativeSource TemplatedParent}}"/>
             </Trigger>
-            <Trigger Property="PlayFrequency" Value="EveryOddPass">
+            <Trigger Property="PlayFrequency" Value="{StaticResource StepFrequencyOdd}">
                 <Setter Property="Background" TargetName="PART_BORDER" Value="{Binding SelectedBackgroundBrush, RelativeSource={RelativeSource TemplatedParent}}"/>
-                <Setter Property="Visibility" TargetName="PART_FREQ1" Value="Visible"/>
+                <Setter Property="Visibility" TargetName="PART_PF1" Value="Visible"/>
             </Trigger>
-            <Trigger Property="PlayFrequency" Value="EverySecondPass">
+            <Trigger Property="PlayFrequency" Value="{StaticResource StepFrequencySecond}">
                 <Setter Property="Background" TargetName="PART_BORDER" Value="{Binding SelectedBackgroundBrush, RelativeSource={RelativeSource TemplatedParent}}"/>
-                <Setter Property="Visibility" TargetName="PART_FREQ2" Value="Visible"/>
+                <Setter Property="Visibility" TargetName="PART_PF2" Value="Visible"/>
             </Trigger>
-            <Trigger Property="PlayFrequency" Value="EveryThirdPass">
+            <Trigger Property="PlayFrequency" Value="{StaticResource StepFrequencyThird3}">
                 <Setter Property="Background" TargetName="PART_BORDER" Value="{Binding SelectedBackgroundBrush, RelativeSource={RelativeSource TemplatedParent}}"/>
-                <Setter Property="Visibility" TargetName="PART_FREQ3" Value="Visible"/>
+                <Setter Property="Visibility" TargetName="PART_PF33" Value="Visible"/>
             </Trigger>
-            <Trigger Property="PlayFrequency" Value="EveryFourthPass">
+            <Trigger Property="PlayFrequency" Value="{StaticResource StepFrequencyThird4}">
                 <Setter Property="Background" TargetName="PART_BORDER" Value="{Binding SelectedBackgroundBrush, RelativeSource={RelativeSource TemplatedParent}}"/>
-                <Setter Property="Visibility" TargetName="PART_FREQ4" Value="Visible"/>
+                <Setter Property="Visibility" TargetName="PART_PF34" Value="Visible"/>
+            </Trigger>
+            <Trigger Property="PlayFrequency" Value="{StaticResource StepFrequencyFourth}">
+                <Setter Property="Background" TargetName="PART_BORDER" Value="{Binding SelectedBackgroundBrush, RelativeSource={RelativeSource TemplatedParent}}"/>
+                <Setter Property="Visibility" TargetName="PART_PF4" Value="Visible"/>
             </Trigger>
             <Trigger Property="IsVolumeVisible" Value="True">
                 <Setter Property="Visibility" TargetName="PART_VOL" Value="Visible"/>

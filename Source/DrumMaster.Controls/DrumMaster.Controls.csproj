@@ -110,6 +110,7 @@
     <Compile Include="Controls\Envelope\EnvelopeControl.cs" />
     <Compile Include="Audio\Metronome.cs" />
     <Compile Include="Controls\Track\StepPlayFrequency.cs" />
+    <Compile Include="Controls\Track\StepPlayMarker.cs" />
     <Compile Include="Controls\Track\TrackSized.cs" />
     <Compile Include="Controls\Track\TrackBoxContainer.cs" />
     <Compile Include="Controls\Track\TrackController.cs" />
@@ -186,10 +187,6 @@
     <Resource Include="Resources\Images\Image.Slash.64.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Images\Image.Beat.Pass.2.48.png" />
-    <Resource Include="Resources\Images\Image.Beat.Pass.1.48.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Working\" />
   </ItemGroup>
   <ItemGroup>
@@ -208,12 +205,6 @@
   <ItemGroup>
     <Resource Include="Resources\Images\Image.Render.64.png" />
     <Resource Include="Resources\Images\Image.Render.Active.64.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Images\Image.Beat.Pass.3.48.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Images\Image.Beat.Pass.4.48.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

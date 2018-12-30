@@ -69,7 +69,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty PlayFrequencyProperty = DependencyProperty.Register
             (
-                nameof(PlayFrequency), typeof(StepPlayFrequency), typeof(TrackBox), new PropertyMetadata(StepPlayFrequency.Default, OnPlayFrequencyChanged )
+                nameof(PlayFrequency), typeof(StepPlayFrequency), typeof(TrackBox), new PropertyMetadata(StepPlayFrequency.None, OnPlayFrequencyChanged )
             );
 
 
@@ -144,7 +144,7 @@ namespace Restless.App.DrumMaster.Controls
             Height = Width = TrackVals.BoxSize.Default;
             Commands.Add("ToggleIsSelected", new RelayCommand(RunToggleIsSelectedCommand));
             Commands.Add("SwitchFrequency", new RelayCommand(RunSwitchStepFrequencyCommand));
-            playFrequency = StepPlayFrequency.Default;
+            playFrequency = StepPlayFrequency.None;
         }
 
         static TrackBox()
@@ -180,7 +180,7 @@ namespace Restless.App.DrumMaster.Controls
             {
                 if (e.Name == nameof(PlayFrequency))
                 {
-                    StepPlayFrequency result = StepPlayFrequency.Default;
+                    StepPlayFrequency result = StepPlayFrequency.None;
 
                     if (Enum.TryParse(e.Value, out result))
                     {
@@ -220,13 +220,15 @@ namespace Restless.App.DrumMaster.Controls
                     return false;
                 case StepPlayFrequency.EveryPass:
                     return true;
-                case StepPlayFrequency.EverySecondPass:
+                case StepPlayFrequency.SecondPass:
                     return pass % 2 == 0;
-                case StepPlayFrequency.EveryOddPass:
+                case StepPlayFrequency.OddPass:
                     return (pass + 1) % 2 == 0;
-                case StepPlayFrequency.EveryThirdPass:
+                case StepPlayFrequency.ThirdPass3:
                     return pass % 3 == 0;
-                case StepPlayFrequency.EveryFourthPass:
+                case StepPlayFrequency.ThirdPass4:
+                    return pass % 4 == 3;
+                case StepPlayFrequency.FourthPass:
                     return pass % 4 == 0;
                 default:
                     return false;

@@ -20,24 +20,25 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         EveryPass,
         /// <summary>
-        /// A step will play on pass 1,3,5,7, etc.
+        /// A step will play on pass 1, 3, 5, 7, etc.
         /// </summary>
-        EveryOddPass,
+        OddPass,
         /// <summary>
-        /// A step will play on pass 2,4,6 etc.
+        /// A step will play on pass 2, 4, 6, 8 etc.
         /// </summary>
-        EverySecondPass,
+        SecondPass,
         /// <summary>
         /// A step will play on pass 3, 6, 9, etc.
         /// </summary>
-        EveryThirdPass,
+        ThirdPass3,
         /// <summary>
-        /// A step will play every fourth pass.
+        /// A step will play on pass 3, 7, 11, 15, etc.
         /// </summary>
-        EveryFourthPass,
+        ThirdPass4,
         /// <summary>
-        /// The default.
+        /// A step will play on pass 4, 8, 12, 16, etc.
         /// </summary>
-        Default = None
+        FourthPass,
+
     }
 }

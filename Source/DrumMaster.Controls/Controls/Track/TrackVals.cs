@@ -93,6 +93,36 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
+        #region Measures
+        /// <summary>
+        /// Provides static values that define characteristics of measures.
+        /// </summary>
+        public static class Measures
+        {
+            /// <summary>
+            /// The minimum number of measures allowed.
+            /// </summary>
+            public const int Min = 1;
+
+            /// <summary>
+            /// The maximum number of measures allowed.
+            /// </summary>
+            public const int Max = 4;
+
+            /// <summary>
+            /// The default number of measures
+            /// </summary>
+            public const int Default = 1;
+
+            /// <summary>
+            /// The default measures text.
+            /// </summary>
+            public const string DefaultText = "Measures";
+        }
+        #endregion
+
+        /************************************************************************/
+
         #region Beats
         /// <summary>
         /// Provides static values that define beats characteristics.

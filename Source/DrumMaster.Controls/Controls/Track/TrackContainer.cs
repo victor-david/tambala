@@ -57,11 +57,6 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region Public fields
-        #endregion
-
-        /************************************************************************/
-
         #region Public properties (Tracks)
         /// <summary>
         /// Gets the track controllers
@@ -82,7 +77,7 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region Public properties (Tempo, beats, volume)
+        #region Public properties (Tempo, beats, measures)
         /// <summary>
         /// Gets or sets the tempo
         /// </summary>
@@ -99,6 +94,21 @@ namespace Restless.App.DrumMaster.Controls
             (
                 nameof(Tempo), typeof(double), typeof(TrackContainer), new PropertyMetadata(TrackVals.Tempo.Default, OnTempoChanged, OnTempoCoerce)
             );
+
+        private static void OnTempoChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TrackContainer c)
+            {
+                c.CalculateThreadSafeValues();
+                c.SetIsChanged();
+            }
+        }
+
+        private static object OnTempoCoerce(DependencyObject d, object baseValue)
+        {
+            double proposed = (double)baseValue;
+            return Math.Min(TrackVals.Tempo.Max, Math.Max(TrackVals.Tempo.Min, proposed));
+        }
 
         /// <summary>
         /// Gets or sets the tempo text descriptor
@@ -151,6 +161,12 @@ namespace Restless.App.DrumMaster.Controls
                 nameof(Beats), typeof(int), typeof(TrackContainer), new PropertyMetadata(TrackVals.Beats.Default, OnTotalStepsChanged, OnBeatsCoerce)
             );
 
+        private static object OnBeatsCoerce(DependencyObject d, object baseValue)
+        {
+            int proposed = (int)baseValue;
+            return Math.Min(TrackVals.Beats.Max, Math.Max(TrackVals.Beats.Min, proposed));
+        }
+
         /// <summary>
         /// Gets or sets the beats text descriptor
         /// </summary>
@@ -200,6 +216,12 @@ namespace Restless.App.DrumMaster.Controls
             (
                 nameof(StepsPerBeat), typeof(int), typeof(TrackContainer), new PropertyMetadata(TrackVals.StepsPerBeat.Default, OnTotalStepsChanged, OnStepsPerBeatCoerce)
             );
+
+        private static object OnStepsPerBeatCoerce(DependencyObject d, object baseValue)
+        {
+            int proposed = (int)baseValue;
+            return Math.Min(TrackVals.StepsPerBeat.Max, Math.Max(TrackVals.StepsPerBeat.Min, proposed));
+        }
 
         /// <summary>
         /// Gets or sets the steps per beat text descriptor
@@ -252,6 +274,147 @@ namespace Restless.App.DrumMaster.Controls
         /// Identifies the <see cref="TotalSteps"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TotalStepsProperty = TotalStepsPropertyKey.DependencyProperty;
+
+        private static void OnTotalStepsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TrackContainer c)
+            {
+                c.OnTotalStepsChanged();
+                c.CalculateThreadSafeValues();
+                c.SetIsChanged();
+            }
+        }
+        /***
+                /// <summary>
+                /// Gets or sets the number of proposed measures that <see cref="TotalSteps"/> represents. See remarks for more.
+                /// </summary>
+                /// <remarks>
+                /// This property contains the proposed number of measures used across <see cref="TotalSteps"/>.
+                /// The actual number of measures to use is represented by <see cref="Measures"/>. That property
+                /// takes into account <see cref="TotalSteps"/> and how theye may or may not be sub-divide
+                /// </remarks>
+                public int ProposedMeasures
+                {
+                    get => (int)GetValue(ProposedMeasuresProperty);
+                    set => SetValue(ProposedMeasuresProperty, value);
+                }
+
+                /// <summary>
+                /// Identifies the <see cref="ProposedMeasures"/> dependency property.
+                /// </summary>
+                public static readonly DependencyProperty ProposedMeasuresProperty = DependencyProperty.Register
+                    (
+                        nameof(ProposedMeasures), typeof(int), typeof(TrackContainer), new PropertyMetadata(TrackVals.Measures.Default, OnProposedMeasuresChanged, OnProposedMeasuresCoerce)
+                    );
+
+                private static object OnProposedMeasuresCoerce(DependencyObject d, object baseValue)
+                {
+                    return Math.Min(TrackVals.Measures.Max, Math.Max(TrackVals.Measures.Min, (int)baseValue));
+                }
+
+                private static void OnProposedMeasuresChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+                {
+                    if (d is TrackContainer c)
+                    {
+                        Debug.Assert(e.OldValue != null);
+                        int newVal = (int)e.NewValue;
+                        int oldVal = (int)e.OldValue;
+                        c.Measures = c.GetMeasures(newVal - oldVal);
+                    }
+                }
+
+                /// <summary>
+                /// Gets the number of actual measures to subdivide <see cref="TotalSteps"/>.
+                /// </summary>
+                public int Measures
+                {
+                    get => (int)GetValue(MeasuresProperty);
+                    private set => SetValue(MeasuresPropertyKey, value);
+                }
+
+                private static readonly DependencyPropertyKey MeasuresPropertyKey = DependencyProperty.RegisterReadOnly
+                    (
+                        nameof(Measures), typeof(int), typeof(TrackContainer), new PropertyMetadata(TrackVals.Measures.Default, OnMeasuresChanged)
+                    );
+
+                /// <summary>
+                /// Identifies the <see cref="Measures"/> dependency property.
+                /// </summary>
+                public static readonly DependencyProperty MeasuresProperty = MeasuresPropertyKey.DependencyProperty;
+
+
+
+                private static void OnMeasuresChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+                {
+                    if (d is TrackContainer c)
+                    {
+                        Debug.WriteLine($"REAL measures changed to {c.Measures} {e.NewValue}");
+                        c.SetIsChanged();
+                    }
+                }
+
+                private int GetMeasures(int direction)
+                {
+                    // Measures can be: 1,2,3,4
+                    // Total steps can be: 3-48
+                    int totalSteps = TotalSteps;
+                    int current = Measures;
+                    Debug.WriteLine($"GetPermittedMeasures, total steps: {totalSteps}. Current: {current} Direction: {direction}");
+                    if (totalSteps < 4) return 1;
+
+                    if (totalSteps == 4)
+                    {
+                        return (direction > 0) ? 2 : 1;
+                    }
+
+                    // Check odd numbered steps. Only choice is 1 measure or 3.
+                    if (totalSteps % 2 == 1)
+                    {
+                        // anything less than 9 (5 or 7) can't be split evenly.
+                        // if (totalSteps < 9) return 1;
+                        if (totalSteps % 3 == 0)
+                        {
+                            return (direction > 0) ? 3 : 1;
+                        }
+                        return 1;
+                    }
+
+                    return ProposedMeasures;
+                }
+
+                /// <summary>
+                /// Gets or sets the measures text descriptor.
+                /// </summary>
+                public string MeasuresText
+                {
+                    get => (string)GetValue(MeasuresTextProperty);
+                    set => SetValue(MeasuresTextProperty, value);
+                }
+
+                /// <summary>
+                /// Identifies the <see cref="MeasuresText"/> dependency property.
+                /// </summary>
+                public static readonly DependencyProperty MeasuresTextProperty = DependencyProperty.Register
+                    (
+                        nameof(MeasuresText), typeof(string), typeof(TrackContainer), new PropertyMetadata(TrackVals.Measures.DefaultText)
+                    );
+
+                /// <summary>
+                /// Gets the minimum measures allowed. Used for binding in the control template.
+                /// </summary>
+                public int MinMeasures
+                {
+                    get => TrackVals.Measures.Min;
+                }
+
+                /// <summary>
+                /// Gets the maximum measures allowed. Used for binding in the control template.
+                /// </summary>
+                public int MaxMeasures
+                {
+                    get => TrackVals.Measures.Max;
+                }
+        ***/
 
         /// <summary>
         /// Gets or sets a value that indicates if the metronome is active.
@@ -373,6 +536,14 @@ namespace Restless.App.DrumMaster.Controls
                 nameof(StopImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null, OnPlayImageSourceChanged)
             );
 
+        private static void OnPlayImageSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TrackContainer c)
+            {
+                c.OnPlayImageSourceChanged();
+            }
+        }
+
         /// <summary>
         /// Gets or sets the image source to use for the add track button.
         /// </summary>
@@ -443,7 +614,6 @@ namespace Restless.App.DrumMaster.Controls
                 nameof(ActivatedRenderImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null)
             );
 
-
         /// <summary>
         /// Gets or sets the image to use for the metronone
         /// </summary>
@@ -499,6 +669,14 @@ namespace Restless.App.DrumMaster.Controls
                 nameof(DisplayName), typeof(string), typeof(TrackContainer), new PropertyMetadata(null, OnDisplayNameChanged)
             );
 
+        private static void OnDisplayNameChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TrackContainer c)
+            {
+                c.SetIsChanged();
+            }
+        }
+
         /// <summary>
         /// Gets the current file name for the container, or null if none.
         /// This is the .xml file
@@ -517,16 +695,6 @@ namespace Restless.App.DrumMaster.Controls
             get;
             private set;
         }
-
-        ///// <summary>
-        ///// Gets the current rendering file name for the container, or null if none.
-        ///// This is the .wav file
-        ///// </summary>
-        //public string RenderFileName
-        //{
-        //    get;
-        //    private set;
-        //}
         #endregion
 
         /************************************************************************/
@@ -588,6 +756,15 @@ namespace Restless.App.DrumMaster.Controls
         /// Identifies the <see cref="IsStarted"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsStartedProperty = IsStartedPropertyKey.DependencyProperty;
+
+        private static void OnIsStartedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TrackContainer c)
+            {
+                c.OnIsStartedChanged();
+                c.OnPlayImageSourceChanged();
+            }
+        }
 
         /// <summary>
         /// Gets the counter text
@@ -1085,14 +1262,15 @@ namespace Restless.App.DrumMaster.Controls
                     {
                         switch (box.PlayFrequency)
                         {
-                            case StepPlayFrequency.EveryOddPass:
-                            case StepPlayFrequency.EverySecondPass:
+                            case StepPlayFrequency.OddPass:
+                            case StepPlayFrequency.SecondPass:
                                 maxPass = Math.Max(maxPass, 2);
                                 break;
-                            case StepPlayFrequency.EveryThirdPass:
+                            case StepPlayFrequency.ThirdPass3:
                                 maxPass = Math.Max(maxPass, 3);
                                 break;
-                            case StepPlayFrequency.EveryFourthPass:
+                            case StepPlayFrequency.ThirdPass4:
+                            case StepPlayFrequency.FourthPass:
                                 maxPass = Math.Max(maxPass, 4);
                                 break;
                         }
@@ -1100,7 +1278,6 @@ namespace Restless.App.DrumMaster.Controls
                 }
             }
             return maxPass;
-
         }
 
         private void RunToggleMuteCommand(object parm)
@@ -1281,73 +1458,6 @@ namespace Restless.App.DrumMaster.Controls
             {
                 ResetIsChanged();
             }
-        }
-        #endregion
-
-        /************************************************************************/
-
-        #region Private methods (Static)
-
-        private static void OnDisplayNameChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is TrackContainer c)
-            {
-                c.SetIsChanged();
-            }
-        }
-
-        private static void OnTempoChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is TrackContainer c)
-            {
-                c.CalculateThreadSafeValues();
-                c.SetIsChanged();
-            }
-        }
-
-        private static void OnTotalStepsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is TrackContainer c)
-            {
-                c.OnTotalStepsChanged();
-                c.CalculateThreadSafeValues();
-                c.SetIsChanged();
-            }
-        }
-
-        private static void OnIsStartedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is TrackContainer c)
-            {
-                c.OnIsStartedChanged();
-                c.OnPlayImageSourceChanged();
-            }
-        }
-
-        private static void OnPlayImageSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is TrackContainer c)
-            {
-                c.OnPlayImageSourceChanged();
-            }
-        }
-
-        private static object OnTempoCoerce(DependencyObject d, object baseValue)
-        {
-            double proposed = (double)baseValue;
-            return Math.Min(TrackVals.Tempo.Max, Math.Max(TrackVals.Tempo.Min, proposed));
-        }
-
-        private static object OnBeatsCoerce(DependencyObject d, object baseValue)
-        {
-            int proposed = (int)baseValue;
-            return Math.Min(TrackVals.Beats.Max, Math.Max(TrackVals.Beats.Min, proposed));
-        }
-
-        private static object OnStepsPerBeatCoerce(DependencyObject d, object baseValue)
-        {
-            int proposed = (int)baseValue;
-            return Math.Min(TrackVals.StepsPerBeat.Max, Math.Max(TrackVals.StepsPerBeat.Min, proposed));
         }
         #endregion
     }
