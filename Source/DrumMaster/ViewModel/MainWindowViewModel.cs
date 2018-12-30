@@ -1,7 +1,6 @@
 ﻿using Restless.App.DrumMaster.Controls.Core;
 using Restless.App.DrumMaster.Core;
 using Restless.App.DrumMaster.Resources;
-using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Threading;
@@ -107,7 +106,6 @@ namespace Restless.App.DrumMaster.ViewModel
             }
         }
 
-
         private void RunOpenLayoutCommand(object parm)
         {
             if (IsOkayToClose())
@@ -123,9 +121,6 @@ namespace Restless.App.DrumMaster.ViewModel
                     CloseTrackContainer();
                 }
             }
-            
-            //OpenFileDialog dialog = new OpenFileDialog();
-            //dialog.ShowDialog();
         }
 
         private void CloseTrackContainer()
@@ -142,7 +137,7 @@ namespace Restless.App.DrumMaster.ViewModel
             bool isOkay = TrackContainer == null || !TrackContainer.IsChanged;
             if (!isOkay)
             {
-                var result = MessageBox.Show($"{Strings.MessageConfirmSave} {TrackContainer.DisplayName}?", Strings.MessageDrumMaster, MessageBoxButton.YesNoCancel);
+                var result = MessageBox.Show($"{Strings.MessageConfirmSave} {TrackContainer.Container.DisplayName}?", Strings.MessageDrumMaster, MessageBoxButton.YesNoCancel);
                 switch (result)
                 {
                     case MessageBoxResult.Yes:
@@ -155,7 +150,6 @@ namespace Restless.App.DrumMaster.ViewModel
             }
             return isOkay;
         }
-
 
         private void CreateLayout()
         {
