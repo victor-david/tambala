@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpDX.XAudio2;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -212,6 +213,12 @@ namespace Restless.App.DrumMaster.Controls
         /************************************************************************/
 
         #region Internal methods
+        /// <summary>
+        /// Returns a boolean value that indicates if this beat
+        /// can play for the specified pass.
+        /// </summary>
+        /// <param name="pass">The pass</param>
+        /// <returns>true if this beat can play on the pass; otherwise, false.</returns>
         internal bool CanPlay(int pass)
         {
             switch (playFrequency)
@@ -232,6 +239,26 @@ namespace Restless.App.DrumMaster.Controls
                     return pass % 4 == 0;
                 default:
                     return false;
+            }
+        }
+
+        /// <summary>
+        /// Applies the human volume bias according to the value specified
+        /// by <paramref name="biasFactor"/>. If 0.0, this method returns
+        /// without doing anything.
+        /// </summary>
+        /// <param name="random">The random generator object.</param>
+        /// <param name="biasFactor">The bias factor to apply.</param>
+        internal void ApplyHumanVolumeBias(Random random, float biasFactor)
+        {
+            if (biasFactor > TrackVals.HumanVolumeBias.Min)
+            {
+                // biasFactor is expressed as a value between zero and HumanVolumeBias.Max (7.5)
+                int factor = (int)(biasFactor * 10000.0f);
+                int r = random.Next(-factor, factor);
+                float rf = r / 10000.0f;
+                float dbVol = VolumeRaw + VolumeBiasRaw + rf;
+                VolumeInternal = XAudio2.DecibelsToAmplitudeRatio(dbVol);
             }
         }
         #endregion

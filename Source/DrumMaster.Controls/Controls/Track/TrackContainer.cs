@@ -1192,8 +1192,6 @@ namespace Restless.App.DrumMaster.Controls
                 Piece = piece,
                 MutedImageSource = MutedImageSource,
                 VoicedImageSource = VoicedImageSource,
-                IsPitchEnabled = TrackVals.Pitch.IsEnabledDefault,
-                IsPanningEnabled = TrackVals.Panning.IsEnabledDefault,
             });
 
             TrackBoxes.Add(new TrackBoxContainer()

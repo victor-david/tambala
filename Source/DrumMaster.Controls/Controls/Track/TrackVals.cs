@@ -248,7 +248,14 @@ namespace Restless.App.DrumMaster.Controls
         #region Volume Bias
         /// <summary>
         /// Provides static values that define volume bias.
+        /// See remarks for how these values are used.
         /// </summary>
+        /// <remarks>
+        /// Volume bias is used on individual beats to provide accents
+        /// and ghost notes. The user can set the volume bias of each beat
+        /// and the volume will be adjusted accordingly during playback.
+        /// Volume bias is expressed as dB.
+        /// </remarks>
         public static class VolumeBias
         {
             /// <summary>
@@ -263,6 +270,38 @@ namespace Restless.App.DrumMaster.Controls
 
             /// <summary>
             /// The default volume bias, i.e. none.
+            /// </summary>
+            public const float Default = 0.0f;
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region Human Volume Bias
+        /// <summary>
+        /// Provides static values that define human volume bias. 
+        /// See remarks for how these values are used.
+        /// </summary>
+        /// <remarks>
+        /// If enabled (i.e. not 0.0, off), human volume bias is applied randomly
+        /// to individual beats during playback. The human bias calculation
+        /// gets a value between -humanBias (softer hit) and +humanBias (harder hit).
+        /// Human bias is expressed as dB.
+        /// </remarks>
+        public static class HumanVolumeBias
+        {
+            /// <summary>
+            /// The minimum human volume bias allowed in decibels.
+            /// </summary>
+            public const float Min = 0.0f;
+
+            /// <summary>
+            /// The maximum human volume bias allowed in decibels.
+            /// </summary>
+            public const float Max = 7.5f;
+
+            /// <summary>
+            /// The default human volume bias, i.e. off.
             /// </summary>
             public const float Default = 0.0f;
         }
@@ -295,11 +334,6 @@ namespace Restless.App.DrumMaster.Controls
             /// The default pitch. Corresponds to no pitch change.
             /// </summary>
             public const float Default = 0.0f;
-
-            /// <summary>
-            /// The default for is pitch enabled.
-            /// </summary>
-            public const bool IsEnabledDefault = true;
         }
         #endregion
 
@@ -329,11 +363,6 @@ namespace Restless.App.DrumMaster.Controls
             /// The default panning value. represents all the way right.
             /// </summary>
             public const float Default = 0.5f;
-
-            /// <summary>
-            /// The default for is panning enabled.
-            /// </summary>
-            public const bool IsEnabledDefault = true;
         }
         #endregion
     }

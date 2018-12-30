@@ -53,7 +53,9 @@ namespace Restless.App.DrumMaster.Controls
         {
             if (d is TrackControlBase c)
             {
-                c.VolumeInternal = XAudio2.DecibelsToAmplitudeRatio((float)e.NewValue);
+                // Save volume for later thread safe access.
+                c.VolumeRaw = (float)e.NewValue;
+                c.VolumeInternal = XAudio2.DecibelsToAmplitudeRatio(c.VolumeRaw);
                 c.VolumeDecibelText = (c.Volume <= TrackVals.Volume.Min) ? "Off" : $"{c.Volume:N1}dB";
                 c.IsAutoMuted = c.Volume == TrackVals.Volume.Min;
                 c.OnVolumeChanged();
@@ -108,7 +110,9 @@ namespace Restless.App.DrumMaster.Controls
         {
             if (d is TrackControlBase c)
             {
-                float dbVol = c.Volume + (float)e.NewValue;
+                // Save volume bias in private var for later thread safe access.
+                c.VolumeBiasRaw = (float)e.NewValue;
+                float dbVol = c.VolumeRaw + c.VolumeBiasRaw;
                 c.VolumeInternal = XAudio2.DecibelsToAmplitudeRatio(dbVol);
                 c.OnVolumeChanged();
                 c.SetIsChanged();
@@ -207,7 +211,7 @@ namespace Restless.App.DrumMaster.Controls
         }
 
         /// <summary>
-        /// Gets the maximum volume allowed.Used for binding in the control template.
+        /// Gets the maximum volume bias allowed. Used for binding in the control template.
         /// </summary>
         public float MaxVolumeBias
         {
@@ -218,23 +222,6 @@ namespace Restless.App.DrumMaster.Controls
         /************************************************************************/
 
         #region Public properties (Panning)
-        /// <summary>
-        /// Gets or sets a boolean value that indicates if panning is available.
-        /// </summary>
-        public bool IsPanningEnabled
-        {
-            get => (bool)GetValue(IsPanningEnabledProperty);
-            set => SetValue(IsPanningEnabledProperty, value);
-        }
-
-        /// <summary>
-        /// Identifies the <see cref="IsPanningEnabled"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty IsPanningEnabledProperty = DependencyProperty.Register
-            (
-                nameof(IsPanningEnabled), typeof(bool), typeof(TrackControlBase), new PropertyMetadata(TrackVals.Panning.IsEnabledDefault)
-            );
-
         /// <summary>
         /// Gets or sets the track panning.
         /// </summary>
@@ -310,23 +297,6 @@ namespace Restless.App.DrumMaster.Controls
 
         #region Public properties (Pitch)
         /// <summary>
-        /// Gets a boolean value that indicates if pitch change is available
-        /// </summary>
-        public bool IsPitchEnabled
-        {
-            get => (bool)GetValue(IsPitchEnabledProperty);
-            set => SetValue(IsPitchEnabledProperty, value);
-        }
-
-        /// <summary>
-        /// Identifies the <see cref="IsPitchEnabled"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty IsPitchEnabledProperty = DependencyProperty.Register
-            (
-                nameof(IsPitchEnabled), typeof(bool), typeof(TrackControlBase), new PropertyMetadata(true)
-            );
-
-        /// <summary>
         /// Gets or sets the pitch. 
         /// Pitch is expressed as a semi tone value between <see cref="TrackVals.Pitch.Min"/> and <see cref="TrackVals.Pitch.Max"/>
         /// </summary>
@@ -346,7 +316,7 @@ namespace Restless.App.DrumMaster.Controls
 
         private static void OnPitchChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is TrackControlBase c && c.IsPitchEnabled)
+            if (d is TrackControlBase c)
             {
                 c.PitchInternal = XAudio2.SemitonesToFrequencyRatio((float)e.NewValue);
                 c.OnPitchChanged();
@@ -622,6 +592,24 @@ namespace Restless.App.DrumMaster.Controls
         }
 
         /// <summary>
+        /// Gets the thread safe raw value of <see cref="Volume"/>. This value is expressed in dB.
+        /// </summary>
+        protected float VolumeRaw
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the thread value of <see cref="VolumeBias"/>. This value is expressed in dB.
+        /// </summary>
+        protected float VolumeBiasRaw
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         /// Gets the thread safe volume value. 
         /// This value is calculated from <see cref="Volume"/>, which is expressed as a dB value
         /// </summary>
@@ -632,7 +620,7 @@ namespace Restless.App.DrumMaster.Controls
         internal float VolumeInternal
         {
             get;
-            private set;
+            set;
         }
 
         /// <summary>
@@ -707,8 +695,18 @@ namespace Restless.App.DrumMaster.Controls
             Commands = new Dictionary<string, ICommand>();
             Commands.Add("ToggleExpanded", new RelayCommand(RunToggleExpandedCommand));
 
+            /* 
+             * The following are thread safe values used in real time from the play thread.
+             * They get updated via the dependency properties and are set here to match the
+             * DP default value. Although not strictly necessary to set VolumeRaw and
+             * and VolumeBiasRaw (because their defaults are 0.0), we do so here in case we 
+             * later decide to change TrackVals.Volume.Default and/or TrackVals.VolumeBias.Default
+             */
+            VolumeRaw = TrackVals.Volume.Default;
+            VolumeBiasRaw = TrackVals.VolumeBias.Default;
             VolumeInternal = XAudio2.DecibelsToAmplitudeRatio(TrackVals.Volume.Default);
             PitchInternal = XAudio2.SemitonesToFrequencyRatio(TrackVals.Pitch.Default);
+
             VolumeDecibelText = (Volume <= TrackVals.Volume.Min) ? "Off" : $"{Volume:N1}dB";
             SetPanningText();
             OnVolumeChanged();
@@ -792,7 +790,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         protected virtual void OnIsMutedChanged()
         {
-            ActiveMutedImageSource = (IsMuted) ? MutedImageSource : VoicedImageSource;
+            ActiveMutedImageSource = IsMuted ? MutedImageSource : VoicedImageSource;
         }
 
         /// <summary>
@@ -814,7 +812,7 @@ namespace Restless.App.DrumMaster.Controls
             RoutedEventArgs args = new RoutedEventArgs(IsChangedResetEvent);
             RaiseEvent(args);
         }
-
+        
         /// <summary>
         /// Sets the specified dependency property to the specified string.
         /// </summary>

@@ -20,12 +20,11 @@ namespace Restless.App.DrumMaster.Controls
         private Grid hostGrid;
         private TrackController controller;
         private XElement holdElement;
-        //private EnvelopeControl volumeEnvelope;
         #endregion
 
         /************************************************************************/
 
-        #region Public properties (Type / Steps / Sizes)
+        #region Public properties (Type / Steps)
         /// <summary>
         /// Gets or sets the box type.
         /// </summary>
@@ -258,8 +257,6 @@ namespace Restless.App.DrumMaster.Controls
             }
             return false;
         }
-
-
         #endregion
 
         /************************************************************************/
@@ -300,8 +297,6 @@ namespace Restless.App.DrumMaster.Controls
                     }
                 }
                 
-                //Grid.SetColumnSpan(hostGrid.Children[0], TotalSteps);
-
                 RoutedEventArgs args = new RoutedEventArgs(TotalStepsChangedEvent);
                 RaiseEvent(args);
             }

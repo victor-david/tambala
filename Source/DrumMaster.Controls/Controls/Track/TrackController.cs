@@ -29,6 +29,8 @@ namespace Restless.App.DrumMaster.Controls
         private VoicePool voicePool;
         private readonly int channelCount;
         private readonly float[] channelVolumes;
+        private float humanVolumeBias;
+        private readonly Random random;
         #endregion
 
         /************************************************************************/
@@ -100,6 +102,59 @@ namespace Restless.App.DrumMaster.Controls
             {
                 c.BoxContainer.Boxes.SetVolumeVisibility(c.IsTrackBoxVolumeVisible);
             }
+        }
+
+        /// <summary>
+        /// Gets or sets a value that determines the volume variance to apply during playback.
+        /// This property applies to individual beats
+        /// </summary>
+        public float HumanVolumeBias
+        {
+            get => (float)GetValue(HumanVolumeBiasProperty);
+            set => SetValue(HumanVolumeBiasProperty, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="HumanVolumeBias"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty HumanVolumeBiasProperty = DependencyProperty.Register
+            (
+                nameof(HumanVolumeBias), typeof(float), typeof(TrackController), new PropertyMetadata
+                    (
+                        TrackVals.HumanVolumeBias.Default, OnHumanVolumeBiasChanged, OnHumanVolumeBiasCoerce
+                    )
+            );
+
+        private static void OnHumanVolumeBiasChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TrackController c)
+            {
+                // Save human volume bias for later thread safe access.
+                c.humanVolumeBias = (float)e.NewValue;
+                c.SetIsChanged();
+            }
+        }
+
+        private static object OnHumanVolumeBiasCoerce(DependencyObject d, object baseValue)
+        {
+            float proposed = (float)baseValue;
+            return Math.Min(TrackVals.HumanVolumeBias.Max, Math.Max(TrackVals.HumanVolumeBias.Min, proposed));
+        }
+
+        /// <summary>
+        /// Gets the minimum human volume bias allowed. Used for binding in the control template.
+        /// </summary>
+        public float MinHumanVolumeBias
+        {
+            get => TrackVals.HumanVolumeBias.Min;
+        }
+
+        /// <summary>
+        /// Gets the maximum human volume bias allowed. Used for binding in the control template.
+        /// </summary>
+        public float MaxHumanVolumeBias
+        {
+            get => TrackVals.HumanVolumeBias.Max;
         }
         #endregion
 
@@ -232,6 +287,7 @@ namespace Restless.App.DrumMaster.Controls
             channelVolumes = new float[channelCount];
             channelVolumes[0] = 1.0f;
             channelVolumes[1] = 1.0f;
+            random = new Random(DateTime.Now.Minute * DateTime.Now.Minute);
 
             Commands.Add("ToggleMute", new RelayCommand(RunToggleMuteCommand));
             Commands.Add("ShiftLeft", new RelayCommand(RunShiftLeftCommand));
@@ -280,9 +336,8 @@ namespace Restless.App.DrumMaster.Controls
             element.Add(new XElement(nameof(Volume), Volume));
             element.Add(new XElement(nameof(Panning), Panning));
             element.Add(new XElement(nameof(Pitch), Pitch));
+            element.Add(new XElement(nameof(HumanVolumeBias), HumanVolumeBias));
             element.Add(new XElement(nameof(IsMuted), IsMuted));
-            element.Add(new XElement(nameof(IsPanningEnabled), IsPanningEnabled));
-            element.Add(new XElement(nameof(IsPitchEnabled), IsPitchEnabled));
             element.Add(new XElement(nameof(IsTrackBoxVolumeVisible), IsTrackBoxVolumeVisible));
             element.Add(Piece.GetXElement());
             element.Add(BoxContainer.GetXElement());
@@ -295,20 +350,15 @@ namespace Restless.App.DrumMaster.Controls
         /// <param name="element">The element</param>
         public override void RestoreFromXElement(XElement element)
         {
-            // Need to hold onto this value until the box container is restored.
-            // bool isTrackBoxVolumeVisible = false;
-
             IEnumerable<XElement> childList = from el in element.Elements() select el;
 
             foreach (XElement e in childList)
             {
-                //Debug.WriteLine($"Name of node:{e.Name}");
                 if (e.Name == nameof(Volume)) SetDependencyProperty(VolumeProperty, e.Value);
                 if (e.Name == nameof(Panning)) SetDependencyProperty(PanningProperty, e.Value);
                 if (e.Name == nameof(Pitch)) SetDependencyProperty(PitchProperty, e.Value);
+                if (e.Name == nameof(HumanVolumeBias)) SetDependencyProperty(HumanVolumeBiasProperty, e.Value);
                 if (e.Name == nameof(IsMuted)) SetDependencyProperty(IsMutedProperty, e.Value);
-                if (e.Name == nameof(IsPanningEnabled)) SetDependencyProperty(IsPanningEnabledProperty, e.Value);
-                if (e.Name == nameof(IsPitchEnabled)) SetDependencyProperty(IsPitchEnabledProperty, e.Value);
                 if (e.Name == nameof(AudioPiece))
                 {
                     IEnumerable<XElement> audioList = from el in e.Elements() select el;
@@ -325,7 +375,6 @@ namespace Restless.App.DrumMaster.Controls
                 {
                     BoxContainer.RestoreFromXElement(e);
                 }
-
 
                 if (e.Name == nameof(IsTrackBoxVolumeVisible))
                 {
@@ -359,7 +408,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         protected override void OnPanningChanged()
         {
-            if (IsPanningEnabled && channelCount == 2)
+            if (channelCount == 2)
             {
                 // var p = GetLinearPanning(Panning);
                 var p = GetSquareRootPanning(Panning);
@@ -378,7 +427,7 @@ namespace Restless.App.DrumMaster.Controls
         {
             BoxContainer = boxContainer ?? throw new ArgumentNullException(nameof(boxContainer));
         }
-        
+
         internal void Play(int pass, int step, int operationSet)
         {
             if (isAudioEnabled && !IsUserMuted && !IsAutoMuted && step < BoxContainer.Boxes.Count)
@@ -387,6 +436,7 @@ namespace Restless.App.DrumMaster.Controls
                 {
                     if (BoxContainer.CanPlay(pass, step))
                     {
+                        BoxContainer.Boxes[step].ApplyHumanVolumeBias(random, humanVolumeBias);
                         voicePool.Play(BoxContainer.Boxes[step].VolumeInternal, PitchInternal, operationSet);
                     }
                 }
