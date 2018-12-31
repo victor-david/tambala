@@ -642,6 +642,7 @@
                     <Grid.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="View/hide beat volume" Command="{Binding Commands[ToggleBeatVolume], RelativeSource={RelativeSource TemplatedParent}}"/>
+                            <MenuItem Header="Reset all beat volume" Command="{Binding Commands[ResetBeatVolume], RelativeSource={RelativeSource TemplatedParent}}"/>
                             <Separator/>
                             <MenuItem Header="Remove Track" Command="{Binding Commands[RemoveTrack], RelativeSource={RelativeSource TemplatedParent}}">
                                 <MenuItem.Icon>
