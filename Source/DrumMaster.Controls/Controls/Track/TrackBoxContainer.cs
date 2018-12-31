@@ -249,6 +249,13 @@ namespace Restless.App.DrumMaster.Controls
             controller.SizeChanged += ControllerSizeChanged;
         }
 
+        /// <summary>
+        /// From this assembly, gets a value that indicates if the specified
+        /// pass and step can play.
+        /// </summary>
+        /// <param name="pass">The pass</param>
+        /// <param name="step">The step</param>
+        /// <returns>true if pass/step can play; otherwise, false.</returns>
         internal bool CanPlay(int pass, int step)
         {
             if (step < Boxes.Count)
@@ -256,6 +263,17 @@ namespace Restless.App.DrumMaster.Controls
                 return Boxes[step].CanPlay(pass);
             }
             return false;
+        }
+
+        /// <summary>
+        /// From this assembly, removes any human volume bias from each <see cref="TrackBox"/> in the container.
+        /// </summary>
+        internal void RemoveHumanVolumeBias()
+        {
+            foreach (TrackBox box in Boxes)
+            {
+                box.RemoveHumanVolumeBias();
+            }
         }
         #endregion
 

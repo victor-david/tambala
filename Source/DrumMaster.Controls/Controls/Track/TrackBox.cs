@@ -254,12 +254,20 @@ namespace Restless.App.DrumMaster.Controls
             if (biasFactor > TrackVals.HumanVolumeBias.Min)
             {
                 // biasFactor is expressed as a value between zero and HumanVolumeBias.Max (7.5)
-                int factor = (int)(biasFactor * 10000.0f);
-                int r = random.Next(-factor, factor);
-                float rf = r / 10000.0f;
-                float dbVol = VolumeRaw + VolumeBiasRaw + rf;
+                float minValue = -biasFactor;
+                float result = (float)random.NextDouble() * (biasFactor - minValue) + minValue;
+                float dbVol = VolumeRaw + VolumeBiasRaw + result;
                 VolumeInternal = XAudio2.DecibelsToAmplitudeRatio(dbVol);
             }
+        }
+
+        /// <summary>
+        /// From this assembly, removes any human volume bias that may be present.
+        /// </summary>
+        internal void RemoveHumanVolumeBias()
+        {
+            float dbVol = VolumeRaw + VolumeBiasRaw;
+            VolumeInternal = XAudio2.DecibelsToAmplitudeRatio(dbVol);
         }
         #endregion
 

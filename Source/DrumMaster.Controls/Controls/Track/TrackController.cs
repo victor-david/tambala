@@ -131,6 +131,10 @@ namespace Restless.App.DrumMaster.Controls
             {
                 // Save human volume bias for later thread safe access.
                 c.humanVolumeBias = (float)e.NewValue;
+                if (c.humanVolumeBias == TrackVals.HumanVolumeBias.Min)
+                {
+                    c.BoxContainer.RemoveHumanVolumeBias();
+                }
                 c.SetIsChanged();
             }
         }
