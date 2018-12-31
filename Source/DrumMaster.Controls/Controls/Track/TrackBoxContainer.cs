@@ -299,6 +299,12 @@ namespace Restless.App.DrumMaster.Controls
                             Width = BoxSize,
                             SelectedBackgroundBrush = SelectedBackgroundBrush,
                         };
+
+                        if (controller != null)
+                        {
+                            box.IsVolumeVisible = controller.IsTrackBoxVolumeVisible;
+                        }
+
                         Grid.SetColumn(box, hostGrid.ColumnDefinitions.Count - 1);
                         hostGrid.Children.Add(box);
                         Boxes.Add(box);
