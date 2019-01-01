@@ -149,7 +149,7 @@
     </Style>
 
     <ControlTemplate x:Key="MainVerticalSliderTemplate" TargetType="Slider">
-        <Grid Margin="5">
+        <Grid ShowGridLines="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" MinWidth="{TemplateBinding MinWidth}"/>
@@ -322,10 +322,24 @@
     </Style>
     
     <ControlTemplate x:Key="TrackContainerControlTemplate" TargetType="{x:Type con:TrackContainer}">
-        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
-            <DockPanel>
+        <Border
+            BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
+            Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Window}, Converter={con:DoubleAdditionConverter}, ConverterParameter=-120}"
+            Padding="{TemplateBinding Padding}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <!-- Header-->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Master controls -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Separator between master controls and tracks -->
+                    <RowDefinition Height="Auto"/>
+
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                
                 <!-- Header -->
-                <Border DockPanel.Dock="Top" Background="{StaticResource HeaderBrush}" Padding="6">
+                <Border Grid.Row="0" Background="{StaticResource HeaderBrush}" Padding="6">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -357,124 +371,123 @@
                             Foreground="White"
                             VerticalAlignment="Center"
                             Text="{TemplateBinding DisplayName}"/>
+
                     </Grid>
                 </Border>
 
-                <!-- Main panel that may be displayed or collapsed -->
-                <DockPanel DockPanel.Dock="Top" x:Name="PART_TRACK_LIST">
-                    <!-- Track Controllers-->
-                    <Grid DockPanel.Dock="Top" Margin="0,8">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="66"/>
-                            <ColumnDefinition Width="66"/>
-                            <ColumnDefinition Width="66"/>
-                            <ColumnDefinition Width="66"/>
-                            <ColumnDefinition Width="10"/>
-                            <ColumnDefinition Width="190"/>
-                            <ColumnDefinition Width="190"/>
-                            <ColumnDefinition Width="190"/>
-                            <ColumnDefinition Width="190"/>
-                            <ColumnDefinition Width="190"/>
-                            <ColumnDefinition Width="66"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Grid.Resources>
-                            <Style TargetType="Button" BasedOn="{StaticResource ButtonBaseFlat}">
-                                <!--<Setter Property="VerticalAlignment" Value="Bottom"/>
+                <!-- Master controls -->
+                <Grid x:Name="PART_TRACK_LIST" Grid.Row="1" Margin="0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="66"/>
+                        <ColumnDefinition Width="66"/>
+                        <ColumnDefinition Width="66"/>
+                        <ColumnDefinition Width="66"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="190"/>
+                        <ColumnDefinition Width="190"/>
+                        <ColumnDefinition Width="190"/>
+                        <ColumnDefinition Width="190"/>
+                        <ColumnDefinition Width="190"/>
+                        <ColumnDefinition Width="66"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.Resources>
+                        <Style TargetType="Button" BasedOn="{StaticResource ButtonBaseFlat}">
+                            <!--<Setter Property="VerticalAlignment" Value="Bottom"/>
                                 <Setter Property="Height" Value="48"/>-->
-                            </Style>
-                            <Style TargetType="Slider" BasedOn="{StaticResource MainSliderStyle}">
-                                <Setter Property="IsSnapToTickEnabled" Value="True"/>
-                                <Setter Property="TickFrequency" Value="1"/>
-                                <Setter Property="Margin" Value="0"/>
-                                <Setter Property="Orientation" Value="Horizontal"/>
-                            </Style>
-                            <Style TargetType="StackPanel">
-                                <Setter Property="Margin" Value="2,0"/>
-                            </Style>
-                            <Style x:Key="TextBlockLabel" TargetType="TextBlock">
-                                <Setter Property="Foreground" Value="DarkBlue"/>
-                            </Style>
-                            <Style x:Key="TextBlockValue" TargetType="TextBlock">
-                                <Setter Property="Foreground" Value="Gray"/>
-                                <Setter Property="Margin" Value="4,0"/>
-                            </Style>
-                        </Grid.Resources>
-                        
-                        <!-- Add button. Adds a new track -->
-                        <Button Grid.Column="0" Command="{Binding Commands[AddTrack], RelativeSource={RelativeSource TemplatedParent}}">
-                            <Image Source="{TemplateBinding AddTrackImageSource}" Height="32"/>
-                        </Button>
+                        </Style>
+                        <Style TargetType="Slider" BasedOn="{StaticResource MainSliderStyle}">
+                            <Setter Property="IsSnapToTickEnabled" Value="True"/>
+                            <Setter Property="TickFrequency" Value="1"/>
+                            <Setter Property="Margin" Value="0"/>
+                            <Setter Property="Orientation" Value="Horizontal"/>
+                        </Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Margin" Value="2,0"/>
+                        </Style>
+                        <Style x:Key="TextBlockLabel" TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="DarkBlue"/>
+                        </Style>
+                        <Style x:Key="TextBlockValue" TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="Gray"/>
+                            <Setter Property="Margin" Value="4,0"/>
+                        </Style>
+                    </Grid.Resources>
 
-                        <!-- Play button. Plays or stops -->
-                        <Button Grid.Column="1" Command="{Binding Commands[Play], RelativeSource={RelativeSource TemplatedParent}}">
-                            <Image Source="{TemplateBinding ActivePlayImageSource}" Height="32" Margin="2,0"/>
-                        </Button>
+                    <!-- Add button. Adds a new track -->
+                    <Button Grid.Column="0" Command="{Binding Commands[AddTrack], RelativeSource={RelativeSource TemplatedParent}}">
+                        <Image Source="{TemplateBinding AddTrackImageSource}" Height="32"/>
+                    </Button>
 
-                        <!-- Render button. Activates the rendering -->
-                        <Button Grid.Column="2" Command="{Binding Commands[Render], RelativeSource={RelativeSource TemplatedParent}}">
-                            <Image Source="{TemplateBinding ActiveRenderImageSource}" Height="32" Margin="2,0"/>
-                        </Button>
+                    <!-- Play button. Plays or stops -->
+                    <Button Grid.Column="1" Command="{Binding Commands[Play], RelativeSource={RelativeSource TemplatedParent}}">
+                        <Image Source="{TemplateBinding ActivePlayImageSource}" Height="32" Margin="2,0"/>
+                    </Button>
 
-                        <!-- Mute button. Mutes or unmutes the whole layout -->
-                        <Button Grid.Column="3" Command="{Binding Commands[ToggleMute], RelativeSource={RelativeSource TemplatedParent}}">
-                            <Image Source="{TemplateBinding ActiveMutedImageSource}" Height="32" Margin="2,0"/>
-                        </Button>
+                    <!-- Render button. Activates the rendering -->
+                    <Button Grid.Column="2" Command="{Binding Commands[Render], RelativeSource={RelativeSource TemplatedParent}}">
+                        <Image Source="{TemplateBinding ActiveRenderImageSource}" Height="32" Margin="2,0"/>
+                    </Button>
 
-                        <!-- Volume adjustment slider -->
-                        <StackPanel Grid.Column="5">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Style="{StaticResource TextBlockLabel}" Text="{TemplateBinding VolumeText}"/>
-                                <TextBlock Style="{StaticResource TextBlockValue}" Text="{Binding VolumeDecibelText, RelativeSource={RelativeSource TemplatedParent}}"/>
-                            </StackPanel>
-                            <Slider
+                    <!-- Mute button. Mutes or unmutes the whole layout -->
+                    <Button Grid.Column="3" Command="{Binding Commands[ToggleMute], RelativeSource={RelativeSource TemplatedParent}}">
+                        <Image Source="{TemplateBinding ActiveMutedImageSource}" Height="32" Margin="2,0"/>
+                    </Button>
+
+                    <!-- Volume adjustment slider -->
+                    <StackPanel Grid.Column="5">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource TextBlockLabel}" Text="{TemplateBinding VolumeText}"/>
+                            <TextBlock Style="{StaticResource TextBlockValue}" Text="{Binding VolumeDecibelText, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        </StackPanel>
+                        <Slider
                                 Minimum="{Binding MinVolume, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}" 
                                 Maximum="{Binding MaxVolume, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
                                 IsSnapToTickEnabled="False"
                                 Value="{Binding Volume, RelativeSource={RelativeSource TemplatedParent}}" />
-                        </StackPanel>
+                    </StackPanel>
 
-                        <!-- Tempo adjustment slider -->
-                        <StackPanel Grid.Column="6">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Style="{StaticResource TextBlockLabel}" Text="{TemplateBinding TempoText}"/>
-                                <TextBlock Style="{StaticResource TextBlockValue}" Text="{Binding Tempo, RelativeSource={RelativeSource TemplatedParent}}"/>
-                            </StackPanel>
-                            <Slider
+                    <!-- Tempo adjustment slider -->
+                    <StackPanel Grid.Column="6">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource TextBlockLabel}" Text="{TemplateBinding TempoText}"/>
+                            <TextBlock Style="{StaticResource TextBlockValue}" Text="{Binding Tempo, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        </StackPanel>
+                        <Slider
                                 Minimum="{Binding MinTempo, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
                                 Maximum="{Binding MaxTempo, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
                                 Value="{Binding Tempo, RelativeSource={RelativeSource TemplatedParent}}" />
-                        </StackPanel>
+                    </StackPanel>
 
-                        <!-- Number of beats adjustment slider-->
-                        <StackPanel Grid.Column="7">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Style="{StaticResource TextBlockLabel}" Text="{TemplateBinding BeatsText}"/>
-                                <TextBlock Style="{StaticResource TextBlockValue}" Text="{Binding Beats, RelativeSource={RelativeSource TemplatedParent}}"/>
-                            </StackPanel>
-                            <Slider 
+                    <!-- Number of beats adjustment slider-->
+                    <StackPanel Grid.Column="7">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource TextBlockLabel}" Text="{TemplateBinding BeatsText}"/>
+                            <TextBlock Style="{StaticResource TextBlockValue}" Text="{Binding Beats, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        </StackPanel>
+                        <Slider 
                                 Minimum="{Binding MinBeats, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
                                 Maximum="{Binding MaxBeats, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
                                 Value="{Binding Beats, RelativeSource={RelativeSource TemplatedParent}}" />
-                        </StackPanel>
+                    </StackPanel>
 
-                        <!-- Number of steps per beat adjustment slider -->
-                        <StackPanel Grid.Column="8">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Style="{StaticResource TextBlockLabel}" Text="{TemplateBinding StepsPerBeatText}"/>
-                                <TextBlock Style="{StaticResource TextBlockValue}" Text="{Binding StepsPerBeat, RelativeSource={RelativeSource TemplatedParent}}"/>
-                            </StackPanel>
-                            <Slider
+                    <!-- Number of steps per beat adjustment slider -->
+                    <StackPanel Grid.Column="8">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource TextBlockLabel}" Text="{TemplateBinding StepsPerBeatText}"/>
+                            <TextBlock Style="{StaticResource TextBlockValue}" Text="{Binding StepsPerBeat, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        </StackPanel>
+                        <Slider
                                 Minimum="{Binding MinStepsPerBeat, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
                                 Maximum="{Binding MaxStepsPerBeat, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
                                 Value="{Binding StepsPerBeat, RelativeSource={RelativeSource TemplatedParent}}" />
-                        </StackPanel>
+                    </StackPanel>
 
-                        <!-- Measures adjustment slider -->
-                        <!--<StackPanel Grid.Column="9">
+                    <!-- Measures adjustment slider -->
+                    <!--<StackPanel Grid.Column="9">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Style="{StaticResource TextBlockLabel}" Text="{TemplateBinding MeasuresText}"/>
                                 <TextBlock Style="{StaticResource TextBlockValue}" Text="{Binding Measures, RelativeSource={RelativeSource TemplatedParent}}"/>
@@ -485,71 +498,80 @@
                                 Value="{Binding ProposedMeasures, RelativeSource={RelativeSource TemplatedParent}}" />
                         </StackPanel>-->
 
-                        <!-- Box size adjustment slider -->
-                        <StackPanel Grid.Column="9">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Style="{StaticResource TextBlockLabel}" Text="{TemplateBinding BoxSizeText}"/>
-                                <TextBlock Style="{StaticResource TextBlockValue}" Text="{Binding BoxSize, RelativeSource={RelativeSource TemplatedParent}}"/>
-                            </StackPanel>
-                            <Slider 
+                    <!-- Box size adjustment slider -->
+                    <StackPanel Grid.Column="9">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource TextBlockLabel}" Text="{TemplateBinding BoxSizeText}"/>
+                            <TextBlock Style="{StaticResource TextBlockValue}" Text="{Binding BoxSize, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        </StackPanel>
+                        <Slider 
                                 Minimum="{Binding MinBoxSize, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
                                 Maximum="{Binding MaxBoxSize, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
                                 Value="{Binding BoxSize, RelativeSource={RelativeSource TemplatedParent}}" />
-                        </StackPanel>
+                    </StackPanel>
 
-                        <ToggleButton Grid.Column="10" Margin="3" Style="{StaticResource ToggleButtonFlat}" IsChecked="{Binding IsMetronomeActive, RelativeSource={RelativeSource TemplatedParent}}">
-                            <Grid>
-                                <Image Source="{TemplateBinding MetronomeImageSource}" Height="28"/>
-                            </Grid>
-                        </ToggleButton>
-
-                    </Grid>
-
-                    <Separator DockPanel.Dock="Top"/>
-
-                    <Grid DockPanel.Dock="Top">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" MinWidth="302" MaxWidth="502"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
+                    <ToggleButton Grid.Column="10" Margin="3" Style="{StaticResource ToggleButtonFlat}" IsChecked="{Binding IsMetronomeActive, RelativeSource={RelativeSource TemplatedParent}}">
                         <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition Width="2*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock 
-                                Grid.Column="0"
-                                Style="{StaticResource TextBlockCounter}" 
-                                Text="{Binding PassText, RelativeSource={RelativeSource TemplatedParent}}"/>
-
-                            <TextBlock 
-                                Grid.Column="1"
-                                Style="{StaticResource TextBlockCounter}" 
-                                Text="{Binding CounterText, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            <Image Source="{TemplateBinding MetronomeImageSource}" Height="28"/>
                         </Grid>
+                    </ToggleButton>
 
-                        <!-- Header boxes for the track -->
-                        <con:TrackBoxContainer 
-                            x:Name="PART_HEADER_BOXES"
-                            Margin="4"
-                            Padding="4"
-                            Grid.Row="0" Grid.Column="2" 
-                            TotalSteps="{Binding TotalSteps, RelativeSource={RelativeSource TemplatedParent}}" 
-                            BoxSize="{Binding BoxSize, RelativeSource={RelativeSource TemplatedParent}}" />
+                </Grid>
 
-                        <ItemsControl HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding TrackControllers, RelativeSource={RelativeSource TemplatedParent}}"/>
-                        <GridSplitter Grid.Column="1" Grid.RowSpan="2" Width="4" HorizontalAlignment="Center" VerticalAlignment="Stretch" />
-                        <ItemsControl Grid.Row="1" Grid.Column="2" ItemsSource="{Binding TrackBoxes, RelativeSource={RelativeSource TemplatedParent}}"/>
+                <Separator Grid.Row="2"/>
+
+                <!-- Track controllers and track boxes -->
+                <Grid Grid.Row="3" ShowGridLines="True">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" MinWidth="302" MaxWidth="502"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid ShowGridLines="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock
+                            Grid.Column="0"
+                            Style="{StaticResource TextBlockCounter}" 
+                            Text="{Binding PassText, RelativeSource={RelativeSource TemplatedParent}}"/>
+
+                        <TextBlock 
+                            Grid.Column="1"
+                            Style="{StaticResource TextBlockCounter}" 
+                            Text="{Binding CounterText, RelativeSource={RelativeSource TemplatedParent}}"/>
                     </Grid>
-                </DockPanel>
-            </DockPanel>
+
+                    <!-- Header boxes for the track -->
+                    <!--<con:TrackBoxContainer 
+                        Margin="4"
+                        Padding="4"
+                        Grid.Row="0" Grid.Column="2" 
+                        TotalSteps="{Binding TotalSteps, RelativeSource={RelativeSource TemplatedParent}}" 
+                        BoxSize="{Binding BoxSize, RelativeSource={RelativeSource TemplatedParent}}" />-->
+
+                    <!-- Track controllers (left) -->
+                    <ScrollViewer Grid.Row="1" Grid.Column="0" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden">
+                        <ItemsControl ItemsSource="{Binding TrackControllers, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    </ScrollViewer>
+
+                    <GridSplitter Grid.Column="1" Grid.RowSpan="2" Width="4" HorizontalAlignment="Center" VerticalAlignment="Stretch" />
+
+                    <!-- Track boxes (right) -->
+                    <ScrollViewer Grid.Row="1" Grid.Column="2" VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding TrackBoxes, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    </ScrollViewer>
+
+                </Grid>
+
+            </Grid>
         </Border>
 
         <ControlTemplate.Triggers>
@@ -560,9 +582,268 @@
 
     </ControlTemplate>
 
+    <!-- #2#2#2#2#2#2#2#2#2#2#2#2#2#2#2#2#2#2#2#2#2#2#2#2 -->
+    <ControlTemplate x:Key="TrackContainerControlTemplate2" TargetType="con:TrackContainer">
+
+        <Grid
+            Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Window}, Converter={con:DoubleAdditionConverter}, ConverterParameter=-120}">
+            <Grid.RowDefinitions>
+                <!-- Header-->
+                <RowDefinition Height="Auto"/>
+                <!-- Master controls -->
+                <RowDefinition Height="Auto"/>
+                <!-- Separator between master controls and headers -->
+                <RowDefinition Height="Auto"/>
+                <!-- Counters and header boxes-->
+                <RowDefinition Height="Auto"/>
+                <!-- Separator counters/headers and tracks -->
+                <RowDefinition Height="Auto"/>
+                <!-- Tracks -->
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <Border Grid.Row="0" Background="{StaticResource HeaderBrush}" Padding="6">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="18"/>
+                        <ColumnDefinition Width="32"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <!-- Minimize / maximize button -->
+                    <Button
+                            Grid.Column="0"
+                            Style="{StaticResource ButtonBaseFlat}" 
+                            Command="{Binding Commands[ToggleExpanded], RelativeSource={RelativeSource TemplatedParent}}">
+                        <Image Source="{TemplateBinding ActiveExpandedStateImageSource}" />
+                    </Button>
+                    <!-- Close button -->
+                    <Button
+                            Grid.Column="1"
+                            Margin="7,0"
+                            Style="{StaticResource ButtonBaseFlat}" 
+                            Command="{Binding Commands[Close], RelativeSource={RelativeSource TemplatedParent}}">
+                        <Image Source="{TemplateBinding CloseImageSource}" />
+                    </Button>
+                    <!-- Track caption -->
+                    <TextBlock
+                            Grid.Column="2"
+                            FontSize="11.5"
+                            Foreground="White"
+                            VerticalAlignment="Center"
+                            Text="{TemplateBinding DisplayName}"/>
+
+                </Grid>
+            </Border>
+
+            <!-- Master controls -->
+            <Grid x:Name="PART_TRACK_LIST" Grid.Row="1" Margin="0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="66"/>
+                    <ColumnDefinition Width="66"/>
+                    <ColumnDefinition Width="66"/>
+                    <ColumnDefinition Width="66"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="190"/>
+                    <ColumnDefinition Width="190"/>
+                    <ColumnDefinition Width="190"/>
+                    <ColumnDefinition Width="190"/>
+                    <ColumnDefinition Width="190"/>
+                    <ColumnDefinition Width="66"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.Resources>
+                    <Style TargetType="Button" BasedOn="{StaticResource ButtonBaseFlat}">
+                        <!--<Setter Property="VerticalAlignment" Value="Bottom"/>
+                                <Setter Property="Height" Value="48"/>-->
+                    </Style>
+                    <Style TargetType="Slider" BasedOn="{StaticResource MainSliderStyle}">
+                        <Setter Property="IsSnapToTickEnabled" Value="True"/>
+                        <Setter Property="TickFrequency" Value="1"/>
+                        <Setter Property="Margin" Value="0"/>
+                        <Setter Property="Orientation" Value="Horizontal"/>
+                    </Style>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Margin" Value="2,0"/>
+                    </Style>
+                    <Style x:Key="TextBlockLabel" TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="DarkBlue"/>
+                    </Style>
+                    <Style x:Key="TextBlockValue" TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="Gray"/>
+                        <Setter Property="Margin" Value="4,0"/>
+                    </Style>
+                </Grid.Resources>
+
+                <!-- Add button. Adds a new track -->
+                <Button Grid.Column="0" Command="{Binding Commands[AddTrack], RelativeSource={RelativeSource TemplatedParent}}">
+                    <Image Source="{TemplateBinding AddTrackImageSource}" Height="32"/>
+                </Button>
+
+                <!-- Play button. Plays or stops -->
+                <Button Grid.Column="1" Command="{Binding Commands[Play], RelativeSource={RelativeSource TemplatedParent}}">
+                    <Image Source="{TemplateBinding ActivePlayImageSource}" Height="32" Margin="2,0"/>
+                </Button>
+
+                <!-- Render button. Activates the rendering -->
+                <Button Grid.Column="2" Command="{Binding Commands[Render], RelativeSource={RelativeSource TemplatedParent}}">
+                    <Image Source="{TemplateBinding ActiveRenderImageSource}" Height="32" Margin="2,0"/>
+                </Button>
+
+                <!-- Mute button. Mutes or unmutes the whole layout -->
+                <Button Grid.Column="3" Command="{Binding Commands[ToggleMute], RelativeSource={RelativeSource TemplatedParent}}">
+                    <Image Source="{TemplateBinding ActiveMutedImageSource}" Height="32" Margin="2,0"/>
+                </Button>
+
+                <!-- Volume adjustment slider -->
+                <StackPanel Grid.Column="5">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource TextBlockLabel}" Text="{TemplateBinding VolumeText}"/>
+                        <TextBlock Style="{StaticResource TextBlockValue}" Text="{Binding VolumeDecibelText, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    </StackPanel>
+                    <Slider
+                                Minimum="{Binding MinVolume, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}" 
+                                Maximum="{Binding MaxVolume, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
+                                IsSnapToTickEnabled="False"
+                                Value="{Binding Volume, RelativeSource={RelativeSource TemplatedParent}}" />
+                </StackPanel>
+
+                <!-- Tempo adjustment slider -->
+                <StackPanel Grid.Column="6">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource TextBlockLabel}" Text="{TemplateBinding TempoText}"/>
+                        <TextBlock Style="{StaticResource TextBlockValue}" Text="{Binding Tempo, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    </StackPanel>
+                    <Slider
+                                Minimum="{Binding MinTempo, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
+                                Maximum="{Binding MaxTempo, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
+                                Value="{Binding Tempo, RelativeSource={RelativeSource TemplatedParent}}" />
+                </StackPanel>
+
+                <!-- Number of beats adjustment slider-->
+                <StackPanel Grid.Column="7">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource TextBlockLabel}" Text="{TemplateBinding BeatsText}"/>
+                        <TextBlock Style="{StaticResource TextBlockValue}" Text="{Binding Beats, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    </StackPanel>
+                    <Slider 
+                                Minimum="{Binding MinBeats, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
+                                Maximum="{Binding MaxBeats, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
+                                Value="{Binding Beats, RelativeSource={RelativeSource TemplatedParent}}" />
+                </StackPanel>
+
+                <!-- Number of steps per beat adjustment slider -->
+                <StackPanel Grid.Column="8">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource TextBlockLabel}" Text="{TemplateBinding StepsPerBeatText}"/>
+                        <TextBlock Style="{StaticResource TextBlockValue}" Text="{Binding StepsPerBeat, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    </StackPanel>
+                    <Slider
+                                Minimum="{Binding MinStepsPerBeat, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
+                                Maximum="{Binding MaxStepsPerBeat, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
+                                Value="{Binding StepsPerBeat, RelativeSource={RelativeSource TemplatedParent}}" />
+                </StackPanel>
+
+                <!-- Box size adjustment slider -->
+                <StackPanel Grid.Column="9">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource TextBlockLabel}" Text="{TemplateBinding BoxSizeText}"/>
+                        <TextBlock Style="{StaticResource TextBlockValue}" Text="{Binding BoxSize, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    </StackPanel>
+                    <Slider 
+                                Minimum="{Binding MinBoxSize, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
+                                Maximum="{Binding MaxBoxSize, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
+                                Value="{Binding BoxSize, RelativeSource={RelativeSource TemplatedParent}}" />
+                </StackPanel>
+
+                <ToggleButton Grid.Column="10" Margin="3" Style="{StaticResource ToggleButtonFlat}" IsChecked="{Binding IsMetronomeActive, RelativeSource={RelativeSource TemplatedParent}}">
+                    <Grid>
+                        <Image Source="{TemplateBinding MetronomeImageSource}" Height="28"/>
+                    </Grid>
+                </ToggleButton>
+
+            </Grid>
+
+            <Separator Grid.Row="2"/>
+
+            <!-- Grid to show counters and header boxes -->
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="302"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Grid ShowGridLines="True">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                            Grid.Column="0"
+                            Style="{StaticResource TextBlockCounter}" 
+                            Text="{Binding PassText, RelativeSource={RelativeSource TemplatedParent}}"/>
+
+                    <TextBlock 
+                            Grid.Column="1"
+                            Style="{StaticResource TextBlockCounter}" 
+                            Text="{Binding CounterText, RelativeSource={RelativeSource TemplatedParent}}"/>
+                </Grid>
+
+                <ContentPresenter Grid.Column="2" Content="{TemplateBinding HeaderBoxes}" />
+                <!--<con:TrackBoxContainer
+                    x:Name="PART_HEADER_BOXES"
+                    Margin="4"
+                    Padding="4"
+                    Grid.Row="0" Grid.Column="2" 
+                    TotalSteps="{Binding TotalSteps, RelativeSource={RelativeSource TemplatedParent}}" 
+                    BoxSize="{Binding BoxSize, RelativeSource={RelativeSource TemplatedParent}}" />-->            
+            </Grid>
+
+            <Separator Grid.Row="4"/>
+
+            <ScrollViewer Grid.Row="5" VerticalScrollBarVisibility="Visible">
+                <ItemsControl ItemsSource="{Binding Tracks, RelativeSource={RelativeSource TemplatedParent}}"/>
+            </ScrollViewer>
+        </Grid>
+    </ControlTemplate>
+
     <Style TargetType="{x:Type con:TrackContainer}">
         <Setter Property="Padding" Value="2"/>
-        <Setter Property="Template" Value="{StaticResource TrackContainerControlTemplate}"/>
+        <Setter Property="Template" Value="{StaticResource TrackContainerControlTemplate2}"/>
+    </Style>
+
+
+
+    <!-- ################################ -->
+    <!-- COMPOSITE TRACK TEMPLATE / STYLE -->
+    <!-- ################################ -->
+    <ControlTemplate x:Key="CompositeTrackControlTemplate" TargetType="con:CompositeTrack">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="302"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <ContentPresenter Content="{TemplateBinding Controller}"/>
+            <ContentPresenter Grid.Column="1" Content="{TemplateBinding BoxContainer}"/>
+            <Separator Grid.Row="1" Grid.ColumnSpan="2"/>
+
+        </Grid>
+    </ControlTemplate>
+
+    <Style TargetType="con:CompositeTrack">
+        <Setter Property="Template" Value="{StaticResource CompositeTrackControlTemplate}"/>
     </Style>
 
     <!-- ######################################## -->
@@ -788,8 +1069,8 @@
         <Border Width="{TemplateBinding Width}" Height="{TemplateBinding Width}" Background="{TemplateBinding Background}" CornerRadius="{TemplateBinding CornerRadius}">
             <Border 
                 Margin="0"
-                Width="{TemplateBinding Width, Converter={con:DoubleToPercentageDoubleConverter},ConverterParameter=0.45}"
-                Height="{TemplateBinding Width, Converter={con:DoubleToPercentageDoubleConverter},ConverterParameter=0.45}"
+                Width="{TemplateBinding Width, Converter={con:DoubleMultiplicationConverter},ConverterParameter=0.45}"
+                Height="{TemplateBinding Width, Converter={con:DoubleMultiplicationConverter},ConverterParameter=0.45}"
                 Background="{TemplateBinding InnerBrush}"/>
         </Border>
     </ControlTemplate>
@@ -967,7 +1248,7 @@
                 <con:StepPlayMarker
                     x:Name="PART_PF1"
                     Style="{StaticResource PF1M}"
-                    Width="{Binding ActualWidth,ElementName=PART_BORDER,Converter={con:DoubleToPercentageDoubleConverter},ConverterParameter=0.20}">
+                    Width="{Binding ActualWidth,ElementName=PART_BORDER,Converter={con:DoubleMultiplicationConverter},ConverterParameter=0.20}">
                     
                 </con:StepPlayMarker>
 
@@ -975,28 +1256,28 @@
                 <con:StepPlayMarker 
                     x:Name="PART_PF2"
                     Style="{StaticResource PF2M}"
-                    Width="{Binding ActualWidth,ElementName=PART_BORDER,Converter={con:DoubleToPercentageDoubleConverter},ConverterParameter=0.20}">
+                    Width="{Binding ActualWidth,ElementName=PART_BORDER,Converter={con:DoubleMultiplicationConverter},ConverterParameter=0.20}">
                 </con:StepPlayMarker>
 
                 <!-- Indicator when the beat is for every third pass (3 phrase) -->
                 <con:StepPlayMarker
                     x:Name="PART_PF33"
                     Style="{StaticResource PF33M}"
-                    Width="{Binding ActualWidth,ElementName=PART_BORDER,Converter={con:DoubleToPercentageDoubleConverter},ConverterParameter=0.20}">
+                    Width="{Binding ActualWidth,ElementName=PART_BORDER,Converter={con:DoubleMultiplicationConverter},ConverterParameter=0.20}">
                 </con:StepPlayMarker>
                 
                  <!-- Indicator when the beat is for third pass (4 phrase) -->
                 <con:StepPlayMarker
                     x:Name="PART_PF34"
                     Style="{StaticResource PF34M}"
-                    Width="{Binding ActualWidth,ElementName=PART_BORDER,Converter={con:DoubleToPercentageDoubleConverter},ConverterParameter=0.20}">
+                    Width="{Binding ActualWidth,ElementName=PART_BORDER,Converter={con:DoubleMultiplicationConverter},ConverterParameter=0.20}">
                 </con:StepPlayMarker>               
                 
                 <!-- Indicator when the beat is for every fourth pass -->
                 <con:StepPlayMarker
                     x:Name="PART_PF4"
                     Style="{StaticResource PF4M}"
-                    Width="{Binding ActualWidth,ElementName=PART_BORDER,Converter={con:DoubleToPercentageDoubleConverter},ConverterParameter=0.20}">
+                    Width="{Binding ActualWidth,ElementName=PART_BORDER,Converter={con:DoubleMultiplicationConverter},ConverterParameter=0.20}">
                 </con:StepPlayMarker>
             </Grid>
         </Border>
@@ -1079,8 +1360,8 @@
                 <Border
                     x:Name="PART_Inner"
                     Background="{TemplateBinding CheckedBrush}"  
-                    Height="{TemplateBinding BoxSize, Converter={con:DoubleToPercentageDoubleConverter}, ConverterParameter=0.55}"  
-                    Width="{TemplateBinding BoxSize, Converter={con:DoubleToPercentageDoubleConverter}, ConverterParameter=0.55}"
+                    Height="{TemplateBinding BoxSize, Converter={con:DoubleMultiplicationConverter}, ConverterParameter=0.55}"  
+                    Width="{TemplateBinding BoxSize, Converter={con:DoubleMultiplicationConverter}, ConverterParameter=0.55}"
                     CornerRadius="2"
                     Visibility="Collapsed" />
 

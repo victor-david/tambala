@@ -18,8 +18,8 @@
         
         <vw:MainNavigation Grid.Row="0"  Margin="2"/>
         <Separator Grid.Row="1"/>
-        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Padding="5">
-            <ItemsControl ItemsSource="{Binding Pages}"/>
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Auto" Padding="5">
+            <ItemsControl Grid.Row="2" ItemsSource="{Binding Pages}" Margin="5"/>
         </ScrollViewer>
     </Grid>
 </Window>

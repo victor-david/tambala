@@ -5,9 +5,9 @@ using System.Windows.Markup;
 namespace Restless.App.DrumMaster.Controls
 {
     /// <summary>
-    /// Provides a converter that accepts a double value and returns the specified percentage of the value.
+    /// Provides a converter that accepts a double value and returns a value added to the converter parameter.
     /// </summary>
-    internal class DoubleToPercentageDoubleConverter : MarkupExtension, IValueConverter
+    internal class DoubleAdditionConverter : MarkupExtension, IValueConverter
     {
         #region Public methods
         /// <summary>
@@ -15,14 +15,14 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         /// <param name="value">The double value.</param>
         /// <param name="targetType">The target type.</param>
-        /// <param name="parameter">The percentage</param>
+        /// <param name="parameter">The value</param>
         /// <param name="culture">Not used</param>
         /// <returns>A perecentage of <paramref name="value"/></returns>
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (value is double v && parameter != null && double.TryParse(parameter.ToString(), out double percent))
+            if (value is double v && parameter != null && double.TryParse(parameter.ToString(), out double factor))
             {
-                return v * percent;
+                return v + factor;
             }
             return value;
         }

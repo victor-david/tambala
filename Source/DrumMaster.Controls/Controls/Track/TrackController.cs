@@ -23,7 +23,8 @@ namespace Restless.App.DrumMaster.Controls
         #region Private
         private const string PartGridTrack = "PART_GRID_TRACK";
         private const string PartEnvelopeHost = "PART_ENVELOPE_HOST";
-        private readonly TrackContainer owner;
+        //private readonly TrackContainer owner;
+        private readonly CompositeTrack owner;
         private bool isAudioEnabled;
         private SubmixVoice submixVoice;
         private VoicePool voicePool;
@@ -95,12 +96,11 @@ namespace Restless.App.DrumMaster.Controls
                 nameof(IsTrackBoxVolumeVisible), typeof(bool), typeof(TrackController), new PropertyMetadata(false, OnIsTrackBoxVisibleChanged)
             );
 
-
         private static void OnIsTrackBoxVisibleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is TrackController c)
             {
-                c.BoxContainer.Boxes.SetVolumeVisibility(c.IsTrackBoxVolumeVisible);
+                c.owner.BoxContainer.Boxes.SetVolumeVisibility(c.IsTrackBoxVolumeVisible);
             }
         }
 
@@ -133,7 +133,7 @@ namespace Restless.App.DrumMaster.Controls
                 c.humanVolumeBias = (float)e.NewValue;
                 if (c.humanVolumeBias == TrackVals.HumanVolumeBias.Min)
                 {
-                    c.BoxContainer.RemoveHumanVolumeBias();
+                    c.owner.BoxContainer.RemoveHumanVolumeBias();
                 }
                 c.SetIsChanged();
             }
@@ -265,14 +265,14 @@ namespace Restless.App.DrumMaster.Controls
         /************************************************************************/
 
         #region Internal Properties
-        /// <summary>
-        /// Gets the <see cref="TrackBoxContainer"/> object associated with this controller
-        /// </summary>
-        internal TrackBoxContainer BoxContainer
-        {
-            get;
-            private set;
-        }
+        ///// <summary>
+        ///// Gets the <see cref="TrackBoxContainer"/> object associated with this controller
+        ///// </summary>
+        //internal TrackBoxContainer BoxContainer
+        //{
+        //    get;
+        //    private set;
+        //}
         #endregion
 
         /************************************************************************/
@@ -281,12 +281,12 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="TrackController"/> class.
         /// </summary>
-        /// <param name="owner">The container that owns this instance</param>
-        internal TrackController(TrackContainer owner)
+        /// <param name="owner">The composite track that owns this controller</param>
+        internal TrackController(CompositeTrack owner)
         {
             this.owner = owner ?? throw new ArgumentNullException(nameof(owner));
             submixVoice = new SubmixVoice(AudioHost.Instance.AudioDevice);
-            submixVoice.SetOutputVoices(new VoiceSendDescriptor(this.owner.SubmixVoice));
+            submixVoice.SetOutputVoices(new VoiceSendDescriptor(this.owner.Owner.SubmixVoice));
             channelCount = submixVoice.VoiceDetails.InputChannelCount;
             channelVolumes = new float[channelCount];
             channelVolumes[0] = 1.0f;
@@ -344,7 +344,7 @@ namespace Restless.App.DrumMaster.Controls
             element.Add(new XElement(nameof(IsMuted), IsMuted));
             element.Add(new XElement(nameof(IsTrackBoxVolumeVisible), IsTrackBoxVolumeVisible));
             element.Add(Piece.GetXElement());
-            element.Add(BoxContainer.GetXElement());
+            //element.Add(BoxContainer.GetXElement());
             return element;
         }
 
@@ -377,7 +377,7 @@ namespace Restless.App.DrumMaster.Controls
 
                 if (e.Name == nameof(TrackBoxContainer))
                 {
-                    BoxContainer.RestoreFromXElement(e);
+                    //BoxContainer.RestoreFromXElement(e);
                 }
 
                 if (e.Name == nameof(IsTrackBoxVolumeVisible))
@@ -427,21 +427,21 @@ namespace Restless.App.DrumMaster.Controls
 
         #region Internal methods
 
-        internal void SetBoxContainer(TrackBoxContainer boxContainer)
-        {
-            BoxContainer = boxContainer ?? throw new ArgumentNullException(nameof(boxContainer));
-        }
+        //internal void SetBoxContainer(TrackBoxContainer boxContainer)
+        //{
+        //    BoxContainer = boxContainer ?? throw new ArgumentNullException(nameof(boxContainer));
+        //}
 
         internal void Play(int pass, int step, int operationSet)
         {
-            if (isAudioEnabled && !IsUserMuted && !IsAutoMuted && step < BoxContainer.Boxes.Count)
+            if (isAudioEnabled && !IsUserMuted && !IsAutoMuted && step < owner.BoxContainer.Boxes.Count)
             {
                 try
                 {
-                    if (BoxContainer.CanPlay(pass, step))
+                    if (owner.BoxContainer.CanPlay(pass, step))
                     {
-                        BoxContainer.Boxes[step].ApplyHumanVolumeBias(random, humanVolumeBias);
-                        voicePool.Play(BoxContainer.Boxes[step].VolumeInternal, PitchInternal, operationSet);
+                        owner.BoxContainer.Boxes[step].ApplyHumanVolumeBias(random, humanVolumeBias);
+                        voicePool.Play(owner.BoxContainer.Boxes[step].VolumeInternal, PitchInternal, operationSet);
                     }
                 }
                 catch { }
@@ -463,7 +463,7 @@ namespace Restless.App.DrumMaster.Controls
             bool ctrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
             bool alt = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt);
 
-            BoxContainer.Boxes.ShiftLeft(!alt, !ctrl || alt);
+            owner.BoxContainer.Boxes.ShiftLeft(!alt, !ctrl || alt);
         }
 
         private void RunShiftRightCommand(object parm)
@@ -471,12 +471,12 @@ namespace Restless.App.DrumMaster.Controls
             bool ctrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
             bool alt = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt);
 
-            BoxContainer.Boxes.ShiftRight(!alt, !ctrl || alt);
+            owner.BoxContainer.Boxes.ShiftRight(!alt, !ctrl || alt);
         }
 
         private void RunRemoveTrackCommand(object parm)
         {
-            owner.RemoveTrack(this);
+            owner.Owner.RemoveTrack(this);
         }
 
         private void RunToggleBeatVolumeCommand(object parm)
@@ -487,7 +487,7 @@ namespace Restless.App.DrumMaster.Controls
 
         private void RunResetBeatVolumeCommand(object parm)
         {
-            BoxContainer.ResetVolumeBias();
+            owner.BoxContainer.ResetVolumeBias();
             SetIsChanged();
         }
 

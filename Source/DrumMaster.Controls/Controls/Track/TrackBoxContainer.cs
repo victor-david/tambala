@@ -18,7 +18,9 @@ namespace Restless.App.DrumMaster.Controls
         #region Private
         private const string PartHostGrid = "PART_HOST_GRID";
         private Grid hostGrid;
-        private TrackController controller;
+        private readonly CompositeTrack compositeTrackOwner;
+        private readonly TrackContainer trackContainerOwner;
+        //private TrackController controller;
         private XElement holdElement;
         #endregion
 
@@ -139,9 +141,21 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="TrackBoxContainer"/> class.
         /// </summary>
-        public TrackBoxContainer()
+        internal TrackBoxContainer(CompositeTrack owner)
         {
+            compositeTrackOwner = owner ?? throw new ArgumentNullException(nameof(owner));
             Boxes = new TrackBoxCollection();
+            BoxType = TrackBoxType.TrackStep;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TrackBoxContainer"/> class.
+        /// </summary>
+        internal TrackBoxContainer(TrackContainer owner)
+        {
+            trackContainerOwner = owner ?? throw new ArgumentNullException(nameof(owner));
+            Boxes = new TrackBoxCollection();
+            BoxType = TrackBoxType.Header;
         }
 
         static TrackBoxContainer()
@@ -239,15 +253,15 @@ namespace Restless.App.DrumMaster.Controls
         /************************************************************************/
 
         #region Internal methods
-        /// <summary>
-        /// From this assembly, sets the track controller
-        /// </summary>
-        /// <param name="controller">The controller.</param>
-        internal void SetController(TrackController controller)
-        {
-            this.controller = controller ?? throw new ArgumentNullException(nameof(controller));
-            controller.SizeChanged += ControllerSizeChanged;
-        }
+        ///// <summary>
+        ///// From this assembly, sets the track controller
+        ///// </summary>
+        ///// <param name="controller">The controller.</param>
+        //internal void SetController(TrackController controller)
+        //{
+        //    this.controller = controller ?? throw new ArgumentNullException(nameof(controller));
+        //    controller.SizeChanged += ControllerSizeChanged;
+        //}
 
         /// <summary>
         /// From this assembly, gets a value that indicates if the specified
@@ -311,9 +325,9 @@ namespace Restless.App.DrumMaster.Controls
                             SelectedBackgroundBrush = SelectedBackgroundBrush,
                         };
 
-                        if (controller != null)
+                        if (BoxType == TrackBoxType.TrackStep)
                         {
-                            box.IsVolumeVisible = controller.IsTrackBoxVolumeVisible;
+                            box.IsVolumeVisible = compositeTrackOwner.Controller.IsTrackBoxVolumeVisible;
                         }
 
                         Grid.SetColumn(box, hostGrid.ColumnDefinitions.Count - 1);
