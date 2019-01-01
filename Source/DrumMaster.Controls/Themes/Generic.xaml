@@ -1021,10 +1021,10 @@
     <!-- ######################################## -->
     <!-- TRACK BOX CONTAINER TEMPLATE / STYLE     -->
     <!-- ######################################## -->
-    <Style TargetType="{x:Type con:TrackBoxContainer}">
+    <Style TargetType="con:TrackBoxContainerBase">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type con:TrackBoxContainer}">
+                <ControlTemplate TargetType="con:TrackBoxContainerBase">
                     <Border 
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"

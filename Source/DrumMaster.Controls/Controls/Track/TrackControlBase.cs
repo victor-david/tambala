@@ -55,7 +55,7 @@ namespace Restless.App.DrumMaster.Controls
             {
                 // Save volume for later thread safe access.
                 c.VolumeRaw = (float)e.NewValue;
-                c.VolumeInternal = XAudio2.DecibelsToAmplitudeRatio(c.VolumeRaw);
+                c.ThreadSafeVolume = XAudio2.DecibelsToAmplitudeRatio(c.VolumeRaw);
                 c.VolumeDecibelText = (c.Volume <= TrackVals.Volume.Min) ? "Off" : $"{c.Volume:N1}dB";
                 c.IsAutoMuted = c.Volume == TrackVals.Volume.Min;
                 c.OnVolumeChanged();
@@ -113,7 +113,7 @@ namespace Restless.App.DrumMaster.Controls
                 // Save volume bias in private var for later thread safe access.
                 c.VolumeBiasRaw = (float)e.NewValue;
                 float dbVol = c.VolumeRaw + c.VolumeBiasRaw;
-                c.VolumeInternal = XAudio2.DecibelsToAmplitudeRatio(dbVol);
+                c.ThreadSafeVolume = XAudio2.DecibelsToAmplitudeRatio(dbVol);
                 c.OnVolumeChanged();
                 c.SetIsChanged();
             }
@@ -318,7 +318,7 @@ namespace Restless.App.DrumMaster.Controls
         {
             if (d is TrackControlBase c)
             {
-                c.PitchInternal = XAudio2.SemitonesToFrequencyRatio((float)e.NewValue);
+                c.ThreadSafePitch = XAudio2.SemitonesToFrequencyRatio((float)e.NewValue);
                 c.OnPitchChanged();
                 c.SetIsChanged();
             }
@@ -617,7 +617,7 @@ namespace Restless.App.DrumMaster.Controls
         /// This value is used internally and represents the actual XAudio2 volume value to use when 
         /// setting the volume on a voice.
         /// </remarks>
-        internal float VolumeInternal
+        internal float ThreadSafeVolume
         {
             get;
             set;
@@ -631,7 +631,7 @@ namespace Restless.App.DrumMaster.Controls
         /// This value is used internally and represents the actual XAudio2 frequency ratio value to use when 
         /// setting the pitch (aka frequency ratio) on a voice.
         /// </remarks>
-        internal float PitchInternal
+        internal float ThreadSafePitch
         {
             get;
             private set;
@@ -704,8 +704,8 @@ namespace Restless.App.DrumMaster.Controls
              */
             VolumeRaw = TrackVals.Volume.Default;
             VolumeBiasRaw = TrackVals.VolumeBias.Default;
-            VolumeInternal = XAudio2.DecibelsToAmplitudeRatio(TrackVals.Volume.Default);
-            PitchInternal = XAudio2.SemitonesToFrequencyRatio(TrackVals.Pitch.Default);
+            ThreadSafeVolume = XAudio2.DecibelsToAmplitudeRatio(TrackVals.Volume.Default);
+            ThreadSafePitch = XAudio2.SemitonesToFrequencyRatio(TrackVals.Pitch.Default);
 
             VolumeDecibelText = (Volume <= TrackVals.Volume.Min) ? "Off" : $"{Volume:N1}dB";
             SetPanningText();
@@ -749,7 +749,7 @@ namespace Restless.App.DrumMaster.Controls
         #region Protected methods
         /// <summary>
         /// Called when <see cref="Volume"/> is changed. A derived class can override this method to perform updates as needed.
-        /// Before this method is called, all volume related properties such as <see cref="VolumeInternal"/> have been updated.
+        /// Before this method is called, all volume related properties such as <see cref="ThreadSafeVolume"/> have been updated.
         /// The base implementaion does nothing.
         /// </summary>
         protected virtual void OnVolumeChanged()
@@ -766,7 +766,7 @@ namespace Restless.App.DrumMaster.Controls
 
         /// <summary>
         /// Called when <see cref="Pitch"/> is changed. A derived class can override this method to perform updates as needed.
-        /// Before this method is called, all pitch related properties such as <see cref="PitchInternal"/> have been updated.
+        /// Before this method is called, all pitch related properties such as <see cref="ThreadSafePitch"/> have been updated.
         /// The base implementaion does nothing.
         /// </summary>
         protected virtual void OnPitchChanged()

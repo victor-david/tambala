@@ -1,9 +1,5 @@
 ﻿using Restless.App.DrumMaster.Controls.Audio;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -11,7 +7,7 @@ using System.Windows.Media;
 namespace Restless.App.DrumMaster.Controls
 {
     /// <summary>
-    /// Represents a composite track, a <see cref="TrackController"/> and its corresponding <see cref="TrackBoxContainer"/>
+    /// Represents a composite track, a <see cref="TrackController"/> and its corresponding <see cref="TrackBoxContainerStep"/>
     /// </summary>
     public class CompositeTrack : ContentControl
     {
@@ -49,17 +45,17 @@ namespace Restless.App.DrumMaster.Controls
         internal static readonly DependencyProperty ControllerProperty = ControllerPropertyKey.DependencyProperty;
 
         /// <summary>
-        /// Gets the track controller
+        /// Gets the box container for the track steps.
         /// </summary>
-        internal TrackBoxContainer BoxContainer
+        internal TrackBoxContainerStep BoxContainer
         {
-            get => (TrackBoxContainer)GetValue(BoxContainerProperty);
+            get => (TrackBoxContainerStep)GetValue(BoxContainerProperty);
             private set => SetValue(BoxContainerPropertyKey, value);
         }
 
         private static readonly DependencyPropertyKey BoxContainerPropertyKey = DependencyProperty.RegisterReadOnly
             (
-                nameof(BoxContainer), typeof(TrackBoxContainer), typeof(CompositeTrack), new PropertyMetadata(null)
+                nameof(BoxContainer), typeof(TrackBoxContainerStep), typeof(CompositeTrack), new PropertyMetadata(null)
             );
 
         /// <summary>
@@ -70,12 +66,18 @@ namespace Restless.App.DrumMaster.Controls
         #endregion
 
         #region Internal properties
-        internal TrackController InternalController
+        /// <summary>
+        /// Gets the thread safe reference to <see cref="Controller"/>
+        /// </summary>
+        internal TrackController ThreadSafeController
         {
             get;
         }
 
-        internal TrackBoxContainer InternalBoxContainer
+        /// <summary>
+        /// Gets the thread safe reference to <see cref="BoxContainer"/>.
+        /// </summary>
+        internal TrackBoxContainerStep ThreadSafeBoxContainer
         {
             get;
         }
@@ -91,29 +93,22 @@ namespace Restless.App.DrumMaster.Controls
         {
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));
 
-            Controller = InternalController = new TrackController(this)
+            Controller = ThreadSafeController = new TrackController(this)
             {
                 Piece = piece,
                 Margin = new Thickness(4),
                 Padding = new Thickness(4),
-                //BorderThickness = new Thickness(1, 1, 0, 1),
-                //BorderBrush = Brushes.LightSlateGray,
             };
 
-            BoxContainer = InternalBoxContainer = new TrackBoxContainer(this)
+            BoxContainer = ThreadSafeBoxContainer = new TrackBoxContainerStep(this)
             {
                 Margin = new Thickness(4),
                 Padding = new Thickness(4),
-                //BorderThickness = new Thickness(0,1,1,1),
-                //BorderBrush = Brushes.LightSlateGray,
-                BoxType = TrackBoxType.TrackStep,
-                TotalSteps = owner.TotalSteps,
+                Beats = owner.Beats,
+                StepsPerBeat = owner.StepsPerBeat,
                 BoxSize = owner.BoxSize,
                 SelectedBackgroundBrush = new SolidColorBrush(Colors.LightBlue)
             };
-
-            //Controller.SetBoxContainer(BoxContainer);
-            //BoxContainer.SetController(Controller);
         }
 
         static CompositeTrack()

@@ -46,6 +46,9 @@ namespace Restless.App.DrumMaster.ViewModel
             }
         }
 
+        /// <summary>
+        /// Gets a boolean value that indicates if rendering is complete.
+        /// </summary>
         public bool IsRenderComplete
         {
             get => isRenderComplete;
@@ -72,6 +75,9 @@ namespace Restless.App.DrumMaster.ViewModel
             get => !IsRenderInProgress && !IsRenderComplete;
         }
 
+        /// <summary>
+        /// Gets a boolean value that indicates if the window may be closed.
+        /// </summary>
         public bool IsCloseEnabled
         {
             get => !IsRenderInProgress || IsRenderComplete;
@@ -93,6 +99,7 @@ namespace Restless.App.DrumMaster.ViewModel
         /// Initializes a new instance of the <see cref="AudioRenderWindowViewModel"/> class.
         /// </summary>
         /// <param name="owner">The owner of this view model.</param>
+        /// <param name="trackContainer">The track container.</param>
         public AudioRenderWindowViewModel(Window owner, TrackContainer trackContainer) : base(owner)
         {
             Container = trackContainer ?? throw new ArgumentNullException(nameof(trackContainer));

@@ -21,26 +21,27 @@ namespace Restless.App.DrumMaster.Controls
     /// </summary>
     /// <remarks>
     /// <para>
-    /// This control is the top level control for a series of tracks and controllers
-    /// that represent a single drum beat. It contains the upper controls such as tempo, beats, steps per beat,
-    /// master volume, etc. and a series of paired track controller / track box containers. Each track controller manages
-    /// the instrument for the track, the track volume, pan, pitch, etc. Each track box container holds the individual
-    /// beats.
+    /// This control is the top level control for a series of tracks and controllers that represent a single drum beat
+    /// comprised of different instruments. It contains the upper controls such as tempo, beats, steps per beat,
+    /// master volume, etc. and a series of tracks. Each track contains a track controller that manages the instrument
+    /// for the track, the track volume, pan, pitch, etc., and a track box container that holds the individual
+    /// beats the user can select.
     /// </para>
     /// <para>
-    /// This control is responsible for creating the controllers and the track box containers. Upon initialization,
-    /// it creates a series of default tracks. The user can add more.
+    /// This control is responsible for creating tracks, for managing the background thread that plays the audio, and for providing
+    /// rendering services, i.e, saving the rhythm as a looped wave file.
+    /// </para>
+    /// <para>
+    /// Upon initialization, this control creates a series of default tracks. The user can add more.
     /// </para>
     /// </remarks>
-    [TemplatePart(Name = PartHeaderBoxes, Type = typeof(TrackBoxContainer))]
-    public class TrackContainer : TrackSized
+    public class TrackContainer : TrackStepControl
     {
         #region Private
         private const string PartHeaderBoxes = "PART_HEADER_BOXES";
         private const string DefaultCounterText = "00:00";
         private const string DefaultPassText = "000";
         private const int MilliSecondsPerMinute = 60000;
-        private TrackBoxContainer headerBoxes;
         private AutoResetEvent playSignaler;
         private AutoResetEvent endPlaySignaler;
         private Thread playThread;
@@ -83,37 +84,32 @@ namespace Restless.App.DrumMaster.Controls
         }
         #endregion
 
+        /************************************************************************/
 
-
+        #region Header boxes
         /// <summary>
         /// Gets the header boxes for the container
         /// </summary>
-        public TrackBoxContainer HeaderBoxes
+        public TrackBoxContainerHeader HeaderBoxes
         {
-            get => (TrackBoxContainer)GetValue(HeaderBoxesProperty);
+            get => (TrackBoxContainerHeader)GetValue(HeaderBoxesProperty);
             private set => SetValue(HeaderBoxesPropertyKey, value);
         }
-
         
         private static readonly DependencyPropertyKey HeaderBoxesPropertyKey = DependencyProperty.RegisterReadOnly
             (
-                nameof(HeaderBoxes), typeof(TrackBoxContainer), typeof(TrackContainer), new PropertyMetadata(null)
+                nameof(HeaderBoxes), typeof(TrackBoxContainerHeader), typeof(TrackContainer), new PropertyMetadata(null)
             );
 
         /// <summary>
         /// Identifies the <see cref="HeaderBoxes"/> dependency property
         /// </summary>
         public static readonly DependencyProperty HeaderBoxesProperty = HeaderBoxesPropertyKey.DependencyProperty;
-
-
-
-
-
-
+        #endregion
 
         /************************************************************************/
 
-        #region Public properties (Tempo, beats, measures)
+        #region Tempo
         /// <summary>
         /// Gets or sets the tempo
         /// </summary>
@@ -135,7 +131,7 @@ namespace Restless.App.DrumMaster.Controls
         {
             if (d is TrackContainer c)
             {
-                c.CalculateThreadSafeValues();
+                c.CalculateThreadSafeSleepTime();
                 c.SetIsChanged();
             }
         }
@@ -179,148 +175,11 @@ namespace Restless.App.DrumMaster.Controls
         {
             get => TrackVals.Tempo.Max;
         }
+        #endregion
 
-        /// <summary>
-        /// Gets or sets the number of beats
-        /// </summary>
-        public int Beats
-        {
-            get => (int)GetValue(BeatsProperty);
-            set => SetValue(BeatsProperty, value);
-        }
+        /************************************************************************/
 
-        /// <summary>
-        /// Identifies the <see cref="Beats"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty BeatsProperty = DependencyProperty.Register
-            (
-                nameof(Beats), typeof(int), typeof(TrackContainer), new PropertyMetadata(TrackVals.Beats.Default, OnTotalStepsChanged, OnBeatsCoerce)
-            );
-
-        private static object OnBeatsCoerce(DependencyObject d, object baseValue)
-        {
-            int proposed = (int)baseValue;
-            return Math.Min(TrackVals.Beats.Max, Math.Max(TrackVals.Beats.Min, proposed));
-        }
-
-        /// <summary>
-        /// Gets or sets the beats text descriptor
-        /// </summary>
-        public string BeatsText
-        {
-            get => (string)GetValue(BeatsTextProperty);
-            set => SetValue(BeatsTextProperty, value);
-        }
-
-        /// <summary>
-        /// Identifies the <see cref="BeatsText"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty BeatsTextProperty = DependencyProperty.Register
-            (
-                nameof(BeatsText), typeof(string), typeof(TrackContainer), new PropertyMetadata(TrackVals.Beats.DefaultText)
-            );
-
-        /// <summary>
-        /// Gets the minimum beats allowed. Used for binding in the control template.
-        /// </summary>
-        public int MinBeats
-        {
-            get => TrackVals.Beats.Min;
-        }
-
-        /// <summary>
-        /// Gets the maximum beats allowed. Used for binding in the control template.
-        /// </summary>
-        public int MaxBeats
-        {
-            get => TrackVals.Beats.Max;
-        }
-
-        /// <summary>
-        /// Gets or sets the number of steps per beat
-        /// </summary>
-        public int StepsPerBeat
-        {
-            get => (int)GetValue(StepsPerBeatProperty);
-            set => SetValue(StepsPerBeatProperty, value);
-        }
-
-        /// <summary>
-        /// Identifies the <see cref="StepsPerBeat"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty StepsPerBeatProperty = DependencyProperty.Register
-            (
-                nameof(StepsPerBeat), typeof(int), typeof(TrackContainer), new PropertyMetadata(TrackVals.StepsPerBeat.Default, OnTotalStepsChanged, OnStepsPerBeatCoerce)
-            );
-
-        private static object OnStepsPerBeatCoerce(DependencyObject d, object baseValue)
-        {
-            int proposed = (int)baseValue;
-            return Math.Min(TrackVals.StepsPerBeat.Max, Math.Max(TrackVals.StepsPerBeat.Min, proposed));
-        }
-
-        /// <summary>
-        /// Gets or sets the steps per beat text descriptor
-        /// </summary>
-        public string StepsPerBeatText
-        {
-            get => (string)GetValue(StepsPerBeatTextProperty);
-            set => SetValue(StepsPerBeatTextProperty, value);
-        }
-
-        /// <summary>
-        /// Identifies the <see cref="StepsPerBeatText"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty StepsPerBeatTextProperty = DependencyProperty.Register
-            (
-                nameof(StepsPerBeatText), typeof(string), typeof(TrackContainer), new PropertyMetadata(TrackVals.StepsPerBeat.DefaultText)
-            );
-
-        /// <summary>
-        /// Gets the minimum steps per beats allowed. Used for binding in the control template.
-        /// </summary>
-        public int MinStepsPerBeat
-        {
-            get => TrackVals.StepsPerBeat.Min;
-        }
-
-        /// <summary>
-        /// Gets the maximum steps per beat allowed. Used for binding in the control template.
-        /// </summary>
-        public int MaxStepsPerBeat
-        {
-            get => TrackVals.StepsPerBeat.Max;
-        }
-
-        /// <summary>
-        /// Gets the total number of steps.
-        /// </summary>
-        public int TotalSteps
-        {
-            get => (int)GetValue(TotalStepsProperty);
-            private set => SetValue(TotalStepsPropertyKey, value);
-        }
-
-        private static readonly DependencyPropertyKey TotalStepsPropertyKey = DependencyProperty.RegisterReadOnly
-            (
-                nameof(TotalSteps), typeof(int), typeof(TrackContainer), new FrameworkPropertyMetadata(TrackVals.TotalSteps.Default)
-            );
-
-        /// <summary>
-        /// Identifies the <see cref="TotalSteps"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty TotalStepsProperty = TotalStepsPropertyKey.DependencyProperty;
-
-        private static void OnTotalStepsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is TrackContainer c)
-            {
-                c.OnTotalStepsChanged();
-                c.CalculateThreadSafeValues();
-                c.SetIsChanged();
-            }
-        }
-
+        #region Metronome
         /// <summary>
         /// Gets or sets a value that indicates if the metronome is active.
         /// </summary>
@@ -349,7 +208,7 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region Public properties (Render)
+        #region Render
         /// <summary>
         /// Gets a value that determines if render is requested.
         /// </summary>
@@ -384,7 +243,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         /// <remarks>
         /// Assign a command to this property to start the rending process by creating the 
-        /// rendering parms and then calling <see cref="StartRender(AudioRenderParameters)"/>.
+        /// rendering parms and then calling <see cref="StartRender()"/>.
         /// If your command handler decides not to render (for instance, user cancels), simply 
         /// return without starting the render. Once a render is started, it runs to completion
         /// at which time the <see cref="RenderCompleted"/> event is raised.
@@ -771,7 +630,6 @@ namespace Restless.App.DrumMaster.Controls
             ActivatedRenderImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Render.Active.64.png", UriKind.Relative));
             ActiveRenderImageSource = RenderImageSource;
 
-
             CloseImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Close.64.png", UriKind.Relative));
             MetronomeImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Metronome.64.png", UriKind.Relative));
             SlashImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Slash.64.png", UriKind.Relative));
@@ -782,9 +640,15 @@ namespace Restless.App.DrumMaster.Controls
 
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
+                HeaderBoxes = new TrackBoxContainerHeader(this)
+                {
+                    Margin = new Thickness(4),
+                    Padding = new Thickness(4),
+                    Beats = Beats,
+                    StepsPerBeat = StepsPerBeat,
+                };
+
                 Tracks = new MaxSizeObservableCollection<CompositeTrack>(TrackVals.Track.Max);
-                //TrackControllers = new MaxSizeObservableCollection<TrackController>(TrackVals.Track.Max);
-                //TrackBoxes = new MaxSizeObservableCollection<TrackBoxContainer>(TrackVals.Track.Max);
                 SubmixVoice = new SubmixVoice(AudioHost.Instance.AudioDevice);
 
                 metronome = new Metronome(this);
@@ -822,10 +686,6 @@ namespace Restless.App.DrumMaster.Controls
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            // Get the references from the template
-            headerBoxes = GetTemplateChild(PartHeaderBoxes) as TrackBoxContainer;
-            if (headerBoxes != null) headerBoxes.TotalStepsChanged -= HeaderBoxesTotalStepsChanged;
-            if (headerBoxes != null) headerBoxes.TotalStepsChanged += HeaderBoxesTotalStepsChanged;
             IsChangedSet -= TrackContainerIsChangedSet;
             IsChangedReset -= TrackContainerIsChangedReset;
             IsChangedSet += TrackContainerIsChangedSet;
@@ -845,11 +705,10 @@ namespace Restless.App.DrumMaster.Controls
             metronome.UpdateBeatValues(Beats, StepsPerBeat);
 
             IsStarted = false;
-            CalculateThreadSafeValues();
+            CalculateThreadSafeSleepTime();
             OnVolumeChanged();
             OnMutedImageSourceChanged();
         }
-
 
         /// <summary>
         /// Creates an XDocument representation of the container and saves it to the specified file.
@@ -879,7 +738,6 @@ namespace Restless.App.DrumMaster.Controls
             try
             {
                 Tracks.Clear();
-                // TrackBoxes.Clear();
                 XDocument doc = XDocument.Load(filename);
                 RestoreFromXElement(doc.Root);
                 ResetIsChanged();
@@ -988,7 +846,7 @@ namespace Restless.App.DrumMaster.Controls
             base.OnVolumeChanged();
             if (SubmixVoice != null)
             {
-                SubmixVoice.SetVolume(VolumeInternal);
+                SubmixVoice.SetVolume(ThreadSafeVolume);
             }
         }
 
@@ -1017,25 +875,33 @@ namespace Restless.App.DrumMaster.Controls
         }
 
         /// <summary>
-        /// Called when the <see cref="TrackSized.BoxSize"/> property changes.
+        /// Called when the <see cref="TrackStepControl.TotalSteps"/> property changes.
+        /// </summary>
+        protected override void OnTotalStepsChanged()
+        {
+            // save a thread safe local value of total steps
+            totalSteps = TotalSteps;
+
+            HeaderBoxes.SetBeats(Beats, StepsPerBeat);
+
+            Tracks.DoForAll((track) =>
+            {
+                track.BoxContainer.SetBeats(Beats, StepsPerBeat);
+            });
+            metronome.UpdateBeatValues(Beats, StepsPerBeat);
+        }
+
+        /// <summary>
+        /// Called when the <see cref="TrackStepControl.BoxSize"/> property changes.
         /// </summary>
         protected override void OnBoxSizeChanged()
         {
-            //foreach (var boxes in TrackBoxes)
-            //{
-            //    boxes.BoxSize = BoxSize;
-            //}
+            HeaderBoxes.BoxSize = BoxSize;
 
-            //foreach (var tc in TrackControllers)
-            //{
-            //    tc.MinHeight = BoxSize + 18;
-            //}
-
-            foreach (CompositeTrack track in Tracks)
+            Tracks.DoForAll((track) =>
             {
                 track.BoxContainer.BoxSize = BoxSize;
-                track.Controller.MinHeight = BoxSize + 18;
-            }
+            });
         }
         #endregion
 
@@ -1084,32 +950,6 @@ namespace Restless.App.DrumMaster.Controls
         private void AddTrack(AudioPiece piece)
         {
             Tracks.Add(new CompositeTrack(this, piece));
-
-            //TrackControllers.Add(new TrackController(this)
-            //{
-            //    Margin = new Thickness(4),
-            //    Padding = new Thickness(4),
-            //    BorderThickness = new Thickness(1, 1, 0, 1),
-            //    BorderBrush = Brushes.LightSlateGray,
-            //    MinHeight = BoxSize + 18,
-            //    Piece = piece,
-            //    MutedImageSource = MutedImageSource,
-            //    VoicedImageSource = VoicedImageSource,
-            //});
-
-            //TrackBoxes.Add(new TrackBoxContainer()
-            //{
-            //    Margin = new Thickness(4),
-            //    Padding = new Thickness(4),
-            //    BorderThickness = new Thickness(0,1,1,1),
-            //    BorderBrush = Brushes.LightSlateGray,
-            //    BoxType = TrackBoxType.TrackStep,
-            //    TotalSteps = TotalSteps,
-            //    BoxSize = BoxSize,
-            //    SelectedBackgroundBrush = new SolidColorBrush(Colors.LightBlue)
-            //});
-            //TrackBoxes[TrackCount - 1].SetController(TrackControllers[TrackCount - 1]);
-            //TrackControllers[TrackCount - 1].SetBoxContainer(TrackBoxes[TrackCount - 1]);
         }
 
         private void AddTrack(AudioPieceType type)
@@ -1247,7 +1087,7 @@ namespace Restless.App.DrumMaster.Controls
             Dispatcher.BeginInvoke(DispatcherPriority.Send, new DispatcherOperationCallback
                 ((args) =>
                 {
-                    headerBoxes.Boxes[step].PlayFrequency = StepPlayFrequency.EveryPass;
+                    HeaderBoxes.Boxes[step].PlayFrequency = StepPlayFrequency.EveryPass;
                     int subDiv = (step % StepsPerBeat) + 1;
                     int beat = (step / StepsPerBeat) + 1;
                     PassText = $"00{pass}";
@@ -1259,14 +1099,10 @@ namespace Restless.App.DrumMaster.Controls
             {
                 operationSet++;
                 metronome.Play(step, operationSet);
-                //TrackControllers.DoForAll((controller) =>
-                //{
-                //    controller.Play(pass, step, operationSet);
-                //});
 
                 Tracks.DoForAll((track) =>
                 {
-                    track.InternalController.Play(pass, step, operationSet);
+                    track.ThreadSafeController.Play(pass, step, operationSet);
                 });
 
                 AudioHost.Instance.AudioDevice.CommitChanges(operationSet);
@@ -1278,7 +1114,7 @@ namespace Restless.App.DrumMaster.Controls
             Dispatcher.BeginInvoke(DispatcherPriority.Send, new DispatcherOperationCallback
                 ((args) =>
                 {
-                    headerBoxes.DeselectAllBoxes();
+                    HeaderBoxes.DeselectAllBoxes();
                     PassText = DefaultPassText;
                     CounterText = DefaultCounterText;
                     return null;
@@ -1317,35 +1153,7 @@ namespace Restless.App.DrumMaster.Controls
             ActivePlayImageSource = IsStarted ? StopImageSource : StartImageSource;
         }
 
-        private void OnTotalStepsChanged()
-        {
-            TotalSteps = totalSteps = Beats * StepsPerBeat;
-            //TrackBoxes.DoForAll((c) =>
-            //{
-            //    c.TotalSteps = TotalSteps;
-            //});
-
-            Tracks.DoForAll((track) =>
-            {
-                track.BoxContainer.TotalSteps = TotalSteps;
-            });
-            metronome.UpdateBeatValues(Beats, StepsPerBeat);
-        }
-
-        private void HeaderBoxesTotalStepsChanged(object sender, RoutedEventArgs e)
-        {
-            if (headerBoxes != null)
-            {
-                // Update the beat labels
-                int beat = 1;
-                for (int k = 0; k < headerBoxes.Boxes.Count; k++)
-                {
-                    headerBoxes.Boxes[k].Text = (k % StepsPerBeat == 0) ? $"{beat++}" : string.Empty;
-                }
-            }
-        }
-
-        private void CalculateThreadSafeValues()
+        private void CalculateThreadSafeSleepTime()
         {
             sleepTime = MilliSecondsPerMinute / (int)Tempo / 4; 
         }
