@@ -1,10 +1,6 @@
-﻿using Restless.App.DrumMaster.Controls.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
 using System.Xml.Linq;
 
 namespace Restless.App.DrumMaster.Controls
@@ -13,31 +9,11 @@ namespace Restless.App.DrumMaster.Controls
     /// Represents a container for a series of <see cref="TrackBox"/> items
     /// that represent track steps.
     /// </summary>
-    //[TemplatePart(Name = PartHostGrid, Type = typeof(Grid))]
     public class TrackBoxContainerStep : TrackBoxContainerBase
     {
         #region Private
-        //private const string PartHostGrid = "PART_HOST_GRID";
-        //private Grid hostGrid;
         private readonly CompositeTrack owner;
-        //private readonly TrackContainer trackContainerOwner;
-        //private TrackController controller;
-        private XElement holdElement;
-        #endregion
-
-        /************************************************************************/
-
-        #region Public properties (Type / Steps)
-        #endregion
-
-        /************************************************************************/
-
-        #region Public properties (Brushes)
-        #endregion
-
-        /************************************************************************/
-
-        #region Routed Events
+        private XElement elementToRestoreFrom;
         #endregion
 
         /************************************************************************/
@@ -51,28 +27,24 @@ namespace Restless.App.DrumMaster.Controls
             this.owner = owner ?? throw new ArgumentNullException(nameof(owner));
             BoxType = TrackBoxType.TrackStep;
         }
-
-        static TrackBoxContainerStep()
-        {
-        }
         #endregion
 
         /************************************************************************/
 
         #region Public methods
-        ///// <summary>
-        ///// Called when the template is applied.
-        ///// </summary>
-        //public override void OnApplyTemplate()
-        //{
-        //    base.OnApplyTemplate();
-        //    hostGrid = GetTemplateChild(PartHostGrid) as Grid;
-        //    OnTotalStepsChanged();
-        //    if (holdElement != null)
-        //    {
-        //        RestoreFromXElement(holdElement);
-        //    }
-        //}
+        /// <summary>
+        /// Called when the template is applied.
+        /// </summary>
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            OnTotalStepsChanged();
+            if (elementToRestoreFrom != null)
+            {
+                RestoreFromXElement(elementToRestoreFrom);
+                elementToRestoreFrom = null;
+            }
+        }
         #endregion
 
         /************************************************************************/
@@ -98,7 +70,7 @@ namespace Restless.App.DrumMaster.Controls
         /// <param name="element">The element</param>
         public override void RestoreFromXElement(XElement element)
         {
-            holdElement = element;
+            elementToRestoreFrom = element;
             if (IsTemplateApplied)
             {
                 IEnumerable<XElement> childList = from el in element.Elements() select el;
@@ -132,16 +104,6 @@ namespace Restless.App.DrumMaster.Controls
             base.OnTotalStepsChanged();
             Boxes.SetVolumeVisibility(owner.Controller.IsTrackBoxVolumeVisible);
         }
-        #endregion
-
-        /************************************************************************/
-
-        #region Internal methods
-        #endregion
-
-        /************************************************************************/
-
-        #region Private methods (Instance)
         #endregion
     }
 }

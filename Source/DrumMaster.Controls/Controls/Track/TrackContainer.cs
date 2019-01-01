@@ -718,14 +718,14 @@ namespace Restless.App.DrumMaster.Controls
         {
             try
             {
-                var doc = new XDocument(GetXElement());
-                System.IO.File.WriteAllText(filename, doc.ToString());
-                ResetIsChanged();
                 DisplayName = FileName = filename;
+                var xe = GetXElement();
+                System.IO.File.WriteAllText(filename, xe.ToString());
+                ResetIsChanged();
             }
             catch (Exception ex)
             {
-                throw new System.IO.IOException($"Unable to load {filename}", ex);
+                throw new System.IO.IOException($"Unable to save {filename}", ex);
             }
         }
 
@@ -796,10 +796,10 @@ namespace Restless.App.DrumMaster.Controls
             element.Add(new XElement(nameof(BoxSize), BoxSize));
             element.Add(RenderParms.GetXElement());
 
-            foreach (CompositeTrack track in Tracks)
+            Tracks.DoForAll((track) =>
             {
-                element.Add(track.Controller.GetXElement());
-            }
+                element.Add(track.GetXElement());
+            });
             return element;
         }
 
@@ -824,12 +824,29 @@ namespace Restless.App.DrumMaster.Controls
                     RenderParms.RestoreFromXElement(e);
                     AudioHost.Instance.AudioCapture.RenderParms = RenderParms;
                 }
+
+                // For backward compatibility
                 if (e.Name == nameof(TrackController))
                 {
                     AddTrack(null);
                     OnBoxSizeChanged();
                     OnTotalStepsChanged();
                     Tracks[Tracks.Count - 1].Controller.RestoreFromXElement(e);
+                    IEnumerable<XElement> subChildList = from subE in e.Elements() select subE;
+                    foreach (XElement ee in subChildList)
+                    {
+                        if (ee.Name == "TrackBoxContainer")
+                        {
+                            Tracks[Tracks.Count - 1].BoxContainer.RestoreFromXElement(ee);
+                        }
+                    }
+                }
+
+                // For new format
+                if (e.Name == nameof(CompositeTrack))
+                {
+                    AddTrack(null);
+                    Tracks[Tracks.Count - 1].RestoreFromXElement(e);
                 }
             }
         }
@@ -909,17 +926,16 @@ namespace Restless.App.DrumMaster.Controls
 
         #region Internal method
         /// <summary>
-        /// Removes the track that is controlled by the specified track controller.
+        /// Removes the specified track.
         /// </summary>
-        /// <param name="controller">The track controller</param>
-        internal void RemoveTrack(TrackController controller)
+        /// <param name="track">The track controller</param>
+        internal void RemoveTrack(CompositeTrack track)
         {
-            //if (controller == null) throw new ArgumentNullException(nameof(controller));
-            //int idx = TrackControllers.IndexOf(controller);
-            //if (idx < 0) throw new ArgumentException("The specified controller is not included in the collection");
-            //TrackControllers.RemoveAt(idx);
-            //TrackBoxes.RemoveAt(idx);
-            //SetIsChanged();
+            if (track == null) throw new ArgumentNullException(nameof(track));
+            int idx = Tracks.IndexOf(track);
+            if (idx < 0) throw new ArgumentException("The specified track is not included in the collection");
+            Tracks.RemoveAt(idx);
+            SetIsChanged();
         }
         #endregion
 

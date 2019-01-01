@@ -1,22 +1,26 @@
 ﻿using Restless.App.DrumMaster.Controls.Audio;
+using Restless.App.DrumMaster.Controls.Core;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Xml.Linq;
 
 namespace Restless.App.DrumMaster.Controls
 {
     /// <summary>
     /// Represents a composite track, a <see cref="TrackController"/> and its corresponding <see cref="TrackBoxContainerStep"/>
     /// </summary>
-    public class CompositeTrack : ContentControl
+    public class CompositeTrack : ContentControl, IXElement
     {
         #region Private
         #endregion
 
         /************************************************************************/
 
-        #region Public Properties
+        #region Internal dependency properties
         /// <summary>
         /// Gets the track container that owns this composite track
         /// </summary>
@@ -65,7 +69,9 @@ namespace Restless.App.DrumMaster.Controls
 
         #endregion
 
-        #region Internal properties
+        /************************************************************************/
+
+        #region Internal CLR properties
         /// <summary>
         /// Gets the thread safe reference to <see cref="Controller"/>
         /// </summary>
@@ -114,6 +120,38 @@ namespace Restless.App.DrumMaster.Controls
         static CompositeTrack()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(CompositeTrack), new FrameworkPropertyMetadata(typeof(CompositeTrack)));
+        }
+        #endregion
+
+
+
+        #region IXElement 
+        /// <summary>
+        /// Gets the XElement for this object.
+        /// </summary>
+        /// <returns>The XElement that describes the state of this object.</returns>
+        public XElement GetXElement()
+        {
+            var element = new XElement(nameof(CompositeTrack));
+            element.Add(Controller.GetXElement());
+            element.Add(BoxContainer.GetXElement());
+            return element;
+        }
+
+        /// <summary>
+        /// Restores the object from the specified XElement
+        /// </summary>
+        /// <param name="element">The element</param>
+        public void RestoreFromXElement(XElement element)
+        {
+            IEnumerable<XElement> childList = from el in element.Elements() select el;
+
+            foreach (XElement e in childList)
+            {
+                if (e.Name == nameof(TrackController)) Controller.RestoreFromXElement(e);
+                if (e.Name == nameof(TrackBoxContainerStep)) BoxContainer.RestoreFromXElement(e);
+            }
+
         }
         #endregion
     }

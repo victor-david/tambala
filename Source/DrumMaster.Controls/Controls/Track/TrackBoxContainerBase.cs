@@ -1,10 +1,7 @@
 ﻿using Restless.App.DrumMaster.Controls.Core;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Xml.Linq;
 
 namespace Restless.App.DrumMaster.Controls
 {
@@ -18,7 +15,6 @@ namespace Restless.App.DrumMaster.Controls
         #region Private
         private const string PartHostGrid = "PART_HOST_GRID";
         private Grid hostGrid;
-        private XElement holdElement;
         #endregion
 
         /************************************************************************/
@@ -58,7 +54,6 @@ namespace Restless.App.DrumMaster.Controls
         {
         }
         #endregion
-
 
         /************************************************************************/
 
@@ -101,54 +96,6 @@ namespace Restless.App.DrumMaster.Controls
             base.OnApplyTemplate();
             hostGrid = GetTemplateChild(PartHostGrid) as Grid;
             OnTotalStepsChanged();
-            if (holdElement != null)
-            {
-                RestoreFromXElement(holdElement);
-            }
-        }
-        #endregion
-
-        /************************************************************************/
-
-        #region IXElement
-        /// <summary>
-        /// Gets the XElement for this object.
-        /// </summary>
-        /// <returns>The XElement that describes the state of this object.</returns>
-        public override XElement GetXElement()
-        {
-            var element = new XElement(nameof(TrackBoxContainerBase));
-            foreach (var box in Boxes)
-            {
-                element.Add(box.GetXElement());
-            }
-            return element;
-        }
-
-        /// <summary>
-        /// Restores the object from the specified XElement
-        /// </summary>
-        /// <param name="element">The element</param>
-        public override void RestoreFromXElement(XElement element)
-        {
-            holdElement = element;
-            if (IsTemplateApplied)
-            {
-                IEnumerable<XElement> childList = from el in element.Elements() select el;
-                int boxIndex = 0;
-                foreach (XElement e in childList)
-                {
-                    if (e.Name == nameof(TrackBox))
-                    {
-                        if (boxIndex < Boxes.Count)
-                        {
-                            Boxes[boxIndex].RestoreFromXElement(e);
-                        }
-                        boxIndex++;
-                    }
-                }
-                ResetIsChanged();
-            }
         }
         #endregion
 
@@ -179,11 +126,6 @@ namespace Restless.App.DrumMaster.Controls
                             SelectedBackgroundBrush = SelectedBackgroundBrush,
                         };
 
-                        //if (BoxType == TrackBoxType.TrackStep)
-                        //{
-                        //    box.IsVolumeVisible = compositeTrackOwner.Controller.IsTrackBoxVolumeVisible;
-                        //}
-
                         Grid.SetColumn(box, hostGrid.ColumnDefinitions.Count - 1);
                         hostGrid.Children.Add(box);
                         Boxes.Add(box);
@@ -199,9 +141,6 @@ namespace Restless.App.DrumMaster.Controls
                         currentTotalSteps--;
                     }
                 }
-
-                //RoutedEventArgs args = new RoutedEventArgs(TotalStepsChangedEvent);
-                //RaiseEvent(args);
             }
         }
 
@@ -244,41 +183,11 @@ namespace Restless.App.DrumMaster.Controls
             }
             return false;
         }
-
-        ///// <summary>
-        ///// From this assembly, resets the volume bias on each <see cref="TrackBox"/> in the container.
-        ///// </summary>
-        //internal void ResetVolumeBias()
-        //{
-        //    foreach (TrackBox box in Boxes)
-        //    {
-        //        box.VolumeBias = TrackVals.VolumeBias.Default;
-        //    }
-        //}
-
-        ///// <summary>
-        ///// From this assembly, removes any human volume bias from each <see cref="TrackBox"/> in the container.
-        ///// </summary>
-        //internal void RemoveHumanVolumeBias()
-        //{
-        //    foreach (TrackBox box in Boxes)
-        //    {
-        //        box.RemoveHumanVolumeBias();
-        //    }
-        //}
         #endregion
 
         /************************************************************************/
 
         #region Private methods (Instance)
-
-        private void ControllerSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            if (e.HeightChanged)
-            {
-                Height = e.NewSize.Height;
-            }
-        }
         #endregion
     }
 }

@@ -467,7 +467,7 @@ namespace Restless.App.DrumMaster.Controls
 
         private void RunRemoveTrackCommand(object parm)
         {
-            owner.Owner.RemoveTrack(this);
+            owner.Owner.RemoveTrack(owner);
         }
 
         private void RunToggleBeatVolumeCommand(object parm)
