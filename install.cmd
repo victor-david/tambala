@@ -11,6 +11,11 @@ if exist "%BIN%\DrumMaster.exe" (
   xcopy "%BIN%\*.dll" %DEST% /E /Y
 )
 
+rem Copy CHM file if it's there
+if exist "%ROOT%\Help\DrumMaster.Reference.chm" (
+  xcopy "%ROOT%\Help\DrumMaster.Reference.chm" %DEST% /Y
+)
+
 dir %DEST%
 endlocal
 pause
