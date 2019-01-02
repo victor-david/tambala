@@ -1,4 +1,5 @@
 ﻿using Restless.App.DrumMaster.Controls.Core;
+using Restless.App.DrumMaster.Core;
 using Restless.App.DrumMaster.Resources;
 using System.ComponentModel;
 using System.Windows;
@@ -28,6 +29,9 @@ namespace Restless.App.DrumMaster.ViewModel
             get => false;
         }
 
+        /// <summary>
+        /// Gets the track container object.
+        /// </summary>
         public TrackContainerViewModel TrackContainer
         {
             get => trackContainer;
@@ -45,7 +49,7 @@ namespace Restless.App.DrumMaster.ViewModel
         public MainWindowViewModel(Window owner) : base (owner)
         {
             WindowOwner.Closing += MainWindowClosing;
-            DisplayName = "Drum Master 3.0";
+            DisplayName = $"{ApplicationInfo.Instance.Title} {ApplicationInfo.Instance.VersionMajor}";
             Commands.Add("SaveLayout", RunSaveLayoutCommand, CanRunSaveLayoutCommand);
             Commands.Add("AddLayout", RunAddLayoutCommand);
             Commands.Add("OpenLayout", RunOpenLayoutCommand);
