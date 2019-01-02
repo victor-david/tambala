@@ -496,7 +496,7 @@
                         Value="{Binding BoxSize, RelativeSource={RelativeSource TemplatedParent}}" />
                 </StackPanel>
 
-                <ToggleButton Grid.Column="10" Margin="3" IsChecked="{Binding IsMetronomeActive, RelativeSource={RelativeSource TemplatedParent}}">
+                <ToggleButton x:Name="ButtonMetronome" Grid.Column="10" Margin="3" IsChecked="{Binding IsMetronomeActive, RelativeSource={RelativeSource TemplatedParent}}">
                     <Grid>
                         <Image Source="{TemplateBinding MetronomeImageSource}" Height="28" />
                     </Grid>
@@ -529,15 +529,29 @@
                         Text="{Binding CounterText, RelativeSource={RelativeSource TemplatedParent}}"/>
                 </Grid>
 
-                <ContentPresenter Grid.Column="2" Content="{TemplateBinding HeaderBoxes}" />
+                <ScrollViewer 
+                    x:Name="PART_HeaderScrollViewer"
+                    Grid.Column="2"
+                    VerticalScrollBarVisibility="Hidden"
+                    HorizontalScrollBarVisibility="Hidden" 
+                    Margin="{TemplateBinding HeaderMargin}" >
+                    <ContentPresenter Grid.Column="2" Content="{TemplateBinding HeaderBoxes}" />
+                </ScrollViewer>
             </Grid>
 
             <Separator Grid.Row="4"/>
 
-            <ScrollViewer Grid.Row="5" VerticalScrollBarVisibility="Auto">
+            <ScrollViewer x:Name="PART_TrackScrollViewer" Grid.Row="5" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                 <ItemsControl ItemsSource="{Binding Tracks, RelativeSource={RelativeSource TemplatedParent}}"/>
             </ScrollViewer>
         </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMetronomeActive" Value="True">
+                <Setter Property="Background" TargetName="ButtonMetronome" Value="{StaticResource ButtonBrushPressed}"/>
+                <Setter Property="BorderBrush" TargetName="ButtonMetronome" Value="#FFF0F0F0"/>
+                <Setter Property="BorderThickness" TargetName="ButtonMetronome" Value="1"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
     </ControlTemplate>
 
     <Style TargetType="{x:Type con:TrackContainer}">
@@ -632,7 +646,7 @@
                     </Button>
                 </Grid>
 
-                <Grid x:Name="PART_GRID_MAIN" Background="Transparent">
+                <Grid x:Name="PART_GridSliders" Background="Transparent">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="42"/>
                         <ColumnDefinition Width="56"/>
@@ -730,10 +744,7 @@
         </Border>
         <ControlTemplate.Triggers>
             <Trigger Property="IsExpanded" Value="False">
-                <Setter Property="Height" TargetName="PART_ROW_VOL" Value="0"/>
-                <Setter Property="Height" TargetName="PART_ROW_PAN" Value="0"/>
-                <Setter Property="Height" TargetName="PART_ROW_PITCH" Value="0"/>
-                <Setter Property="Height" TargetName="PART_ROW_HUMAN" Value="0"/>
+                <Setter Property="Visibility" TargetName="PART_GridSliders" Value="Collapsed"/>
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>

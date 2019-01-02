@@ -390,6 +390,7 @@ namespace Restless.App.DrumMaster.Controls
         {
             if (d is TrackControlBase c)
             {
+                c.OnExpandedImageSourceChanged();
                 c.OnIsExpandedChanged();
             }
         }

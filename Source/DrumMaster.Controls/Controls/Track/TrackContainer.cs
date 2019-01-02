@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -35,9 +36,13 @@ namespace Restless.App.DrumMaster.Controls
     /// Upon initialization, this control creates a series of default tracks. The user can add more.
     /// </para>
     /// </remarks>
+    [TemplatePart(Name = PartHeaderScrollViewer, Type = typeof(ScrollViewer))]
+    [TemplatePart(Name = PartTrackScrollViewer, Type = typeof(ScrollViewer))]
     public class TrackContainer : TrackStepControl
     {
         #region Private
+        private const string PartHeaderScrollViewer = "PART_HeaderScrollViewer";
+        private const string PartTrackScrollViewer = "PART_TrackScrollViewer";
         private const string DefaultCounterText = "00:00";
         private const string DefaultPassText = "000";
         private const int MilliSecondsPerMinute = 60000;
@@ -53,6 +58,8 @@ namespace Restless.App.DrumMaster.Controls
         private int maxRenderPass;
         private bool isRendering;
         private Stopwatch loopTimer;
+        private ScrollViewer headerScrollViewer;
+        private ScrollViewer trackScrollViewer;
         #endregion
 
         /************************************************************************/
@@ -545,6 +552,25 @@ namespace Restless.App.DrumMaster.Controls
         public static readonly DependencyProperty CounterTextProperty = CounterTextPropertyKey.DependencyProperty;
 
         /// <summary>
+        /// Gets the margin for the header boxes
+        /// </summary>
+        public Thickness HeaderMargin
+        {
+            get => (Thickness)GetValue(HeaderMarginProperty);
+            private set => SetValue(HeaderMarginPropertyKey, value);
+        }
+
+        private static readonly DependencyPropertyKey HeaderMarginPropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(HeaderMargin), typeof(Thickness), typeof(TrackContainer), new PropertyMetadata(new Thickness(0))
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="HeaderMargin"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty HeaderMarginProperty = HeaderMarginPropertyKey.DependencyProperty;
+
+        /// <summary>
         /// Gets the pass text
         /// </summary>
         public string PassText
@@ -680,6 +706,13 @@ namespace Restless.App.DrumMaster.Controls
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
+            // Get the references from the template
+            headerScrollViewer = GetTemplateChild(PartHeaderScrollViewer) as ScrollViewer;
+            trackScrollViewer = GetTemplateChild(PartTrackScrollViewer) as ScrollViewer;
+
+            if (trackScrollViewer != null) trackScrollViewer.ScrollChanged -= TrackScrollViewerScrollChanged;
+            if (trackScrollViewer != null) trackScrollViewer.ScrollChanged += TrackScrollViewerScrollChanged;
+
             IsChangedSet -= TrackContainerIsChangedSet;
             IsChangedReset -= TrackContainerIsChangedReset;
             IsChangedSet += TrackContainerIsChangedSet;
@@ -1193,6 +1226,23 @@ namespace Restless.App.DrumMaster.Controls
             if (e.OriginalSource.GetType() != GetType())
             {
                 ResetIsChanged();
+            }
+        }
+
+        private void TrackScrollViewerScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (headerScrollViewer != null)
+            {
+                if (trackScrollViewer.ComputedVerticalScrollBarVisibility == Visibility.Visible)
+                {
+                    HeaderMargin = new Thickness(0, 0, 17, 0);
+                }
+                else
+                {
+                    HeaderMargin = new Thickness(0);
+                }
+
+                headerScrollViewer.ScrollToHorizontalOffset(e.HorizontalOffset);
             }
         }
         #endregion
