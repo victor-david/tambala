@@ -12,24 +12,27 @@
             <ColumnDefinition Width="72"/>
             <ColumnDefinition Width="72"/>
         </Grid.ColumnDefinitions>
+        <Grid.Resources>
+            
+        </Grid.Resources>
         
         <Button Grid.Column="0" Style="{StaticResource FlatButtonStyle}" Command="{Binding Commands[SaveLayout]}">
             <StackPanel Orientation="Horizontal">
-                <Image Source="{StaticResource ImageSaveLayout}" Height="32" Width="32"/>
+                <Image Source="{StaticResource ImageSaveLayout}" Width="32"/>
                 <TextBlock Text="Save" Style="{StaticResource TextBlockNavButton}"/>
             </StackPanel>
         </Button>
         
         <Button Grid.Column="1" Style="{StaticResource FlatButtonStyle}" Command="{Binding Commands[AddLayout]}">
             <StackPanel Orientation="Horizontal">
-                <Image Source="{StaticResource ImageAddLayout}" Height="32" Width="32"/>
+                <Image Source="{StaticResource ImageAddLayout}" Width="32"/>
                 <TextBlock Text="New" Style="{StaticResource TextBlockNavButton}"/>
             </StackPanel>
         </Button>
         
         <Button Grid.Column="2" Style="{StaticResource FlatButtonStyle}" Command="{Binding Commands[OpenLayout]}">
             <StackPanel Orientation="Horizontal">
-                <Image Source="{StaticResource ImageOpenLayout}" Height="32" Width="32"/>
+                <Image Source="{StaticResource ImageOpenLayout}" Width="32"/>
                 <TextBlock Text="Open" Style="{StaticResource TextBlockNavButton}"/>
             </StackPanel>
         </Button>

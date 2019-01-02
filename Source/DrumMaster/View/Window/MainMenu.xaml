@@ -9,9 +9,10 @@
     d:DesignHeight="150" d:DesignWidth="800">
     <Menu KeyboardNavigation.TabNavigation="Cycle">
         <MenuItem Header="{x:Static r:Strings.MenuItemFile}">
-            <MenuItem Header="{x:Static r:Strings.MenuItemNew}" Command="{Binding Commands[AddDrumPattern]}" />
-            <MenuItem Header="{x:Static r:Strings.MenuItemOpen}" Command="{Binding Commands[FileOpen]}"/>
-            <MenuItem Header="{x:Static r:Strings.MenuItemSave}" Command="{Binding Commands[FileSave]}" />
+            <MenuItem Header="{x:Static r:Strings.MenuItemNew}" Command="{Binding Commands[AddLayout]}" />
+            <MenuItem Header="{x:Static r:Strings.MenuItemOpen}" Command="{Binding Commands[OpenLayout]}"/>
+            <Separator/>
+            <MenuItem Header="{x:Static r:Strings.MenuItemSave}" Command="{Binding Commands[SaveLayout]}" />
         </MenuItem>
     </Menu>
     

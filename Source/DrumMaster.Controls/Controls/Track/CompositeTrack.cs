@@ -96,7 +96,6 @@ namespace Restless.App.DrumMaster.Controls
             Controller = ThreadSafeController = new TrackController(this)
             {
                 Piece = piece,
-                Margin = new Thickness(4),
                 Padding = new Thickness(4),
                 MutedImageSource = owner.MutedImageSource,
                 VoicedImageSource = owner.VoicedImageSource,
@@ -104,7 +103,6 @@ namespace Restless.App.DrumMaster.Controls
 
             BoxContainer = ThreadSafeBoxContainer = new TrackBoxContainerStep(this)
             {
-                Margin = new Thickness(4),
                 Padding = new Thickness(4),
                 Beats = owner.Beats,
                 StepsPerBeat = owner.StepsPerBeat,

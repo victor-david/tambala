@@ -662,7 +662,6 @@ namespace Restless.App.DrumMaster.Controls
             {
                 HeaderBoxes = new TrackBoxContainerHeader(this)
                 {
-                    Margin = new Thickness(4),
                     Padding = new Thickness(4),
                     Beats = Beats,
                     StepsPerBeat = StepsPerBeat,

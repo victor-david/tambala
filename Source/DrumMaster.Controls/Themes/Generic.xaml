@@ -653,10 +653,10 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" x:Name="PART_ROW_VOL"/>
-                        <RowDefinition Height="Auto" x:Name="PART_ROW_PAN"/>
-                        <RowDefinition Height="Auto" x:Name="PART_ROW_PITCH"/>
-                        <RowDefinition Height="Auto" x:Name="PART_ROW_HUMAN"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ContextMenu>
                         <ContextMenu>
