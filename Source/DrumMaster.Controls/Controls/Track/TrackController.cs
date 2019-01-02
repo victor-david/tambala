@@ -1,4 +1,5 @@
 ﻿using Restless.App.DrumMaster.Controls.Audio;
+using Restless.App.DrumMaster.Controls.Automation;
 using Restless.App.DrumMaster.Controls.Resources;
 using SharpDX.XAudio2;
 using System;
@@ -273,6 +274,18 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
+        #region CLR properties
+        /// <summary>
+        /// Gets the track's voice automation object.
+        /// </summary>
+        public TrackVoiceAutomation VoiceAutomation
+        {
+            get;
+        }
+        #endregion
+
+        /************************************************************************/
+
         #region Constructors (Internal / Static)
         /// <summary>
         /// Initializes a new instance of the <see cref="TrackController"/> class.
@@ -302,6 +315,8 @@ namespace Restless.App.DrumMaster.Controls
 
             MinimizeImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Minimize.Blue.64.png", UriKind.Relative));
             MaximizeImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Maximize.Blue.64.png", UriKind.Relative));
+
+            VoiceAutomation = new TrackVoiceAutomation();
         }
 
         static TrackController()
@@ -340,7 +355,7 @@ namespace Restless.App.DrumMaster.Controls
             element.Add(new XElement(nameof(IsMuted), IsMuted));
             element.Add(new XElement(nameof(IsTrackBoxVolumeVisible), IsTrackBoxVolumeVisible));
             element.Add(Piece.GetXElement());
-            //element.Add(BoxContainer.GetXElement());
+            element.Add(VoiceAutomation.GetXElement());
             return element;
         }
 
@@ -425,7 +440,8 @@ namespace Restless.App.DrumMaster.Controls
 
         internal void Play(int pass, int step, int operationSet)
         {
-            if (isAudioEnabled && !IsUserMuted && !IsAutoMuted && step < owner.ThreadSafeBoxContainer.Boxes.Count)
+            if (isAudioEnabled && !IsUserMuted && !IsAutoMuted && 
+                step < owner.ThreadSafeBoxContainer.Boxes.Count && VoiceAutomation.IsAllowedToPlay(pass))
             {
                 try
                 {
