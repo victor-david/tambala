@@ -125,15 +125,11 @@
     <Compile Include="Core\TrackBoxCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controls\Text\LinkedTextBlock.cs" />
-    <Compile Include="Controls\Track\Obsolete\TrackBoxHostControl.cs" />
     <Compile Include="Controls\Track\TrackBoxType.cs" />
     <Compile Include="Controls\Track\TrackVals.cs" />
-    <Compile Include="Controls\Track\Obsolete\TrackControl.cs" />
-    <Compile Include="Controls\Track\Obsolete\TrackHeaderBoxControl.cs" />
     <Compile Include="Controls\Track\TrackContainer.cs" />
     <Compile Include="Controls\Track\TrackControlBase.cs" />
     <Compile Include="Controls\Track\TrackBox.cs" />
-    <Compile Include="Controls\Track\Obsolete\TrackStepBoxControl.cs" />
     <Compile Include="Resources\Strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
