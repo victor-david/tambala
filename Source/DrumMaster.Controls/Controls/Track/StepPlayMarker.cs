@@ -9,6 +9,9 @@ using System.Windows.Media;
 
 namespace Restless.App.DrumMaster.Controls
 {
+    /// <summary>
+    /// Provides a simple visual marker to represent a <see cref="StepPlayFrequency"/> value.
+    /// </summary>
     public class StepPlayMarker : Control
     {
         #region Properties

@@ -14,7 +14,7 @@ namespace Restless.App.DrumMaster.Controls
     public class TrackBox : TrackControlBase
     {
         #region Private
-        private TrackBoxContainer owner;
+        private TrackBoxContainerBase owner;
         private StepPlayFrequency playFrequency;
         #endregion
 
@@ -139,7 +139,7 @@ namespace Restless.App.DrumMaster.Controls
         /// Creates a new instance of <see cref="TrackBox"/>
         /// </summary>
         /// <param name="owner">The owner of this control.</param>
-        internal TrackBox(TrackBoxContainer owner)
+        internal TrackBox(TrackBoxContainerBase owner)
         {
             this.owner = owner ?? throw new ArgumentNullException(nameof(owner));
             Height = Width = TrackVals.BoxSize.Default;
@@ -256,8 +256,8 @@ namespace Restless.App.DrumMaster.Controls
                 // biasFactor is expressed as a value between zero and HumanVolumeBias.Max (7.5)
                 float minValue = -biasFactor;
                 float result = (float)random.NextDouble() * (biasFactor - minValue) + minValue;
-                float dbVol = VolumeRaw + VolumeBiasRaw + result;
-                VolumeInternal = XAudio2.DecibelsToAmplitudeRatio(dbVol);
+                float dbVol = ThreadSafeVolumeRaw + ThreadSafeVolumeBiasRaw + result;
+                ThreadSafeVolume = XAudio2.DecibelsToAmplitudeRatio(dbVol);
             }
         }
 
@@ -266,8 +266,8 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         internal void RemoveHumanVolumeBias()
         {
-            float dbVol = VolumeRaw + VolumeBiasRaw;
-            VolumeInternal = XAudio2.DecibelsToAmplitudeRatio(dbVol);
+            float dbVol = ThreadSafeVolumeRaw + ThreadSafeVolumeBiasRaw;
+            ThreadSafeVolume = XAudio2.DecibelsToAmplitudeRatio(dbVol);
         }
         #endregion
 

@@ -9,16 +9,17 @@ namespace Restless.App.DrumMaster.Controls.Audio
 {
     internal class Metronome
     {
-        private TrackContainer owner;
+        private readonly TrackContainer owner;
         private AudioPiece piece;
         private bool isAudioEnabled;
         private SubmixVoice submixVoice;
         private VoicePool voicePool;
         private int beats;
         private int stepsPerBeat;
-        private float volume;
-        private float pitchNormal;
-        private float pitchAccent;
+        // TODO Make volume adjustable.
+        private readonly float volume;
+        private readonly float pitchNormal;
+        private readonly float pitchAccent;
 
         internal AudioPiece Piece
         {
@@ -42,7 +43,7 @@ namespace Restless.App.DrumMaster.Controls.Audio
             this.owner = owner ?? throw new ArgumentNullException(nameof(owner));
             submixVoice = new SubmixVoice(AudioHost.Instance.AudioDevice);
             submixVoice.SetOutputVoices(new VoiceSendDescriptor(this.owner.SubmixVoice));
-            volume = XAudio2.DecibelsToAmplitudeRatio(-6.0f);
+            volume = XAudio2.DecibelsToAmplitudeRatio(-11.0f);
             pitchNormal = XAudio2.SemitonesToFrequencyRatio(TrackVals.Pitch.Default);
             pitchAccent = XAudio2.SemitonesToFrequencyRatio(1.5f);
 

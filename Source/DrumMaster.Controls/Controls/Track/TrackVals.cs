@@ -42,7 +42,7 @@ namespace Restless.App.DrumMaster.Controls
             /// <summary>
             /// The minimum box size for the track header and the track's beats / steps.
             /// </summary>
-            public const double Min = 42;
+            public const double Min = 36;
 
             /// <summary>
             /// The maximum box size for the track header and the track's beats / steps.

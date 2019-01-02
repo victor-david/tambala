@@ -16,10 +16,8 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         
-        <vw:MainNavigation Grid.Row="0"  Margin="2"/>
+        <vw:MainNavigation Grid.Row="0"  Margin="2,4"/>
         <Separator Grid.Row="1"/>
-        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Padding="5">
-            <ItemsControl ItemsSource="{Binding Pages}"/>
-        </ScrollViewer>
+        <ContentControl Grid.Row="2" Content="{Binding TrackContainer}" Margin="5"/>
     </Grid>
 </Window>

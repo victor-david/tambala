@@ -100,7 +100,29 @@ namespace Restless.App.DrumMaster.Controls.Core
             {
                 box.IsVolumeVisible = isVisible;
             }
+        }
 
+        /// <summary>
+        /// Resets the volume bias for each <see cref="TrackBox"/> in the collection
+        /// to the default value.
+        /// </summary>
+        public void ResetVolumeBias()
+        {
+            foreach (TrackBox box in this)
+            {
+                box.VolumeBias = TrackVals.VolumeBias.Default;
+            }
+        }
+
+        /// <summary>
+        /// Removes any human volume bias from each <see cref="TrackBox"/> in the container.
+        /// </summary>
+        public void RemoveHumanVolumeBias()
+        {
+            foreach (TrackBox box in this)
+            {
+                box.RemoveHumanVolumeBias();
+            }
         }
 
         /// <summary>

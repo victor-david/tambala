@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -21,26 +22,30 @@ namespace Restless.App.DrumMaster.Controls
     /// </summary>
     /// <remarks>
     /// <para>
-    /// This control is the top level control for a series of tracks and controllers
-    /// that represent a single drum beat. It contains the upper controls such as tempo, beats, steps per beat,
-    /// master volume, etc. and a series of paired track controller / track box containers. Each track controller manages
-    /// the instrument for the track, the track volume, pan, pitch, etc. Each track box container holds the individual
-    /// beats.
+    /// This control is the top level control for a series of tracks and controllers that represent a single drum beat
+    /// comprised of different instruments. It contains the upper controls such as tempo, beats, steps per beat,
+    /// master volume, etc. and a series of tracks. Each track contains a track controller that manages the instrument
+    /// for the track, the track volume, pan, pitch, etc., and a track box container that holds the individual
+    /// beats the user can select.
     /// </para>
     /// <para>
-    /// This control is responsible for creating the controllers and the track box containers. Upon initialization,
-    /// it creates a series of default tracks. The user can add more.
+    /// This control is responsible for creating tracks, for managing the background thread that plays the audio, and for providing
+    /// rendering services, i.e, saving the rhythm as a looped wave file.
+    /// </para>
+    /// <para>
+    /// Upon initialization, this control creates a series of default tracks. The user can add more.
     /// </para>
     /// </remarks>
-    [TemplatePart(Name = PartHeaderBoxes, Type = typeof(TrackBoxContainer))]
-    public class TrackContainer : TrackSized
+    [TemplatePart(Name = PartHeaderScrollViewer, Type = typeof(ScrollViewer))]
+    [TemplatePart(Name = PartTrackScrollViewer, Type = typeof(ScrollViewer))]
+    public class TrackContainer : TrackStepControl
     {
         #region Private
-        private const string PartHeaderBoxes = "PART_HEADER_BOXES";
+        private const string PartHeaderScrollViewer = "PART_HeaderScrollViewer";
+        private const string PartTrackScrollViewer = "PART_TrackScrollViewer";
         private const string DefaultCounterText = "00:00";
         private const string DefaultPassText = "000";
         private const int MilliSecondsPerMinute = 60000;
-        private TrackBoxContainer headerBoxes;
         private AutoResetEvent playSignaler;
         private AutoResetEvent endPlaySignaler;
         private Thread playThread;
@@ -53,23 +58,17 @@ namespace Restless.App.DrumMaster.Controls
         private int maxRenderPass;
         private bool isRendering;
         private Stopwatch loopTimer;
+        private ScrollViewer headerScrollViewer;
+        private ScrollViewer trackScrollViewer;
         #endregion
 
         /************************************************************************/
 
-        #region Public properties (Tracks)
+        #region Tracks
         /// <summary>
-        /// Gets the track controllers
+        /// Gets the collection of <see cref="CompositeTrack"/> objects.
         /// </summary>
-        public MaxSizeObservableCollection<TrackController> TrackControllers
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Gets the track boxes
-        /// </summary>
-        public MaxSizeObservableCollection<TrackBoxContainer> TrackBoxes
+        public MaxSizeObservableCollection<CompositeTrack> Tracks
         {
             get;
         }
@@ -77,7 +76,30 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region Public properties (Tempo, beats, measures)
+        #region Header boxes
+        /// <summary>
+        /// Gets the header boxes for the container
+        /// </summary>
+        public TrackBoxContainerHeader HeaderBoxes
+        {
+            get => (TrackBoxContainerHeader)GetValue(HeaderBoxesProperty);
+            private set => SetValue(HeaderBoxesPropertyKey, value);
+        }
+        
+        private static readonly DependencyPropertyKey HeaderBoxesPropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(HeaderBoxes), typeof(TrackBoxContainerHeader), typeof(TrackContainer), new PropertyMetadata(null)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="HeaderBoxes"/> dependency property
+        /// </summary>
+        public static readonly DependencyProperty HeaderBoxesProperty = HeaderBoxesPropertyKey.DependencyProperty;
+        #endregion
+
+        /************************************************************************/
+
+        #region Tempo
         /// <summary>
         /// Gets or sets the tempo
         /// </summary>
@@ -99,7 +121,7 @@ namespace Restless.App.DrumMaster.Controls
         {
             if (d is TrackContainer c)
             {
-                c.CalculateThreadSafeValues();
+                c.CalculateThreadSafeSleepTime();
                 c.SetIsChanged();
             }
         }
@@ -143,279 +165,11 @@ namespace Restless.App.DrumMaster.Controls
         {
             get => TrackVals.Tempo.Max;
         }
+        #endregion
 
-        /// <summary>
-        /// Gets or sets the number of beats
-        /// </summary>
-        public int Beats
-        {
-            get => (int)GetValue(BeatsProperty);
-            set => SetValue(BeatsProperty, value);
-        }
+        /************************************************************************/
 
-        /// <summary>
-        /// Identifies the <see cref="Beats"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty BeatsProperty = DependencyProperty.Register
-            (
-                nameof(Beats), typeof(int), typeof(TrackContainer), new PropertyMetadata(TrackVals.Beats.Default, OnTotalStepsChanged, OnBeatsCoerce)
-            );
-
-        private static object OnBeatsCoerce(DependencyObject d, object baseValue)
-        {
-            int proposed = (int)baseValue;
-            return Math.Min(TrackVals.Beats.Max, Math.Max(TrackVals.Beats.Min, proposed));
-        }
-
-        /// <summary>
-        /// Gets or sets the beats text descriptor
-        /// </summary>
-        public string BeatsText
-        {
-            get => (string)GetValue(BeatsTextProperty);
-            set => SetValue(BeatsTextProperty, value);
-        }
-
-        /// <summary>
-        /// Identifies the <see cref="BeatsText"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty BeatsTextProperty = DependencyProperty.Register
-            (
-                nameof(BeatsText), typeof(string), typeof(TrackContainer), new PropertyMetadata(TrackVals.Beats.DefaultText)
-            );
-
-        /// <summary>
-        /// Gets the minimum beats allowed. Used for binding in the control template.
-        /// </summary>
-        public int MinBeats
-        {
-            get => TrackVals.Beats.Min;
-        }
-
-        /// <summary>
-        /// Gets the maximum beats allowed. Used for binding in the control template.
-        /// </summary>
-        public int MaxBeats
-        {
-            get => TrackVals.Beats.Max;
-        }
-
-        /// <summary>
-        /// Gets or sets the number of steps per beat
-        /// </summary>
-        public int StepsPerBeat
-        {
-            get => (int)GetValue(StepsPerBeatProperty);
-            set => SetValue(StepsPerBeatProperty, value);
-        }
-
-        /// <summary>
-        /// Identifies the <see cref="StepsPerBeat"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty StepsPerBeatProperty = DependencyProperty.Register
-            (
-                nameof(StepsPerBeat), typeof(int), typeof(TrackContainer), new PropertyMetadata(TrackVals.StepsPerBeat.Default, OnTotalStepsChanged, OnStepsPerBeatCoerce)
-            );
-
-        private static object OnStepsPerBeatCoerce(DependencyObject d, object baseValue)
-        {
-            int proposed = (int)baseValue;
-            return Math.Min(TrackVals.StepsPerBeat.Max, Math.Max(TrackVals.StepsPerBeat.Min, proposed));
-        }
-
-        /// <summary>
-        /// Gets or sets the steps per beat text descriptor
-        /// </summary>
-        public string StepsPerBeatText
-        {
-            get => (string)GetValue(StepsPerBeatTextProperty);
-            set => SetValue(StepsPerBeatTextProperty, value);
-        }
-
-        /// <summary>
-        /// Identifies the <see cref="StepsPerBeatText"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty StepsPerBeatTextProperty = DependencyProperty.Register
-            (
-                nameof(StepsPerBeatText), typeof(string), typeof(TrackContainer), new PropertyMetadata(TrackVals.StepsPerBeat.DefaultText)
-            );
-
-        /// <summary>
-        /// Gets the minimum steps per beats allowed. Used for binding in the control template.
-        /// </summary>
-        public int MinStepsPerBeat
-        {
-            get => TrackVals.StepsPerBeat.Min;
-        }
-
-        /// <summary>
-        /// Gets the maximum steps per beat allowed. Used for binding in the control template.
-        /// </summary>
-        public int MaxStepsPerBeat
-        {
-            get => TrackVals.StepsPerBeat.Max;
-        }
-
-        /// <summary>
-        /// Gets the total number of steps.
-        /// </summary>
-        public int TotalSteps
-        {
-            get => (int)GetValue(TotalStepsProperty);
-            private set => SetValue(TotalStepsPropertyKey, value);
-        }
-
-        private static readonly DependencyPropertyKey TotalStepsPropertyKey = DependencyProperty.RegisterReadOnly
-            (
-                nameof(TotalSteps), typeof(int), typeof(TrackContainer), new FrameworkPropertyMetadata(TrackVals.TotalSteps.Default)
-            );
-
-        /// <summary>
-        /// Identifies the <see cref="TotalSteps"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty TotalStepsProperty = TotalStepsPropertyKey.DependencyProperty;
-
-        private static void OnTotalStepsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is TrackContainer c)
-            {
-                c.OnTotalStepsChanged();
-                c.CalculateThreadSafeValues();
-                c.SetIsChanged();
-            }
-        }
-        /***
-                /// <summary>
-                /// Gets or sets the number of proposed measures that <see cref="TotalSteps"/> represents. See remarks for more.
-                /// </summary>
-                /// <remarks>
-                /// This property contains the proposed number of measures used across <see cref="TotalSteps"/>.
-                /// The actual number of measures to use is represented by <see cref="Measures"/>. That property
-                /// takes into account <see cref="TotalSteps"/> and how theye may or may not be sub-divide
-                /// </remarks>
-                public int ProposedMeasures
-                {
-                    get => (int)GetValue(ProposedMeasuresProperty);
-                    set => SetValue(ProposedMeasuresProperty, value);
-                }
-
-                /// <summary>
-                /// Identifies the <see cref="ProposedMeasures"/> dependency property.
-                /// </summary>
-                public static readonly DependencyProperty ProposedMeasuresProperty = DependencyProperty.Register
-                    (
-                        nameof(ProposedMeasures), typeof(int), typeof(TrackContainer), new PropertyMetadata(TrackVals.Measures.Default, OnProposedMeasuresChanged, OnProposedMeasuresCoerce)
-                    );
-
-                private static object OnProposedMeasuresCoerce(DependencyObject d, object baseValue)
-                {
-                    return Math.Min(TrackVals.Measures.Max, Math.Max(TrackVals.Measures.Min, (int)baseValue));
-                }
-
-                private static void OnProposedMeasuresChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-                {
-                    if (d is TrackContainer c)
-                    {
-                        Debug.Assert(e.OldValue != null);
-                        int newVal = (int)e.NewValue;
-                        int oldVal = (int)e.OldValue;
-                        c.Measures = c.GetMeasures(newVal - oldVal);
-                    }
-                }
-
-                /// <summary>
-                /// Gets the number of actual measures to subdivide <see cref="TotalSteps"/>.
-                /// </summary>
-                public int Measures
-                {
-                    get => (int)GetValue(MeasuresProperty);
-                    private set => SetValue(MeasuresPropertyKey, value);
-                }
-
-                private static readonly DependencyPropertyKey MeasuresPropertyKey = DependencyProperty.RegisterReadOnly
-                    (
-                        nameof(Measures), typeof(int), typeof(TrackContainer), new PropertyMetadata(TrackVals.Measures.Default, OnMeasuresChanged)
-                    );
-
-                /// <summary>
-                /// Identifies the <see cref="Measures"/> dependency property.
-                /// </summary>
-                public static readonly DependencyProperty MeasuresProperty = MeasuresPropertyKey.DependencyProperty;
-
-
-
-                private static void OnMeasuresChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-                {
-                    if (d is TrackContainer c)
-                    {
-                        Debug.WriteLine($"REAL measures changed to {c.Measures} {e.NewValue}");
-                        c.SetIsChanged();
-                    }
-                }
-
-                private int GetMeasures(int direction)
-                {
-                    // Measures can be: 1,2,3,4
-                    // Total steps can be: 3-48
-                    int totalSteps = TotalSteps;
-                    int current = Measures;
-                    Debug.WriteLine($"GetPermittedMeasures, total steps: {totalSteps}. Current: {current} Direction: {direction}");
-                    if (totalSteps < 4) return 1;
-
-                    if (totalSteps == 4)
-                    {
-                        return (direction > 0) ? 2 : 1;
-                    }
-
-                    // Check odd numbered steps. Only choice is 1 measure or 3.
-                    if (totalSteps % 2 == 1)
-                    {
-                        // anything less than 9 (5 or 7) can't be split evenly.
-                        // if (totalSteps < 9) return 1;
-                        if (totalSteps % 3 == 0)
-                        {
-                            return (direction > 0) ? 3 : 1;
-                        }
-                        return 1;
-                    }
-
-                    return ProposedMeasures;
-                }
-
-                /// <summary>
-                /// Gets or sets the measures text descriptor.
-                /// </summary>
-                public string MeasuresText
-                {
-                    get => (string)GetValue(MeasuresTextProperty);
-                    set => SetValue(MeasuresTextProperty, value);
-                }
-
-                /// <summary>
-                /// Identifies the <see cref="MeasuresText"/> dependency property.
-                /// </summary>
-                public static readonly DependencyProperty MeasuresTextProperty = DependencyProperty.Register
-                    (
-                        nameof(MeasuresText), typeof(string), typeof(TrackContainer), new PropertyMetadata(TrackVals.Measures.DefaultText)
-                    );
-
-                /// <summary>
-                /// Gets the minimum measures allowed. Used for binding in the control template.
-                /// </summary>
-                public int MinMeasures
-                {
-                    get => TrackVals.Measures.Min;
-                }
-
-                /// <summary>
-                /// Gets the maximum measures allowed. Used for binding in the control template.
-                /// </summary>
-                public int MaxMeasures
-                {
-                    get => TrackVals.Measures.Max;
-                }
-        ***/
-
+        #region Metronome
         /// <summary>
         /// Gets or sets a value that indicates if the metronome is active.
         /// </summary>
@@ -444,7 +198,7 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region Public properties (Render)
+        #region Render
         /// <summary>
         /// Gets a value that determines if render is requested.
         /// </summary>
@@ -469,6 +223,7 @@ namespace Restless.App.DrumMaster.Controls
         {
             if (d is TrackContainer c)
             {
+                c.OnRenderImageSourceChanged();
                 c.OnIsRenderRequestModeChanged();
             }
         }
@@ -479,7 +234,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         /// <remarks>
         /// Assign a command to this property to start the rending process by creating the 
-        /// rendering parms and then calling <see cref="StartRender(AudioRenderParameters)"/>.
+        /// rendering parms and then calling <see cref="StartRender()"/>.
         /// If your command handler decides not to render (for instance, user cancels), simply 
         /// return without starting the render. Once a render is started, it runs to completion
         /// at which time the <see cref="RenderCompleted"/> event is raised.
@@ -501,7 +256,7 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region Public properties (Images)
+        #region Images (Start / stop [has state change])
         /// <summary>
         /// Gets or sets the image source to use for the play button when <see cref="IsStarted"/> is false.
         /// </summary>
@@ -545,6 +300,29 @@ namespace Restless.App.DrumMaster.Controls
         }
 
         /// <summary>
+        /// Gets image source that is currently active (depends on started/stopped state)
+        /// </summary>
+        public ImageSource ActivePlayImageSource
+        {
+            get => (ImageSource)GetValue(ActivePlayImageSourceProperty);
+            private set => SetValue(ActivePlayImageSourcePropertyKey, value);
+        }
+
+        private static readonly DependencyPropertyKey ActivePlayImageSourcePropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(ActivePlayImageSource), typeof(ImageSource), typeof(TrackContainer), new FrameworkPropertyMetadata(null)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="ActivePlayImageSource"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ActivePlayImageSourceProperty = ActivePlayImageSourcePropertyKey.DependencyProperty;
+        #endregion
+
+        /************************************************************************/
+
+        #region Images (Add track)
+        /// <summary>
         /// Gets or sets the image source to use for the add track button.
         /// </summary>
         public ImageSource AddTrackImageSource
@@ -560,7 +338,11 @@ namespace Restless.App.DrumMaster.Controls
             (
                 nameof(AddTrackImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null)
             );
+        #endregion
 
+        /************************************************************************/
+
+        #region Images (Close)
         /// <summary>
         /// Gets or sets the image source to use for the close button
         /// </summary>
@@ -578,7 +360,11 @@ namespace Restless.App.DrumMaster.Controls
                 (
                     nameof(CloseImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null)
                 );
+        #endregion
 
+        /************************************************************************/
+
+        #region Images (Render [has state change])
         /// <summary>
         /// Gets or sets the image source to use for the render button.
         /// </summary>
@@ -593,10 +379,9 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty RenderImageSourceProperty = DependencyProperty.Register
             (
-                nameof(RenderImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null)
+                nameof(RenderImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null, OnRenderImageSourceChanged)
             );
-
-
+        
         /// <summary>
         /// Gets or sets the image source to use for thr render button when the render functionality has been activated.
         /// </summary>
@@ -611,9 +396,45 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty ActivatedRenderImageSourceProperty = DependencyProperty.Register
             (
-                nameof(ActivatedRenderImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null)
+                nameof(ActivatedRenderImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null, OnRenderImageSourceChanged)
             );
 
+        /// <summary>
+        /// Gets image source that is currently active for render (depends on render state)
+        /// </summary>
+        public ImageSource ActiveRenderImageSource
+        {
+            get => (ImageSource)GetValue(ActiveRenderImageSourceProperty);
+            private set => SetValue(ActiveRenderImageSourcePropertyKey, value);
+        }
+
+        private static readonly DependencyPropertyKey ActiveRenderImageSourcePropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(ActiveRenderImageSource), typeof(ImageSource), typeof(TrackContainer), new FrameworkPropertyMetadata(null)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="ActiveRenderImageSource"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ActiveRenderImageSourceProperty = ActiveRenderImageSourcePropertyKey.DependencyProperty;
+
+        private static void OnRenderImageSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TrackContainer c)
+            {
+                c.OnRenderImageSourceChanged();
+            }
+        }
+
+
+
+
+
+        #endregion
+
+        /************************************************************************/
+
+        #region Images (Metronone)
         /// <summary>
         /// Gets or sets the image to use for the metronone
         /// </summary>
@@ -629,23 +450,6 @@ namespace Restless.App.DrumMaster.Controls
         public static readonly DependencyProperty MetronomeImageSourceProperty = DependencyProperty.Register
             (
                 nameof(MetronomeImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null)
-            );
-
-        /// <summary>
-        /// Gets or sets the slash image
-        /// </summary>
-        public ImageSource SlashImageSource
-        {
-            get => (ImageSource)GetValue(SlashImageSourceProperty);
-            set => SetValue(SlashImageSourceProperty, value);
-        }
-
-        /// <summary>
-        /// Identifies the <see cref="SlashImageSource"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty SlashImageSourceProperty = DependencyProperty.Register
-            (
-                nameof(SlashImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null)
             );
         #endregion
 
@@ -701,44 +505,6 @@ namespace Restless.App.DrumMaster.Controls
 
         #region Public properties (read only)
         /// <summary>
-        /// Gets image source that is currently active (depends on started/stopped state)
-        /// </summary>
-        public ImageSource ActivePlayImageSource
-        {
-            get => (ImageSource)GetValue(ActivePlayImageSourceProperty);
-            private set => SetValue(ActivePlayImageSourcePropertyKey, value);
-        }
-
-        private static readonly DependencyPropertyKey ActivePlayImageSourcePropertyKey = DependencyProperty.RegisterReadOnly
-            (
-                nameof(ActivePlayImageSource), typeof(ImageSource), typeof(TrackContainer), new FrameworkPropertyMetadata(null)
-            );
-
-        /// <summary>
-        /// Identifies the <see cref="ActivePlayImageSource"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ActivePlayImageSourceProperty = ActivePlayImageSourcePropertyKey.DependencyProperty;
-
-        /// <summary>
-        /// Gets image source that is currently active for render (depends on render state)
-        /// </summary>
-        public ImageSource ActiveRenderImageSource
-        {
-            get => (ImageSource)GetValue(ActiveRenderImageSourceProperty);
-            private set => SetValue(ActiveRenderImageSourcePropertyKey, value);
-        }
-
-        private static readonly DependencyPropertyKey ActiveRenderImageSourcePropertyKey = DependencyProperty.RegisterReadOnly
-            (
-                nameof(ActiveRenderImageSource), typeof(ImageSource), typeof(TrackContainer), new FrameworkPropertyMetadata(null)
-            );
-
-        /// <summary>
-        /// Identifies the <see cref="ActiveRenderImageSource"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ActiveRenderImageSourceProperty = ActiveRenderImageSourcePropertyKey.DependencyProperty;
-
-        /// <summary>
         /// Gets a boolean value that indicates if the track layout is started (i.e. playing its pattern)
         /// </summary>
         public bool IsStarted
@@ -786,6 +552,25 @@ namespace Restless.App.DrumMaster.Controls
         public static readonly DependencyProperty CounterTextProperty = CounterTextPropertyKey.DependencyProperty;
 
         /// <summary>
+        /// Gets the margin for the header boxes
+        /// </summary>
+        public Thickness HeaderMargin
+        {
+            get => (Thickness)GetValue(HeaderMarginProperty);
+            private set => SetValue(HeaderMarginPropertyKey, value);
+        }
+
+        private static readonly DependencyPropertyKey HeaderMarginPropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(HeaderMargin), typeof(Thickness), typeof(TrackContainer), new PropertyMetadata(new Thickness(0))
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="HeaderMargin"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty HeaderMarginProperty = HeaderMarginPropertyKey.DependencyProperty;
+
+        /// <summary>
         /// Gets the pass text
         /// </summary>
         public string PassText
@@ -814,18 +599,6 @@ namespace Restless.App.DrumMaster.Controls
         internal SubmixVoice SubmixVoice
         {
             get;
-        }
-        #endregion
-
-        /************************************************************************/
-
-        #region Private properties
-        /// <summary>
-        /// Gets the current track count
-        /// </summary>
-        private int TrackCount
-        {
-            get => TrackControllers.Count;
         }
         #endregion
 
@@ -878,10 +651,8 @@ namespace Restless.App.DrumMaster.Controls
             ActivatedRenderImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Render.Active.64.png", UriKind.Relative));
             ActiveRenderImageSource = RenderImageSource;
 
-
             CloseImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Close.64.png", UriKind.Relative));
             MetronomeImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Metronome.64.png", UriKind.Relative));
-            SlashImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Slash.64.png", UriKind.Relative));
 
             RenderParms = AudioRenderParameters.CreateDefault();
 
@@ -889,8 +660,15 @@ namespace Restless.App.DrumMaster.Controls
 
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
-                TrackControllers = new MaxSizeObservableCollection<TrackController>(TrackVals.Track.Max);
-                TrackBoxes = new MaxSizeObservableCollection<TrackBoxContainer>(TrackVals.Track.Max);
+                HeaderBoxes = new TrackBoxContainerHeader(this)
+                {
+                    Margin = new Thickness(4),
+                    Padding = new Thickness(4),
+                    Beats = Beats,
+                    StepsPerBeat = StepsPerBeat,
+                };
+
+                Tracks = new MaxSizeObservableCollection<CompositeTrack>(TrackVals.Track.Max);
                 SubmixVoice = new SubmixVoice(AudioHost.Instance.AudioDevice);
 
                 metronome = new Metronome(this);
@@ -929,15 +707,18 @@ namespace Restless.App.DrumMaster.Controls
         {
             base.OnApplyTemplate();
             // Get the references from the template
-            headerBoxes = GetTemplateChild(PartHeaderBoxes) as TrackBoxContainer;
-            if (headerBoxes != null) headerBoxes.TotalStepsChanged -= HeaderBoxesTotalStepsChanged;
-            if (headerBoxes != null) headerBoxes.TotalStepsChanged += HeaderBoxesTotalStepsChanged;
+            headerScrollViewer = GetTemplateChild(PartHeaderScrollViewer) as ScrollViewer;
+            trackScrollViewer = GetTemplateChild(PartTrackScrollViewer) as ScrollViewer;
+
+            if (trackScrollViewer != null) trackScrollViewer.ScrollChanged -= TrackScrollViewerScrollChanged;
+            if (trackScrollViewer != null) trackScrollViewer.ScrollChanged += TrackScrollViewerScrollChanged;
+
             IsChangedSet -= TrackContainerIsChangedSet;
             IsChangedReset -= TrackContainerIsChangedReset;
             IsChangedSet += TrackContainerIsChangedSet;
             IsChangedReset += TrackContainerIsChangedReset;
 
-            if (TrackControllers != null && TrackControllers.Count == 0)
+            if (Tracks != null && Tracks.Count == 0)
             {
                 AddTrack(AudioPieceType.Cymbal);
                 AddTrack(AudioPieceType.HighHat);
@@ -950,11 +731,10 @@ namespace Restless.App.DrumMaster.Controls
             metronome.UpdateBeatValues(Beats, StepsPerBeat);
 
             IsStarted = false;
-            CalculateThreadSafeValues();
+            CalculateThreadSafeSleepTime();
             OnVolumeChanged();
             OnMutedImageSourceChanged();
         }
-
 
         /// <summary>
         /// Creates an XDocument representation of the container and saves it to the specified file.
@@ -964,14 +744,14 @@ namespace Restless.App.DrumMaster.Controls
         {
             try
             {
-                var doc = new XDocument(GetXElement());
-                System.IO.File.WriteAllText(filename, doc.ToString());
-                ResetIsChanged();
                 DisplayName = FileName = filename;
+                var xe = GetXElement();
+                System.IO.File.WriteAllText(filename, xe.ToString());
+                ResetIsChanged();
             }
             catch (Exception ex)
             {
-                throw new System.IO.IOException($"Unable to load {filename}", ex);
+                throw new System.IO.IOException($"Unable to save {filename}", ex);
             }
         }
 
@@ -983,8 +763,7 @@ namespace Restless.App.DrumMaster.Controls
         {
             try
             {
-                TrackControllers.Clear();
-                TrackBoxes.Clear();
+                Tracks.Clear();
                 XDocument doc = XDocument.Load(filename);
                 RestoreFromXElement(doc.Root);
                 ResetIsChanged();
@@ -1043,10 +822,10 @@ namespace Restless.App.DrumMaster.Controls
             element.Add(new XElement(nameof(BoxSize), BoxSize));
             element.Add(RenderParms.GetXElement());
 
-            foreach (var controller in TrackControllers)
+            Tracks.DoForAll((track) =>
             {
-                element.Add(controller.GetXElement());
-            }
+                element.Add(track.GetXElement());
+            });
             return element;
         }
 
@@ -1071,12 +850,29 @@ namespace Restless.App.DrumMaster.Controls
                     RenderParms.RestoreFromXElement(e);
                     AudioHost.Instance.AudioCapture.RenderParms = RenderParms;
                 }
+
+                // For backward compatibility
                 if (e.Name == nameof(TrackController))
                 {
                     AddTrack(null);
                     OnBoxSizeChanged();
                     OnTotalStepsChanged();
-                    TrackControllers[TrackControllers.Count - 1].RestoreFromXElement(e);
+                    Tracks[Tracks.Count - 1].Controller.RestoreFromXElement(e);
+                    IEnumerable<XElement> subChildList = from subE in e.Elements() select subE;
+                    foreach (XElement ee in subChildList)
+                    {
+                        if (ee.Name == "TrackBoxContainer")
+                        {
+                            Tracks[Tracks.Count - 1].BoxContainer.RestoreFromXElement(ee);
+                        }
+                    }
+                }
+
+                // For new format
+                if (e.Name == nameof(CompositeTrack))
+                {
+                    AddTrack(null);
+                    Tracks[Tracks.Count - 1].RestoreFromXElement(e);
                 }
             }
         }
@@ -1093,7 +889,7 @@ namespace Restless.App.DrumMaster.Controls
             base.OnVolumeChanged();
             if (SubmixVoice != null)
             {
-                SubmixVoice.SetVolume(VolumeInternal);
+                SubmixVoice.SetVolume(ThreadSafeVolume);
             }
         }
 
@@ -1103,55 +899,72 @@ namespace Restless.App.DrumMaster.Controls
         protected override void OnMutedImageSourceChanged()
         {
             base.OnMutedImageSourceChanged();
-            if (TrackControllers != null)
+            if (Tracks != null)
             {
-                TrackControllers.DoForAll((item) =>
+                Tracks.DoForAll((track) =>
                 {
-                    item.MutedImageSource = MutedImageSource;
-                    item.VoicedImageSource = VoicedImageSource;
+                    track.Controller.MutedImageSource = MutedImageSource;
+                    track.Controller.VoicedImageSource = VoicedImageSource;
                 });
             }
         }
 
         /// <summary>
-        /// Called when the <see cref="TrackControlBase.IsMuted"/> property is changed.
+        /// Called when the <see cref="TrackControlBase.IsExpanded"/> property changes.
+        /// Expands / contracts all tracks
         /// </summary>
-        protected override void OnIsMutedChanged()
+        protected override void OnIsExpandedChanged()
         {
-            base.OnIsMutedChanged();
+            Tracks.DoForAll((track) =>
+            {
+                track.Controller.IsExpanded = IsExpanded;
+            });
         }
 
         /// <summary>
-        /// Called when the <see cref="TrackSized.BoxSize"/> property changes.
+        /// Called when the <see cref="TrackStepControl.TotalSteps"/> property changes.
+        /// </summary>
+        protected override void OnTotalStepsChanged()
+        {
+            // save a thread safe local value of total steps
+            totalSteps = TotalSteps;
+
+            HeaderBoxes.SetBeats(Beats, StepsPerBeat);
+
+            Tracks.DoForAll((track) =>
+            {
+                track.BoxContainer.SetBeats(Beats, StepsPerBeat);
+            });
+            metronome.UpdateBeatValues(Beats, StepsPerBeat);
+        }
+
+        /// <summary>
+        /// Called when the <see cref="TrackStepControl.BoxSize"/> property changes.
         /// </summary>
         protected override void OnBoxSizeChanged()
         {
-            foreach (var boxes in TrackBoxes)
-            {
-                boxes.BoxSize = BoxSize;
-            }
+            HeaderBoxes.BoxSize = BoxSize;
 
-            foreach (var tc in TrackControllers)
+            Tracks.DoForAll((track) =>
             {
-                tc.MinHeight = BoxSize + 18;
-            }
+                track.BoxContainer.BoxSize = BoxSize;
+            });
         }
         #endregion
 
         /************************************************************************/
 
-        #region Internal method
+        #region Internal methods
         /// <summary>
-        /// Removes the track that is controlled by the specified track controller.
+        /// Removes the specified track.
         /// </summary>
-        /// <param name="controller">The track controller</param>
-        internal void RemoveTrack(TrackController controller)
+        /// <param name="track">The track controller</param>
+        internal void RemoveTrack(CompositeTrack track)
         {
-            if (controller == null) throw new ArgumentNullException(nameof(controller));
-            int idx = TrackControllers.IndexOf(controller);
-            if (idx < 0) throw new ArgumentException("The specified controller is not included in the collection");
-            TrackControllers.RemoveAt(idx);
-            TrackBoxes.RemoveAt(idx);
+            if (track == null) throw new ArgumentNullException(nameof(track));
+            int idx = Tracks.IndexOf(track);
+            if (idx < 0) throw new ArgumentException("The specified track is not included in the collection");
+            Tracks.RemoveAt(idx);
             SetIsChanged();
         }
         #endregion
@@ -1182,31 +995,7 @@ namespace Restless.App.DrumMaster.Controls
 
         private void AddTrack(AudioPiece piece)
         {
-            TrackControllers.Add(new TrackController(this)
-            {
-                Margin = new Thickness(4),
-                Padding = new Thickness(4),
-                BorderThickness = new Thickness(1,1,0,1),
-                BorderBrush = Brushes.LightSlateGray,
-                MinHeight = BoxSize + 18,
-                Piece = piece,
-                MutedImageSource = MutedImageSource,
-                VoicedImageSource = VoicedImageSource,
-            });
-
-            TrackBoxes.Add(new TrackBoxContainer()
-            {
-                Margin = new Thickness(4),
-                Padding = new Thickness(4),
-                BorderThickness = new Thickness(0,1,1,1),
-                BorderBrush = Brushes.LightSlateGray,
-                BoxType = TrackBoxType.TrackStep,
-                TotalSteps = TotalSteps,
-                BoxSize = BoxSize,
-                SelectedBackgroundBrush = new SolidColorBrush(Colors.LightBlue)
-            });
-            TrackBoxes[TrackCount - 1].SetController(TrackControllers[TrackCount - 1]);
-            TrackControllers[TrackCount - 1].SetBoxContainer(TrackBoxes[TrackCount - 1]);
+            Tracks.Add(new CompositeTrack(this, piece));
         }
 
         private void AddTrack(AudioPieceType type)
@@ -1217,7 +1006,7 @@ namespace Restless.App.DrumMaster.Controls
 
         private bool CanRunAddTrackCommand(object parm)
         {
-            return TrackCount < TrackVals.Track.Max;
+            return Tracks.Count < TrackVals.Track.Max;
         }
 
         private void RunPlayCommand(object parm)
@@ -1227,13 +1016,17 @@ namespace Restless.App.DrumMaster.Controls
 
         private void RunRequestRenderCommand(object parm)
         {
-            // Simply toggles the property. All other action is handled by OnIsRenderModeActiveChanged()
+            // Simply toggles the property. All other action is handled by OnIsRenderRequestModeChanged()
             IsRenderRequestMode = !IsRenderRequestMode;
+        }
+
+        private void OnRenderImageSourceChanged()
+        {
+            ActiveRenderImageSource = IsRenderRequestMode ? ActivatedRenderImageSource : RenderImageSource;
         }
 
         private void OnIsRenderRequestModeChanged()
         {
-            ActiveRenderImageSource = IsRenderRequestMode ? ActivatedRenderImageSource : RenderImageSource;
             IsStarted = false;
             if (IsRenderRequestMode)
             {
@@ -1252,11 +1045,11 @@ namespace Restless.App.DrumMaster.Controls
         private int GetMaxRenderPass()
         {
             int maxPass = 1;
-            foreach (TrackController controller in TrackControllers)
+            foreach (CompositeTrack track in Tracks)
             {
-                if (!controller.IsMuted)
+                if (!track.Controller.IsMuted)
                 {
-                    foreach (TrackBox box in controller.BoxContainer.Boxes)
+                    foreach (TrackBox box in track.BoxContainer.Boxes)
                     {
                         switch (box.PlayFrequency)
                         {
@@ -1344,7 +1137,7 @@ namespace Restless.App.DrumMaster.Controls
             Dispatcher.BeginInvoke(DispatcherPriority.Send, new DispatcherOperationCallback
                 ((args) =>
                 {
-                    headerBoxes.Boxes[step].PlayFrequency = StepPlayFrequency.EveryPass;
+                    HeaderBoxes.Boxes[step].PlayFrequency = StepPlayFrequency.EveryPass;
                     int subDiv = (step % StepsPerBeat) + 1;
                     int beat = (step / StepsPerBeat) + 1;
                     PassText = $"00{pass}";
@@ -1356,9 +1149,10 @@ namespace Restless.App.DrumMaster.Controls
             {
                 operationSet++;
                 metronome.Play(step, operationSet);
-                TrackControllers.DoForAll((controller) =>
+
+                Tracks.DoForAll((track) =>
                 {
-                    controller.Play(pass, step, operationSet);
+                    track.ThreadSafeController.Play(pass, step, operationSet);
                 });
 
                 AudioHost.Instance.AudioDevice.CommitChanges(operationSet);
@@ -1370,7 +1164,7 @@ namespace Restless.App.DrumMaster.Controls
             Dispatcher.BeginInvoke(DispatcherPriority.Send, new DispatcherOperationCallback
                 ((args) =>
                 {
-                    headerBoxes.DeselectAllBoxes();
+                    HeaderBoxes.DeselectAllBoxes();
                     PassText = DefaultPassText;
                     CounterText = DefaultCounterText;
                     return null;
@@ -1409,30 +1203,7 @@ namespace Restless.App.DrumMaster.Controls
             ActivePlayImageSource = IsStarted ? StopImageSource : StartImageSource;
         }
 
-        private void OnTotalStepsChanged()
-        {
-            TotalSteps = totalSteps = Beats * StepsPerBeat;
-            TrackBoxes.DoForAll((c) => 
-            {
-                c.TotalSteps = TotalSteps;
-            });
-            metronome.UpdateBeatValues(Beats, StepsPerBeat);
-        }
-
-        private void HeaderBoxesTotalStepsChanged(object sender, RoutedEventArgs e)
-        {
-            if (headerBoxes != null)
-            {
-                // Update the beat labels
-                int beat = 1;
-                for (int k = 0; k < headerBoxes.Boxes.Count; k++)
-                {
-                    headerBoxes.Boxes[k].Text = (k % StepsPerBeat == 0) ? $"{beat++}" : string.Empty;
-                }
-            }
-        }
-
-        private void CalculateThreadSafeValues()
+        private void CalculateThreadSafeSleepTime()
         {
             sleepTime = MilliSecondsPerMinute / (int)Tempo / 4; 
         }
@@ -1455,6 +1226,23 @@ namespace Restless.App.DrumMaster.Controls
             if (e.OriginalSource.GetType() != GetType())
             {
                 ResetIsChanged();
+            }
+        }
+
+        private void TrackScrollViewerScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (headerScrollViewer != null)
+            {
+                if (trackScrollViewer.ComputedVerticalScrollBarVisibility == Visibility.Visible)
+                {
+                    HeaderMargin = new Thickness(0, 0, 17, 0);
+                }
+                else
+                {
+                    HeaderMargin = new Thickness(0);
+                }
+
+                headerScrollViewer.ScrollToHorizontalOffset(e.HorizontalOffset);
             }
         }
         #endregion

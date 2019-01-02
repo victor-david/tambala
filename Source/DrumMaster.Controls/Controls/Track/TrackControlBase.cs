@@ -54,8 +54,8 @@ namespace Restless.App.DrumMaster.Controls
             if (d is TrackControlBase c)
             {
                 // Save volume for later thread safe access.
-                c.VolumeRaw = (float)e.NewValue;
-                c.VolumeInternal = XAudio2.DecibelsToAmplitudeRatio(c.VolumeRaw);
+                c.ThreadSafeVolumeRaw = (float)e.NewValue;
+                c.ThreadSafeVolume = XAudio2.DecibelsToAmplitudeRatio(c.ThreadSafeVolumeRaw);
                 c.VolumeDecibelText = (c.Volume <= TrackVals.Volume.Min) ? "Off" : $"{c.Volume:N1}dB";
                 c.IsAutoMuted = c.Volume == TrackVals.Volume.Min;
                 c.OnVolumeChanged();
@@ -111,9 +111,9 @@ namespace Restless.App.DrumMaster.Controls
             if (d is TrackControlBase c)
             {
                 // Save volume bias in private var for later thread safe access.
-                c.VolumeBiasRaw = (float)e.NewValue;
-                float dbVol = c.VolumeRaw + c.VolumeBiasRaw;
-                c.VolumeInternal = XAudio2.DecibelsToAmplitudeRatio(dbVol);
+                c.ThreadSafeVolumeBiasRaw = (float)e.NewValue;
+                float dbVol = c.ThreadSafeVolumeRaw + c.ThreadSafeVolumeBiasRaw;
+                c.ThreadSafeVolume = XAudio2.DecibelsToAmplitudeRatio(dbVol);
                 c.OnVolumeChanged();
                 c.SetIsChanged();
             }
@@ -318,7 +318,7 @@ namespace Restless.App.DrumMaster.Controls
         {
             if (d is TrackControlBase c)
             {
-                c.PitchInternal = XAudio2.SemitonesToFrequencyRatio((float)e.NewValue);
+                c.ThreadSafePitch = XAudio2.SemitonesToFrequencyRatio((float)e.NewValue);
                 c.OnPitchChanged();
                 c.SetIsChanged();
             }
@@ -375,24 +375,30 @@ namespace Restless.App.DrumMaster.Controls
         public bool IsExpanded
         {
             get => (bool)GetValue(IsExpandedProperty);
-            private set => SetValue(IsExpandedPropertyKey, value);
+            set => SetValue(IsExpandedProperty, value);
         }
-
-        private static readonly DependencyPropertyKey IsExpandedPropertyKey = DependencyProperty.RegisterReadOnly
-            (
-                nameof(IsExpanded), typeof(bool), typeof(TrackControlBase), new FrameworkPropertyMetadata(true)
-            );
 
         /// <summary>
         /// Identifies the <see cref="IsExpanded"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty IsExpandedProperty = IsExpandedPropertyKey.DependencyProperty;
+        private static readonly DependencyProperty IsExpandedProperty = DependencyProperty.Register
+            (
+                nameof(IsExpanded), typeof(bool), typeof(TrackControlBase), new FrameworkPropertyMetadata(true, OnIsExpandedChanged)
+            );
 
+        private static void OnIsExpandedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TrackControlBase c)
+            {
+                c.OnExpandedImageSourceChanged();
+                c.OnIsExpandedChanged();
+            }
+        }
         #endregion
 
         /************************************************************************/
 
-        #region Public properties (Image)
+        #region Images (Muted, Voiced [has state change])
         /// <summary>
         /// Gets or sets the image source to use for the muted button (when muted).
         /// </summary>
@@ -454,7 +460,11 @@ namespace Restless.App.DrumMaster.Controls
         /// Identifies the <see cref="ActiveMutedImageSource"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ActiveMutedImageSourceProperty = ActiveMutedImageSourcePropertyKey.DependencyProperty;
+        #endregion
+        
+        /************************************************************************/
 
+        #region Images (Minimize / maximize [has state change]
         /// <summary>
         /// Gets or sets the image source to use for the minimize button
         /// </summary>
@@ -491,14 +501,14 @@ namespace Restless.App.DrumMaster.Controls
 
         private static void OnIsExpandedImageSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is TrackControlBase control)
+            if (d is TrackControlBase c)
             {
-                control.OnIsExpandedImageSourceChanged();
+                c.OnExpandedImageSourceChanged();
             }
         }
 
         /// <summary>
-        /// Gets image source that is currently for the mimimized / maximized state
+        /// Gets the image source that is currently for the mimimized / maximized state
         /// </summary>
         public ImageSource ActiveExpandedStateImageSource
         {
@@ -594,16 +604,16 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Gets the thread safe raw value of <see cref="Volume"/>. This value is expressed in dB.
         /// </summary>
-        protected float VolumeRaw
+        protected float ThreadSafeVolumeRaw
         {
             get;
             private set;
         }
 
         /// <summary>
-        /// Gets the thread value of <see cref="VolumeBias"/>. This value is expressed in dB.
+        /// Gets the thread safe raw value of <see cref="VolumeBias"/>. This value is expressed in dB.
         /// </summary>
-        protected float VolumeBiasRaw
+        protected float ThreadSafeVolumeBiasRaw
         {
             get;
             private set;
@@ -617,7 +627,7 @@ namespace Restless.App.DrumMaster.Controls
         /// This value is used internally and represents the actual XAudio2 volume value to use when 
         /// setting the volume on a voice.
         /// </remarks>
-        internal float VolumeInternal
+        internal float ThreadSafeVolume
         {
             get;
             set;
@@ -631,7 +641,7 @@ namespace Restless.App.DrumMaster.Controls
         /// This value is used internally and represents the actual XAudio2 frequency ratio value to use when 
         /// setting the pitch (aka frequency ratio) on a voice.
         /// </remarks>
-        internal float PitchInternal
+        internal float ThreadSafePitch
         {
             get;
             private set;
@@ -692,8 +702,10 @@ namespace Restless.App.DrumMaster.Controls
             MaximizeImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Maximize.64.png", UriKind.Relative));
             ActiveExpandedStateImageSource = MinimizeImageSource;
 
-            Commands = new Dictionary<string, ICommand>();
-            Commands.Add("ToggleExpanded", new RelayCommand(RunToggleExpandedCommand));
+            Commands = new Dictionary<string, ICommand>
+            {
+                { "ToggleExpanded", new RelayCommand(RunToggleExpandedCommand) }
+            };
 
             /* 
              * The following are thread safe values used in real time from the play thread.
@@ -702,10 +714,10 @@ namespace Restless.App.DrumMaster.Controls
              * and VolumeBiasRaw (because their defaults are 0.0), we do so here in case we 
              * later decide to change TrackVals.Volume.Default and/or TrackVals.VolumeBias.Default
              */
-            VolumeRaw = TrackVals.Volume.Default;
-            VolumeBiasRaw = TrackVals.VolumeBias.Default;
-            VolumeInternal = XAudio2.DecibelsToAmplitudeRatio(TrackVals.Volume.Default);
-            PitchInternal = XAudio2.SemitonesToFrequencyRatio(TrackVals.Pitch.Default);
+            ThreadSafeVolumeRaw = TrackVals.Volume.Default;
+            ThreadSafeVolumeBiasRaw = TrackVals.VolumeBias.Default;
+            ThreadSafeVolume = XAudio2.DecibelsToAmplitudeRatio(TrackVals.Volume.Default);
+            ThreadSafePitch = XAudio2.SemitonesToFrequencyRatio(TrackVals.Pitch.Default);
 
             VolumeDecibelText = (Volume <= TrackVals.Volume.Min) ? "Off" : $"{Volume:N1}dB";
             SetPanningText();
@@ -749,7 +761,7 @@ namespace Restless.App.DrumMaster.Controls
         #region Protected methods
         /// <summary>
         /// Called when <see cref="Volume"/> is changed. A derived class can override this method to perform updates as needed.
-        /// Before this method is called, all volume related properties such as <see cref="VolumeInternal"/> have been updated.
+        /// Before this method is called, all volume related properties such as <see cref="ThreadSafeVolume"/> have been updated.
         /// The base implementaion does nothing.
         /// </summary>
         protected virtual void OnVolumeChanged()
@@ -766,7 +778,7 @@ namespace Restless.App.DrumMaster.Controls
 
         /// <summary>
         /// Called when <see cref="Pitch"/> is changed. A derived class can override this method to perform updates as needed.
-        /// Before this method is called, all pitch related properties such as <see cref="PitchInternal"/> have been updated.
+        /// Before this method is called, all pitch related properties such as <see cref="ThreadSafePitch"/> have been updated.
         /// The base implementaion does nothing.
         /// </summary>
         protected virtual void OnPitchChanged()
@@ -791,6 +803,14 @@ namespace Restless.App.DrumMaster.Controls
         protected virtual void OnIsMutedChanged()
         {
             ActiveMutedImageSource = IsMuted ? MutedImageSource : VoicedImageSource;
+        }
+
+        /// <summary>
+        /// Called when <see cref="IsExpanded"/> is changed. A derived class can override this method to perform updates as needed.
+        /// The base implementaion does nothing.
+        /// </summary>
+        protected virtual void OnIsExpandedChanged()
+        {
         }
 
         /// <summary>
@@ -868,12 +888,12 @@ namespace Restless.App.DrumMaster.Controls
         private void RunToggleExpandedCommand(object parm)
         {
             IsExpanded = !IsExpanded;
-            OnIsExpandedImageSourceChanged();
+            OnExpandedImageSourceChanged();
         }
 
-        private void OnIsExpandedImageSourceChanged()
+        private void OnExpandedImageSourceChanged()
         {
-            ActiveExpandedStateImageSource = (IsExpanded) ? MinimizeImageSource : MaximizeImageSource;
+            ActiveExpandedStateImageSource = IsExpanded ? MinimizeImageSource : MaximizeImageSource;
         }
 
 
