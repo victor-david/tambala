@@ -375,19 +375,24 @@ namespace Restless.App.DrumMaster.Controls
         public bool IsExpanded
         {
             get => (bool)GetValue(IsExpandedProperty);
-            private set => SetValue(IsExpandedPropertyKey, value);
+            set => SetValue(IsExpandedProperty, value);
         }
-
-        private static readonly DependencyPropertyKey IsExpandedPropertyKey = DependencyProperty.RegisterReadOnly
-            (
-                nameof(IsExpanded), typeof(bool), typeof(TrackControlBase), new FrameworkPropertyMetadata(true)
-            );
 
         /// <summary>
         /// Identifies the <see cref="IsExpanded"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty IsExpandedProperty = IsExpandedPropertyKey.DependencyProperty;
+        private static readonly DependencyProperty IsExpandedProperty = DependencyProperty.Register
+            (
+                nameof(IsExpanded), typeof(bool), typeof(TrackControlBase), new FrameworkPropertyMetadata(true, OnIsExpandedChanged)
+            );
 
+        private static void OnIsExpandedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TrackControlBase c)
+            {
+                c.OnIsExpandedChanged();
+            }
+        }
         #endregion
 
         /************************************************************************/
@@ -495,9 +500,9 @@ namespace Restless.App.DrumMaster.Controls
 
         private static void OnIsExpandedImageSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is TrackControlBase control)
+            if (d is TrackControlBase c)
             {
-                control.OnIsExpandedImageSourceChanged();
+                c.OnExpandedImageSourceChanged();
             }
         }
 
@@ -800,6 +805,14 @@ namespace Restless.App.DrumMaster.Controls
         }
 
         /// <summary>
+        /// Called when <see cref="IsExpanded"/> is changed. A derived class can override this method to perform updates as needed.
+        /// The base implementaion does nothing.
+        /// </summary>
+        protected virtual void OnIsExpandedChanged()
+        {
+        }
+
+        /// <summary>
         /// Sets the <see cref="IsChanged"/> property to true and raises the <see cref="IsChangedSetEvent"/>.
         /// </summary>
         protected void SetIsChanged()
@@ -874,12 +887,12 @@ namespace Restless.App.DrumMaster.Controls
         private void RunToggleExpandedCommand(object parm)
         {
             IsExpanded = !IsExpanded;
-            OnIsExpandedImageSourceChanged();
+            OnExpandedImageSourceChanged();
         }
 
-        private void OnIsExpandedImageSourceChanged()
+        private void OnExpandedImageSourceChanged()
         {
-            ActiveExpandedStateImageSource = (IsExpanded) ? MinimizeImageSource : MaximizeImageSource;
+            ActiveExpandedStateImageSource = IsExpanded ? MinimizeImageSource : MaximizeImageSource;
         }
 
 

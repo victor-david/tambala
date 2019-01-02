@@ -38,7 +38,6 @@ namespace Restless.App.DrumMaster.Controls
     public class TrackContainer : TrackStepControl
     {
         #region Private
-        private const string PartHeaderBoxes = "PART_HEADER_BOXES";
         private const string DefaultCounterText = "00:00";
         private const string DefaultPassText = "000";
         private const int MilliSecondsPerMinute = 60000;
@@ -628,7 +627,6 @@ namespace Restless.App.DrumMaster.Controls
 
             CloseImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Close.64.png", UriKind.Relative));
             MetronomeImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Metronome.64.png", UriKind.Relative));
-            //SlashImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Slash.64.png", UriKind.Relative));
 
             RenderParms = AudioRenderParameters.CreateDefault();
 
@@ -879,11 +877,15 @@ namespace Restless.App.DrumMaster.Controls
         }
 
         /// <summary>
-        /// Called when the <see cref="TrackControlBase.IsMuted"/> property is changed.
+        /// Called when the <see cref="TrackControlBase.IsExpanded"/> property changes.
+        /// Expands / contracts all tracks
         /// </summary>
-        protected override void OnIsMutedChanged()
+        protected override void OnIsExpandedChanged()
         {
-            base.OnIsMutedChanged();
+            Tracks.DoForAll((track) =>
+            {
+                track.Controller.IsExpanded = IsExpanded;
+            });
         }
 
         /// <summary>

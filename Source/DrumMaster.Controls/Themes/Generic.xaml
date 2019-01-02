@@ -378,7 +378,7 @@
             </Border>
 
             <!-- Master controls -->
-            <Grid x:Name="PART_TRACK_LIST" Grid.Row="1" Margin="0,8">
+            <Grid Grid.Row="1" Margin="0,8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="66"/>
                     <ColumnDefinition Width="66"/>
@@ -498,10 +498,9 @@
 
                 <ToggleButton Grid.Column="10" Margin="3" IsChecked="{Binding IsMetronomeActive, RelativeSource={RelativeSource TemplatedParent}}">
                     <Grid>
-                        <Image Source="{TemplateBinding MetronomeImageSource}" Height="28"/>
+                        <Image Source="{TemplateBinding MetronomeImageSource}" Height="28" />
                     </Grid>
                 </ToggleButton>
-
             </Grid>
 
             <Separator Grid.Row="2"/>
