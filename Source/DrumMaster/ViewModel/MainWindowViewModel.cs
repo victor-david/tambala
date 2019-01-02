@@ -1,5 +1,4 @@
 ﻿using Restless.App.DrumMaster.Controls.Core;
-using Restless.App.DrumMaster.Core;
 using Restless.App.DrumMaster.Resources;
 using System.ComponentModel;
 using System.Windows;
@@ -13,15 +12,8 @@ namespace Restless.App.DrumMaster.ViewModel
     public class MainWindowViewModel : WindowViewModel
     {
         #region Private
-        private const int MaxWorkspace = 2;
-        private const int OtherWorkspaceIndex = 2;
-        private const int ContainerWorkspaceIndex = 1;
+        private TrackContainerViewModel trackContainer;
         private int layoutNumber;
-        private TrackContainerViewModel TrackContainer
-        {
-            get => (TrackContainerViewModel)Pages[ContainerWorkspaceIndex];
-            set => Pages[ContainerWorkspaceIndex] = value;
-        }
         #endregion
 
         /************************************************************************/
@@ -36,12 +28,10 @@ namespace Restless.App.DrumMaster.ViewModel
             get => false;
         }
 
-        /// <summary>
-        /// Gets the collection of workspace view models
-        /// </summary>
-        public WorkspaceViewModelCollection Pages
+        public TrackContainerViewModel TrackContainer
         {
-            get;
+            get => trackContainer;
+            private set => SetProperty(ref trackContainer, value);
         }
         #endregion
 
@@ -56,7 +46,6 @@ namespace Restless.App.DrumMaster.ViewModel
         {
             WindowOwner.Closing += MainWindowClosing;
             DisplayName = "Drum Master 3.0";
-            Pages = new WorkspaceViewModelCollection(MaxWorkspace);
             Commands.Add("SaveLayout", RunSaveLayoutCommand, CanRunSaveLayoutCommand);
             Commands.Add("AddLayout", RunAddLayoutCommand);
             Commands.Add("OpenLayout", RunOpenLayoutCommand);
@@ -69,7 +58,7 @@ namespace Restless.App.DrumMaster.ViewModel
         /// <summary>
         /// Closes the track container.
         /// </summary>
-        /// <param name="e">Not used</param>
+        /// <param name="e">The event args</param>
         public void CloseTrackContainer(CancelRoutedEventArgs e)
         {
             if (IsOkayToClose())

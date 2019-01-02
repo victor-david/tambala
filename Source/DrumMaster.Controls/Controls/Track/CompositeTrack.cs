@@ -15,11 +15,6 @@ namespace Restless.App.DrumMaster.Controls
     /// </summary>
     public class CompositeTrack : ContentControl, IXElement
     {
-        #region Private
-        #endregion
-
-        /************************************************************************/
-
         #region Internal dependency properties
         /// <summary>
         /// Gets the track container that owns this composite track
@@ -66,7 +61,6 @@ namespace Restless.App.DrumMaster.Controls
         /// Identifies the <see cref="BoxContainer"/> dependency property.
         /// </summary>
         internal static readonly DependencyProperty BoxContainerProperty = BoxContainerPropertyKey.DependencyProperty;
-
         #endregion
 
         /************************************************************************/
@@ -104,6 +98,8 @@ namespace Restless.App.DrumMaster.Controls
                 Piece = piece,
                 Margin = new Thickness(4),
                 Padding = new Thickness(4),
+                MutedImageSource = owner.MutedImageSource,
+                VoicedImageSource = owner.VoicedImageSource,
             };
 
             BoxContainer = ThreadSafeBoxContainer = new TrackBoxContainerStep(this)
@@ -123,7 +119,7 @@ namespace Restless.App.DrumMaster.Controls
         }
         #endregion
 
-
+        /************************************************************************/
 
         #region IXElement 
         /// <summary>

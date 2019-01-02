@@ -58,23 +58,7 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region Public properties (Tracks)
-        ///// <summary>
-        ///// Gets the track controllers
-        ///// </summary>
-        //public MaxSizeObservableCollection<TrackController> TrackControllers
-        //{
-        //    get;
-        //}
-
-        ///// <summary>
-        ///// Gets the track boxes
-        ///// </summary>
-        //public MaxSizeObservableCollection<TrackBoxContainer> TrackBoxes
-        //{
-        //    get;
-        //}
-
+        #region Tracks
         /// <summary>
         /// Gets the collection of <see cref="CompositeTrack"/> objects.
         /// </summary>
@@ -233,6 +217,7 @@ namespace Restless.App.DrumMaster.Controls
         {
             if (d is TrackContainer c)
             {
+                c.OnRenderImageSourceChanged();
                 c.OnIsRenderRequestModeChanged();
             }
         }
@@ -265,7 +250,7 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region Public properties (Images)
+        #region Images (Start / stop [has state change])
         /// <summary>
         /// Gets or sets the image source to use for the play button when <see cref="IsStarted"/> is false.
         /// </summary>
@@ -309,6 +294,29 @@ namespace Restless.App.DrumMaster.Controls
         }
 
         /// <summary>
+        /// Gets image source that is currently active (depends on started/stopped state)
+        /// </summary>
+        public ImageSource ActivePlayImageSource
+        {
+            get => (ImageSource)GetValue(ActivePlayImageSourceProperty);
+            private set => SetValue(ActivePlayImageSourcePropertyKey, value);
+        }
+
+        private static readonly DependencyPropertyKey ActivePlayImageSourcePropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(ActivePlayImageSource), typeof(ImageSource), typeof(TrackContainer), new FrameworkPropertyMetadata(null)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="ActivePlayImageSource"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ActivePlayImageSourceProperty = ActivePlayImageSourcePropertyKey.DependencyProperty;
+        #endregion
+
+        /************************************************************************/
+
+        #region Images (Add track)
+        /// <summary>
         /// Gets or sets the image source to use for the add track button.
         /// </summary>
         public ImageSource AddTrackImageSource
@@ -324,7 +332,11 @@ namespace Restless.App.DrumMaster.Controls
             (
                 nameof(AddTrackImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null)
             );
+        #endregion
 
+        /************************************************************************/
+
+        #region Images (Close)
         /// <summary>
         /// Gets or sets the image source to use for the close button
         /// </summary>
@@ -342,7 +354,11 @@ namespace Restless.App.DrumMaster.Controls
                 (
                     nameof(CloseImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null)
                 );
+        #endregion
 
+        /************************************************************************/
+
+        #region Images (Render [has state change])
         /// <summary>
         /// Gets or sets the image source to use for the render button.
         /// </summary>
@@ -357,10 +373,9 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty RenderImageSourceProperty = DependencyProperty.Register
             (
-                nameof(RenderImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null)
+                nameof(RenderImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null, OnRenderImageSourceChanged)
             );
-
-
+        
         /// <summary>
         /// Gets or sets the image source to use for thr render button when the render functionality has been activated.
         /// </summary>
@@ -375,9 +390,45 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty ActivatedRenderImageSourceProperty = DependencyProperty.Register
             (
-                nameof(ActivatedRenderImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null)
+                nameof(ActivatedRenderImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null, OnRenderImageSourceChanged)
             );
 
+        /// <summary>
+        /// Gets image source that is currently active for render (depends on render state)
+        /// </summary>
+        public ImageSource ActiveRenderImageSource
+        {
+            get => (ImageSource)GetValue(ActiveRenderImageSourceProperty);
+            private set => SetValue(ActiveRenderImageSourcePropertyKey, value);
+        }
+
+        private static readonly DependencyPropertyKey ActiveRenderImageSourcePropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(ActiveRenderImageSource), typeof(ImageSource), typeof(TrackContainer), new FrameworkPropertyMetadata(null)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="ActiveRenderImageSource"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ActiveRenderImageSourceProperty = ActiveRenderImageSourcePropertyKey.DependencyProperty;
+
+        private static void OnRenderImageSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TrackContainer c)
+            {
+                c.OnRenderImageSourceChanged();
+            }
+        }
+
+
+
+
+
+        #endregion
+
+        /************************************************************************/
+
+        #region Images (Metronone)
         /// <summary>
         /// Gets or sets the image to use for the metronone
         /// </summary>
@@ -393,23 +444,6 @@ namespace Restless.App.DrumMaster.Controls
         public static readonly DependencyProperty MetronomeImageSourceProperty = DependencyProperty.Register
             (
                 nameof(MetronomeImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null)
-            );
-
-        /// <summary>
-        /// Gets or sets the slash image
-        /// </summary>
-        public ImageSource SlashImageSource
-        {
-            get => (ImageSource)GetValue(SlashImageSourceProperty);
-            set => SetValue(SlashImageSourceProperty, value);
-        }
-
-        /// <summary>
-        /// Identifies the <see cref="SlashImageSource"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty SlashImageSourceProperty = DependencyProperty.Register
-            (
-                nameof(SlashImageSource), typeof(ImageSource), typeof(TrackContainer), new PropertyMetadata(null)
             );
         #endregion
 
@@ -464,44 +498,6 @@ namespace Restless.App.DrumMaster.Controls
         /************************************************************************/
 
         #region Public properties (read only)
-        /// <summary>
-        /// Gets image source that is currently active (depends on started/stopped state)
-        /// </summary>
-        public ImageSource ActivePlayImageSource
-        {
-            get => (ImageSource)GetValue(ActivePlayImageSourceProperty);
-            private set => SetValue(ActivePlayImageSourcePropertyKey, value);
-        }
-
-        private static readonly DependencyPropertyKey ActivePlayImageSourcePropertyKey = DependencyProperty.RegisterReadOnly
-            (
-                nameof(ActivePlayImageSource), typeof(ImageSource), typeof(TrackContainer), new FrameworkPropertyMetadata(null)
-            );
-
-        /// <summary>
-        /// Identifies the <see cref="ActivePlayImageSource"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ActivePlayImageSourceProperty = ActivePlayImageSourcePropertyKey.DependencyProperty;
-
-        /// <summary>
-        /// Gets image source that is currently active for render (depends on render state)
-        /// </summary>
-        public ImageSource ActiveRenderImageSource
-        {
-            get => (ImageSource)GetValue(ActiveRenderImageSourceProperty);
-            private set => SetValue(ActiveRenderImageSourcePropertyKey, value);
-        }
-
-        private static readonly DependencyPropertyKey ActiveRenderImageSourcePropertyKey = DependencyProperty.RegisterReadOnly
-            (
-                nameof(ActiveRenderImageSource), typeof(ImageSource), typeof(TrackContainer), new FrameworkPropertyMetadata(null)
-            );
-
-        /// <summary>
-        /// Identifies the <see cref="ActiveRenderImageSource"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ActiveRenderImageSourceProperty = ActiveRenderImageSourcePropertyKey.DependencyProperty;
-
         /// <summary>
         /// Gets a boolean value that indicates if the track layout is started (i.e. playing its pattern)
         /// </summary>
@@ -632,7 +628,7 @@ namespace Restless.App.DrumMaster.Controls
 
             CloseImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Close.64.png", UriKind.Relative));
             MetronomeImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Metronome.64.png", UriKind.Relative));
-            SlashImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Slash.64.png", UriKind.Relative));
+            //SlashImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Slash.64.png", UriKind.Relative));
 
             RenderParms = AudioRenderParameters.CreateDefault();
 
@@ -691,7 +687,6 @@ namespace Restless.App.DrumMaster.Controls
             IsChangedSet += TrackContainerIsChangedSet;
             IsChangedReset += TrackContainerIsChangedReset;
 
-            //if (TrackControllers != null && TrackControllers.Count == 0)
             if (Tracks != null && Tracks.Count == 0)
             {
                 AddTrack(AudioPieceType.Cymbal);
@@ -924,7 +919,7 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region Internal method
+        #region Internal methods
         /// <summary>
         /// Removes the specified track.
         /// </summary>
@@ -986,13 +981,17 @@ namespace Restless.App.DrumMaster.Controls
 
         private void RunRequestRenderCommand(object parm)
         {
-            // Simply toggles the property. All other action is handled by OnIsRenderModeActiveChanged()
+            // Simply toggles the property. All other action is handled by OnIsRenderRequestModeChanged()
             IsRenderRequestMode = !IsRenderRequestMode;
+        }
+
+        private void OnRenderImageSourceChanged()
+        {
+            ActiveRenderImageSource = IsRenderRequestMode ? ActivatedRenderImageSource : RenderImageSource;
         }
 
         private void OnIsRenderRequestModeChanged()
         {
-            ActiveRenderImageSource = IsRenderRequestMode ? ActivatedRenderImageSource : RenderImageSource;
             IsStarted = false;
             if (IsRenderRequestMode)
             {

@@ -256,7 +256,7 @@ namespace Restless.App.DrumMaster.Controls
                 // biasFactor is expressed as a value between zero and HumanVolumeBias.Max (7.5)
                 float minValue = -biasFactor;
                 float result = (float)random.NextDouble() * (biasFactor - minValue) + minValue;
-                float dbVol = VolumeRaw + VolumeBiasRaw + result;
+                float dbVol = ThreadSafeVolumeRaw + ThreadSafeVolumeBiasRaw + result;
                 ThreadSafeVolume = XAudio2.DecibelsToAmplitudeRatio(dbVol);
             }
         }
@@ -266,7 +266,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         internal void RemoveHumanVolumeBias()
         {
-            float dbVol = VolumeRaw + VolumeBiasRaw;
+            float dbVol = ThreadSafeVolumeRaw + ThreadSafeVolumeBiasRaw;
             ThreadSafeVolume = XAudio2.DecibelsToAmplitudeRatio(dbVol);
         }
         #endregion

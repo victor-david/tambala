@@ -54,8 +54,8 @@ namespace Restless.App.DrumMaster.Controls
             if (d is TrackControlBase c)
             {
                 // Save volume for later thread safe access.
-                c.VolumeRaw = (float)e.NewValue;
-                c.ThreadSafeVolume = XAudio2.DecibelsToAmplitudeRatio(c.VolumeRaw);
+                c.ThreadSafeVolumeRaw = (float)e.NewValue;
+                c.ThreadSafeVolume = XAudio2.DecibelsToAmplitudeRatio(c.ThreadSafeVolumeRaw);
                 c.VolumeDecibelText = (c.Volume <= TrackVals.Volume.Min) ? "Off" : $"{c.Volume:N1}dB";
                 c.IsAutoMuted = c.Volume == TrackVals.Volume.Min;
                 c.OnVolumeChanged();
@@ -111,8 +111,8 @@ namespace Restless.App.DrumMaster.Controls
             if (d is TrackControlBase c)
             {
                 // Save volume bias in private var for later thread safe access.
-                c.VolumeBiasRaw = (float)e.NewValue;
-                float dbVol = c.VolumeRaw + c.VolumeBiasRaw;
+                c.ThreadSafeVolumeBiasRaw = (float)e.NewValue;
+                float dbVol = c.ThreadSafeVolumeRaw + c.ThreadSafeVolumeBiasRaw;
                 c.ThreadSafeVolume = XAudio2.DecibelsToAmplitudeRatio(dbVol);
                 c.OnVolumeChanged();
                 c.SetIsChanged();
@@ -392,7 +392,7 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region Public properties (Image)
+        #region Images (Muted, Voiced [has state change])
         /// <summary>
         /// Gets or sets the image source to use for the muted button (when muted).
         /// </summary>
@@ -454,7 +454,11 @@ namespace Restless.App.DrumMaster.Controls
         /// Identifies the <see cref="ActiveMutedImageSource"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ActiveMutedImageSourceProperty = ActiveMutedImageSourcePropertyKey.DependencyProperty;
+        #endregion
+        
+        /************************************************************************/
 
+        #region Images (Minimize / maximize [has state change]
         /// <summary>
         /// Gets or sets the image source to use for the minimize button
         /// </summary>
@@ -498,7 +502,7 @@ namespace Restless.App.DrumMaster.Controls
         }
 
         /// <summary>
-        /// Gets image source that is currently for the mimimized / maximized state
+        /// Gets the image source that is currently for the mimimized / maximized state
         /// </summary>
         public ImageSource ActiveExpandedStateImageSource
         {
@@ -594,16 +598,16 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Gets the thread safe raw value of <see cref="Volume"/>. This value is expressed in dB.
         /// </summary>
-        protected float VolumeRaw
+        protected float ThreadSafeVolumeRaw
         {
             get;
             private set;
         }
 
         /// <summary>
-        /// Gets the thread value of <see cref="VolumeBias"/>. This value is expressed in dB.
+        /// Gets the thread safe raw value of <see cref="VolumeBias"/>. This value is expressed in dB.
         /// </summary>
-        protected float VolumeBiasRaw
+        protected float ThreadSafeVolumeBiasRaw
         {
             get;
             private set;
@@ -692,8 +696,10 @@ namespace Restless.App.DrumMaster.Controls
             MaximizeImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Maximize.64.png", UriKind.Relative));
             ActiveExpandedStateImageSource = MinimizeImageSource;
 
-            Commands = new Dictionary<string, ICommand>();
-            Commands.Add("ToggleExpanded", new RelayCommand(RunToggleExpandedCommand));
+            Commands = new Dictionary<string, ICommand>
+            {
+                { "ToggleExpanded", new RelayCommand(RunToggleExpandedCommand) }
+            };
 
             /* 
              * The following are thread safe values used in real time from the play thread.
@@ -702,8 +708,8 @@ namespace Restless.App.DrumMaster.Controls
              * and VolumeBiasRaw (because their defaults are 0.0), we do so here in case we 
              * later decide to change TrackVals.Volume.Default and/or TrackVals.VolumeBias.Default
              */
-            VolumeRaw = TrackVals.Volume.Default;
-            VolumeBiasRaw = TrackVals.VolumeBias.Default;
+            ThreadSafeVolumeRaw = TrackVals.Volume.Default;
+            ThreadSafeVolumeBiasRaw = TrackVals.VolumeBias.Default;
             ThreadSafeVolume = XAudio2.DecibelsToAmplitudeRatio(TrackVals.Volume.Default);
             ThreadSafePitch = XAudio2.SemitonesToFrequencyRatio(TrackVals.Pitch.Default);
 
