@@ -563,21 +563,23 @@
     <!-- COMPOSITE TRACK TEMPLATE / STYLE -->
     <!-- ################################ -->
     <ControlTemplate x:Key="CompositeTrackControlTemplate" TargetType="con:CompositeTrack">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="302"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+        <Border Background="{TemplateBinding ActiveDragHighlightBrush}">
+            <Grid Background="Transparent">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="302"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-            <ContentPresenter Content="{TemplateBinding Controller}"/>
-            <ContentPresenter Grid.Column="1" Content="{TemplateBinding BoxContainer}"/>
-            <Separator Grid.Row="1" Grid.ColumnSpan="2"/>
+                <ContentPresenter Content="{TemplateBinding Controller}"/>
+                <ContentPresenter Grid.Column="1" Content="{TemplateBinding BoxContainer}"/>
+                <Separator Grid.Row="1" Grid.ColumnSpan="2"/>
 
-        </Grid>
+            </Grid>
+        </Border>
     </ControlTemplate>
 
     <Style TargetType="con:CompositeTrack">

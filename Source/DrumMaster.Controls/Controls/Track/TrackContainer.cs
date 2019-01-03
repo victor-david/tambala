@@ -966,6 +966,25 @@ namespace Restless.App.DrumMaster.Controls
             Tracks.RemoveAt(idx);
             SetIsChanged();
         }
+
+        /// <summary>
+        /// Moves the specified tracks
+        /// </summary>
+        /// <param name="source">The source</param>
+        /// <param name="target">The target</param>
+        internal void MoveTracks(CompositeTrack source, CompositeTrack target)
+        {
+            if (source != null && target != null)
+            {
+                int idxSource = Tracks.IndexOf(source);
+                int idxTarget = Tracks.IndexOf(target);
+                if (idxSource >= 0 && idxTarget >= 0)
+                {
+                    Tracks.Move(idxSource, idxTarget);
+                    SetIsChanged();
+                }
+            }
+        }
         #endregion
 
         /************************************************************************/

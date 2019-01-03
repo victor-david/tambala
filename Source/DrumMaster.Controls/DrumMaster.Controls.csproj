@@ -120,6 +120,7 @@
     <Compile Include="Controls\Track\TrackController.cs" />
     <Compile Include="Core\CancelRoutedEventArgs.cs" />
     <Compile Include="Controls\Converters\DoubleMultiplicationConverter.cs" />
+    <Compile Include="Core\CoreHelper.cs" />
     <Compile Include="Core\IXElement.cs" />
     <Compile Include="Core\MaxSizeObservableCollection.cs" />
     <Compile Include="Core\TrackBoxCollection.cs" />
