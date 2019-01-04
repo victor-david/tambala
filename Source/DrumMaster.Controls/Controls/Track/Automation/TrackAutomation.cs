@@ -1,9 +1,5 @@
 ﻿using Restless.App.DrumMaster.Controls.Core;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace Restless.App.DrumMaster.Controls.Automation
@@ -21,6 +17,14 @@ namespace Restless.App.DrumMaster.Controls.Automation
 
         #region Properties
         /// <summary>
+        /// Gets the controller that owns this track automation.
+        /// </summary>
+        protected TrackController Owner
+        {
+            get;
+        }
+
+        /// <summary>
         /// Gets a value that indicates if the automation is enabled.
         /// </summary>
         public bool IsEnabled
@@ -32,7 +36,7 @@ namespace Restless.App.DrumMaster.Controls.Automation
         /// <summary>
         /// Gets the dictionary of automation items.
         /// </summary>
-        public Dictionary<int, TrackAutomationItem> Items
+        public TrackAutomationItemCollection Items
         {
             get;
         }
@@ -44,9 +48,11 @@ namespace Restless.App.DrumMaster.Controls.Automation
         /// <summary>
         /// Initializes a new instance of the <see cref="TrackAutomation"/> class.
         /// </summary>
-        protected TrackAutomation()
+        /// <param name="owner">The controller that owns this automation</param>
+        protected TrackAutomation(TrackController owner)
         {
-            Items = new Dictionary<int, TrackAutomationItem>();
+            Owner = owner ?? throw new ArgumentNullException(nameof(owner));
+            Items = new TrackAutomationItemCollection();
         }
         #endregion
 
@@ -70,8 +76,29 @@ namespace Restless.App.DrumMaster.Controls.Automation
         #region Public methods
         #endregion
 
+        /************************************************************************/
+
         #region Internal methods
-        internal virtual bool IsAllowedToPlay(int pass)
+        /// <summary>
+        /// Applies the automation. A derived class can override this method.
+        /// The base implementation does nothing.
+        /// </summary>
+        internal virtual void ApplyAutomation(int pass, int operationSet)
+        {
+            // Note: this is currently unused because automation currently
+            // consists of voice automation only, which is strictly an 
+            // on / off automation; it doesn't need to change any values.
+            // Later, with pitch animation, we'll need to modify pitch
+            // values of the owner controller.
+        }
+
+        /// <summary>
+        /// Gets a boolean value that indicates if the automation allows
+        /// the specified pass to play. Override this method to provide 
+        /// </summary>
+        /// <param name="pass"></param>
+        /// <returns></returns>
+        internal virtual bool CanPlay(int pass)
         {
             return true;
         }

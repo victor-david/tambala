@@ -24,7 +24,6 @@ namespace Restless.App.DrumMaster.Controls
         #region Private
         private const string PartGridTrack = "PART_GRID_TRACK";
         private const string PartEnvelopeHost = "PART_ENVELOPE_HOST";
-        //private readonly TrackContainer owner;
         private readonly CompositeTrack owner;
         private bool isAudioEnabled;
         private SubmixVoice submixVoice;
@@ -316,7 +315,7 @@ namespace Restless.App.DrumMaster.Controls
             MinimizeImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Minimize.Blue.64.png", UriKind.Relative));
             MaximizeImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Maximize.Blue.64.png", UriKind.Relative));
 
-            VoiceAutomation = new TrackVoiceAutomation();
+            VoiceAutomation = new TrackVoiceAutomation(this);
         }
 
         static TrackController()
@@ -440,12 +439,11 @@ namespace Restless.App.DrumMaster.Controls
 
         internal void Play(int pass, int step, int operationSet)
         {
-            if (isAudioEnabled && !IsUserMuted && !IsAutoMuted && 
-                step < owner.ThreadSafeBoxContainer.Boxes.Count && VoiceAutomation.IsAllowedToPlay(pass))
+            if (isAudioEnabled && !IsUserMuted && !IsAutoMuted && step < owner.ThreadSafeBoxContainer.Boxes.Count)
             {
                 try
                 {
-                    if (owner.ThreadSafeBoxContainer.CanPlay(pass, step))
+                    if (VoiceAutomation.CanPlay(pass) && owner.ThreadSafeBoxContainer.CanPlay(pass, step))
                     {
                         owner.ThreadSafeBoxContainer.Boxes[step].ApplyHumanVolumeBias(random, humanVolumeBias);
                         voicePool.Play(owner.ThreadSafeBoxContainer.Boxes[step].ThreadSafeVolume, ThreadSafePitch, operationSet);
