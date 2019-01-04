@@ -1,4 +1,5 @@
 ﻿using Restless.App.DrumMaster.Controls.Audio;
+using Restless.App.DrumMaster.Controls.Automation;
 using Restless.App.DrumMaster.Controls.Resources;
 using SharpDX.XAudio2;
 using System;
@@ -23,7 +24,6 @@ namespace Restless.App.DrumMaster.Controls
         #region Private
         private const string PartGridTrack = "PART_GRID_TRACK";
         private const string PartEnvelopeHost = "PART_ENVELOPE_HOST";
-        //private readonly TrackContainer owner;
         private readonly CompositeTrack owner;
         private bool isAudioEnabled;
         private SubmixVoice submixVoice;
@@ -273,6 +273,18 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
+        #region CLR properties
+        /// <summary>
+        /// Gets the track's voice automation object.
+        /// </summary>
+        public TrackVoiceAutomation VoiceAutomation
+        {
+            get;
+        }
+        #endregion
+
+        /************************************************************************/
+
         #region Constructors (Internal / Static)
         /// <summary>
         /// Initializes a new instance of the <see cref="TrackController"/> class.
@@ -302,6 +314,8 @@ namespace Restless.App.DrumMaster.Controls
 
             MinimizeImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Minimize.Blue.64.png", UriKind.Relative));
             MaximizeImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Maximize.Blue.64.png", UriKind.Relative));
+
+            VoiceAutomation = new TrackVoiceAutomation(this);
         }
 
         static TrackController()
@@ -340,7 +354,7 @@ namespace Restless.App.DrumMaster.Controls
             element.Add(new XElement(nameof(IsMuted), IsMuted));
             element.Add(new XElement(nameof(IsTrackBoxVolumeVisible), IsTrackBoxVolumeVisible));
             element.Add(Piece.GetXElement());
-            //element.Add(BoxContainer.GetXElement());
+            element.Add(VoiceAutomation.GetXElement());
             return element;
         }
 
@@ -359,6 +373,7 @@ namespace Restless.App.DrumMaster.Controls
                 if (e.Name == nameof(Pitch)) SetDependencyProperty(PitchProperty, e.Value);
                 if (e.Name == nameof(HumanVolumeBias)) SetDependencyProperty(HumanVolumeBiasProperty, e.Value);
                 if (e.Name == nameof(IsMuted)) SetDependencyProperty(IsMutedProperty, e.Value);
+                if (e.Name == nameof(IsTrackBoxVolumeVisible)) SetDependencyProperty(IsTrackBoxVolumeVisibleProperty, e.Value);
                 if (e.Name == nameof(AudioPiece))
                 {
                     IEnumerable<XElement> audioList = from el in e.Elements() select el;
@@ -370,19 +385,7 @@ namespace Restless.App.DrumMaster.Controls
                         }
                     }
                 }
-
-                //if (e.Name == nameof(TrackBoxContainer))
-                //{
-                //    //BoxContainer.RestoreFromXElement(e);
-                //}
-
-                if (e.Name == nameof(IsTrackBoxVolumeVisible))
-                {
-                    if (bool.TryParse(e.Value, out bool result))
-                    {
-                        IsTrackBoxVolumeVisible = result;
-                    }
-                }
+                if (e.Name == nameof(TrackVoiceAutomation)) VoiceAutomation.RestoreFromXElement(e);
             }
 
             ResetIsChanged();
@@ -429,7 +432,7 @@ namespace Restless.App.DrumMaster.Controls
             {
                 try
                 {
-                    if (owner.ThreadSafeBoxContainer.CanPlay(pass, step))
+                    if (VoiceAutomation.CanPlay(pass) && owner.ThreadSafeBoxContainer.CanPlay(pass, step))
                     {
                         owner.ThreadSafeBoxContainer.Boxes[step].ApplyHumanVolumeBias(random, humanVolumeBias);
                         voicePool.Play(owner.ThreadSafeBoxContainer.Boxes[step].ThreadSafeVolume, ThreadSafePitch, operationSet);

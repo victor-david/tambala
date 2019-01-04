@@ -110,6 +110,11 @@
     <Compile Include="Controls\Converters\DoubleAdditionConverter.cs" />
     <Compile Include="Controls\Envelope\EnvelopeControl.cs" />
     <Compile Include="Audio\Metronome.cs" />
+    <Compile Include="Controls\Track\Automation\TrackAutomationItem.cs" />
+    <Compile Include="Controls\Track\Automation\TrackAutomationItemCollection.cs" />
+    <Compile Include="Controls\Track\Automation\TrackAutomationType.cs" />
+    <Compile Include="Controls\Track\Automation\TrackVoiceAutomation.cs" />
+    <Compile Include="Controls\Track\Automation\TrackAutomation.cs" />
     <Compile Include="Controls\Track\CompositeTrack.cs" />
     <Compile Include="Controls\Track\StepPlayFrequency.cs" />
     <Compile Include="Controls\Track\StepPlayMarker.cs" />
