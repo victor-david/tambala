@@ -373,6 +373,7 @@ namespace Restless.App.DrumMaster.Controls
                 if (e.Name == nameof(Pitch)) SetDependencyProperty(PitchProperty, e.Value);
                 if (e.Name == nameof(HumanVolumeBias)) SetDependencyProperty(HumanVolumeBiasProperty, e.Value);
                 if (e.Name == nameof(IsMuted)) SetDependencyProperty(IsMutedProperty, e.Value);
+                if (e.Name == nameof(IsTrackBoxVolumeVisible)) SetDependencyProperty(IsTrackBoxVolumeVisibleProperty, e.Value);
                 if (e.Name == nameof(AudioPiece))
                 {
                     IEnumerable<XElement> audioList = from el in e.Elements() select el;
@@ -384,19 +385,7 @@ namespace Restless.App.DrumMaster.Controls
                         }
                     }
                 }
-
-                //if (e.Name == nameof(TrackBoxContainer))
-                //{
-                //    //BoxContainer.RestoreFromXElement(e);
-                //}
-
-                if (e.Name == nameof(IsTrackBoxVolumeVisible))
-                {
-                    if (bool.TryParse(e.Value, out bool result))
-                    {
-                        IsTrackBoxVolumeVisible = result;
-                    }
-                }
+                if (e.Name == nameof(TrackVoiceAutomation)) VoiceAutomation.RestoreFromXElement(e);
             }
 
             ResetIsChanged();

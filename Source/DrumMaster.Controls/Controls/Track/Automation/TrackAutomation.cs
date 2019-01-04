@@ -53,6 +53,7 @@ namespace Restless.App.DrumMaster.Controls.Automation
         {
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));
             Items = new TrackAutomationItemCollection();
+            IsEnabled = true;
         }
         #endregion
 

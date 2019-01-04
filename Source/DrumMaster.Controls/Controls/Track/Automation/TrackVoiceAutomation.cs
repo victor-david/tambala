@@ -1,4 +1,6 @@
-﻿using System.Xml.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace Restless.App.DrumMaster.Controls.Automation
 {
@@ -35,6 +37,7 @@ namespace Restless.App.DrumMaster.Controls.Automation
         {
             var element = new XElement(nameof(TrackVoiceAutomation));
             element.Add(new XElement(nameof(IsEnabled), IsEnabled));
+            element.Add(Items.GetXElement());
             return element;
         }
 
@@ -44,6 +47,19 @@ namespace Restless.App.DrumMaster.Controls.Automation
         /// <param name="element">The element</param>
         public override void RestoreFromXElement(XElement element)
         {
+            IEnumerable<XElement> childList = from el in element.Elements() select el;
+
+            foreach (XElement e in childList)
+            {
+                if (e.Name == nameof(IsEnabled))
+                {
+                    if (bool.TryParse(e.Value, out bool result)) IsEnabled = result;
+                }
+                if (e.Name == nameof(TrackAutomationItemCollection))
+                {
+                    Items.RestoreFromXElement(e);
+                }
+            }
         }
         #endregion
 
@@ -60,6 +76,8 @@ namespace Restless.App.DrumMaster.Controls.Automation
         {
             if (pass == inPass) return inPassDecision;
             inPass = pass;
+            // note: assignment to inPassDecision, not comparison
+            if (!IsEnabled) return inPassDecision = true;
 
             Items.SetActiveItemIfStartPass(pass);
 
@@ -70,13 +88,6 @@ namespace Restless.App.DrumMaster.Controls.Automation
 
             Items.DeactivateActiveItemIfLastPass(pass);
             return inPassDecision;
-        }
-
-        internal void SetAutomationForTest()
-        {
-            Items.AddNextSequence(4, TrackAutomationType.Silence);
-            Items.AddNextSequence(4, TrackAutomationType.Voice);
-            Items.AddNextSequence(4, TrackAutomationType.Silence);
         }
         #endregion
     }

@@ -1,11 +1,15 @@
-﻿using System;
+﻿using Restless.App.DrumMaster.Controls.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace Restless.App.DrumMaster.Controls.Automation
 {
     /// <summary>
     /// Represents a track automation item
     /// </summary>
-    public class TrackAutomationItem
+    public class TrackAutomationItem : IXElement
     {
         #region Private
         #endregion
@@ -19,6 +23,7 @@ namespace Restless.App.DrumMaster.Controls.Automation
         public TrackAutomationType AutomationType
         {
             get;
+            private set;
         }
 
         /// <summary>
@@ -27,6 +32,7 @@ namespace Restless.App.DrumMaster.Controls.Automation
         public int FirstPass
         {
             get;
+            private set;
         }
 
         /// <summary>
@@ -35,6 +41,7 @@ namespace Restless.App.DrumMaster.Controls.Automation
         public int Duration
         {
             get;
+            private set;
         }
         #endregion
 
@@ -54,6 +61,51 @@ namespace Restless.App.DrumMaster.Controls.Automation
             FirstPass = firstPass;
             Duration = duration;
             AutomationType = automationType;
+        }
+        #endregion
+
+
+        /************************************************************************/
+
+        #region IXElement
+        /// <summary>
+        /// Gets the XElement for this object.
+        /// </summary>
+        /// <returns>The XElement that describes the state of this object.</returns>
+        public XElement GetXElement()
+        {
+            var element = new XElement(nameof(TrackAutomationItem));
+            element.Add(new XElement(nameof(AutomationType), AutomationType));
+            element.Add(new XElement(nameof(FirstPass), FirstPass));
+            element.Add(new XElement(nameof(Duration), Duration));
+            return element;
+        }
+
+        /// <summary>
+        /// Restores the object from the specified XElement
+        /// </summary>
+        /// <param name="element">The element</param>
+        public void RestoreFromXElement(XElement element)
+        {
+            IEnumerable<XElement> childList = from el in element.Elements() select el;
+
+            foreach (XElement e in childList)
+            {
+                if (e.Name == nameof(AutomationType))
+                {
+                    if (Enum.TryParse(e.Value, out TrackAutomationType result)) AutomationType = result;
+                }
+
+                if (e.Name == nameof(FirstPass))
+                {
+                    if (int.TryParse(e.Value, out int result)) FirstPass = result;
+                }
+
+                if (e.Name == nameof(Duration))
+                {
+                    if (int.TryParse(e.Value, out int result)) Duration = result;
+                }
+            }
         }
         #endregion
 
