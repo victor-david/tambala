@@ -365,5 +365,28 @@ namespace Restless.App.DrumMaster.Controls
             public const float Default = 0.5f;
         }
         #endregion
+
+        /************************************************************************/
+
+        #region InitialVoicePool
+        /// <summary>
+        /// Provides static values for a track's initial voice pool size
+        /// </summary>
+        public static class InitialVoicePool
+        {
+            /// <summary>
+            /// Normal voice pool initial size.
+            /// </summary>
+            public const int Normal = 16;
+            /// <summary>
+            /// Medium voice pool initial size.
+            /// </summary>
+            public const int Medium = 32;
+            /// <summary>
+            /// High voice pool initial size.
+            /// </summary>
+            public const int High = 48;
+        }
+        #endregion
     }
 }

@@ -269,6 +269,33 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty ShiftRightToolTipProperty = ShiftRightToolTipPropertyKey.DependencyProperty;
 
+        /// <summary>
+        /// Gets the initial voice pool size.
+        /// </summary>
+        public int InitialVoicePoolSize
+        {
+            get => (int)GetValue(InitialVoicePoolSizeProperty);
+            private set =>SetValue(InitialVoicePoolSizePropertyKey, value);
+        }
+        
+        private static readonly DependencyPropertyKey InitialVoicePoolSizePropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(InitialVoicePoolSize), typeof(int), typeof(TrackController), new PropertyMetadata(TrackVals.InitialVoicePool.Normal, OnInitialVoicePoolSizeChanged)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="InitialVoicePoolSize"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty InitialVoicePoolSizeProperty = InitialVoicePoolSizePropertyKey.DependencyProperty;
+
+
+        private static void OnInitialVoicePoolSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TrackController c)
+            {
+                c.SetIsChanged();
+            }
+        }
         #endregion
 
         /************************************************************************/
@@ -308,6 +335,7 @@ namespace Restless.App.DrumMaster.Controls
             Commands.Add("RemoveTrack", new RelayCommand(RunRemoveTrackCommand));
             Commands.Add("ToggleBeatVolume", new RelayCommand(RunToggleBeatVolumeCommand));
             Commands.Add("ResetBeatVolume", new RelayCommand(RunResetBeatVolumeCommand));
+            Commands.Add("SetInitialVoicePool", new RelayCommand(RunSetInitialVoicePoolCommand));
 
             ShiftLeftImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Shift.Left.64.png", UriKind.Relative));
             ShiftRightImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Shift.Right.64.png", UriKind.Relative));
@@ -353,6 +381,7 @@ namespace Restless.App.DrumMaster.Controls
             element.Add(new XElement(nameof(HumanVolumeBias), HumanVolumeBias));
             element.Add(new XElement(nameof(IsMuted), IsMuted));
             element.Add(new XElement(nameof(IsTrackBoxVolumeVisible), IsTrackBoxVolumeVisible));
+            element.Add(new XElement(nameof(InitialVoicePoolSize), InitialVoicePoolSize));
             element.Add(Piece.GetXElement());
             element.Add(VoiceAutomation.GetXElement());
             return element;
@@ -374,6 +403,14 @@ namespace Restless.App.DrumMaster.Controls
                 if (e.Name == nameof(HumanVolumeBias)) SetDependencyProperty(HumanVolumeBiasProperty, e.Value);
                 if (e.Name == nameof(IsMuted)) SetDependencyProperty(IsMutedProperty, e.Value);
                 if (e.Name == nameof(IsTrackBoxVolumeVisible)) SetDependencyProperty(IsTrackBoxVolumeVisibleProperty, e.Value);
+                if (e.Name == nameof(InitialVoicePoolSize))
+                {
+                    if (int.TryParse(e.Value, out int result))
+                    {
+                        InitialVoicePoolSize = result;
+                    }
+                }
+
                 if (e.Name == nameof(AudioPiece))
                 {
                     IEnumerable<XElement> audioList = from el in e.Elements() select el;
@@ -490,13 +527,24 @@ namespace Restless.App.DrumMaster.Controls
             IsEditPropertyMode = !IsEditPropertyMode;
         }
 
+        private void RunSetInitialVoicePoolCommand(object parm)
+        {
+            InitialVoicePoolSize = 16;
+            if (parm is string p)
+            {
+                if (p == "N") InitialVoicePoolSize = TrackVals.InitialVoicePool.Normal;
+                if (p == "M") InitialVoicePoolSize = TrackVals.InitialVoicePool.Medium;
+                if (p == "H") InitialVoicePoolSize = TrackVals.InitialVoicePool.High;
+            }
+        }
+
         private void OnPieceChanged()
         {
             IsAudioEnabled = isAudioEnabled = (Piece != null && Piece.IsAudioInitialized);
             if (IsAudioEnabled)
             {
                 AudioHost.Instance.DestroyVoicePool(voicePool);
-                voicePool = AudioHost.Instance.CreateVoicePool(Piece.Audio, submixVoice);
+                voicePool = AudioHost.Instance.CreateVoicePool(Piece.Audio, submixVoice, InitialVoicePoolSize);
             }
         }
 

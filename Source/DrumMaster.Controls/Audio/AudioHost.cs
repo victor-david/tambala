@@ -214,9 +214,9 @@ namespace Restless.App.DrumMaster.Controls.Audio
         /// <param name="audio">The audio buffer.</param>
         /// <param name="outputVoice">The output voice for the new voice pool.</param>
         /// <returns>The newly created voice pool.</returns>
-        internal VoicePool CreateVoicePool(AudioBuffer audio, Voice outputVoice)
+        internal VoicePool CreateVoicePool(AudioBuffer audio, Voice outputVoice, int initialSize)
         {
-            var pool = new VoicePool(audio, outputVoice);
+            var pool = new VoicePool(audio, outputVoice, initialSize);
             voicePools.Add(pool);
             return pool;
         }
