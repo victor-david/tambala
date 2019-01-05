@@ -268,16 +268,20 @@ namespace Restless.App.DrumMaster.Controls
         /// Identifies the <see cref="ShiftRightToolTip"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ShiftRightToolTipProperty = ShiftRightToolTipPropertyKey.DependencyProperty;
+        #endregion
 
+        /************************************************************************/
+
+        #region Voice pool
         /// <summary>
         /// Gets the initial voice pool size.
         /// </summary>
         public int InitialVoicePoolSize
         {
             get => (int)GetValue(InitialVoicePoolSizeProperty);
-            private set =>SetValue(InitialVoicePoolSizePropertyKey, value);
+            private set => SetValue(InitialVoicePoolSizePropertyKey, value);
         }
-        
+
         private static readonly DependencyPropertyKey InitialVoicePoolSizePropertyKey = DependencyProperty.RegisterReadOnly
             (
                 nameof(InitialVoicePoolSize), typeof(int), typeof(TrackController), new PropertyMetadata(TrackVals.InitialVoicePool.Normal, OnInitialVoicePoolSizeChanged)
@@ -288,14 +292,73 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty InitialVoicePoolSizeProperty = InitialVoicePoolSizePropertyKey.DependencyProperty;
 
-
         private static void OnInitialVoicePoolSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is TrackController c)
             {
+                c.IsNormalVoicePool = c.InitialVoicePoolSize == TrackVals.InitialVoicePool.Normal;
+                c.IsMediumVoicePool = c.InitialVoicePoolSize == TrackVals.InitialVoicePool.Medium;
+                c.IsHighVoicePool = c.InitialVoicePoolSize == TrackVals.InitialVoicePool.High;
                 c.SetIsChanged();
             }
         }
+
+        /// <summary>
+        /// Gets a boolean value that indicates if <see cref="InitialVoicePoolSize"/> is <see cref="TrackVals.InitialVoicePool.Normal"/>.
+        /// </summary>
+        public bool IsNormalVoicePool
+        {
+            get => (bool)GetValue(IsNormalVoicePoolProperty);
+            private set => SetValue(IsNormalVoicePoolPropertyKey, value);
+        }
+        
+        private static readonly DependencyPropertyKey IsNormalVoicePoolPropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(IsNormalVoicePool), typeof(bool), typeof(TrackController), new PropertyMetadata(true)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="IsNormalVoicePool"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsNormalVoicePoolProperty = IsNormalVoicePoolPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Gets a boolean value that indicates if <see cref="InitialVoicePoolSize"/> is <see cref="TrackVals.InitialVoicePool.Medium"/>.
+        /// </summary>
+        public bool IsMediumVoicePool
+        {
+            get => (bool)GetValue(IsMediumVoicePoolProperty);
+            private set => SetValue(IsMediumVoicePoolPropertyKey, value);
+        }
+
+        private static readonly DependencyPropertyKey IsMediumVoicePoolPropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(IsMediumVoicePool), typeof(bool), typeof(TrackController), new PropertyMetadata(false)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="IsMediumVoicePool"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsMediumVoicePoolProperty = IsMediumVoicePoolPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Gets a boolean value that indicates if <see cref="InitialVoicePoolSize"/> is <see cref="TrackVals.InitialVoicePool.High"/>.
+        /// </summary>
+        public bool IsHighVoicePool
+        {
+            get => (bool)GetValue(IsHighVoicePoolProperty);
+            private set => SetValue(IsHighVoicePoolPropertyKey, value);
+        }
+
+        private static readonly DependencyPropertyKey IsHighVoicePoolPropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(IsHighVoicePool), typeof(bool), typeof(TrackController), new PropertyMetadata(false)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="IsHighVoicePool"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsHighVoicePoolProperty = IsHighVoicePoolPropertyKey.DependencyProperty;
         #endregion
 
         /************************************************************************/

@@ -766,13 +766,13 @@
             <Trigger Property="IsExpanded" Value="False">
                 <Setter Property="Visibility" TargetName="PART_GridSliders" Value="Collapsed"/>
             </Trigger>
-            <Trigger Property="InitialVoicePoolSize" Value="16">
+            <Trigger Property="IsNormalVoicePool" Value="True">
                 <Setter Property="IsChecked" TargetName="VPNormal" Value="True"/>
             </Trigger>
-            <Trigger Property="InitialVoicePoolSize" Value="32">
+            <Trigger Property="IsMediumVoicePool" Value="True">
                 <Setter Property="IsChecked" TargetName="VPMedium" Value="True"/>
             </Trigger>
-            <Trigger Property="InitialVoicePoolSize" Value="48">
+            <Trigger Property="IsHighVoicePool" Value="True">
                 <Setter Property="IsChecked" TargetName="VPHigh" Value="True"/>
             </Trigger>
         </ControlTemplate.Triggers>
