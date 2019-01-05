@@ -162,18 +162,6 @@ namespace Restless.App.DrumMaster.Controls.Audio
         /************************************************************************/
 
         #region Internal methods
-        //internal void StartCapture()
-        //{
-        //    masteringVoice.EnableEffect(0);
-        //    AudioCapture.StartCapture();
-        //}
-
-        //internal void StopCapture(int fadeSamples)
-        //{
-        //    masteringVoice.DisableEffect(0);
-        //    AudioCapture.StopCapture(fadeSamples);
-        //}
-
         /// <summary>
         /// Gets an audio piece of the specified type.
         /// </summary>
@@ -209,14 +197,16 @@ namespace Restless.App.DrumMaster.Controls.Audio
         }
 
         /// <summary>
-        /// Creates a voice pool
+        /// Creates a voice pool.
         /// </summary>
+        /// <param name="name">The voice pool name. Used in diagnositics, usually the instrument name.</param>
         /// <param name="audio">The audio buffer.</param>
         /// <param name="outputVoice">The output voice for the new voice pool.</param>
+        /// <param name="initialSize">The initial size of the voice pool.</param>
         /// <returns>The newly created voice pool.</returns>
-        internal VoicePool CreateVoicePool(AudioBuffer audio, Voice outputVoice, int initialSize)
+        internal VoicePool CreateVoicePool(string name, AudioBuffer audio, Voice outputVoice, int initialSize)
         {
-            var pool = new VoicePool(audio, outputVoice, initialSize);
+            var pool = new VoicePool(name, audio, outputVoice, initialSize);
             voicePools.Add(pool);
             return pool;
         }

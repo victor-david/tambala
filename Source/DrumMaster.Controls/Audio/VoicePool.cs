@@ -1,6 +1,5 @@
 ﻿using SharpDX.XAudio2;
 using System;
-using System.Diagnostics;
 
 namespace Restless.App.DrumMaster.Controls.Audio
 {
@@ -10,13 +9,49 @@ namespace Restless.App.DrumMaster.Controls.Audio
     internal class VoicePool
     {
         #region Private
-        private int voicePoolSize;
         private AudioBuffer audio;
         private readonly Voice outputVoice;
         private VoiceSendDescriptor voiceSendDescriptor;
         private SourceVoice[] voices;
-        private int highWaterIndex;
-        private int increaseCount;
+        #endregion
+
+        /************************************************************************/
+
+        #region Public properties
+        /// <summary>
+        /// Gets the name assigned to this voice pool.
+        /// </summary>
+        public string Name
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the size of this voice pool.
+        /// </summary>
+        public int Size
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the highest index within the voice pool that has been used.
+        /// </summary>
+        public int HighWaterIndex
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the number of times the voice pool had to be expanded.
+        /// </summary>
+        public int IncreaseCount
+        {
+            get;
+            private set;
+        }
         #endregion
 
         /************************************************************************/
@@ -25,24 +60,38 @@ namespace Restless.App.DrumMaster.Controls.Audio
         /// <summary>
         /// Initializes a new instance of the <see cref="VoicePool"/> class
         /// </summary>
+        /// <param name="name">The name assigned to this voice pool. Used in diagnostics.</param>
         /// <param name="audio">The auido source for the voice pool</param>
         /// <param name="outputVoice">The output voice.</param>
         /// <param name="initialSize">The intial size. Clamped to 16-48</param>
-        internal VoicePool(AudioBuffer audio, Voice outputVoice, int initialSize)
+        internal VoicePool(string name, AudioBuffer audio, Voice outputVoice, int initialSize)
         {
             this.audio = audio ?? throw new ArgumentNullException(nameof(audio));
             this.outputVoice = outputVoice ?? throw new ArgumentNullException(nameof(outputVoice));
-            initialSize = Math.Max(Math.Min(initialSize, 48), 16);
+            Name = name;
+            initialSize = Math.Max(Math.Min(initialSize, TrackVals.InitialVoicePool.High), TrackVals.InitialVoicePool.Normal);
             voiceSendDescriptor = new VoiceSendDescriptor(outputVoice);
-            voicePoolSize = initialSize;
+            Size = initialSize;
             InitializeVoices(initialSize);
         }
         #endregion
 
         /************************************************************************/
 
-        #region Internal methods
+        #region Public methods
+        /// <summary>
+        /// Gets a string representation of this object.
+        /// </summary>
+        /// <returns>A friendly string that describes the object.</returns>
+        public override string ToString()
+        {
+            return $"Voice pool {Name} Size: {Size} Highwater: {HighWaterIndex} Increases: {IncreaseCount}";
+        }
+        #endregion
 
+        /************************************************************************/
+
+        #region Internal methods
         /// <summary>
         /// Plays the voice at the specified volume using the specified operation set.
         /// </summary>
@@ -65,7 +114,7 @@ namespace Restless.App.DrumMaster.Controls.Audio
         /// </summary>
         internal void Destroy()
         {
-            for (int k = 0; k < voicePoolSize; k++)
+            for (int k = 0; k < Size; k++)
             {
                 if (voices[k] != null)
                 {
@@ -84,7 +133,7 @@ namespace Restless.App.DrumMaster.Controls.Audio
         {
             voices = new SourceVoice[initialSize];
 
-            for (int k = 0; k < voicePoolSize; k++)
+            for (int k = 0; k < Size; k++)
             {
                 voices[k] = CreateVoice();
             }
@@ -92,25 +141,24 @@ namespace Restless.App.DrumMaster.Controls.Audio
 
         private SourceVoice GetAvailableVoice()
         {
-            for (int k = 0; k < voicePoolSize; k++)
+            for (int k = 0; k < Size; k++)
             {
                 if (voices[k].State.BuffersQueued == 0)
                 {
-                    highWaterIndex = Math.Max(highWaterIndex, k);
+                    HighWaterIndex = Math.Max(HighWaterIndex, k);
                     voices[k].SubmitSourceBuffer(audio, audio.DecodedPacketsInfo);
                     return voices[k];
                 }
             }
-            increaseCount++;
-            Debug.WriteLine($"Increase {increaseCount}");
+            IncreaseCount++;
             return IncreasePoolSize(4);
         }
 
         private SourceVoice IncreasePoolSize(int increase)
         {
             int oldSize = voices.Length;
-            voicePoolSize = oldSize + increase;
-            Array.Resize(ref voices, voicePoolSize);
+            Size = oldSize + increase;
+            Array.Resize(ref voices, Size);
             for (int k = 0; k < increase; k++)
             {
                 voices[oldSize + k] = CreateVoice();

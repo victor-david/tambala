@@ -71,7 +71,7 @@ namespace Restless.App.DrumMaster.Controls.Audio
             if (isAudioEnabled)
             {
                 AudioHost.Instance.DestroyVoicePool(voicePool);
-                voicePool = AudioHost.Instance.CreateVoicePool(Piece.Audio, submixVoice, TrackVals.InitialVoicePool.Normal);
+                voicePool = AudioHost.Instance.CreateVoicePool("Metronome", Piece.Audio, submixVoice, TrackVals.InitialVoicePool.Normal);
             }
         }
     }

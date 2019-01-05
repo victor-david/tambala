@@ -4,7 +4,6 @@ using Restless.App.DrumMaster.Controls.Resources;
 using SharpDX.XAudio2;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -607,7 +606,7 @@ namespace Restless.App.DrumMaster.Controls
             if (IsAudioEnabled)
             {
                 AudioHost.Instance.DestroyVoicePool(voicePool);
-                voicePool = AudioHost.Instance.CreateVoicePool(Piece.Audio, submixVoice, InitialVoicePoolSize);
+                voicePool = AudioHost.Instance.CreateVoicePool(Piece.DisplayName, Piece.Audio, submixVoice, InitialVoicePoolSize);
             }
         }
 
