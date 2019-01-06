@@ -23,6 +23,8 @@ namespace Restless.App.DrumMaster.Controls
         public SongContainer()
         {
             MasterControl = new MasterControl(this);
+            AddHandler(IsChangedSetEvent, new RoutedEventHandler(IsChangedSetEventHandler));
+            AddHandler(IsChangedResetEvent, new RoutedEventHandler(IsChangedResetEventHandler));
         }
 
         static SongContainer()
@@ -193,6 +195,27 @@ namespace Restless.App.DrumMaster.Controls
             // StopPlayThread();
         }
         #endregion
+
+        /************************************************************************/
+
+        #region Private methods
+        private void IsChangedSetEventHandler(object sender, RoutedEventArgs e)
+        {
+            if (e.OriginalSource != this)
+            {
+                SetIsChanged();
+            }
+        }
+
+        private void IsChangedResetEventHandler(object sender, RoutedEventArgs e)
+        {
+            if (e.Source != this)
+            {
+                ResetIsChanged();
+            }
+        }
+        #endregion
+
 
     }
 }

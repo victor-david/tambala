@@ -29,10 +29,12 @@
 
     <Menu>
         <MenuItem Header="{x:Static r:Strings.MenuItemFile}" Style="{StaticResource L0}">
+            
             <MenuItem Header="{x:Static r:Strings.MenuItemNew}" Style="{StaticResource L1}" Command="{Binding Commands[NewSong]}" />
             <MenuItem Header="{x:Static r:Strings.MenuItemOpen}" Style="{StaticResource L1}" Command="{Binding Commands[OpenSong]}"/>
             <Separator/>
             <MenuItem Header="{x:Static r:Strings.MenuItemSave}" Style="{StaticResource L1}" Command="{Binding Commands[SaveSong]}" />
+            <MenuItem Header="{x:Static r:Strings.MenuItemClose}" Style="{StaticResource L1}" Command="{Binding Commands[CloseSong]}" />
         </MenuItem>
         <MenuItem Header="{x:Static r:Strings.MenuItemEdit}" Style="{StaticResource L0}">
             <MenuItem Header="{x:Static r:Strings.MenuItemSettings}" Style="{StaticResource L1}" Command="{Binding Commands[EditSettings]}" />

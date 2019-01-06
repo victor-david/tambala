@@ -4,7 +4,10 @@
     
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/Brushes.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/Border.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/TextBlock.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/Grid.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/Slider.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/MasterControl.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/SongContainer.xaml"/>
         <!--<ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/ImageButton.xaml"/>

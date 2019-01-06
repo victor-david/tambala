@@ -54,6 +54,7 @@ namespace Restless.App.DrumMaster.ViewModel
             Commands.Add("NewSong", RunNewSongCommand);
             Commands.Add("SaveSong", RunSaveSongCommand, CanRunSaveSongCommand);
             Commands.Add("OpenSong", RunOpenSongCommand);
+            Commands.Add("CloseSong", RunCloseSongCommand, CanRunCloseSongCommand);
             Commands.Add("EditSettings", RunEditSettingsCommand);
         }
         #endregion
@@ -61,21 +62,6 @@ namespace Restless.App.DrumMaster.ViewModel
         /************************************************************************/
 
         #region Public methods
-        /// <summary>
-        /// Closes the track container.
-        /// </summary>
-        /// <param name="e">The event args</param>
-        public void CloseSongContainer(CancelRoutedEventArgs e)
-        {
-            if (IsOkayToClose())
-            {
-                CloseSongContainer();
-            }
-            else
-            {
-                e.Cancel = true;
-            }
-        }
         #endregion
 
         /************************************************************************/
@@ -116,6 +102,19 @@ namespace Restless.App.DrumMaster.ViewModel
                     CloseSongContainer();
                 }
             }
+        }
+
+        private void RunCloseSongCommand(object parm)
+        {
+            if (IsOkayToClose())
+            {
+                CloseSongContainer();
+            }
+        }
+
+        private bool CanRunCloseSongCommand(object parm)
+        {
+            return SongContainer != null;
         }
 
         private void RunEditSettingsCommand(object parm)

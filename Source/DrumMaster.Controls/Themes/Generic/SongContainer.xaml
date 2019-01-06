@@ -8,17 +8,11 @@
     <!-- ############################### -->
     <ControlTemplate x:Key="SongContainerControlTemplate" TargetType="con:SongContainer">
         <Grid>
-            
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*" MinHeight="132"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*" MinHeight="132"/>
             </Grid.RowDefinitions>            
-            
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
            
             <Grid.Resources>
                 <Style TargetType="TextBlock">
@@ -27,24 +21,36 @@
                     <Setter Property="FontSize" Value="16"/>
                 </Style>
                 <Style TargetType="Border">
-                    <Setter Property="Margin" Value="3"/>
+                    <Setter Property="Margin" Value="0"/>
                     <Setter Property="Padding" Value="3"/>
                 </Style>
             </Grid.Resources>
-            
-            <Border>
-                <ContentPresenter Content="{TemplateBinding MasterControl}"/>
-            </Border>
 
-            <Border Grid.Row="1">
-                <TextBlock Text="Song Space"/>
-            </Border>
-
-            <GridSplitter Grid.Row="2" Style="{DynamicResource HorizontalGridSplitter}"/>
-
-            <Grid Grid.Row="3">
+            <!-- Top row. Song space and master controls -->
+            <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4.5*" MinWidth="132"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition MinWidth="132"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0">
+                    <TextBlock Text="Song Space"/>
+                </Border>
+                
+                <GridSplitter Grid.Column="1" Style="{DynamicResource VerticalGridSplitter}"/>
+
+                <Border Grid.Column="2">
+                    <ContentPresenter Content="{TemplateBinding MasterControl}"/>
+                </Border>
+            </Grid>
+
+            <GridSplitter Grid.Row="1" Style="{DynamicResource HorizontalGridSplitter}"/>
+
+            <!-- Bottom row. Pattern space and mixer -->
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2.5*" MinWidth="132"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition MinWidth="132"/>
                 </Grid.ColumnDefinitions>

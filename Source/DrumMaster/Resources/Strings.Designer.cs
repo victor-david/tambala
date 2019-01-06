@@ -97,6 +97,15 @@ namespace Restless.App.DrumMaster.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        public static string MenuItemClose {
+            get {
+                return ResourceManager.GetString("MenuItemClose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         public static string MenuItemEdit {

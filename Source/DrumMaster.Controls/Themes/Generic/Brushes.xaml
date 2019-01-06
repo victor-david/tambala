@@ -13,7 +13,8 @@
             </GradientStopCollection>
         </GradientBrush.GradientStops>
     </LinearGradientBrush>
-    
+
+    <SolidColorBrush x:Key="HeaderForegroundBrush" Color="White"/>
     <SolidColorBrush x:Key="LightBorderBrush" Color="LightGray"/>
     <SolidColorBrush x:Key="TrackBorderBrush" Color="LightGray"/>
     <SolidColorBrush x:Key="ButtonBrushOver" Color="#90B9DFFF"/>

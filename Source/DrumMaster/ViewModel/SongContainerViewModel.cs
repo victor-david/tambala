@@ -63,9 +63,8 @@ namespace Restless.App.DrumMaster.ViewModel
             };
 
             //Container.RequestRenderCommand = new RelayCommand(RunRequestRenderCommand);
-            //Container.Closing += ContainerClosing;
-            //Container.IsChangedSet += ContainerIsChangedSet;
-            //Container.IsChangedReset += ContainerIsChangedReset;
+            Container.IsChangedSet += ContainerIsChangedSet;
+            Container.IsChangedReset += ContainerIsChangedReset;
         }
         #endregion
 
@@ -158,15 +157,6 @@ namespace Restless.App.DrumMaster.ViewModel
         /************************************************************************/
 
         #region Private methods
-        private void ContainerClosing(object sender, CancelRoutedEventArgs e)
-        {
-            var main = GetOwner<MainWindowViewModel>();
-            if (main != null)
-            {
-                main.CloseSongContainer(e);
-            }
-        }
-
         private void ContainerIsChangedSet(object sender, RoutedEventArgs e)
         {
             IsChanged = true;
