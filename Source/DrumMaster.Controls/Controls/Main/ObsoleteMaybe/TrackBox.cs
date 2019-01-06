@@ -11,7 +11,7 @@ namespace Restless.App.DrumMaster.Controls
     /// <summary>
     /// Represents a track box (header or step).
     /// </summary>
-    public class TrackBox : TrackControlBase
+    public class TrackBox : ControlBase
     {
         #region Private
         private TrackBoxContainerBase owner;

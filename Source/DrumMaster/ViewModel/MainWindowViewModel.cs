@@ -13,8 +13,8 @@ namespace Restless.App.DrumMaster.ViewModel
     public class MainWindowViewModel : WindowViewModel
     {
         #region Private
-        private TrackContainerViewModel trackContainer;
-        private int layoutNumber;
+        private SongContainerViewModel songContainer;
+        private int songNumber;
         #endregion
 
         /************************************************************************/
@@ -32,10 +32,10 @@ namespace Restless.App.DrumMaster.ViewModel
         /// <summary>
         /// Gets the track container object.
         /// </summary>
-        public TrackContainerViewModel TrackContainer
+        public SongContainerViewModel SongContainer
         {
-            get => trackContainer;
-            private set => SetProperty(ref trackContainer, value);
+            get => songContainer;
+            private set => SetProperty(ref songContainer, value);
         }
         #endregion
 
@@ -50,9 +50,11 @@ namespace Restless.App.DrumMaster.ViewModel
         {
             WindowOwner.Closing += MainWindowClosing;
             DisplayName = $"{ApplicationInfo.Instance.Title} {ApplicationInfo.Instance.VersionMajor}";
-            Commands.Add("SaveLayout", RunSaveLayoutCommand, CanRunSaveLayoutCommand);
-            Commands.Add("AddLayout", RunAddLayoutCommand);
-            Commands.Add("OpenLayout", RunOpenLayoutCommand);
+
+            Commands.Add("NewSong", RunNewSongCommand);
+            Commands.Add("SaveSong", RunSaveSongCommand, CanRunSaveSongCommand);
+            Commands.Add("OpenSong", RunOpenSongCommand);
+            Commands.Add("EditSettings", RunEditSettingsCommand);
         }
         #endregion
 
@@ -63,11 +65,11 @@ namespace Restless.App.DrumMaster.ViewModel
         /// Closes the track container.
         /// </summary>
         /// <param name="e">The event args</param>
-        public void CloseTrackContainer(CancelRoutedEventArgs e)
+        public void CloseSongContainer(CancelRoutedEventArgs e)
         {
             if (IsOkayToClose())
             {
-                CloseTrackContainer();
+                CloseSongContainer();
             }
             else
             {
@@ -79,62 +81,67 @@ namespace Restless.App.DrumMaster.ViewModel
         /************************************************************************/
 
         #region Private methods
-        private void RunSaveLayoutCommand(object parm)
+        private void RunSaveSongCommand(object parm)
         {
-            TrackContainer.Save();
+            SongContainer.Save();
         }
 
-        private bool CanRunSaveLayoutCommand(object parm)
+        private bool CanRunSaveSongCommand(object parm)
         {
-            return TrackContainer != null && TrackContainer.IsChanged;
+            return SongContainer != null && SongContainer.IsChanged;
         }
 
-        private void RunAddLayoutCommand(object parm)
+        private void RunNewSongCommand(object parm)
         {
             if (IsOkayToClose())
             {
-                CloseTrackContainer();
-                CreateLayout();
-                TrackContainer.Show();
+                CloseSongContainer();
+                CreateSong();
+                SongContainer.Show();
             }
         }
 
-        private void RunOpenLayoutCommand(object parm)
+        private void RunOpenSongCommand(object parm)
         {
             if (IsOkayToClose())
             {
-                CloseTrackContainer();
-                CreateLayout();
-                if (TrackContainer.Open())
+                CloseSongContainer();
+                CreateSong();
+                if (SongContainer.Open())
                 {
-                    TrackContainer.Show();
+                    SongContainer.Show();
                 }
                 else
                 {
-                    CloseTrackContainer();
+                    CloseSongContainer();
                 }
             }
         }
 
-        private void CloseTrackContainer()
+        private void RunEditSettingsCommand(object parm)
         {
-            if (TrackContainer != null)
+            // TODO
+        }
+
+        private void CloseSongContainer()
+        {
+            if (SongContainer != null)
             {
-                TrackContainer.Deactivate();
-                TrackContainer = null;
+                SongContainer.Deactivate();
+                SongContainer = null;
             }
         }
 
         private bool IsOkayToClose()
         {
-            bool isOkay = TrackContainer == null || !TrackContainer.IsChanged;
+            bool isOkay = SongContainer == null || !SongContainer.IsChanged;
             if (!isOkay)
             {
-                var result = MessageBox.Show($"{Strings.MessageConfirmSave} {TrackContainer.Container.DisplayName}?", Strings.MessageDrumMaster, MessageBoxButton.YesNoCancel);
+                var result = MessageBox.Show($"{Strings.MessageConfirmSave} {SongContainer.Container.DisplayName}?", Strings.MessageDrumMaster, MessageBoxButton.YesNoCancel);
                 switch (result)
                 {
                     case MessageBoxResult.Yes:
-                        isOkay = TrackContainer.Save();
+                        isOkay = SongContainer.Save();
                         break;
                     case MessageBoxResult.No:
                         isOkay = true;
@@ -144,15 +151,15 @@ namespace Restless.App.DrumMaster.ViewModel
             return isOkay;
         }
 
-        private void CreateLayout()
+        private void CreateSong()
         {
-            layoutNumber++;
-            TrackContainer = null;
-            TrackContainer = new TrackContainerViewModel($"Pattern #{layoutNumber}", this);
+            songNumber++;
+            SongContainer = null;
+            SongContainer = new SongContainerViewModel($"Song #{songNumber}", this);
             Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new DispatcherOperationCallback
                 ((args) =>
                 {
-                    TrackContainer.Activate();
+                    SongContainer.Activate();
                     return null;
                 }), null);
         }
@@ -161,7 +168,7 @@ namespace Restless.App.DrumMaster.ViewModel
         {
             if (IsOkayToClose())
             {
-                CloseTrackContainer();
+                CloseSongContainer();
             }
             else
             {

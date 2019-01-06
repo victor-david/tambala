@@ -18,15 +18,6 @@ namespace Restless.App.DrumMaster.Controls
 
         #region Public properties
         /// <summary>
-        /// Gets or sets a value that determines if the command is supported.
-        /// </summary>
-        public CommandSupported Supported
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// Gets or sets a parameter that is associated with this command.
         /// </summary>
         public object Parameter
@@ -44,33 +35,18 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         /// <param name="execute">The method that executes the command.</param>
         /// <param name="canExecute">The method that checks if this command can execute. If null, no check is performed.</param>
-        /// <param name="supported">A value that determines if the command is supported.</param>
-        public RelayCommand(Action<object> execute, Predicate<object> canExecute, CommandSupported supported) 
-        {
+        public RelayCommand(Action<object> execute, Predicate<object> canExecute)
+          {
             this.execute = execute ?? throw new ArgumentNullException("execute"); 
             this.canExecute = canExecute;
-            Supported = supported;
-        }
-
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RelayCommand"/> class.
-        /// </summary>
-        /// <param name="execute">The method that executes the command.</param>
-        /// <param name="canExecute">The method that checks if this command can execute. If null, no check is performed.</param>
-        /// <remarks>This overload creates a command that is marked as supported.</remarks>
-        public RelayCommand(Action<object> execute, Predicate<object> canExecute)
-            :this(execute, canExecute, CommandSupported.Yes)
-        {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RelayCommand"/> class.
         /// </summary>
         /// <param name="execute">The method that executes the command.</param>
-        /// <remarks>This overload creates a command that has no corresponding command predicate and is marked as supported.</remarks>
-        public RelayCommand(Action<object> execute) 
-            : this(execute, null) 
+        /// <remarks>This overload creates a command that has no corresponding command predicate.</remarks>
+        public RelayCommand(Action<object> execute) : this(execute, null) 
         { 
         } 
         #endregion
@@ -83,7 +59,6 @@ namespace Restless.App.DrumMaster.Controls
         /************************************************************************/
         
         #region ICommand Members
-
         /// <summary>
         /// Checks to see if this command can execute.
         /// </summary>
@@ -93,14 +68,7 @@ namespace Restless.App.DrumMaster.Controls
         public bool CanExecute(object parameter) 
         {
             parameter = Parameter ?? parameter;
-
-            switch (Supported)
-            {
-                case CommandSupported.No:
-                    return false;
-                default:
-                    return canExecute == null ? true : canExecute(parameter); 
-            }
+            return canExecute == null ? true : canExecute(parameter); 
         } 
         
         /// <summary>
@@ -124,18 +92,8 @@ namespace Restless.App.DrumMaster.Controls
         /// <param name="parameter">An object to pass to the command method.</param>
         public void Execute(object parameter) 
         {
-            switch (Supported)
-            {
-                case CommandSupported.Yes:
-                    parameter = Parameter ?? parameter;
-                    execute(parameter);
-                    break;
-                case CommandSupported.No:
-                    break;
-                case CommandSupported.NoWithException:
-                    throw new NotSupportedException("The command is not supported.");
-            }
-            
+            parameter = Parameter ?? parameter;
+            execute(parameter);
         } 
         #endregion 
     }

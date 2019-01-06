@@ -182,7 +182,7 @@
     <Compile Include="ViewModel\AudioRenderWindowViewModel.cs" />
     <Compile Include="Core\GridValue.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
-    <Compile Include="ViewModel\TrackContainerViewModel.cs" />
+    <Compile Include="ViewModel\SongContainerViewModel.cs" />
     <Compile Include="ViewModel\WindowViewModel.cs" />
     <Compile Include="View\TrackContainerView.xaml.cs">
       <DependentUpon>TrackContainerView.xaml</DependentUpon>

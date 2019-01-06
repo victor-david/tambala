@@ -6,13 +6,36 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:r="clr-namespace:Restless.App.DrumMaster.Resources"
     mc:Ignorable="d" 
-    d:DesignHeight="150" d:DesignWidth="800">
-    <Menu KeyboardNavigation.TabNavigation="Cycle">
-        <MenuItem Header="{x:Static r:Strings.MenuItemFile}">
-            <MenuItem Header="{x:Static r:Strings.MenuItemNew}" Command="{Binding Commands[AddLayout]}" />
-            <MenuItem Header="{x:Static r:Strings.MenuItemOpen}" Command="{Binding Commands[OpenLayout]}"/>
+    d:DesignHeight="30" d:DesignWidth="300">
+    
+    <UserControl.Resources>
+        <Style TargetType="Menu">
+            <Setter Property="Padding" Value="4"/>
+            <Setter Property="Background" Value="{StaticResource HeaderBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource LightColorBrush}"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="KeyboardNavigation.TabNavigation" Value="Cycle"/>
+        </Style>
+
+        <Style x:Key="L0" TargetType="MenuItem">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <Style x:Key="L1" TargetType="MenuItem">
+            <Setter Property="Foreground" Value="DarkBlue"/>
+        </Style>
+
+    </UserControl.Resources>
+
+    <Menu>
+        <MenuItem Header="{x:Static r:Strings.MenuItemFile}" Style="{StaticResource L0}">
+            <MenuItem Header="{x:Static r:Strings.MenuItemNew}" Style="{StaticResource L1}" Command="{Binding Commands[NewSong]}" />
+            <MenuItem Header="{x:Static r:Strings.MenuItemOpen}" Style="{StaticResource L1}" Command="{Binding Commands[OpenSong]}"/>
             <Separator/>
-            <MenuItem Header="{x:Static r:Strings.MenuItemSave}" Command="{Binding Commands[SaveLayout]}" />
+            <MenuItem Header="{x:Static r:Strings.MenuItemSave}" Style="{StaticResource L1}" Command="{Binding Commands[SaveSong]}" />
+        </MenuItem>
+        <MenuItem Header="{x:Static r:Strings.MenuItemEdit}" Style="{StaticResource L0}">
+            <MenuItem Header="{x:Static r:Strings.MenuItemSettings}" Style="{StaticResource L1}" Command="{Binding Commands[EditSettings]}" />
         </MenuItem>
     </Menu>
     

@@ -1,5 +1,4 @@
 ﻿using Restless.App.DrumMaster.Controls.Audio;
-using Restless.App.DrumMaster.Controls.Automation;
 using Restless.App.DrumMaster.Controls.Resources;
 using SharpDX.XAudio2;
 using System;
@@ -18,7 +17,7 @@ namespace Restless.App.DrumMaster.Controls
     /// Represents a track controller. This control manages the track with volume, pitch, panning, etc.
     /// </summary>
     [TemplatePart(Name = PartGridTrack, Type = typeof(Grid))]
-    public class TrackController : TrackControlBase
+    public class TrackController : ControlBase
     {
         #region Private
         private const string PartGridTrack = "PART_GRID_TRACK";
@@ -362,18 +361,6 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region CLR properties
-        /// <summary>
-        /// Gets the track's voice automation object.
-        /// </summary>
-        public TrackVoiceAutomation VoiceAutomation
-        {
-            get;
-        }
-        #endregion
-
-        /************************************************************************/
-
         #region Constructors (Internal / Static)
         /// <summary>
         /// Initializes a new instance of the <see cref="TrackController"/> class.
@@ -404,8 +391,6 @@ namespace Restless.App.DrumMaster.Controls
 
             MinimizeImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Minimize.Blue.64.png", UriKind.Relative));
             MaximizeImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Maximize.Blue.64.png", UriKind.Relative));
-
-            VoiceAutomation = new TrackVoiceAutomation(this);
         }
 
         static TrackController()
@@ -445,7 +430,6 @@ namespace Restless.App.DrumMaster.Controls
             element.Add(new XElement(nameof(IsTrackBoxVolumeVisible), IsTrackBoxVolumeVisible));
             element.Add(new XElement(nameof(InitialVoicePoolSize), InitialVoicePoolSize));
             element.Add(Piece.GetXElement());
-            element.Add(VoiceAutomation.GetXElement());
             return element;
         }
 
@@ -484,7 +468,6 @@ namespace Restless.App.DrumMaster.Controls
                         }
                     }
                 }
-                if (e.Name == nameof(TrackVoiceAutomation)) VoiceAutomation.RestoreFromXElement(e);
             }
 
             ResetIsChanged();
@@ -495,7 +478,7 @@ namespace Restless.App.DrumMaster.Controls
 
         #region Protected methods
         /// <summary>
-        /// Called when the <see cref="TrackControlBase.Volume"/> property is changed.
+        /// Called when the <see cref="ControlBase.Volume"/> property is changed.
         /// </summary>
         protected override void OnVolumeChanged()
         {
@@ -506,7 +489,7 @@ namespace Restless.App.DrumMaster.Controls
         }
 
         /// <summary>
-        /// Called when the <see cref="TrackControlBase.Panning"/> property is changed.
+        /// Called when the <see cref="ControlBase.Panning"/> property is changed.
         /// </summary>
         protected override void OnPanningChanged()
         {
@@ -531,7 +514,7 @@ namespace Restless.App.DrumMaster.Controls
             {
                 try
                 {
-                    if (VoiceAutomation.CanPlay(pass) && owner.ThreadSafeBoxContainer.CanPlay(pass, step))
+                    if (owner.ThreadSafeBoxContainer.CanPlay(pass, step))
                     {
                         owner.ThreadSafeBoxContainer.Boxes[step].ApplyHumanVolumeBias(random, humanVolumeBias);
                         voicePool.Play(owner.ThreadSafeBoxContainer.Boxes[step].ThreadSafeVolume, ThreadSafePitch, operationSet);

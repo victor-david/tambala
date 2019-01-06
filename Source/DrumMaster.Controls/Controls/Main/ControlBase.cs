@@ -1,18 +1,13 @@
-﻿using Restless.App.DrumMaster.Controls.Core;
-using SharpDX.XAudio2;
+﻿using SharpDX.XAudio2;
 using System;
-using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Xml.Linq;
 
 namespace Restless.App.DrumMaster.Controls
 {
     /// <summary>
-    /// Represents the base class for track controls. This class must be inherited.
+    /// Represents base class for controls that require volume, pitch, and panning. This class must be inherited.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -23,14 +18,46 @@ namespace Restless.App.DrumMaster.Controls
     /// Not all descendents make use of all properties.
     /// </para>
     /// </remarks>
-    public abstract class TrackControlBase : ContentControl, IXElement
+    public abstract class ControlBase : DependencyControlObject
     {
         #region Private
         #endregion
 
         /************************************************************************/
 
-        #region Public properties (Volume)
+        #region Constructor
+        /// <summary>
+        /// Initializes a new instance of <see cref="ControlBase"/>.
+        /// </summary>
+        protected ControlBase()
+        {
+            MutedImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Track.Muted.64.png", UriKind.Relative));
+            VoicedImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Track.Voiced.64.png", UriKind.Relative));
+            ActiveMutedImageSource = VoicedImageSource;
+
+            /* 
+             * The following are thread safe values used in real time from the play thread.
+             * They get updated via the dependency properties and are set here to match the
+             * DP default value. Although not strictly necessary to set VolumeRaw and
+             * and VolumeBiasRaw (because their defaults are 0.0), we do so here in case we 
+             * later decide to change TrackVals.Volume.Default and/or TrackVals.VolumeBias.Default
+             */
+            ThreadSafeVolumeRaw = TrackVals.Volume.Default;
+            ThreadSafeVolumeBiasRaw = TrackVals.VolumeBias.Default;
+            ThreadSafeVolume = XAudio2.DecibelsToAmplitudeRatio(TrackVals.Volume.Default);
+            ThreadSafePitch = XAudio2.SemitonesToFrequencyRatio(TrackVals.Pitch.Default);
+
+            VolumeDecibelText = (Volume <= TrackVals.Volume.Min) ? "Off" : $"{Volume:N1}dB";
+            SetPanningText();
+            OnVolumeChanged();
+            OnPanningChanged();
+            OnPitchChanged();
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region Volume
         /// <summary>
         /// Gets or sets the volume.
         /// Volume is expressed as a dB value between <see cref="TrackVals.Volume.Min"/> and <see cref="TrackVals.Volume.Max"/>
@@ -46,12 +73,12 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty VolumeProperty = DependencyProperty.Register
             (
-                nameof(Volume), typeof(float), typeof(TrackControlBase), new PropertyMetadata(TrackVals.Volume.Default, OnVolumeChanged, OnVolumeCoerce)
+                nameof(Volume), typeof(float), typeof(ControlBase), new PropertyMetadata(TrackVals.Volume.Default, OnVolumeChanged, OnVolumeCoerce)
             );
 
         private static void OnVolumeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is TrackControlBase c)
+            if (d is ControlBase c)
             {
                 // Save volume for later thread safe access.
                 c.ThreadSafeVolumeRaw = (float)e.NewValue;
@@ -80,7 +107,7 @@ namespace Restless.App.DrumMaster.Controls
 
         private static readonly DependencyPropertyKey VolumeDecibelTextPropertyKey = DependencyProperty.RegisterReadOnly
             (
-                nameof(VolumeDecibelText), typeof(string), typeof(TrackControlBase), new FrameworkPropertyMetadata(null)
+                nameof(VolumeDecibelText), typeof(string), typeof(ControlBase), new FrameworkPropertyMetadata(null)
             );
 
         /// <summary>
@@ -103,12 +130,12 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty VolumeBiasProperty = DependencyProperty.Register
             (
-                nameof(VolumeBias), typeof(float), typeof(TrackControlBase), new PropertyMetadata(TrackVals.VolumeBias.Default, OnVolumeBiasChanged, OnVolumeBiasCoerce)
+                nameof(VolumeBias), typeof(float), typeof(ControlBase), new PropertyMetadata(TrackVals.VolumeBias.Default, OnVolumeBiasChanged, OnVolumeBiasCoerce)
             );
 
         private static void OnVolumeBiasChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is TrackControlBase c)
+            if (d is ControlBase c)
             {
                 // Save volume bias in private var for later thread safe access.
                 c.ThreadSafeVolumeBiasRaw = (float)e.NewValue;
@@ -139,7 +166,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty VolumeTextProperty = DependencyProperty.Register
             (
-                nameof(VolumeText), typeof(string), typeof(TrackControlBase), new PropertyMetadata(TrackVals.Volume.DefaultText)
+                nameof(VolumeText), typeof(string), typeof(ControlBase), new PropertyMetadata(TrackVals.Volume.DefaultText)
             );
 
         /// <summary>
@@ -156,7 +183,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty ShortVolumeTextProperty = DependencyProperty.Register
             (
-                nameof(ShortVolumeText), typeof(string), typeof(TrackControlBase), new PropertyMetadata(TrackVals.Volume.DefaultShortText)
+                nameof(ShortVolumeText), typeof(string), typeof(ControlBase), new PropertyMetadata(TrackVals.Volume.DefaultShortText)
             );
 
         /// <summary>
@@ -173,12 +200,12 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty IsMutedProperty = DependencyProperty.Register
             (
-                nameof(IsMuted), typeof(bool), typeof(TrackControlBase), new PropertyMetadata(false, OnIsMutedChanged)
+                nameof(IsMuted), typeof(bool), typeof(ControlBase), new PropertyMetadata(false, OnIsMutedChanged)
             );
 
         private static void OnIsMutedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is TrackControlBase c)
+            if (d is ControlBase c)
             {
                 c.IsUserMuted = (bool)e.NewValue;
                 c.OnIsMutedChanged();
@@ -221,9 +248,9 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region Public properties (Panning)
+        #region Panning
         /// <summary>
-        /// Gets or sets the track panning.
+        /// Gets or sets the panning.
         /// </summary>
         public float Panning
         {
@@ -236,12 +263,12 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty PanningProperty = DependencyProperty.Register
             (
-                nameof(Panning), typeof(float), typeof(TrackControlBase), new PropertyMetadata(TrackVals.Panning.Default, OnPanningChanged, OnPanningCoerce)
+                nameof(Panning), typeof(float), typeof(ControlBase), new PropertyMetadata(TrackVals.Panning.Default, OnPanningChanged, OnPanningCoerce)
             );
 
         private static void OnPanningChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is TrackControlBase c)
+            if (d is ControlBase c)
             {
                 c.SetPanningText();
                 c.OnPanningChanged();
@@ -266,7 +293,7 @@ namespace Restless.App.DrumMaster.Controls
 
         private static readonly DependencyPropertyKey PanningTextPropertyKey = DependencyProperty.RegisterReadOnly
             (
-                nameof(PanningText), typeof(string), typeof(TrackControlBase), new FrameworkPropertyMetadata(null)
+                nameof(PanningText), typeof(string), typeof(ControlBase), new FrameworkPropertyMetadata(null)
             );
 
         /// <summary>
@@ -295,7 +322,7 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region Public properties (Pitch)
+        #region Pitch
         /// <summary>
         /// Gets or sets the pitch. 
         /// Pitch is expressed as a semi tone value between <see cref="TrackVals.Pitch.Min"/> and <see cref="TrackVals.Pitch.Max"/>
@@ -311,12 +338,12 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty PitchProperty = DependencyProperty.Register
             (
-                nameof(Pitch), typeof(float), typeof(TrackControlBase), new PropertyMetadata(TrackVals.Pitch.Default, OnPitchChanged, OnPitchCoerce)
+                nameof(Pitch), typeof(float), typeof(ControlBase), new PropertyMetadata(TrackVals.Pitch.Default, OnPitchChanged, OnPitchCoerce)
             );
 
         private static void OnPitchChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is TrackControlBase c)
+            if (d is ControlBase c)
             {
                 c.ThreadSafePitch = XAudio2.SemitonesToFrequencyRatio((float)e.NewValue);
                 c.OnPitchChanged();
@@ -341,7 +368,7 @@ namespace Restless.App.DrumMaster.Controls
 
         private static readonly DependencyPropertyKey PitchSemiToneTextPropertyKey = DependencyProperty.RegisterReadOnly
             (
-                nameof(PitchSemiToneText), typeof(string), typeof(TrackControlBase), new FrameworkPropertyMetadata(null)
+                nameof(PitchSemiToneText), typeof(string), typeof(ControlBase), new FrameworkPropertyMetadata(null)
             );
 
         /// <summary>
@@ -368,36 +395,6 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region  Public properties (IsExpanded)
-        /// <summary>
-        /// Gets a boolean value that indicates if the control is expanded (true) or collapsed (false).
-        /// </summary>
-        public bool IsExpanded
-        {
-            get => (bool)GetValue(IsExpandedProperty);
-            set => SetValue(IsExpandedProperty, value);
-        }
-
-        /// <summary>
-        /// Identifies the <see cref="IsExpanded"/> dependency property.
-        /// </summary>
-        private static readonly DependencyProperty IsExpandedProperty = DependencyProperty.Register
-            (
-                nameof(IsExpanded), typeof(bool), typeof(TrackControlBase), new FrameworkPropertyMetadata(true, OnIsExpandedChanged)
-            );
-
-        private static void OnIsExpandedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is TrackControlBase c)
-            {
-                c.OnExpandedImageSourceChanged();
-                c.OnIsExpandedChanged();
-            }
-        }
-        #endregion
-
-        /************************************************************************/
-
         #region Images (Muted, Voiced [has state change])
         /// <summary>
         /// Gets or sets the image source to use for the muted button (when muted).
@@ -413,7 +410,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty MutedImageSourceProperty = DependencyProperty.Register
             (
-                nameof(MutedImageSource), typeof(ImageSource), typeof(TrackControlBase), new PropertyMetadata(null, OnMutedImageSourceChanged)
+                nameof(MutedImageSource), typeof(ImageSource), typeof(ControlBase), new PropertyMetadata(null, OnMutedImageSourceChanged)
             );
 
         /// <summary>
@@ -430,12 +427,12 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty VoicedImageSourceProperty = DependencyProperty.Register
             (
-                nameof(VoicedImageSource), typeof(ImageSource), typeof(TrackControlBase), new PropertyMetadata(null, OnMutedImageSourceChanged)
+                nameof(VoicedImageSource), typeof(ImageSource), typeof(ControlBase), new PropertyMetadata(null, OnMutedImageSourceChanged)
             );
 
         private static void OnMutedImageSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is TrackControlBase c)
+            if (d is ControlBase c)
             {
                 c.OnMutedImageSourceChanged();
                 c.OnIsMutedChanged();
@@ -453,121 +450,13 @@ namespace Restless.App.DrumMaster.Controls
 
         private static readonly DependencyPropertyKey ActiveMutedImageSourcePropertyKey = DependencyProperty.RegisterReadOnly
             (
-                nameof(ActiveMutedImageSource), typeof(ImageSource), typeof(TrackControlBase), new FrameworkPropertyMetadata(null)
+                nameof(ActiveMutedImageSource), typeof(ImageSource), typeof(ControlBase), new FrameworkPropertyMetadata(null)
             );
 
         /// <summary>
         /// Identifies the <see cref="ActiveMutedImageSource"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ActiveMutedImageSourceProperty = ActiveMutedImageSourcePropertyKey.DependencyProperty;
-        #endregion
-        
-        /************************************************************************/
-
-        #region Images (Minimize / maximize [has state change]
-        /// <summary>
-        /// Gets or sets the image source to use for the minimize button
-        /// </summary>
-        public ImageSource MinimizeImageSource
-        {
-            get => (ImageSource)GetValue(MinimizeImageSourceProperty);
-            set => SetValue(MinimizeImageSourceProperty, value);
-        }
-
-        /// <summary>
-        /// Identifies the <see cref="MinimizeImageSource"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty MinimizeImageSourceProperty = DependencyProperty.Register
-            (
-                nameof(MinimizeImageSource), typeof(ImageSource), typeof(TrackControlBase), new PropertyMetadata(null, OnIsExpandedImageSourceChanged)
-            );
-
-        /// <summary>
-        /// Gets or sets the image source to use for the maximize button
-        /// </summary>
-        public ImageSource MaximizeImageSource
-        {
-            get => (ImageSource)GetValue(MaximizeImageSourceProperty);
-            set => SetValue(MaximizeImageSourceProperty, value);
-        }
-
-        /// <summary>
-        /// Identifies the <see cref="MaximizeImageSource"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty MaximizeImageSourceProperty = DependencyProperty.Register
-            (
-                nameof(MaximizeImageSource), typeof(ImageSource), typeof(TrackControlBase), new PropertyMetadata(null, OnIsExpandedImageSourceChanged)
-            );
-
-        private static void OnIsExpandedImageSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is TrackControlBase c)
-            {
-                c.OnExpandedImageSourceChanged();
-            }
-        }
-
-        /// <summary>
-        /// Gets the image source that is currently for the mimimized / maximized state
-        /// </summary>
-        public ImageSource ActiveExpandedStateImageSource
-        {
-            get => (ImageSource)GetValue(ActiveExpandedStateImageSourceProperty);
-            private set => SetValue(ActiveExpandedStateImageSourcePropertyKey, value);
-        }
-
-        private static readonly DependencyPropertyKey ActiveExpandedStateImageSourcePropertyKey = DependencyProperty.RegisterReadOnly
-            (
-                nameof(ActiveExpandedStateImageSource), typeof(ImageSource), typeof(TrackControlBase), new FrameworkPropertyMetadata(null)
-            );
-
-        /// <summary>
-        /// Identifies the <see cref="ActiveExpandedStateImageSource"/> dependency property,
-        /// </summary>
-        public static readonly DependencyProperty ActiveExpandedStateImageSourceProperty = ActiveExpandedStateImageSourcePropertyKey.DependencyProperty;
-        #endregion
-
-        /************************************************************************/
-
-        #region Public properties (read only)
-        /// <summary>
-        /// Gets a dictionary of commands. Used internally by the control template
-        /// </summary>
-        public Dictionary<string, ICommand> Commands
-        {
-            get => (Dictionary<string, ICommand>)GetValue(CommandsProperty);
-            private set => SetValue(CommandsPropertyKey, value);
-        }
-
-        private static readonly DependencyPropertyKey CommandsPropertyKey = DependencyProperty.RegisterReadOnly
-            (
-                nameof(Commands), typeof(Dictionary<string, ICommand>), typeof(TrackControlBase), new FrameworkPropertyMetadata(null)
-            );
-
-        /// <summary>
-        /// Identifies the <see cref="Commands"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty CommandsProperty = CommandsPropertyKey.DependencyProperty;
-
-        /// <summary>
-        /// Gets a boolean value that indicates if changes have occured since this object was established.
-        /// </summary>
-        public bool IsChanged
-        {
-            get => (bool)GetValue(IsChangedProperty);
-            private set => SetValue(IsChangedPropertyKey, value);
-        }
-
-        private static readonly DependencyPropertyKey IsChangedPropertyKey = DependencyProperty.RegisterReadOnly
-            (
-                nameof(IsChanged), typeof(bool), typeof(TrackContainer), new FrameworkPropertyMetadata(false)
-            );
-
-        /// <summary>
-        /// Identifies the <see cref="IsChanged"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty IsChangedProperty = IsChangedPropertyKey.DependencyProperty;
-
         #endregion
 
         /************************************************************************/
@@ -587,15 +476,6 @@ namespace Restless.App.DrumMaster.Controls
         /// due to the <see cref="Volume"/> having reached a value of <see cref="TrackVals.Volume.Min"/>.
         /// </summary>
         protected bool IsAutoMuted
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// Gets a boolean value that indicates if <see cref="OnApplyTemplate"/> has been called.
-        /// </summary>
-        protected bool IsTemplateApplied
         {
             get;
             private set;
@@ -650,85 +530,6 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region Routed Events
-        /// <summary>
-        /// Provides notification when the <see cref="IsChanged"/> property is set to true.
-        /// </summary>
-        public event RoutedEventHandler IsChangedSet
-        {
-            add => AddHandler(IsChangedSetEvent, value);
-            remove => RemoveHandler(IsChangedSetEvent, value);
-        }
-
-        /// <summary>
-        /// Identifies the <see cref="IsChangedSet"/> routed event.
-        /// </summary>
-        public static readonly RoutedEvent IsChangedSetEvent = EventManager.RegisterRoutedEvent
-            (
-                nameof(IsChangedSet), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(TrackControlBase)
-            );
-
-        /// <summary>
-        /// Provides notification when the <see cref="IsChanged"/> property is set to false.
-        /// </summary>
-        public event RoutedEventHandler IsChangedReset
-        {
-            add => AddHandler(IsChangedResetEvent, value);
-            remove => RemoveHandler(IsChangedResetEvent, value);
-        }
-
-        /// <summary>
-        /// Identifies the <see cref="IsChangedReset"/> routed event.
-        /// </summary>
-        public static readonly RoutedEvent IsChangedResetEvent = EventManager.RegisterRoutedEvent
-            (
-                nameof(IsChangedReset), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(TrackControlBase)
-            );
-        #endregion
-
-        /************************************************************************/
-
-        #region Constructor
-        /// <summary>
-        /// Initializes a new instance of <see cref="TrackControlBase"/>.
-        /// </summary>
-        protected TrackControlBase()
-        {
-            MutedImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Track.Muted.64.png", UriKind.Relative));
-            VoicedImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Track.Voiced.64.png", UriKind.Relative));
-            ActiveMutedImageSource = VoicedImageSource;
-
-            MinimizeImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Minimize.64.png", UriKind.Relative));
-            MaximizeImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Maximize.64.png", UriKind.Relative));
-            ActiveExpandedStateImageSource = MinimizeImageSource;
-
-            Commands = new Dictionary<string, ICommand>
-            {
-                { "ToggleExpanded", new RelayCommand(RunToggleExpandedCommand) }
-            };
-
-            /* 
-             * The following are thread safe values used in real time from the play thread.
-             * They get updated via the dependency properties and are set here to match the
-             * DP default value. Although not strictly necessary to set VolumeRaw and
-             * and VolumeBiasRaw (because their defaults are 0.0), we do so here in case we 
-             * later decide to change TrackVals.Volume.Default and/or TrackVals.VolumeBias.Default
-             */
-            ThreadSafeVolumeRaw = TrackVals.Volume.Default;
-            ThreadSafeVolumeBiasRaw = TrackVals.VolumeBias.Default;
-            ThreadSafeVolume = XAudio2.DecibelsToAmplitudeRatio(TrackVals.Volume.Default);
-            ThreadSafePitch = XAudio2.SemitonesToFrequencyRatio(TrackVals.Pitch.Default);
-
-            VolumeDecibelText = (Volume <= TrackVals.Volume.Min) ? "Off" : $"{Volume:N1}dB";
-            SetPanningText();
-            OnVolumeChanged();
-            OnPanningChanged();
-            OnPitchChanged();
-        }
-        #endregion
-
-        /************************************************************************/
-
         #region Public methods
         /// <summary>
         /// Called when the template is applied.
@@ -737,23 +538,7 @@ namespace Restless.App.DrumMaster.Controls
         {
             base.OnApplyTemplate();
             OnIsMutedChanged();
-            IsTemplateApplied = true;
         }
-        #endregion
-
-        /************************************************************************/
-
-        #region IXElement 
-        /// <summary>
-        /// Gets the XElement for this object.
-        /// </summary>
-        /// <returns>The XElement that describes the state of this object.</returns>
-        public abstract XElement GetXElement();
-        /// <summary>
-        /// Restores the object from the specified XElement
-        /// </summary>
-        /// <param name="element">The element</param>
-        public abstract void RestoreFromXElement(XElement element);
         #endregion
 
         /************************************************************************/
@@ -804,99 +589,11 @@ namespace Restless.App.DrumMaster.Controls
         {
             ActiveMutedImageSource = IsMuted ? MutedImageSource : VoicedImageSource;
         }
-
-        /// <summary>
-        /// Called when <see cref="IsExpanded"/> is changed. A derived class can override this method to perform updates as needed.
-        /// The base implementaion does nothing.
-        /// </summary>
-        protected virtual void OnIsExpandedChanged()
-        {
-        }
-
-        /// <summary>
-        /// Sets the <see cref="IsChanged"/> property to true and raises the <see cref="IsChangedSetEvent"/>.
-        /// </summary>
-        protected void SetIsChanged()
-        {
-            IsChanged = true;
-            RoutedEventArgs args = new RoutedEventArgs(IsChangedSetEvent);
-            RaiseEvent(args);
-        }
-
-        /// <summary>
-        /// Sets the <see cref="IsChanged"/> property to false and raises the <see cref="IsChangedResetEvent"/>.
-        /// </summary>
-        protected void ResetIsChanged()
-        {
-            IsChanged = false;
-            RoutedEventArgs args = new RoutedEventArgs(IsChangedResetEvent);
-            RaiseEvent(args);
-        }
-        
-        /// <summary>
-        /// Sets the specified dependency property to the specified string.
-        /// </summary>
-        /// <param name="prop">The dependency property.</param>
-        /// <param name="val">The value</param>
-        protected void SetDependencyProperty(DependencyProperty prop, string val)
-        {
-            if (prop == null) throw new ArgumentNullException(nameof(prop));
-
-            if (prop.PropertyType == typeof(string))
-            {
-                SetValue(prop, val);
-            }
-
-            if (prop.PropertyType == typeof(int))
-            {
-                if (int.TryParse(val, out int result))
-                {
-                    SetValue(prop, result);
-                }
-            }
-
-            if (prop.PropertyType == typeof(double))
-            {
-                if (double.TryParse(val, out double result))
-                {
-                    SetValue(prop, result);
-                }
-            }
-
-            if (prop.PropertyType == typeof(float))
-            {
-                if (float.TryParse(val, out float result))
-                {
-                    SetValue(prop, result);
-                }
-            }
-
-            if (prop.PropertyType == typeof(bool))
-            {
-                if (bool.TryParse(val, out bool result))
-                {
-                    SetValue(prop, result);
-                }
-            }
-        }
         #endregion
 
         /************************************************************************/
 
-        #region Private methods (Instance)
-
-        private void RunToggleExpandedCommand(object parm)
-        {
-            IsExpanded = !IsExpanded;
-            OnExpandedImageSourceChanged();
-        }
-
-        private void OnExpandedImageSourceChanged()
-        {
-            ActiveExpandedStateImageSource = IsExpanded ? MinimizeImageSource : MaximizeImageSource;
-        }
-
-
+        #region Private methods
         private void SetPanningText()
         {
             // 0.0 = 100% left;

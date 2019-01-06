@@ -1,0 +1,36 @@
+﻿<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:con="clr-namespace:Restless.App.DrumMaster.Controls">
+
+    <!-- ############################### -->
+    <!-- MASTERCONTROL TEMPLATE / STYLE  -->
+    <!-- ############################### -->
+    <ControlTemplate x:Key="MasterControlControlTemplate" TargetType="con:MasterControl">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>            
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Text="Master Control Col1"/>
+            <TextBlock Grid.Column="1" Text="Master Control Col2"/>
+            <TextBlock Grid.Column="2" Text="Master Control Col3"/>
+            <TextBlock Grid.Column="3" Text="Master Control Col4"/>
+            <TextBlock Grid.Column="4" Text="Master Control Col5"/>
+
+        </Grid>
+    </ControlTemplate>
+
+    <Style TargetType="con:MasterControl">
+        <Setter Property="Template" Value="{StaticResource MasterControlControlTemplate}"/>
+    </Style>
+
+</ResourceDictionary>

@@ -13,11 +13,12 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        
-        <vw:MainNavigation Grid.Row="0"  Margin="2,4"/>
-        <Separator Grid.Row="1"/>
-        <ContentControl Grid.Row="2" Content="{Binding TrackContainer}" Margin="5"/>
+        <vw:MainMenu/>
+        <vw:MainNavigation Grid.Row="1"  Margin="2,4"/>
+        <Separator Grid.Row="2"/>
+        <ContentControl Grid.Row="3" Content="{Binding SongContainer}" Margin="5"/>
     </Grid>
 </Window>

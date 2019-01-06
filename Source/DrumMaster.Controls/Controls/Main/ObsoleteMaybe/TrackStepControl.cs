@@ -7,7 +7,7 @@ namespace Restless.App.DrumMaster.Controls
     /// Represents a track control that handles beats, steps per beat, total steps, and the corresponding sizing
     /// of the visual elements. This class must be inherited.
     /// </summary>
-    public abstract class TrackStepControl : TrackControlBase
+    public abstract class TrackStepControl : ControlBase
     {
         #region Beats
         /// <summary>

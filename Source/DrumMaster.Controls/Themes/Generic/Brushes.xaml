@@ -1,0 +1,22 @@
+﻿<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <!-- ############################# -->
+    <!-- BRUSH DEFINITIONS             -->
+    <!-- ############################# -->
+    <LinearGradientBrush x:Key="HeaderBrush" StartPoint="0.00,0.00" EndPoint="1.00,1.00">
+        <GradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FF0060CE" Offset="0.000"/>
+                <GradientStop Color="#C000B6FF" Offset="1.000"/>
+            </GradientStopCollection>
+        </GradientBrush.GradientStops>
+    </LinearGradientBrush>
+    
+    <SolidColorBrush x:Key="LightBorderBrush" Color="LightGray"/>
+    <SolidColorBrush x:Key="TrackBorderBrush" Color="LightGray"/>
+    <SolidColorBrush x:Key="ButtonBrushOver" Color="#90B9DFFF"/>
+    <SolidColorBrush x:Key="ButtonBrushPressed" Color="#FFB9DFFF"/>
+    <SolidColorBrush x:Key="ButtonBrushBorder" Color="#FF9ADFFF"/>
+</ResourceDictionary>

@@ -4,8 +4,8 @@
     xmlns:vm="clr-namespace:Restless.App.DrumMaster.ViewModel"
     xmlns:vw="clr-namespace:Restless.App.DrumMaster.View">
     
-    <!-- Map TrackContainerViewModel to TrackContainerView  -->
-    <DataTemplate DataType="{x:Type vm:TrackContainerViewModel}">
+    <!-- Map SongContainerViewModel to SongContainerView  -->
+    <DataTemplate DataType="{x:Type vm:SongContainerViewModel}">
         <vw:TrackContainerView />
     </DataTemplate>
 </ResourceDictionary>

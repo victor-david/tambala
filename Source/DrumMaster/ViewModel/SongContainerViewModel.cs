@@ -14,10 +14,10 @@ namespace Restless.App.DrumMaster.ViewModel
     /// <summary>
     /// Provides interaction logic for the main drum track container.
     /// </summary>
-    public class TrackContainerViewModel : WorkspaceViewModel
+    public class SongContainerViewModel : WorkspaceViewModel
     {
         #region Private
-        private TrackContainer container;
+        private SongContainer container;
         private bool isChanged;
         private const string FileExtension = "xml";
         private const string DottedFileExtension = ".xml";
@@ -29,7 +29,7 @@ namespace Restless.App.DrumMaster.ViewModel
         /// <summary>
         /// Gets the container that belongs to this layout.
         /// </summary>
-        public TrackContainer Container
+        public SongContainer Container
         {
             get => container;
             private set => SetProperty(ref container, value);
@@ -49,23 +49,23 @@ namespace Restless.App.DrumMaster.ViewModel
 
         #region Constructor
         /// <summary>
-        /// Initializes a new instance of the <see cref="TrackContainerViewModel"/> class.
+        /// Initializes a new instance of the <see cref="SongContainerViewModel"/> class.
         /// </summary>
         /// <param name="displayName">The display name for the track container</param>
         /// <param name="owner">The owner of this VM.</param>
-        public TrackContainerViewModel(string displayName, WorkspaceViewModel owner) : base(owner)
+        public SongContainerViewModel(string displayName, WorkspaceViewModel owner) : base(owner)
         {
             DisplayName = displayName;
-            Container = new TrackContainer()
+            Container = new SongContainer()
             {
                 DisplayName = displayName,
                 Visibility = Visibility.Collapsed,
             };
 
-            Container.RequestRenderCommand = new RelayCommand(RunRequestRenderCommand);
-            Container.Closing += ContainerClosing;
-            Container.IsChangedSet += ContainerIsChangedSet;
-            Container.IsChangedReset += ContainerIsChangedReset;
+            //Container.RequestRenderCommand = new RelayCommand(RunRequestRenderCommand);
+            //Container.Closing += ContainerClosing;
+            //Container.IsChangedSet += ContainerIsChangedSet;
+            //Container.IsChangedReset += ContainerIsChangedReset;
         }
         #endregion
 
@@ -163,7 +163,7 @@ namespace Restless.App.DrumMaster.ViewModel
             var main = GetOwner<MainWindowViewModel>();
             if (main != null)
             {
-                main.CloseTrackContainer(e);
+                main.CloseSongContainer(e);
             }
         }
 
@@ -181,8 +181,8 @@ namespace Restless.App.DrumMaster.ViewModel
         {
             try
             {
-                var window = WindowFactory.AudioRender.Create(Container);
-                window.ShowDialog();
+                //var window = WindowFactory.AudioRender.Create(Container);
+                //window.ShowDialog();
             }
 
             catch (Exception ex)
