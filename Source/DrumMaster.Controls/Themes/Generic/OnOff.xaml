@@ -1,0 +1,74 @@
+﻿<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:con="clr-namespace:Restless.App.DrumMaster.Controls">
+    
+    <!-- ############################# -->
+    <!-- IMAGEBUTTON TEMPLATE / STYLE  -->
+    <!-- ############################# -->
+    <ControlTemplate x:Key="OnOffControlTemplate" TargetType="con:OnOff">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="62" />
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock 
+                Grid.Column="0"
+                Margin="0,0,4,0"
+                VerticalAlignment="Center"
+                Foreground="{TemplateBinding OffTextBrush}"
+                Text="{TemplateBinding OffText}"/>
+            <Border 
+                Grid.Column="1"
+                Background="LightGray"
+                Height="4"
+                VerticalAlignment="Center"
+                CornerRadius="1">
+            </Border>
+            
+            <Border
+                x:Name="Thumb"
+                Grid.Column="1"
+                Background="#801D6FB4"
+                BorderBrush="#801D6FB4"
+                BorderThickness="2"
+                CornerRadius="1"
+                Height="17" Width="28">
+                
+               <Border
+                   Background="#FF1D6FB4"
+                   BorderBrush="#FF1D6FB4"
+                   CornerRadius="4"
+                   Height="8" Width="8"/>             
+            </Border>
+
+            <TextBlock
+                Grid.Column="2"
+                Margin="4,0,0,0"
+                VerticalAlignment="Center"
+                Foreground="{TemplateBinding OnTextBrush}"
+                Text="{TemplateBinding OnText}"/>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsChecked" Value="False">
+                <Setter Property="HorizontalAlignment" Value="Left" TargetName="Thumb"/>
+            </Trigger>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="HorizontalAlignment" Value="Right" TargetName="Thumb"/>
+            </Trigger>
+            <Trigger Property="IsChecked" Value="{x:Null}">
+                <Setter Property="HorizontalAlignment" Value="Center" TargetName="Thumb"/>
+            </Trigger>
+
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    
+    <Style TargetType="con:OnOff">
+        <Setter Property="Template" Value="{StaticResource OnOffControlTemplate}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+</ResourceDictionary>

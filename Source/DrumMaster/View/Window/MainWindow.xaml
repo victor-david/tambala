@@ -19,6 +19,6 @@
         <vw:MainMenu/>
         <vw:MainNavigation Grid.Row="1"  Margin="2,4"/>
         <Separator Grid.Row="2"/>
-        <ContentControl Grid.Row="3" Content="{Binding SongContainer}" Margin="5"/>
+        <ContentControl Grid.Row="3" Content="{Binding SongContainer}" Margin="6,0,6,6"/>
     </Grid>
 </Window>

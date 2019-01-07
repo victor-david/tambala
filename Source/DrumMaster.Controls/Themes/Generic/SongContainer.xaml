@@ -11,7 +11,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" MinHeight="132"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*" MinHeight="132"/>
+                <RowDefinition Height="1.5*" MinHeight="132"/>
             </Grid.RowDefinitions>            
            
             <Grid.Resources>
@@ -23,25 +23,38 @@
                 <Style TargetType="Border">
                     <Setter Property="Margin" Value="0"/>
                     <Setter Property="Padding" Value="3"/>
+                    <!--<Setter Property="Background" Value="OldLace"/>
+                    <Setter Property="BorderBrush" Value="LightCoral"/>
+                    <Setter Property="BorderThickness" Value="1"/>-->
                 </Style>
             </Grid.Resources>
 
-            <!-- Top row. Song space and master controls -->
+            <!-- Top row. Song space and master output -->
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="4.5*" MinWidth="132"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition MinWidth="132"/>
                 </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
 
-                <Border Grid.Column="0">
-                    <TextBlock Text="Song Space"/>
+                <Border Grid.Column="0" Grid.Row="0" BorderBrush="{DynamicResource DefaultBorderBrush}" BorderThickness="0,0,0,1">
+                    <ContentPresenter Content="{TemplateBinding MasterPlay}"/>
+                </Border>
+
+                <Border Grid.Column="0" Grid.Row="1">
+                    <!--<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">-->
+                        <ContentPresenter Content="{TemplateBinding SongPatterns}"/>
+                    <!--</ScrollViewer>-->
                 </Border>
                 
-                <GridSplitter Grid.Column="1" Style="{DynamicResource VerticalGridSplitter}"/>
+                <GridSplitter Grid.Column="1" Grid.RowSpan="2" Style="{DynamicResource VerticalGridSplitter}"/>
 
-                <Border Grid.Column="2">
-                    <ContentPresenter Content="{TemplateBinding MasterControl}"/>
+                <Border Grid.Column="2" Grid.RowSpan="2">
+                    <ContentPresenter Content="{TemplateBinding MasterOutput}"/>
                 </Border>
             </Grid>
 
@@ -62,7 +75,7 @@
                 <GridSplitter Grid.Column="1" Style="{DynamicResource VerticalGridSplitter}"/>
 
                 <Border Grid.Column="2">
-                    <TextBlock Text="Mixer"/>
+                    <TextBlock Text="Pattern Mixer"/>
                 </Border>
             </Grid>
 

@@ -115,6 +115,15 @@ namespace Restless.App.DrumMaster.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Exit.
+        /// </summary>
+        public static string MenuItemExit {
+            get {
+                return ResourceManager.GetString("MenuItemExit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File.
         /// </summary>
         public static string MenuItemFile {

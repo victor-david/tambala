@@ -797,9 +797,9 @@
         </Setter>
     </Style>
     
-    <ResourceDictionary.MergedDictionaries>
+    <!--<ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Controls/Themes/Generic/ImageButton.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Controls/Themes/Generic/BoxCheckBox.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Controls/Themes/Generic/TrackBox.xaml"/>
-    </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary.MergedDictionaries>-->
 </ResourceDictionary>

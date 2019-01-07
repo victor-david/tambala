@@ -5,5 +5,11 @@
     <!-- ################# -->
     <!-- TEXT BLOCK STYLE  -->
     <!-- ################## -->
-
+    <Style x:Key="TextBlockCounter" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="26"/>
+        <Setter Property="Foreground" Value="DarkBlue"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="4,0"/>
+    </Style>
 </ResourceDictionary>

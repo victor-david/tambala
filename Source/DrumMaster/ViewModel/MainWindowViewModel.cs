@@ -56,6 +56,7 @@ namespace Restless.App.DrumMaster.ViewModel
             Commands.Add("OpenSong", RunOpenSongCommand);
             Commands.Add("CloseSong", RunCloseSongCommand, CanRunCloseSongCommand);
             Commands.Add("EditSettings", RunEditSettingsCommand);
+            Commands.Add("CloseApp", (p) => WindowOwner.Close());
         }
         #endregion
 

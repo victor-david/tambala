@@ -35,6 +35,8 @@
             <Separator/>
             <MenuItem Header="{x:Static r:Strings.MenuItemSave}" Style="{StaticResource L1}" Command="{Binding Commands[SaveSong]}" />
             <MenuItem Header="{x:Static r:Strings.MenuItemClose}" Style="{StaticResource L1}" Command="{Binding Commands[CloseSong]}" />
+            <Separator/>
+            <MenuItem Header="{x:Static r:Strings.MenuItemExit}" Style="{StaticResource L1}" Command="{Binding Commands[CloseApp]}" />
         </MenuItem>
         <MenuItem Header="{x:Static r:Strings.MenuItemEdit}" Style="{StaticResource L0}">
             <MenuItem Header="{x:Static r:Strings.MenuItemSettings}" Style="{StaticResource L1}" Command="{Binding Commands[EditSettings]}" />

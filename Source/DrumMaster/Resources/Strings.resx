@@ -135,6 +135,10 @@
   <data name="MenuItemEdit" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="MenuItemExit" xml:space="preserve">
+    <value>Exit</value>
+    <comment>Exit the application</comment>
+  </data>
   <data name="MenuItemFile" xml:space="preserve">
     <value>File</value>
   </data>

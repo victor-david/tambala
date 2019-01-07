@@ -40,4 +40,4 @@ using System.Windows;
 [assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]
 
 
-[assembly: AssemblyVersion("3.5.*")]
+[assembly: AssemblyVersion("4.0.*")]

@@ -105,12 +105,19 @@
     <Compile Include="Controls\Button\ImageButton.cs" />
     <Compile Include="Commands\CommandDictionary.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
-    <Compile Include="Controls\CheckBox\BoxCheckBox.cs" />
+    <Compile Include="Controls\Main\Abstract\PatternSelector.cs" />
+    <Compile Include="Controls\Main\SongPatternSelectorType.cs" />
+    <Compile Include="Controls\Main\SongPointSelector.cs" />
+    <Compile Include="Controls\Main\SongPatternSelector.cs" />
+    <Compile Include="Controls\Main\SongPatternsContainer.cs" />
+    <Compile Include="Controls\Other\BoxCheckBox.cs" />
     <Compile Include="Controls\Converters\DoubleAdditionConverter.cs" />
     <Compile Include="Audio\Metronome.cs" />
-    <Compile Include="Controls\Main\DependencyControlObject.cs" />
-    <Compile Include="Controls\Main\MasterControl.cs" />
+    <Compile Include="Controls\Main\Abstract\DependencyControlObject.cs" />
+    <Compile Include="Controls\Main\MasterOutput.cs" />
     <Compile Include="Controls\Main\ObsoleteMaybe\CompositeTrack.cs" />
+    <Compile Include="Controls\Main\MasterPlay.cs" />
+    <Compile Include="Controls\Main\PlayMode.cs" />
     <Compile Include="Controls\Main\SongContainer.cs" />
     <Compile Include="Controls\Main\ObsoleteMaybe\StepPlayFrequency.cs" />
     <Compile Include="Controls\Main\ObsoleteMaybe\StepPlayMarker.cs" />
@@ -119,6 +126,8 @@
     <Compile Include="Controls\Main\ObsoleteMaybe\TrackStepControl.cs" />
     <Compile Include="Controls\Main\ObsoleteMaybe\TrackBoxContainerStep.cs" />
     <Compile Include="Controls\Main\ObsoleteMaybe\TrackController.cs" />
+    <Compile Include="Controls\Other\OnOff.cs" />
+    <Compile Include="Controls\Other\LevelSlider.cs" />
     <Compile Include="Core\CancelRoutedEventArgs.cs" />
     <Compile Include="Controls\Converters\DoubleMultiplicationConverter.cs" />
     <Compile Include="Core\CoreHelper.cs" />
@@ -130,7 +139,7 @@
     <Compile Include="Controls\Main\ObsoleteMaybe\TrackBoxType.cs" />
     <Compile Include="Controls\Main\TrackVals.cs" />
     <Compile Include="Controls\Main\ObsoleteMaybe\TrackContainer.cs" />
-    <Compile Include="Controls\Main\ControlBase.cs" />
+    <Compile Include="Controls\Main\Abstract\AudioControlBase.cs" />
     <Compile Include="Controls\Main\ObsoleteMaybe\TrackBox.cs" />
     <Compile Include="Resources\Strings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -139,6 +148,30 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Themes\Generic\SongPointSelector.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic\SongPatternSelector.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic\SongPatternsContainer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic\Button.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic\OnOff.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic\MasterPlay.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Themes\Generic\TextBlock.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -155,11 +188,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\Generic\Slider.xaml">
+    <Page Include="Themes\Generic\LevelSlider.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\Generic\MasterControl.xaml">
+    <Page Include="Themes\Generic\MasterOutput.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

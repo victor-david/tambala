@@ -881,7 +881,7 @@ namespace Restless.App.DrumMaster.Controls
 
         #region Protected methods
         /// <summary>
-        /// Called when <see cref="ControlBase.Volume"/> property is changed.
+        /// Called when <see cref="AudioControlBase.Volume"/> property is changed.
         /// </summary>
         protected override void OnVolumeChanged()
         {
@@ -893,7 +893,7 @@ namespace Restless.App.DrumMaster.Controls
         }
 
         /// <summary>
-        /// Called when either <see cref="ControlBase.MutedImageSource"/> or <see cref="ControlBase.VoicedImageSource"/> are changed.
+        /// Called when either <see cref="AudioControlBase.MutedImageSource"/> or <see cref="AudioControlBase.VoicedImageSource"/> are changed.
         /// </summary>
         protected override void OnMutedImageSourceChanged()
         {
@@ -909,7 +909,7 @@ namespace Restless.App.DrumMaster.Controls
         }
 
         /// <summary>
-        /// Called when the <see cref="ControlBase.IsExpanded"/> property changes.
+        /// Called when the <see cref="AudioControlBase.IsExpanded"/> property changes.
         /// Expands / contracts all tracks
         /// </summary>
         protected override void OnIsExpandedChanged()

@@ -22,7 +22,9 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public SongContainer()
         {
-            MasterControl = new MasterControl(this);
+            MasterPlay = new MasterPlay(this);
+            MasterOutput = new MasterOutput(this);
+            SongPatterns = new SongPatternsContainer(this);
             AddHandler(IsChangedSetEvent, new RoutedEventHandler(IsChangedSetEventHandler));
             AddHandler(IsChangedResetEvent, new RoutedEventHandler(IsChangedResetEventHandler));
         }
@@ -35,26 +37,71 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region MasterControl
+        #region MasterOutput
         /// <summary>
-        /// Gets the master control for the container.
+        /// Gets the master output control for the container.
         /// </summary>
-        public MasterControl MasterControl
+        public MasterOutput MasterOutput
         {
-            get => (MasterControl)GetValue(MasterControlProperty);
-            private set => SetValue(MasterControlPropertyKey, value);
+            get => (MasterOutput)GetValue(MasterOutputProperty);
+            private set => SetValue(MasterOutputPropertyKey, value);
         }
         
-        private static readonly DependencyPropertyKey MasterControlPropertyKey = DependencyProperty.RegisterReadOnly
+        private static readonly DependencyPropertyKey MasterOutputPropertyKey = DependencyProperty.RegisterReadOnly
             (
-                nameof(MasterControl), typeof(MasterControl), typeof(SongContainer), new PropertyMetadata(null)
+                nameof(MasterOutput), typeof(MasterOutput), typeof(SongContainer), new PropertyMetadata(null)
             );
 
         /// <summary>
-        /// Identifies the <see cref="MasterControl"/> dependency property.
+        /// Identifies the <see cref="MasterOutput"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty MasterControlProperty = MasterControlPropertyKey.DependencyProperty;
+        public static readonly DependencyProperty MasterOutputProperty = MasterOutputPropertyKey.DependencyProperty;
+        #endregion
 
+        /************************************************************************/
+
+        #region MasterPlay
+        /// <summary>
+        /// Gets the master play control for the container.
+        /// </summary>
+        public MasterPlay MasterPlay
+        {
+            get => (MasterPlay)GetValue(MasterPlayProperty);
+            private set => SetValue(MasterPlayPropertyKey, value);
+        }
+
+        private static readonly DependencyPropertyKey MasterPlayPropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(MasterPlay), typeof(MasterPlay), typeof(SongContainer), new PropertyMetadata(null)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="MasterPlay"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty MasterPlayProperty = MasterPlayPropertyKey.DependencyProperty;
+        #endregion
+
+        /************************************************************************/
+
+        #region SongPatterns
+        /// <summary>
+        /// Gets the pattern collection. Used to create the song.
+        /// </summary>
+        public SongPatternsContainer SongPatterns
+        {
+            get => (SongPatternsContainer)GetValue(SongPatternsProperty);
+            set => SetValue(SongPatternsPropertyKey, value);
+        }
+        
+        private static readonly DependencyPropertyKey SongPatternsPropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(SongPatterns), typeof(SongPatternsContainer), typeof(SongContainer), new PropertyMetadata(null)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="SongPatterns"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SongPatternsProperty = SongPatternsPropertyKey.DependencyProperty;
         #endregion
 
         /************************************************************************/

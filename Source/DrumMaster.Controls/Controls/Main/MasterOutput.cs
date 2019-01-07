@@ -4,26 +4,27 @@ using System.Xml.Linq;
 
 namespace Restless.App.DrumMaster.Controls
 {
-    public class MasterControl : ControlBase
+    public class MasterOutput : AudioControlBase
     {
         #region Private
-        private SongContainer owner;
+        private readonly SongContainer owner;
         #endregion
 
         /************************************************************************/
 
         #region Constructors
         /// <summary>
-        /// Initializes a new instance of the <see cref="MasterControl"/> class.
+        /// Initializes a new instance of the <see cref="MasterOutput"/> class.
         /// </summary>
-        internal MasterControl(SongContainer owner)
+        internal MasterOutput(SongContainer owner)
         {
             this.owner = owner ?? throw new ArgumentNullException(nameof(owner));
+            DisplayName = "Master Output";
         }
 
-        static MasterControl()
+        static MasterOutput()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(MasterControl), new FrameworkPropertyMetadata(typeof(MasterControl)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(MasterOutput), new FrameworkPropertyMetadata(typeof(MasterOutput)));
         }
         #endregion
 
@@ -44,12 +45,12 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty TempoProperty = DependencyProperty.Register
             (
-                nameof(Tempo), typeof(double), typeof(MasterControl), new PropertyMetadata(TrackVals.Tempo.Default, OnTempoChanged, OnTempoCoerce)
+                nameof(Tempo), typeof(double), typeof(MasterOutput), new PropertyMetadata(TrackVals.Tempo.Default, OnTempoChanged, OnTempoCoerce)
             );
 
         private static void OnTempoChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is MasterControl c)
+            if (d is MasterOutput c)
             {
                 // c.CalculateThreadSafeSleepTime();
                 c.SetIsChanged();
@@ -76,7 +77,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty TempoTextProperty = DependencyProperty.Register
             (
-                nameof(TempoText), typeof(string), typeof(MasterControl), new PropertyMetadata(TrackVals.Tempo.DefaultText)
+                nameof(TempoText), typeof(string), typeof(MasterOutput), new PropertyMetadata(TrackVals.Tempo.DefaultText)
             );
 
 
@@ -100,11 +101,19 @@ namespace Restless.App.DrumMaster.Controls
         /************************************************************************/
 
         #region IXElement
+        /// <summary>
+        /// Gets the XElement for this object.
+        /// </summary>
+        /// <returns>The XElement that describes the state of this object.</returns>
         public override XElement GetXElement()
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Restores the object from the specified XElement
+        /// </summary>
+        /// <param name="element">The element</param>
         public override void RestoreFromXElement(XElement element)
         {
         }

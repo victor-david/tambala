@@ -1,0 +1,47 @@
+﻿<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:con="clr-namespace:Restless.App.DrumMaster.Controls">
+
+    <!-- ############################################# -->
+    <!-- SONG POINT SELECTOR CONTROL TEMPLATE / STYLE  -->
+    <!-- ############################################# -->
+    <ControlTemplate x:Key="SongPointSelectorControlTemplate" TargetType="con:SongPointSelector">
+        <Button
+            Style="{DynamicResource PointSelectorButton}"
+            Background="{TemplateBinding ActiveIsSelectedBrush}"
+            Command="{Binding Commands[ToggleSelect], RelativeSource={RelativeSource TemplatedParent}}"/>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="SongPointHeaderSelectorControlTemplate" TargetType="con:SongPointSelector">
+        <Border Background="{TemplateBinding ActiveIsSelectedBrush}" CornerRadius="1">
+            <TextBlock 
+                x:Name="HLabel"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="10"
+                Foreground="DarkBlue"
+                Text="{TemplateBinding DisplayName}"/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter TargetName="HLabel" Property="Foreground" Value="Black"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style TargetType="con:SongPointSelector">
+        <Setter Property="Template" Value="{StaticResource SongPointSelectorControlTemplate}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="IsSelectedBrush" Value="{DynamicResource SongPointSelected}"/>
+        <Setter Property="IsDeselectedBrush" Value="{DynamicResource SongPointDeselected}"/>
+        <Style.Triggers>
+            <Trigger Property="SelectorType" Value="Header">
+                <Setter Property="Template" Value="{StaticResource SongPointHeaderSelectorControlTemplate}"/>
+                <Setter Property="IsSelectedBrush" Value="{DynamicResource SongPointHeaderSelected}"/>
+                <Setter Property="IsDeselectedBrush" Value="{DynamicResource SongPointHeaderDeselected}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+</ResourceDictionary>

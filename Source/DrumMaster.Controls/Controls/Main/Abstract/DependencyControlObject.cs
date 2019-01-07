@@ -15,7 +15,8 @@ namespace Restless.App.DrumMaster.Controls
     /// </summary>
     /// <remarks>
     /// This class provides the base methods and properties for commands, <see cref="DisplayName"/>,
-    /// <see cref="IsChanged"/> notification, and <see cref="IsExpanded"/> functionality.
+    /// <see cref="IsChanged"/> notification, <see cref="IsExpanded"/> functionality, and
+    /// <see cref="IsSelected"/> functionality. Not all derived classes use all properties.
     /// </remarks>
     public abstract class DependencyControlObject : ContentControl, IXElement
     {
@@ -81,7 +82,7 @@ namespace Restless.App.DrumMaster.Controls
 
         private static readonly DependencyPropertyKey CommandsPropertyKey = DependencyProperty.RegisterReadOnly
             (
-                nameof(Commands), typeof(Dictionary<string, ICommand>), typeof(ControlBase), new FrameworkPropertyMetadata(null)
+                nameof(Commands), typeof(Dictionary<string, ICommand>), typeof(AudioControlBase), new FrameworkPropertyMetadata(null)
             );
 
         /// <summary>
@@ -142,6 +143,102 @@ namespace Restless.App.DrumMaster.Controls
                 c.OnIsExpandedChanged();
             }
         }
+        #endregion
+
+        /************************************************************************/
+
+        #region IsSelected
+        /// <summary>
+        /// Gets or sets a boolean value that indicates if the control is selected.
+        /// A derived class decides how or if to use this property.
+        /// </summary>
+        public bool IsSelected
+        {
+            get => (bool)GetValue(IsSelectedProperty);
+            set => SetValue(IsSelectedProperty, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="IsSelected"/> dependency property.
+        /// </summary>
+        private static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register
+            (
+                nameof(IsSelected), typeof(bool), typeof(DependencyControlObject), new FrameworkPropertyMetadata(false, OnIsSelectedChanged)
+            );
+
+        private static void OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is DependencyControlObject c)
+            {
+                c.OnIsSelectedChanged();
+                c.OnIsSelectedBrushChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a brush to use when <see cref="IsSelected"/> is true.
+        /// </summary>
+        public Brush IsSelectedBrush
+        {
+            get => (Brush)GetValue(IsSelectedBrushProperty);
+            set => SetValue(IsSelectedBrushProperty, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="IsSelectedBrush"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsSelectedBrushProperty = DependencyProperty.Register
+            (
+                nameof(IsSelectedBrush), typeof(Brush), typeof(DependencyControlObject), new PropertyMetadata(null, OnIsSelectedBrushChanged)
+            );
+
+        /// <summary>
+        /// Gets or sets a brush to use when <see cref="IsSelected"/> is false.
+        /// </summary>
+        public Brush IsDeselectedBrush
+        {
+            get => (Brush)GetValue(IsDeselectedBrushProperty);
+            set => SetValue(IsDeselectedBrushProperty, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="IsDeselectedBrush"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsDeselectedBrushProperty = DependencyProperty.Register
+            (
+                nameof(IsDeselectedBrush), typeof(Brush), typeof(DependencyControlObject), new PropertyMetadata(null, OnIsSelectedBrushChanged)
+            );
+
+        private static void OnIsSelectedBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is DependencyControlObject c)
+            {
+                c.OnIsSelectedBrushChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets the active brush according to the value of <see cref="IsSelected"/>.
+        /// A derived class decides how or if to use this property.
+        /// </summary>
+        public Brush ActiveIsSelectedBrush
+        {
+            get => (Brush)GetValue(ActiveIsSelectedBrushProperty);
+            private set => SetValue(ActiveIsSelectedBrushPropertyKey, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="IsDeselectedBrush"/> dependency property.
+        /// </summary>
+        private static readonly DependencyPropertyKey ActiveIsSelectedBrushPropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(ActiveIsSelectedBrush), typeof(Brush), typeof(DependencyControlObject), new PropertyMetadata(null)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="ActiveIsSelectedBrush"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ActiveIsSelectedBrushProperty = ActiveIsSelectedBrushPropertyKey.DependencyProperty;
         #endregion
 
         /************************************************************************/
@@ -239,7 +336,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly RoutedEvent IsChangedSetEvent = EventManager.RegisterRoutedEvent
             (
-                nameof(IsChangedSet), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(ControlBase)
+                nameof(IsChangedSet), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(AudioControlBase)
             );
 
         /// <summary>
@@ -256,7 +353,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly RoutedEvent IsChangedResetEvent = EventManager.RegisterRoutedEvent
             (
-                nameof(IsChangedReset), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(ControlBase)
+                nameof(IsChangedReset), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(AudioControlBase)
             );
         #endregion
 
@@ -319,6 +416,14 @@ namespace Restless.App.DrumMaster.Controls
         }
 
         /// <summary>
+        /// Called when <see cref="IsSelected"/> is changed. A derived class can override this method to perform updates as needed.
+        /// The base implementaion does nothing.
+        /// </summary>
+        protected virtual void OnIsSelectedChanged()
+        {
+        }
+
+        /// <summary>
         /// Sets the specified dependency property to the specified string.
         /// </summary>
         /// <param name="prop">The dependency property.</param>
@@ -372,6 +477,11 @@ namespace Restless.App.DrumMaster.Controls
         private void OnExpandedImageSourceChanged()
         {
             ActiveExpandedStateImageSource = IsExpanded ? MinimizeImageSource : MaximizeImageSource;
+        }
+
+        private void OnIsSelectedBrushChanged()
+        {
+            ActiveIsSelectedBrush = IsSelected ? IsSelectedBrush : IsDeselectedBrush;
         }
 
         private void RunToggleExpandedCommand(object parm)

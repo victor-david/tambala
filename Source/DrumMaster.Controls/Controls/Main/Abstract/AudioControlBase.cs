@@ -18,7 +18,7 @@ namespace Restless.App.DrumMaster.Controls
     /// Not all descendents make use of all properties.
     /// </para>
     /// </remarks>
-    public abstract class ControlBase : DependencyControlObject
+    public abstract class AudioControlBase : DependencyControlObject
     {
         #region Private
         #endregion
@@ -27,9 +27,9 @@ namespace Restless.App.DrumMaster.Controls
 
         #region Constructor
         /// <summary>
-        /// Initializes a new instance of <see cref="ControlBase"/>.
+        /// Initializes a new instance of <see cref="AudioControlBase"/>.
         /// </summary>
-        protected ControlBase()
+        protected AudioControlBase()
         {
             MutedImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Track.Muted.64.png", UriKind.Relative));
             VoicedImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Track.Voiced.64.png", UriKind.Relative));
@@ -73,12 +73,12 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty VolumeProperty = DependencyProperty.Register
             (
-                nameof(Volume), typeof(float), typeof(ControlBase), new PropertyMetadata(TrackVals.Volume.Default, OnVolumeChanged, OnVolumeCoerce)
+                nameof(Volume), typeof(float), typeof(AudioControlBase), new PropertyMetadata(TrackVals.Volume.Default, OnVolumeChanged, OnVolumeCoerce)
             );
 
         private static void OnVolumeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is ControlBase c)
+            if (d is AudioControlBase c)
             {
                 // Save volume for later thread safe access.
                 c.ThreadSafeVolumeRaw = (float)e.NewValue;
@@ -107,7 +107,7 @@ namespace Restless.App.DrumMaster.Controls
 
         private static readonly DependencyPropertyKey VolumeDecibelTextPropertyKey = DependencyProperty.RegisterReadOnly
             (
-                nameof(VolumeDecibelText), typeof(string), typeof(ControlBase), new FrameworkPropertyMetadata(null)
+                nameof(VolumeDecibelText), typeof(string), typeof(AudioControlBase), new FrameworkPropertyMetadata(null)
             );
 
         /// <summary>
@@ -130,12 +130,12 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty VolumeBiasProperty = DependencyProperty.Register
             (
-                nameof(VolumeBias), typeof(float), typeof(ControlBase), new PropertyMetadata(TrackVals.VolumeBias.Default, OnVolumeBiasChanged, OnVolumeBiasCoerce)
+                nameof(VolumeBias), typeof(float), typeof(AudioControlBase), new PropertyMetadata(TrackVals.VolumeBias.Default, OnVolumeBiasChanged, OnVolumeBiasCoerce)
             );
 
         private static void OnVolumeBiasChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is ControlBase c)
+            if (d is AudioControlBase c)
             {
                 // Save volume bias in private var for later thread safe access.
                 c.ThreadSafeVolumeBiasRaw = (float)e.NewValue;
@@ -166,7 +166,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty VolumeTextProperty = DependencyProperty.Register
             (
-                nameof(VolumeText), typeof(string), typeof(ControlBase), new PropertyMetadata(TrackVals.Volume.DefaultText)
+                nameof(VolumeText), typeof(string), typeof(AudioControlBase), new PropertyMetadata(TrackVals.Volume.DefaultText)
             );
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty ShortVolumeTextProperty = DependencyProperty.Register
             (
-                nameof(ShortVolumeText), typeof(string), typeof(ControlBase), new PropertyMetadata(TrackVals.Volume.DefaultShortText)
+                nameof(ShortVolumeText), typeof(string), typeof(AudioControlBase), new PropertyMetadata(TrackVals.Volume.DefaultShortText)
             );
 
         /// <summary>
@@ -200,12 +200,12 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty IsMutedProperty = DependencyProperty.Register
             (
-                nameof(IsMuted), typeof(bool), typeof(ControlBase), new PropertyMetadata(false, OnIsMutedChanged)
+                nameof(IsMuted), typeof(bool), typeof(AudioControlBase), new PropertyMetadata(false, OnIsMutedChanged)
             );
 
         private static void OnIsMutedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is ControlBase c)
+            if (d is AudioControlBase c)
             {
                 c.IsUserMuted = (bool)e.NewValue;
                 c.OnIsMutedChanged();
@@ -263,12 +263,12 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty PanningProperty = DependencyProperty.Register
             (
-                nameof(Panning), typeof(float), typeof(ControlBase), new PropertyMetadata(TrackVals.Panning.Default, OnPanningChanged, OnPanningCoerce)
+                nameof(Panning), typeof(float), typeof(AudioControlBase), new PropertyMetadata(TrackVals.Panning.Default, OnPanningChanged, OnPanningCoerce)
             );
 
         private static void OnPanningChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is ControlBase c)
+            if (d is AudioControlBase c)
             {
                 c.SetPanningText();
                 c.OnPanningChanged();
@@ -293,7 +293,7 @@ namespace Restless.App.DrumMaster.Controls
 
         private static readonly DependencyPropertyKey PanningTextPropertyKey = DependencyProperty.RegisterReadOnly
             (
-                nameof(PanningText), typeof(string), typeof(ControlBase), new FrameworkPropertyMetadata(null)
+                nameof(PanningText), typeof(string), typeof(AudioControlBase), new FrameworkPropertyMetadata(null)
             );
 
         /// <summary>
@@ -338,12 +338,12 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty PitchProperty = DependencyProperty.Register
             (
-                nameof(Pitch), typeof(float), typeof(ControlBase), new PropertyMetadata(TrackVals.Pitch.Default, OnPitchChanged, OnPitchCoerce)
+                nameof(Pitch), typeof(float), typeof(AudioControlBase), new PropertyMetadata(TrackVals.Pitch.Default, OnPitchChanged, OnPitchCoerce)
             );
 
         private static void OnPitchChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is ControlBase c)
+            if (d is AudioControlBase c)
             {
                 c.ThreadSafePitch = XAudio2.SemitonesToFrequencyRatio((float)e.NewValue);
                 c.OnPitchChanged();
@@ -368,7 +368,7 @@ namespace Restless.App.DrumMaster.Controls
 
         private static readonly DependencyPropertyKey PitchSemiToneTextPropertyKey = DependencyProperty.RegisterReadOnly
             (
-                nameof(PitchSemiToneText), typeof(string), typeof(ControlBase), new FrameworkPropertyMetadata(null)
+                nameof(PitchSemiToneText), typeof(string), typeof(AudioControlBase), new FrameworkPropertyMetadata(null)
             );
 
         /// <summary>
@@ -410,7 +410,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty MutedImageSourceProperty = DependencyProperty.Register
             (
-                nameof(MutedImageSource), typeof(ImageSource), typeof(ControlBase), new PropertyMetadata(null, OnMutedImageSourceChanged)
+                nameof(MutedImageSource), typeof(ImageSource), typeof(AudioControlBase), new PropertyMetadata(null, OnMutedImageSourceChanged)
             );
 
         /// <summary>
@@ -427,12 +427,12 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty VoicedImageSourceProperty = DependencyProperty.Register
             (
-                nameof(VoicedImageSource), typeof(ImageSource), typeof(ControlBase), new PropertyMetadata(null, OnMutedImageSourceChanged)
+                nameof(VoicedImageSource), typeof(ImageSource), typeof(AudioControlBase), new PropertyMetadata(null, OnMutedImageSourceChanged)
             );
 
         private static void OnMutedImageSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is ControlBase c)
+            if (d is AudioControlBase c)
             {
                 c.OnMutedImageSourceChanged();
                 c.OnIsMutedChanged();
@@ -450,7 +450,7 @@ namespace Restless.App.DrumMaster.Controls
 
         private static readonly DependencyPropertyKey ActiveMutedImageSourcePropertyKey = DependencyProperty.RegisterReadOnly
             (
-                nameof(ActiveMutedImageSource), typeof(ImageSource), typeof(ControlBase), new FrameworkPropertyMetadata(null)
+                nameof(ActiveMutedImageSource), typeof(ImageSource), typeof(AudioControlBase), new FrameworkPropertyMetadata(null)
             );
 
         /// <summary>

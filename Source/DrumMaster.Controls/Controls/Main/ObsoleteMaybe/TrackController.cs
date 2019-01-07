@@ -17,7 +17,7 @@ namespace Restless.App.DrumMaster.Controls
     /// Represents a track controller. This control manages the track with volume, pitch, panning, etc.
     /// </summary>
     [TemplatePart(Name = PartGridTrack, Type = typeof(Grid))]
-    public class TrackController : ControlBase
+    public class TrackController : AudioControlBase
     {
         #region Private
         private const string PartGridTrack = "PART_GRID_TRACK";
@@ -478,7 +478,7 @@ namespace Restless.App.DrumMaster.Controls
 
         #region Protected methods
         /// <summary>
-        /// Called when the <see cref="ControlBase.Volume"/> property is changed.
+        /// Called when the <see cref="AudioControlBase.Volume"/> property is changed.
         /// </summary>
         protected override void OnVolumeChanged()
         {
@@ -489,7 +489,7 @@ namespace Restless.App.DrumMaster.Controls
         }
 
         /// <summary>
-        /// Called when the <see cref="ControlBase.Panning"/> property is changed.
+        /// Called when the <see cref="AudioControlBase.Panning"/> property is changed.
         /// </summary>
         protected override void OnPanningChanged()
         {

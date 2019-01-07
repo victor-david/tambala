@@ -1,0 +1,53 @@
+﻿<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:con="clr-namespace:Restless.App.DrumMaster.Controls">
+
+    <con:PlayMode x:Key="PlayModePattern">Pattern</con:PlayMode>
+    <con:PlayMode x:Key="PlayModeSong">Song</con:PlayMode>
+    
+    <!-- ############################ -->
+    <!-- MASTERPLAY TEMPLATE / STYLE  -->
+    <!-- ############################ -->
+    <ControlTemplate x:Key="MasterPlayControlTemplate" TargetType="con:MasterPlay">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="64"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <con:OnOff
+                Margin="6,0"
+                Id="PatternSong"
+                OffText="Pattern"
+                OffValue="{StaticResource PlayModePattern}"
+                OffTextBrush="{DynamicResource SliderLabelTextBrush}"
+                OnText="Song"
+                OnValue="{StaticResource PlayModeSong}"
+                OnTextBrush="{DynamicResource SliderLabelTextBrush}"/>
+            
+            <Button 
+                Grid.Column="1"
+                Style="{DynamicResource ButtonBaseFlat}"
+                Command="{Binding Commands[Play], RelativeSource={RelativeSource TemplatedParent}}">
+                <Image Source="{TemplateBinding ActivePlayImageSource}" Height="28" Margin="2,0"/>
+            </Button>
+
+            <TextBlock
+                Grid.Column="2" 
+                Style="{DynamicResource TextBlockCounter}"
+                Text="00:00:00"/>
+        </Grid>
+        
+    </ControlTemplate>
+
+    <Style TargetType="con:MasterPlay">
+        <Setter Property="Template" Value="{StaticResource MasterPlayControlTemplate}"/>
+    </Style>
+
+</ResourceDictionary>
