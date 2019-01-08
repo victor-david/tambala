@@ -6,9 +6,9 @@
     <con:PlayMode x:Key="PlayModePattern">Pattern</con:PlayMode>
     <con:PlayMode x:Key="PlayModeSong">Song</con:PlayMode>
     
-    <!-- ############################ -->
-    <!-- MASTERPLAY TEMPLATE / STYLE  -->
-    <!-- ############################ -->
+    <!-- ########################## -->
+    <!-- MasterPlay Template/Style  -->
+    <!-- ########################## -->
     <ControlTemplate x:Key="MasterPlayControlTemplate" TargetType="con:MasterPlay">
         <Grid>
             <Grid.RowDefinitions>

@@ -1,11 +1,13 @@
-﻿using System.Windows;
+﻿using Restless.App.DrumMaster.Controls.Core;
+using System;
+using System.Windows;
 
 namespace Restless.App.DrumMaster.Controls
 {
     /// <summary>
     /// Represents the base class for a pattern selector. This class must be inherited.
     /// </summary>
-    public abstract class PatternSelector : DependencyControlObject
+    public abstract class PatternSelector : SizeablePatternSelector
     {
         #region Private
         #endregion
@@ -14,10 +16,12 @@ namespace Restless.App.DrumMaster.Controls
 
         #region Constructors
         /// <summary>
-        /// Initializes a new instance of the <see cref="SongPatternSelector"/> class.
+        /// Initializes a new instance of the <see cref="DrumPatternSelector"/> class.
         /// </summary>
-        internal PatternSelector()
+        /// <param name="type">The type of selector</param>
+        internal PatternSelector(SongDrumPatternSelectorType type)
         {
+            SelectorType = type;
         }
 
         static PatternSelector()
@@ -42,8 +46,16 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty PositionProperty = DependencyProperty.Register
             (
-                nameof(Position), typeof(int), typeof(PatternSelector), new PropertyMetadata(0)
+                nameof(Position), typeof(int), typeof(PatternSelector), new PropertyMetadata(0, OnPositionChanged)
             );
+
+        private static void OnPositionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is PatternSelector c)
+            {
+                c.OnPositionChanged();
+            }
+        }
         #endregion
 
         /************************************************************************/
@@ -52,19 +64,33 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Gets or sets the selector type
         /// </summary>
-        public SongPatternSelectorType SelectorType
+        public SongDrumPatternSelectorType SelectorType
         {
-            get => (SongPatternSelectorType)GetValue(SelectorTypeProperty);
-            set => SetValue(SelectorTypeProperty, value);
+            get => (SongDrumPatternSelectorType)GetValue(SelectorTypeProperty);
+            private set => SetValue(SelectorTypePropertyKey, value);
         }
+
+        private static readonly DependencyPropertyKey SelectorTypePropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(SelectorType), typeof(SongDrumPatternSelectorType), typeof(PatternSelector), new PropertyMetadata(SongDrumPatternSelectorType.Standard)
+            );
 
         /// <summary>
         /// Identifies the <see cref="SelectorType"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty SelectorTypeProperty = DependencyProperty.Register
-            (
-                nameof(SelectorType), typeof(SongPatternSelectorType), typeof(PatternSelector), new PropertyMetadata(SongPatternSelectorType.Standard)
-            );
+        public static readonly DependencyProperty SelectorTypeProperty = SelectorTypePropertyKey.DependencyProperty;
+        #endregion
+
+        /************************************************************************/
+
+        #region Protected methods
+        /// <summary>
+        /// Called when <see cref="Position"/> changes. A derived class can override
+        /// this method to perform updates. The base implementation does nothing.
+        /// </summary>
+        protected virtual void OnPositionChanged()
+        {
+        }
         #endregion
     }
 }

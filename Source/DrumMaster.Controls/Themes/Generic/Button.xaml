@@ -2,15 +2,13 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <!-- ############################# -->
-    <!-- BUTTON TEMPLATE / STYLE       -->
-    <!-- ############################# -->
+    <!-- ##################### -->
+    <!-- Button Template/Style -->
+    <!-- ##################### -->
     <ControlTemplate x:Key="PointSelectorButtonControlTemplate" TargetType="ButtonBase">
         <Border
             Background="{TemplateBinding Background}"
-            CornerRadius="1"
-            />
-        
+            CornerRadius="1"/>
     </ControlTemplate>
 
     <Style x:Key="PointSelectorButton" TargetType="ButtonBase">
@@ -80,6 +78,5 @@
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Template" Value="{StaticResource FlatButtonTemplate}" />
     </Style>
-
 
 </ResourceDictionary>

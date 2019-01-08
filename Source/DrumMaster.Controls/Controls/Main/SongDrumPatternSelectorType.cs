@@ -3,7 +3,7 @@
     /// <summary>
     /// Provides values for <see cref="PatternSelector.SelectorType"/>
     /// </summary>
-    public enum SongPatternSelectorType
+    public enum SongDrumPatternSelectorType
     {
         /// <summary>
         /// Standard selector

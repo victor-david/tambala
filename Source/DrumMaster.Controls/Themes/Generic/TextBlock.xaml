@@ -2,9 +2,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <!-- ################# -->
-    <!-- TEXT BLOCK STYLE  -->
-    <!-- ################## -->
+    <!-- ################ -->
+    <!-- TextBlock Styles -->
+    <!-- ################ -->
     <Style x:Key="TextBlockCounter" TargetType="TextBlock">
         <Setter Property="FontSize" Value="26"/>
         <Setter Property="Foreground" Value="DarkBlue"/>

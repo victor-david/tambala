@@ -3,87 +3,69 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:con="clr-namespace:Restless.App.DrumMaster.Controls">
 
-    <!-- ############################### -->
-    <!-- SONGCONTAINER TEMPLATE / STYLE  -->
-    <!-- ############################### -->
+    <!-- ############################ -->
+    <!-- SongContainer Template/Style -->
+    <!-- ############################ -->
     <ControlTemplate x:Key="SongContainerControlTemplate" TargetType="con:SongContainer">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" MinHeight="132"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="1.5*" MinHeight="132"/>
-            </Grid.RowDefinitions>            
-           
-            <Grid.Resources>
-                <Style TargetType="TextBlock">
-                    <Setter Property="VerticalAlignment" Value="Center"/>
-                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                    <Setter Property="FontSize" Value="16"/>
-                </Style>
-                <Style TargetType="Border">
-                    <Setter Property="Margin" Value="0"/>
-                    <Setter Property="Padding" Value="3"/>
-                    <!--<Setter Property="Background" Value="OldLace"/>
-                    <Setter Property="BorderBrush" Value="LightCoral"/>
-                    <Setter Property="BorderThickness" Value="1"/>-->
-                </Style>
-            </Grid.Resources>
-
-            <!-- Top row. Song space and master output -->
-            <Grid Grid.Row="0">
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Border Style="{DynamicResource HeaderBorder}">
+                <TextBlock Text="Song Composition"/>
+            </Border>
+            
+            <!-- Controller -->
+            <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="4.5*" MinWidth="132"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition MinWidth="132"/>
+                    <ColumnDefinition Width="84"/>
+                    <ColumnDefinition Width="180"/>
+                    <ColumnDefinition Width="180"/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <Border Grid.Column="0" Grid.Row="0" BorderBrush="{DynamicResource DefaultBorderBrush}" BorderThickness="0,0,0,1">
-                    <ContentPresenter Content="{TemplateBinding MasterPlay}"/>
-                </Border>
+                <con:LevelSlider
+                    Grid.Column="1" 
+                    Margin="8,0"
+                    LabelText="Size"
+                    ValueText="{Binding SelectorSize, RelativeSource={RelativeSource TemplatedParent}}"
+                    LabelTextBrush="{DynamicResource SliderLabelTextBrush}"
+                    ValueTextBrush="{DynamicResource SliderValueTextBrush}"
+                    Minimum="{Binding MinSelectorSize, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
+                    Maximum="{Binding MaxSelectorSize, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
+                    Value="{Binding SelectorSize, RelativeSource={RelativeSource TemplatedParent}}"
+                    Style="{DynamicResource HorizontalSlider}"
+                    IsSnapToTickEnabled="True"
+                    TickFrequency="1"/>
 
-                <Border Grid.Column="0" Grid.Row="1">
-                    <!--<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">-->
-                        <ContentPresenter Content="{TemplateBinding SongPatterns}"/>
-                    <!--</ScrollViewer>-->
-                </Border>
-                
-                <GridSplitter Grid.Column="1" Grid.RowSpan="2" Style="{DynamicResource VerticalGridSplitter}"/>
-
-                <Border Grid.Column="2" Grid.RowSpan="2">
-                    <ContentPresenter Content="{TemplateBinding MasterOutput}"/>
-                </Border>
+                <con:LevelSlider
+                    Grid.Column="2"
+                    Margin="8,0"
+                    LabelText="Divisions"
+                    ValueText="{Binding DivisionCount, RelativeSource={RelativeSource TemplatedParent}}"
+                    LabelTextBrush="{DynamicResource SliderLabelTextBrush}"
+                    ValueTextBrush="{DynamicResource SliderValueTextBrush}"
+                    Minimum="{Binding MinDivisionCount, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
+                    Maximum="{Binding MaxDivisionCount, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
+                    Value="{Binding DivisionCount, RelativeSource={RelativeSource TemplatedParent}}"
+                    Style="{DynamicResource HorizontalSlider}"
+                    IsSnapToTickEnabled="False"
+                    TickFrequency="1"/>
             </Grid>
 
-            <GridSplitter Grid.Row="1" Style="{DynamicResource HorizontalGridSplitter}"/>
-
-            <!-- Bottom row. Pattern space and mixer -->
-            <Grid Grid.Row="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2.5*" MinWidth="132"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition MinWidth="132"/>
-                </Grid.ColumnDefinitions>
-
-                <Border Grid.Column="0">
-                    <TextBlock Text="Pattern Space" />
-                </Border>
-
-                <GridSplitter Grid.Column="1" Style="{DynamicResource VerticalGridSplitter}"/>
-
-                <Border Grid.Column="2">
-                    <TextBlock Text="Pattern Mixer"/>
-                </Border>
-            </Grid>
-
+            <!-- Rows of the song patterns-->
+            <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                 <!--Gets populated in code-->  
+                <Grid x:Name="PART_HostGrid"/>
+            </ScrollViewer>
         </Grid>
     </ControlTemplate>
-
+    
     <Style TargetType="con:SongContainer">
         <Setter Property="Template" Value="{StaticResource SongContainerControlTemplate}"/>
     </Style>
-
 </ResourceDictionary>

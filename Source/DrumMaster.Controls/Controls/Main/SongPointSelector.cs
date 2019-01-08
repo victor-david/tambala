@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Xml.Linq;
 
@@ -15,7 +11,6 @@ namespace Restless.App.DrumMaster.Controls
     public class SongPointSelector : PatternSelector
     {
         #region Private
-        private readonly SongPatternSelector owner;
         #endregion
 
         /************************************************************************/
@@ -24,10 +19,10 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="SongPointSelector"/> class.
         /// </summary>
-        internal SongPointSelector(SongPatternSelector owner)
+        internal SongPointSelector(DrumPatternSelector owner, SongDrumPatternSelectorType type) : base(type)
         {
-            this.owner = owner ?? throw new ArgumentNullException(nameof(owner));
-            if (owner.SelectorType == SongPatternSelectorType.Standard)
+            Owner = owner ?? throw new ArgumentNullException(nameof(owner));
+            if (SelectorType == SongDrumPatternSelectorType.Standard)
             {
                 Commands.Add("ToggleSelect", new RelayCommand((p) => IsSelected = !IsSelected));
             }
@@ -36,6 +31,18 @@ namespace Restless.App.DrumMaster.Controls
         static SongPointSelector()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(SongPointSelector), new FrameworkPropertyMetadata(typeof(SongPointSelector)));
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region Properties
+        /// <summary>
+        /// Gets the <see cref="DrumPatternSelector"/> that owns this instance.
+        /// </summary>
+        private DrumPatternSelector Owner
+        {
+            get;
         }
         #endregion
 
@@ -61,14 +68,27 @@ namespace Restless.App.DrumMaster.Controls
         }
         #endregion
 
+        /************************************************************************/
+
         #region Protected methods
         /// <summary>
-        /// Called when the IsSelected property changes.
+        /// Called when <see cref="PatternSelector.Position"/> changes.
+        /// </summary>
+        protected override void OnPositionChanged()
+        {
+            if (SelectorType == SongDrumPatternSelectorType.Header)
+            {
+                DisplayName = $"{Position}";
+            }
+        }
+
+        /// <summary>
+        /// Called when <see cref="ControlObjectBase.IsSelected"/> changes.
         /// </summary>
         protected override void OnIsSelectedChanged()
         {
             SetIsChanged();
-            Debug.WriteLine($"Pattern {owner.DisplayName} Position {Position}");
+            Debug.WriteLine($"Pattern {Owner.DisplayName} Position {Position}");
         }
         #endregion
     }

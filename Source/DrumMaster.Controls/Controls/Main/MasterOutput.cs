@@ -7,7 +7,6 @@ namespace Restless.App.DrumMaster.Controls
     public class MasterOutput : AudioControlBase
     {
         #region Private
-        private readonly SongContainer owner;
         #endregion
 
         /************************************************************************/
@@ -16,15 +15,27 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="MasterOutput"/> class.
         /// </summary>
-        internal MasterOutput(SongContainer owner)
+        internal MasterOutput(ProjectContainer owner)
         {
-            this.owner = owner ?? throw new ArgumentNullException(nameof(owner));
+            Owner = owner ?? throw new ArgumentNullException(nameof(owner));
             DisplayName = "Master Output";
         }
 
         static MasterOutput()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(MasterOutput), new FrameworkPropertyMetadata(typeof(MasterOutput)));
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region Properties
+        /// <summary>
+        /// Gets the <see cref="ProjectContainer"/> that owns this instance.
+        /// </summary>
+        private ProjectContainer Owner
+        {
+            get;
         }
         #endregion
 

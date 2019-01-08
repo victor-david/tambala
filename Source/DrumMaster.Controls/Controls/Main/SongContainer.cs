@@ -1,32 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Xml.Linq;
 
 namespace Restless.App.DrumMaster.Controls
 {
     /// <summary>
-    /// Represents the top most container for a song and its associated series of patterns.
+    /// Represents a control that presents and manages a series of patterns to incorporate into a song.
     /// </summary>
-    public class SongContainer : DependencyControlObject
+    /// <remarks>
+    /// This control provides the ability to select and manage which individual drum kit patterns
+    /// comprise a song and the timeline for selecting which drum kit patterns play and for how
+    /// many times.
+    /// </remarks>
+    [TemplatePart(Name = PartHostGrid, Type = typeof(Grid))]
+    public class SongContainer : SizeablePatternSelector
     {
         #region Private
+        private const string PartHostGrid = "PART_HostGrid";
+        private Grid hostGrid;
         #endregion
-
+        
         /************************************************************************/
 
         #region Constructors
         /// <summary>
         /// Initializes a new instance of the <see cref="SongContainer"/> class.
         /// </summary>
-        public SongContainer()
+        internal SongContainer(ProjectContainer owner)
         {
-            MasterPlay = new MasterPlay(this);
-            MasterOutput = new MasterOutput(this);
-            SongPatterns = new SongPatternsContainer(this);
-            AddHandler(IsChangedSetEvent, new RoutedEventHandler(IsChangedSetEventHandler));
-            AddHandler(IsChangedResetEvent, new RoutedEventHandler(IsChangedResetEventHandler));
+            Owner = owner ?? throw new ArgumentNullException(nameof(owner));
         }
 
         static SongContainer()
@@ -37,84 +41,27 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region MasterOutput
+        #region Properties
         /// <summary>
-        /// Gets the master output control for the container.
+        /// Gets the <see cref="ProjectContainer"/> that owns this instance.
         /// </summary>
-        public MasterOutput MasterOutput
-        {
-            get => (MasterOutput)GetValue(MasterOutputProperty);
-            private set => SetValue(MasterOutputPropertyKey, value);
-        }
-        
-        private static readonly DependencyPropertyKey MasterOutputPropertyKey = DependencyProperty.RegisterReadOnly
-            (
-                nameof(MasterOutput), typeof(MasterOutput), typeof(SongContainer), new PropertyMetadata(null)
-            );
-
-        /// <summary>
-        /// Identifies the <see cref="MasterOutput"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty MasterOutputProperty = MasterOutputPropertyKey.DependencyProperty;
-        #endregion
-
-        /************************************************************************/
-
-        #region MasterPlay
-        /// <summary>
-        /// Gets the master play control for the container.
-        /// </summary>
-        public MasterPlay MasterPlay
-        {
-            get => (MasterPlay)GetValue(MasterPlayProperty);
-            private set => SetValue(MasterPlayPropertyKey, value);
-        }
-
-        private static readonly DependencyPropertyKey MasterPlayPropertyKey = DependencyProperty.RegisterReadOnly
-            (
-                nameof(MasterPlay), typeof(MasterPlay), typeof(SongContainer), new PropertyMetadata(null)
-            );
-
-        /// <summary>
-        /// Identifies the <see cref="MasterPlay"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty MasterPlayProperty = MasterPlayPropertyKey.DependencyProperty;
-        #endregion
-
-        /************************************************************************/
-
-        #region SongPatterns
-        /// <summary>
-        /// Gets the pattern collection. Used to create the song.
-        /// </summary>
-        public SongPatternsContainer SongPatterns
-        {
-            get => (SongPatternsContainer)GetValue(SongPatternsProperty);
-            set => SetValue(SongPatternsPropertyKey, value);
-        }
-        
-        private static readonly DependencyPropertyKey SongPatternsPropertyKey = DependencyProperty.RegisterReadOnly
-            (
-                nameof(SongPatterns), typeof(SongPatternsContainer), typeof(SongContainer), new PropertyMetadata(null)
-            );
-
-        /// <summary>
-        /// Identifies the <see cref="SongPatterns"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty SongPatternsProperty = SongPatternsPropertyKey.DependencyProperty;
-        #endregion
-
-        /************************************************************************/
-
-        #region FileName
-        /// <summary>
-        /// Gets the current file name for the container, or null if none.
-        /// This is the .xml file
-        /// </summary>
-        public string FileName
+        internal ProjectContainer Owner
         {
             get;
-            private set;
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region Public methods
+        /// <summary>
+        /// Occurs when the template is applied
+        /// </summary>
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            hostGrid = GetTemplateChild(PartHostGrid) as Grid;
+            CreateHostGrid();
         }
         #endregion
 
@@ -127,20 +74,7 @@ namespace Restless.App.DrumMaster.Controls
         /// <returns>The XElement that describes the state of this object.</returns>
         public override XElement GetXElement()
         {
-            var element = new XElement(nameof(SongContainer));
-            element.Add(new XElement(nameof(DisplayName), DisplayName));
-            //element.Add(new XElement(nameof(Volume), Volume));
-            //element.Add(new XElement(nameof(Tempo), Tempo));
-            //element.Add(new XElement(nameof(Beats), Beats));
-            //element.Add(new XElement(nameof(StepsPerBeat), StepsPerBeat));
-            //element.Add(new XElement(nameof(BoxSize), BoxSize));
-            //element.Add(RenderParms.GetXElement());
-
-            //Tracks.DoForAll((track) =>
-            //{
-            //    element.Add(track.GetXElement());
-            //});
-            return element;
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -149,120 +83,61 @@ namespace Restless.App.DrumMaster.Controls
         /// <param name="element">The element</param>
         public override void RestoreFromXElement(XElement element)
         {
-            IEnumerable<XElement> childList = from el in element.Elements() select el;
-
-            foreach (XElement e in childList)
-            {
-                if (e.Name == nameof(DisplayName)) SetDependencyProperty(DisplayNameProperty, e.Value);
-                //if (e.Name == nameof(Volume)) SetDependencyProperty(VolumeProperty, e.Value);
-                //if (e.Name == nameof(Tempo)) SetDependencyProperty(TempoProperty, e.Value);
-                //if (e.Name == nameof(Beats)) SetDependencyProperty(BeatsProperty, e.Value);
-                //if (e.Name == nameof(StepsPerBeat)) SetDependencyProperty(StepsPerBeatProperty, e.Value);
-                //if (e.Name == nameof(BoxSize)) SetDependencyProperty(BoxSizeProperty, e.Value);
-                //if (e.Name == nameof(AudioRenderParameters))
-                //{
-                //    RenderParms.RestoreFromXElement(e);
-                //    AudioHost.Instance.AudioCapture.RenderParms = RenderParms;
-                //}
-
-                // For backward compatibility
-                //if (e.Name == nameof(TrackController))
-                //{
-                //    AddTrack(null);
-                //    OnBoxSizeChanged();
-                //    OnTotalStepsChanged();
-                //    Tracks[Tracks.Count - 1].Controller.RestoreFromXElement(e);
-                //    IEnumerable<XElement> subChildList = from subE in e.Elements() select subE;
-                //    foreach (XElement ee in subChildList)
-                //    {
-                //        if (ee.Name == "TrackBoxContainer")
-                //        {
-                //            Tracks[Tracks.Count - 1].BoxContainer.RestoreFromXElement(ee);
-                //        }
-                //    }
-                //}
-
-                // For new format
-                //if (e.Name == nameof(CompositeTrack))
-                //{
-                //    AddTrack(null);
-                //    Tracks[Tracks.Count - 1].RestoreFromXElement(e);
-                //}
-            }
+            throw new NotImplementedException();
         }
         #endregion
 
         /************************************************************************/
 
-        #region Public methods
+        #region Protected methods
         /// <summary>
-        /// Creates an XDocument representation of the container and saves it to the specified file.
+        /// Called when <see cref="SizeablePatternSelector.SelectorSize"/> changes.
         /// </summary>
-        /// <returns>The XDocument object</returns>
-        public void Save(string filename)
+        protected override void OnSelectorSizeChanged()
         {
-            try
+            foreach(var selector in hostGrid.Children.OfType<DrumPatternSelector>())
             {
-                DisplayName = FileName = filename;
-                var xe = GetXElement();
-                System.IO.File.WriteAllText(filename, xe.ToString());
-                ResetIsChanged();
+                selector.SelectorSize = SelectorSize;
             }
-            catch (Exception ex)
-            {
-                throw new System.IO.IOException($"Unable to save {filename}", ex);
-            }
+            SetIsChanged();
         }
 
         /// <summary>
-        /// Opens the specified file and sets all tracks and values according to the contents.
+        /// Called when <see cref="SizeablePatternSelector.DivisionCount"/> changes.
         /// </summary>
-        /// <param name="filename">The file name</param>
-        public void Open(string filename)
+        protected override void OnDivisionCountChanged()
         {
-            try
+            foreach (var selector in hostGrid.Children.OfType<DrumPatternSelector>())
             {
-                //Tracks.Clear();
-                XDocument doc = XDocument.Load(filename);
-                RestoreFromXElement(doc.Root);
-                ResetIsChanged();
-                DisplayName = FileName = filename;
+                selector.DivisionCount = DivisionCount;
             }
-            catch (Exception ex)
-            {
-                throw new System.IO.IOException($"Unable to load {filename}", ex);
-            }
-        }
-
-        /// <summary>
-        /// Shuts down the song container.
-        /// </summary>
-        public void Shutdown()
-        {
-            // StopPlayThread();
+            SetIsChanged();
         }
         #endregion
 
         /************************************************************************/
 
         #region Private methods
-        private void IsChangedSetEventHandler(object sender, RoutedEventArgs e)
+        private void CreateHostGrid()
         {
-            if (e.OriginalSource != this)
+            if (hostGrid != null)
             {
-                SetIsChanged();
-            }
-        }
-
-        private void IsChangedResetEventHandler(object sender, RoutedEventArgs e)
-        {
-            if (e.Source != this)
-            {
-                ResetIsChanged();
+                for (int k=0; k < 9; k++)
+                {
+                    hostGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Auto) });
+                    SongDrumPatternSelectorType type = k == 0 ? SongDrumPatternSelectorType.Header : SongDrumPatternSelectorType.Standard;
+                    DrumPatternSelector selector = new DrumPatternSelector(this, type)
+                    {
+                        DisplayName = "zaz",
+                        Position = k,
+                        
+                    };
+                    Grid.SetRow(selector, k);
+                    hostGrid.Children.Add(selector);
+                }
             }
         }
         #endregion
-
 
     }
 }

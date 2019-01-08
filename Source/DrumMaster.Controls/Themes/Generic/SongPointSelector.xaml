@@ -3,18 +3,24 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:con="clr-namespace:Restless.App.DrumMaster.Controls">
 
-    <!-- ############################################# -->
-    <!-- SONG POINT SELECTOR CONTROL TEMPLATE / STYLE  -->
-    <!-- ############################################# -->
+    <!-- ################################ -->
+    <!-- SongPointSelector Template/Style -->
+    <!-- ################################ -->
     <ControlTemplate x:Key="SongPointSelectorControlTemplate" TargetType="con:SongPointSelector">
         <Button
+            Height="{TemplateBinding SelectorSize}"
+            Width="{TemplateBinding SelectorSize}"
             Style="{DynamicResource PointSelectorButton}"
             Background="{TemplateBinding ActiveIsSelectedBrush}"
             Command="{Binding Commands[ToggleSelect], RelativeSource={RelativeSource TemplatedParent}}"/>
     </ControlTemplate>
 
     <ControlTemplate x:Key="SongPointHeaderSelectorControlTemplate" TargetType="con:SongPointSelector">
-        <Border Background="{TemplateBinding ActiveIsSelectedBrush}" CornerRadius="1">
+        <Border
+            Height="{TemplateBinding SelectorSize}"
+            Width="{TemplateBinding SelectorSize}"
+            Background="{TemplateBinding ActiveIsSelectedBrush}" 
+            CornerRadius="1">
             <TextBlock 
                 x:Name="HLabel"
                 HorizontalAlignment="Center"

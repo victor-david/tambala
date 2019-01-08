@@ -10,10 +10,9 @@ namespace Restless.App.DrumMaster.Controls
     /// <summary>
     /// Represents a control that provides master play / stop services.
     /// </summary>
-    public class MasterPlay : DependencyControlObject
+    public class MasterPlay : ControlObjectBase
     {
         #region Private
-        private readonly SongContainer owner;
         #endregion
 
         /************************************************************************/
@@ -22,9 +21,9 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="MasterPlay"/> class.
         /// </summary>
-        internal MasterPlay(SongContainer owner)
+        internal MasterPlay(ProjectContainer owner)
         {
-            this.owner = owner ?? throw new ArgumentNullException(nameof(owner));
+            Owner = owner ?? throw new ArgumentNullException(nameof(owner));
             StartImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Start.64.png", UriKind.Relative));
             StopImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Stop.64.png", UriKind.Relative));
             ActivePlayImageSource = StartImageSource;
@@ -35,6 +34,18 @@ namespace Restless.App.DrumMaster.Controls
         static MasterPlay()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(MasterPlay), new FrameworkPropertyMetadata(typeof(MasterPlay)));
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region Properties
+        /// <summary>
+        /// Gets the <see cref="ProjectContainer"/> that owns this instance.
+        /// </summary>
+        private ProjectContainer Owner
+        {
+            get;
         }
         #endregion
 

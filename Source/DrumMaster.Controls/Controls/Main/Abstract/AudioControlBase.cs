@@ -18,7 +18,7 @@ namespace Restless.App.DrumMaster.Controls
     /// Not all descendents make use of all properties.
     /// </para>
     /// </remarks>
-    public abstract class AudioControlBase : DependencyControlObject
+    public abstract class AudioControlBase : ControlObjectBase
     {
         #region Private
         #endregion

@@ -105,20 +105,24 @@
     <Compile Include="Controls\Button\ImageButton.cs" />
     <Compile Include="Commands\CommandDictionary.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Controls\Main\Abstract\SizeablePatternSelector.cs" />
     <Compile Include="Controls\Main\Abstract\PatternSelector.cs" />
-    <Compile Include="Controls\Main\SongPatternSelectorType.cs" />
+    <Compile Include="Controls\Main\DrumPattern.cs" />
+    <Compile Include="Controls\Main\DrumPatternContainer.cs" />
+    <Compile Include="Controls\Main\SongDrumPatternSelectorType.cs" />
     <Compile Include="Controls\Main\SongPointSelector.cs" />
-    <Compile Include="Controls\Main\SongPatternSelector.cs" />
-    <Compile Include="Controls\Main\SongPatternsContainer.cs" />
+    <Compile Include="Controls\Main\DrumPatternSelector.cs" />
+    <Compile Include="Controls\Main\SongContainer.cs" />
+    <Compile Include="Core\Constants.cs" />
     <Compile Include="Controls\Other\BoxCheckBox.cs" />
     <Compile Include="Controls\Converters\DoubleAdditionConverter.cs" />
     <Compile Include="Audio\Metronome.cs" />
-    <Compile Include="Controls\Main\Abstract\DependencyControlObject.cs" />
+    <Compile Include="Controls\Main\Abstract\ControlObjectBase.cs" />
     <Compile Include="Controls\Main\MasterOutput.cs" />
     <Compile Include="Controls\Main\ObsoleteMaybe\CompositeTrack.cs" />
     <Compile Include="Controls\Main\MasterPlay.cs" />
     <Compile Include="Controls\Main\PlayMode.cs" />
-    <Compile Include="Controls\Main\SongContainer.cs" />
+    <Compile Include="Controls\Main\ProjectContainer.cs" />
     <Compile Include="Controls\Main\ObsoleteMaybe\StepPlayFrequency.cs" />
     <Compile Include="Controls\Main\ObsoleteMaybe\StepPlayMarker.cs" />
     <Compile Include="Controls\Main\ObsoleteMaybe\TrackBoxContainerBase.cs" />
@@ -148,15 +152,19 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Themes\Generic\DrumPatternContainer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Themes\Generic\SongPointSelector.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\Generic\SongPatternSelector.xaml">
+    <Page Include="Themes\Generic\DrumPatternSelector.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\Generic\SongPatternsContainer.xaml">
+    <Page Include="Themes\Generic\SongContainer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -196,7 +204,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\Generic\SongContainer.xaml">
+    <Page Include="Themes\Generic\ProjectContainer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

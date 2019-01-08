@@ -17,7 +17,7 @@ namespace Restless.App.DrumMaster.ViewModel
     public class SongContainerViewModel : WorkspaceViewModel
     {
         #region Private
-        private SongContainer container;
+        private ProjectContainer container;
         private bool isChanged;
         private const string FileExtension = "xml";
         private const string DottedFileExtension = ".xml";
@@ -29,7 +29,7 @@ namespace Restless.App.DrumMaster.ViewModel
         /// <summary>
         /// Gets the container that belongs to this layout.
         /// </summary>
-        public SongContainer Container
+        public ProjectContainer Container
         {
             get => container;
             private set => SetProperty(ref container, value);
@@ -56,7 +56,7 @@ namespace Restless.App.DrumMaster.ViewModel
         public SongContainerViewModel(string displayName, WorkspaceViewModel owner) : base(owner)
         {
             DisplayName = displayName;
-            Container = new SongContainer()
+            Container = new ProjectContainer()
             {
                 DisplayName = displayName,
                 Visibility = Visibility.Collapsed,

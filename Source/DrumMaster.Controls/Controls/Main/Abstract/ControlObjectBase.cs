@@ -11,14 +11,14 @@ using System.Xml.Linq;
 namespace Restless.App.DrumMaster.Controls
 {
     /// <summary>
-    /// Represents the base class for controls. This class must be inherited.
+    /// Extends ContentControl and represents the base class for controls. This class must be inherited.
     /// </summary>
     /// <remarks>
     /// This class provides the base methods and properties for commands, <see cref="DisplayName"/>,
     /// <see cref="IsChanged"/> notification, <see cref="IsExpanded"/> functionality, and
     /// <see cref="IsSelected"/> functionality. Not all derived classes use all properties.
     /// </remarks>
-    public abstract class DependencyControlObject : ContentControl, IXElement
+    public abstract class ControlObjectBase : ContentControl, IXElement
     {
         #region Private
         #endregion
@@ -27,9 +27,9 @@ namespace Restless.App.DrumMaster.Controls
 
         #region Constructor
         /// <summary>
-        /// Initializes a new instance of <see cref="DependencyControlObject"/>.
+        /// Initializes a new instance of <see cref="ControlObjectBase"/>.
         /// </summary>
-        protected DependencyControlObject()
+        protected ControlObjectBase()
         {
             Commands = new Dictionary<string, ICommand>();
             MinimizeImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Minimize.64.png", UriKind.Relative));
@@ -56,12 +56,12 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty DisplayNameProperty = DependencyProperty.Register
             (
-                nameof(DisplayName), typeof(string), typeof(DependencyControlObject), new PropertyMetadata(null, OnDisplayNameChanged)
+                nameof(DisplayName), typeof(string), typeof(ControlObjectBase), new PropertyMetadata(null, OnDisplayNameChanged)
             );
 
         private static void OnDisplayNameChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is DependencyControlObject c)
+            if (d is ControlObjectBase c)
             {
                 c.SetIsChanged();
             }
@@ -132,12 +132,12 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         private static readonly DependencyProperty IsExpandedProperty = DependencyProperty.Register
             (
-                nameof(IsExpanded), typeof(bool), typeof(DependencyControlObject), new FrameworkPropertyMetadata(true, OnIsExpandedChanged)
+                nameof(IsExpanded), typeof(bool), typeof(ControlObjectBase), new FrameworkPropertyMetadata(true, OnIsExpandedChanged)
             );
 
         private static void OnIsExpandedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is DependencyControlObject c)
+            if (d is ControlObjectBase c)
             {
                 c.OnExpandedImageSourceChanged();
                 c.OnIsExpandedChanged();
@@ -163,12 +163,12 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         private static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register
             (
-                nameof(IsSelected), typeof(bool), typeof(DependencyControlObject), new FrameworkPropertyMetadata(false, OnIsSelectedChanged)
+                nameof(IsSelected), typeof(bool), typeof(ControlObjectBase), new FrameworkPropertyMetadata(false, OnIsSelectedChanged)
             );
 
         private static void OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is DependencyControlObject c)
+            if (d is ControlObjectBase c)
             {
                 c.OnIsSelectedChanged();
                 c.OnIsSelectedBrushChanged();
@@ -189,7 +189,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty IsSelectedBrushProperty = DependencyProperty.Register
             (
-                nameof(IsSelectedBrush), typeof(Brush), typeof(DependencyControlObject), new PropertyMetadata(null, OnIsSelectedBrushChanged)
+                nameof(IsSelectedBrush), typeof(Brush), typeof(ControlObjectBase), new PropertyMetadata(null, OnIsSelectedBrushChanged)
             );
 
         /// <summary>
@@ -206,12 +206,12 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty IsDeselectedBrushProperty = DependencyProperty.Register
             (
-                nameof(IsDeselectedBrush), typeof(Brush), typeof(DependencyControlObject), new PropertyMetadata(null, OnIsSelectedBrushChanged)
+                nameof(IsDeselectedBrush), typeof(Brush), typeof(ControlObjectBase), new PropertyMetadata(null, OnIsSelectedBrushChanged)
             );
 
         private static void OnIsSelectedBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is DependencyControlObject c)
+            if (d is ControlObjectBase c)
             {
                 c.OnIsSelectedBrushChanged();
             }
@@ -232,7 +232,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         private static readonly DependencyPropertyKey ActiveIsSelectedBrushPropertyKey = DependencyProperty.RegisterReadOnly
             (
-                nameof(ActiveIsSelectedBrush), typeof(Brush), typeof(DependencyControlObject), new PropertyMetadata(null)
+                nameof(ActiveIsSelectedBrush), typeof(Brush), typeof(ControlObjectBase), new PropertyMetadata(null)
             );
 
         /// <summary>
@@ -258,7 +258,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty MinimizeImageSourceProperty = DependencyProperty.Register
             (
-                nameof(MinimizeImageSource), typeof(ImageSource), typeof(DependencyControlObject), new PropertyMetadata(null, OnIsExpandedImageSourceChanged)
+                nameof(MinimizeImageSource), typeof(ImageSource), typeof(ControlObjectBase), new PropertyMetadata(null, OnIsExpandedImageSourceChanged)
             );
 
         /// <summary>
@@ -275,12 +275,12 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty MaximizeImageSourceProperty = DependencyProperty.Register
             (
-                nameof(MaximizeImageSource), typeof(ImageSource), typeof(DependencyControlObject), new PropertyMetadata(null, OnIsExpandedImageSourceChanged)
+                nameof(MaximizeImageSource), typeof(ImageSource), typeof(ControlObjectBase), new PropertyMetadata(null, OnIsExpandedImageSourceChanged)
             );
 
         private static void OnIsExpandedImageSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is DependencyControlObject c)
+            if (d is ControlObjectBase c)
             {
                 c.OnExpandedImageSourceChanged();
             }
@@ -297,7 +297,7 @@ namespace Restless.App.DrumMaster.Controls
 
         private static readonly DependencyPropertyKey ActiveExpandedStateImageSourcePropertyKey = DependencyProperty.RegisterReadOnly
             (
-                nameof(ActiveExpandedStateImageSource), typeof(ImageSource), typeof(DependencyControlObject), new FrameworkPropertyMetadata(null)
+                nameof(ActiveExpandedStateImageSource), typeof(ImageSource), typeof(ControlObjectBase), new FrameworkPropertyMetadata(null)
             );
 
         /// <summary>

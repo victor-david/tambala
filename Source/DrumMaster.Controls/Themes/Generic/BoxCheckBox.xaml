@@ -3,10 +3,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:con="clr-namespace:Restless.App.DrumMaster.Controls">
     
-    <!-- ############################# -->
-    <!-- BOXCHECKBOX TEMPLATE / STYLE  -->
-    <!-- ############################# -->
-    <ControlTemplate x:Key="ImageCheckBoxControlTemplate" TargetType="con:BoxCheckBox">
+    <!-- ########################## -->
+    <!-- BoxCheckBox Template/Style -->
+    <!-- ########################## -->
+    <ControlTemplate x:Key="BoxCheckBoxControlTemplate" TargetType="con:BoxCheckBox">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -46,7 +46,7 @@
     </ControlTemplate>
 
     <Style TargetType="con:BoxCheckBox">
-        <Setter Property="Template" Value="{StaticResource ImageCheckBoxControlTemplate}"/>
+        <Setter Property="Template" Value="{StaticResource BoxCheckBoxControlTemplate}"/>
         <Setter Property="Cursor" Value="Hand"/>
     </Style>
 

@@ -1,0 +1,87 @@
+﻿<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:con="clr-namespace:Restless.App.DrumMaster.Controls">
+
+    <!-- ############################### -->
+    <!-- ProjectContainer Template/Style -->
+    <!-- ############################### -->
+    <ControlTemplate x:Key="ProjectContainerControlTemplate" TargetType="con:ProjectContainer">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" MinHeight="132"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="1.25*" MinHeight="132"/>
+            </Grid.RowDefinitions>            
+           
+            <Grid.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="FontSize" Value="16"/>
+                </Style>
+                <Style TargetType="Border">
+                    <Setter Property="Margin" Value="0"/>
+                    <Setter Property="Padding" Value="3"/>
+                    <!--<Setter Property="Background" Value="OldLace"/>
+                    <Setter Property="BorderBrush" Value="LightCoral"/>
+                    <Setter Property="BorderThickness" Value="1"/>-->
+                </Style>
+            </Grid.Resources>
+
+            <!-- Top row. Song space and master output -->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="6*" MinWidth="132"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition MinWidth="132"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Column="0" Grid.Row="0" BorderBrush="{DynamicResource DefaultBorderBrush}" BorderThickness="0,0,0,1">
+                    <ContentPresenter Content="{TemplateBinding MasterPlay}"/>
+                </Border>
+
+                <Border Grid.Column="0" Grid.Row="1">
+                    <ContentPresenter Content="{TemplateBinding SongContainer}"/>
+                </Border>
+                
+                <GridSplitter Grid.Column="1" Grid.RowSpan="2" Style="{DynamicResource VerticalGridSplitter}"/>
+
+                <Border Grid.Column="2" Grid.RowSpan="2">
+                    <ContentPresenter Content="{TemplateBinding MasterOutput}"/>
+                </Border>
+            </Grid>
+
+            <GridSplitter Grid.Row="1" Style="{DynamicResource HorizontalGridSplitter}"/>
+
+            <!-- Bottom row. Drum kit space and mixer -->
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2.5*" MinWidth="132"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition MinWidth="132"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0">
+                    <ContentPresenter Content="{TemplateBinding DrumKitContainer}"/>
+                </Border>
+
+                <GridSplitter Grid.Column="1" Style="{DynamicResource VerticalGridSplitter}"/>
+
+                <Border Grid.Column="2">
+                    <TextBlock Text="Pattern Mixer"/>
+                </Border>
+            </Grid>
+
+        </Grid>
+    </ControlTemplate>
+
+    <Style TargetType="con:ProjectContainer">
+        <Setter Property="Template" Value="{StaticResource ProjectContainerControlTemplate}"/>
+    </Style>
+
+</ResourceDictionary>

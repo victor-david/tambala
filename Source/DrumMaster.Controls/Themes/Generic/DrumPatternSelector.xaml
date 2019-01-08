@@ -3,20 +3,20 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:con="clr-namespace:Restless.App.DrumMaster.Controls">
 
-    <!-- ############################################### -->
-    <!-- SONG PATTERN SELECTOR CONTROL TEMPLATE / STYLE  -->
-    <!-- ############################################### -->
-    <ControlTemplate x:Key="SongPatternSelectorControlTemplate" TargetType="con:SongPatternSelector">
+    <!-- ################################## -->
+    <!-- SongPatternSelector Template/Style -->
+    <!-- ################################## -->
+    <ControlTemplate x:Key="DrumPatternSelectorControlTemplate" TargetType="con:DrumPatternSelector">
         <Grid x:Name="PART_HostGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="64"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="24"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <con:LinkedTextBlock 
                 x:Name="PatternSelect"
-                Text="{TemplateBinding DisplayName}"
+                Text="{Binding DrumPattern.DisplayName, RelativeSource={RelativeSource TemplatedParent}}"
                 VerticalAlignment="Center"
                 Command="{Binding Commands[SelectPattern], RelativeSource={RelativeSource TemplatedParent}}"/>
         </Grid>
@@ -28,8 +28,8 @@
         
     </ControlTemplate>
     
-    <Style TargetType="con:SongPatternSelector">
-        <Setter Property="Template" Value="{StaticResource SongPatternSelectorControlTemplate}"/>
+    <Style TargetType="con:DrumPatternSelector">
+        <Setter Property="Template" Value="{StaticResource DrumPatternSelectorControlTemplate}"/>
     </Style>
 
 </ResourceDictionary>
