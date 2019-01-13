@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Xml.Linq;
 
-namespace Restless.App.DrumMaster.Controls
+namespace Restless.App.DrumMaster.Controls.Obsolete
 {
     /// <summary>
     /// Represents the topmost container for a track layout control.
@@ -456,30 +456,30 @@ namespace Restless.App.DrumMaster.Controls
         /************************************************************************/
 
         #region Public properties (Other)
-        /// <summary>
-        /// Gets or sets the display name for this track layout
-        /// </summary>
-        public string DisplayName
-        {
-            get => (string)GetValue(DisplayNameProperty);
-            set => SetValue(DisplayNameProperty, value);
-        }
+        ///// <summary>
+        ///// Gets or sets the display name for this track layout
+        ///// </summary>
+        //public string DisplayName
+        //{
+        //    get => (string)GetValue(DisplayNameProperty);
+        //    set => SetValue(DisplayNameProperty, value);
+        //}
 
-        /// <summary>
-        /// Identifies the <see cref="DisplayName"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty DisplayNameProperty = DependencyProperty.Register
-            (
-                nameof(DisplayName), typeof(string), typeof(TrackContainer), new PropertyMetadata(null, OnDisplayNameChanged)
-            );
+        ///// <summary>
+        ///// Identifies the <see cref="DisplayName"/> dependency property.
+        ///// </summary>
+        //public static readonly DependencyProperty DisplayNameProperty = DependencyProperty.Register
+        //    (
+        //        nameof(DisplayName), typeof(string), typeof(TrackContainer), new PropertyMetadata(null, OnDisplayNameChanged)
+        //    );
 
-        private static void OnDisplayNameChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is TrackContainer c)
-            {
-                c.SetIsChanged();
-            }
-        }
+        //private static void OnDisplayNameChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    if (d is TrackContainer c)
+        //    {
+        //        c.SetIsChanged();
+        //    }
+        //}
 
         /// <summary>
         /// Gets the current file name for the container, or null if none.
@@ -719,14 +719,14 @@ namespace Restless.App.DrumMaster.Controls
 
             if (Tracks != null && Tracks.Count == 0)
             {
-                AddTrack(AudioPieceType.Cymbal);
-                AddTrack(AudioPieceType.HighHat);
-                AddTrack(AudioPieceType.Snare);
-                AddTrack(AudioPieceType.Tom);
-                AddTrack(AudioPieceType.Kick);
+                AddTrack(InstrumentType.Cymbal);
+                AddTrack(InstrumentType.HighHat);
+                AddTrack(InstrumentType.Snare);
+                AddTrack(InstrumentType.Tom);
+                AddTrack(InstrumentType.Kick);
             }
 
-            metronome.Piece = AudioHost.Instance.GetAudioPiece(AudioPieceType.Percussion);
+            metronome.Piece = AudioHost.Instance.GetAudioPiece(InstrumentType.Percussion);
             metronome.UpdateBeatValues(Beats, StepsPerBeat);
 
             IsStarted = false;
@@ -909,7 +909,7 @@ namespace Restless.App.DrumMaster.Controls
         }
 
         /// <summary>
-        /// Called when the <see cref="AudioControlBase.IsExpanded"/> property changes.
+        /// Called when the <see cref="ControlObject.IsExpanded"/> property changes.
         /// Expands / contracts all tracks
         /// </summary>
         protected override void OnIsExpandedChanged()
@@ -1006,19 +1006,19 @@ namespace Restless.App.DrumMaster.Controls
             if (CanRunAddTrackCommand(null))
             {
                 // TODO - Add a track by selecting a type first?
-                AddTrack(AudioPieceType.Kick);
+                AddTrack(InstrumentType.Kick);
                 SetIsChanged();
             }
         }
 
-        private void AddTrack(AudioPiece piece)
+        private void AddTrack(Instrument piece)
         {
             Tracks.Add(new CompositeTrack(this, piece));
         }
 
-        private void AddTrack(AudioPieceType type)
+        private void AddTrack(InstrumentType type)
         {
-            AudioPiece piece = AudioHost.Instance.GetAudioPiece(type);
+            Instrument piece = AudioHost.Instance.GetAudioPiece(type);
             AddTrack(piece);
         }
 

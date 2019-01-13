@@ -1,4 +1,5 @@
-﻿using SharpDX.XAudio2;
+﻿using Restless.App.DrumMaster.Controls.Core;
+using SharpDX.XAudio2;
 using System;
 
 namespace Restless.App.DrumMaster.Controls.Audio

@@ -1,4 +1,4 @@
-﻿namespace Restless.App.DrumMaster.Controls
+﻿namespace Restless.App.DrumMaster.Controls.Obsolete
 {
     /// <summary>
     /// Identifies the type of <see cref="TrackBox"/> objects

@@ -66,7 +66,8 @@ namespace Restless.App.DrumMaster
 #endif
             // Validations.ThrowIfNotWindows7();
             ShutdownMode = ShutdownMode.OnMainWindowClose;
-            InitializeAudioHost();
+            // InitializeAudioHost();
+            AudioHost.Instance.Initialize();
             Window main = WindowFactory.Main.Create();
             main.MinWidth = 960;
             main.MinHeight = 600;
@@ -76,19 +77,19 @@ namespace Restless.App.DrumMaster
             main.Show();
         }
 
-        private void InitializeAudioHost()
-        {
-            AudioHost.Instance.Initialize();
-            var a = Assembly.GetExecutingAssembly();
+        //private void InitializeAudioHost()
+        //{
+        //    AudioHost.Instance.Initialize();
+        //    //var a = Assembly.GetExecutingAssembly();
 
-            foreach (string resourceName in a.GetManifestResourceNames())
-            {
-                if (resourceName.Contains("Resources.Audio."))
-                {
-                    AudioHost.Instance.AddPieceFromAssembly(resourceName, a);
-                }
-            }
-        }
+        //    //foreach (string resourceName in a.GetManifestResourceNames())
+        //    //{
+        //    //    if (resourceName.Contains("Resources.Audio."))
+        //    //    {
+        //    //        AudioHost.Instance.AddPieceFromAssembly(resourceName, a);
+        //    //    }
+        //    //}
+        //}
         #endregion
     }
 }

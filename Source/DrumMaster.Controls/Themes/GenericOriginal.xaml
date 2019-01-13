@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:core="clr-namespace:Restless.App.DrumMaster.Controls.Core"
-    xmlns:con="clr-namespace:Restless.App.DrumMaster.Controls">
+    xmlns:con="clr-namespace:Restless.App.DrumMaster.Controls.Obsolete">
 
     
     <!-- ############################# -->

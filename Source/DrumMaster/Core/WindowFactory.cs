@@ -1,4 +1,5 @@
 ﻿using Restless.App.DrumMaster.Controls;
+using Restless.App.DrumMaster.Controls.Obsolete;
 using Restless.App.DrumMaster.View;
 using Restless.App.DrumMaster.ViewModel;
 using System.Windows;

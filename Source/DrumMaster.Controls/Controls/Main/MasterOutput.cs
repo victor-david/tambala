@@ -1,9 +1,13 @@
-﻿using System;
+﻿using Restless.App.DrumMaster.Controls.Core;
+using System;
 using System.Windows;
 using System.Xml.Linq;
 
 namespace Restless.App.DrumMaster.Controls
 {
+    /// <summary>
+    /// Represents the master output control. Handles the final voice.
+    /// </summary>
     public class MasterOutput : AudioControlBase
     {
         #region Private
@@ -118,7 +122,13 @@ namespace Restless.App.DrumMaster.Controls
         /// <returns>The XElement that describes the state of this object.</returns>
         public override XElement GetXElement()
         {
-            throw new NotImplementedException();
+            var element = new XElement(nameof(MasterOutput));
+            element.Add(new XElement(nameof(Tempo), Tempo));
+            element.Add(new XElement(nameof(Volume), Volume));
+            element.Add(new XElement(nameof(Panning), Panning));
+            element.Add(new XElement(nameof(Pitch), Pitch));
+            element.Add(new XElement(nameof(IsMuted), IsMuted));
+            return element;
         }
 
         /// <summary>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Linq;
 
-namespace Restless.App.DrumMaster.Controls
+namespace Restless.App.DrumMaster.Controls.Obsolete
 {
     /// <summary>
     /// Represents a container for a series of <see cref="TrackBox"/> items

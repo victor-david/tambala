@@ -31,5 +31,5 @@ namespace Restless.App.DrumMaster.Controls.Core
     /// </summary>
     /// <param name="sender">The sender</param>
     /// <param name="args">The args</param>
-    public delegate void CancelRoutedEventHandler(object sender, CancelRoutedEventArgs args);
+    public delegate void CancelRoutedEventHandler(object sender, CancelRoutedEventArgs e);
 }

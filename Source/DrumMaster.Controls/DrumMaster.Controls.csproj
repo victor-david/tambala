@@ -57,6 +57,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
@@ -66,6 +67,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\x64\Release\DrumMaster.Controls.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NAudio, Version=1.8.5.0, Culture=neutral, processorArchitecture=MSIL">
@@ -96,28 +98,49 @@
     <Compile Include="Audio\AudioBuffer.cs" />
     <Compile Include="Audio\AudioCaptureEffect.cs" />
     <Compile Include="Audio\AudioHost.cs" />
-    <Compile Include="Audio\AudioPiece.cs" />
-    <Compile Include="Audio\AudioPieceCollection.cs" />
-    <Compile Include="Audio\AudioPieceType.cs" />
+    <Compile Include="Audio\Instrument.cs" />
+    <Compile Include="Audio\InstrumentCollection.cs" />
+    <Compile Include="Audio\InstrumentType.cs" />
     <Compile Include="Audio\AudioRenderEventArgs.cs" />
     <Compile Include="Audio\AudioRenderParameters.cs" />
     <Compile Include="Audio\VoicePool.cs" />
     <Compile Include="Controls\Button\ImageButton.cs" />
     <Compile Include="Commands\CommandDictionary.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
-    <Compile Include="Controls\Main\Abstract\SizeablePatternSelector.cs" />
-    <Compile Include="Controls\Main\Abstract\PatternSelector.cs" />
+    <Compile Include="Controls\Main\ControlObjectVisualGrid.cs" />
+    <Compile Include="Controls\Main\ControlObjectVisual.cs" />
+    <Compile Include="Controls\Main\InstrumentController.cs" />
+    <Compile Include="Controls\Main\VisualBorder.cs" />
+    <Compile Include="Controls\Main\VisualQuarterNote.cs" />
+    <Compile Include="Controls\Main\VisualTick.cs" />
+    <Compile Include="Controls\Main\DrumKit.cs" />
+    <Compile Include="Controls\Main\VisualDivider.cs" />
+    <Compile Include="Controls\Main\ControlObjectSelector.cs" />
+    <Compile Include="Controls\Main\DrumPatternController.cs" />
+    <Compile Include="Controls\Main\ObsoleteMaybe\PatternSelectorOrig.cs" />
     <Compile Include="Controls\Main\DrumPattern.cs" />
-    <Compile Include="Controls\Main\DrumPatternContainer.cs" />
-    <Compile Include="Controls\Main\SongDrumPatternSelectorType.cs" />
-    <Compile Include="Controls\Main\SongPointSelector.cs" />
-    <Compile Include="Controls\Main\DrumPatternSelector.cs" />
+    <Compile Include="Controls\Main\ObsoleteMaybe\DrumPatternContainer.cs" />
+    <Compile Include="Controls\Main\ObsoleteMaybe\SongDrumPatternSelectorType.cs" />
+    <Compile Include="Controls\Main\ObsoleteMaybe\DrumPatternSelectorPanel.cs" />
+    <Compile Include="Controls\Main\ObsoleteMaybe\HeaderedPanel.cs" />
+    <Compile Include="Controls\Main\SongPresenter.cs" />
+    <Compile Include="Controls\Main\DrumPatternPresenter.cs" />
+    <Compile Include="Controls\Main\ObsoleteMaybe\HeaderRow.cs" />
+    <Compile Include="Controls\Main\ObsoleteMaybe\PanelBase.cs" />
+    <Compile Include="Controls\Main\ObsoleteMaybe\SizeableSelectorPanel.cs" />
+    <Compile Include="Controls\Main\PointSelectorType.cs" />
+    <Compile Include="Controls\Main\PointSelector.cs" />
+    <Compile Include="Controls\Main\ObsoleteMaybe\SongPointSelectorOrig.cs" />
+    <Compile Include="Controls\Main\ObsoleteMaybe\DrumPatternSelector.cs" />
     <Compile Include="Controls\Main\SongContainer.cs" />
+    <Compile Include="Controls\Main\VisualSelector.cs" />
+    <Compile Include="Controls\Other\BoxRadioButton.cs" />
+    <Compile Include="Controls\Other\BoxRadioButtonPanel.cs" />
     <Compile Include="Core\Constants.cs" />
     <Compile Include="Controls\Other\BoxCheckBox.cs" />
     <Compile Include="Controls\Converters\DoubleAdditionConverter.cs" />
     <Compile Include="Audio\Metronome.cs" />
-    <Compile Include="Controls\Main\Abstract\ControlObjectBase.cs" />
+    <Compile Include="Controls\Main\ControlObject.cs" />
     <Compile Include="Controls\Main\MasterOutput.cs" />
     <Compile Include="Controls\Main\ObsoleteMaybe\CompositeTrack.cs" />
     <Compile Include="Controls\Main\MasterPlay.cs" />
@@ -135,15 +158,16 @@
     <Compile Include="Core\CancelRoutedEventArgs.cs" />
     <Compile Include="Controls\Converters\DoubleMultiplicationConverter.cs" />
     <Compile Include="Core\CoreHelper.cs" />
+    <Compile Include="Core\ISelector.cs" />
     <Compile Include="Core\IXElement.cs" />
     <Compile Include="Core\MaxSizeObservableCollection.cs" />
-    <Compile Include="Core\TrackBoxCollection.cs" />
+    <Compile Include="Controls\Main\ObsoleteMaybe\TrackBoxCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controls\Text\LinkedTextBlock.cs" />
     <Compile Include="Controls\Main\ObsoleteMaybe\TrackBoxType.cs" />
-    <Compile Include="Controls\Main\TrackVals.cs" />
+    <Compile Include="Core\TrackVals.cs" />
     <Compile Include="Controls\Main\ObsoleteMaybe\TrackContainer.cs" />
-    <Compile Include="Controls\Main\Abstract\AudioControlBase.cs" />
+    <Compile Include="Controls\Main\AudioControlBase.cs" />
     <Compile Include="Controls\Main\ObsoleteMaybe\TrackBox.cs" />
     <Compile Include="Resources\Strings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -152,15 +176,35 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Themes\Generic\DrumPatternContainer.xaml">
+    <Page Include="Themes\Generic\DrumPatternController.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\Generic\SongPointSelector.xaml">
+    <Page Include="Themes\Generic\DrumPatternPresenter.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\Generic\DrumPatternSelector.xaml">
+    <Page Include="Themes\Generic\DrumPattern.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic\BoxRadioButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic\InstrumentController.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic\VisualQuarterNote.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic\PointSelector.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic\SongPresenter.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -245,6 +289,8 @@
     <Resource Include="Resources\Images\Image.Track.Muted.64.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Diagrams\Containers.cd" />
+    <None Include="Diagrams\Visuals.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -292,6 +338,22 @@
   <ItemGroup>
     <Resource Include="Resources\Images\Image.Render.64.png" />
     <Resource Include="Resources\Images\Image.Render.Active.64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Image.Caret.Down.Blue.32.png" />
+    <Resource Include="Resources\Images\Image.Caret.Down.White.32.png" />
+    <Resource Include="Resources\Images\Image.Caret.Up.Blue.32.png" />
+    <Resource Include="Resources\Images\Image.Caret.Up.White.32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Image.Chevron.Down.Blue.32.png" />
+    <Resource Include="Resources\Images\Image.Chevron.Down.White.32.png" />
+    <Resource Include="Resources\Images\Image.Chevron.Up.Blue.32.png" />
+    <Resource Include="Resources\Images\Image.Chevron.Up.White.32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Image.Caret.Up.Down.Blue.32.png" />
+    <Resource Include="Resources\Images\Image.Caret.Up.Down.White.32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

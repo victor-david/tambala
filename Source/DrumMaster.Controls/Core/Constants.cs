@@ -10,56 +10,34 @@ namespace Restless.App.DrumMaster.Controls.Core
     {
         #region Selector
         /// <summary>
-        /// Provides static values that define selector characteristics.
+        /// Provides static values that define characteristics of the song presenter
         /// </summary>
-        public static class SongSelector
+        public static class Selector
         {
             /// <summary>
             /// Provides static values that define selector size characteristics.
-            /// </summary
+            /// </summary>
             public static class Size
             {
                 /// <summary>
-                /// The minimum selector size for the song pattern selector
+                /// The minimum selector size.
                 /// </summary>
                 public const double Min = 20.0;
 
                 /// <summary>
-                /// The maximum selector size for the song pattern selector
+                /// The maximum selector size.
                 /// </summary>
                 public const double Max = 30.0;
 
                 /// <summary>
-                /// The default selector size for the song pattern selector
+                /// The default selector size.
                 /// </summary>
-                public const double Default = 23.0;
-            }
-
-            /// <summary>
-            /// Provides static values that define selector count characteristics.
-            /// </summary
-            public static class Count
-            {
-                /// <summary>
-                /// The minimum selector count for the song pattern selector.
-                /// </summary>
-                public const int Min = 16;
-
-                /// <summary>
-                /// The maximum selector count for the song pattern selector.
-                /// </summary>
-                public const int Max = 96;
-
-                /// <summary>
-                /// The default selector count for the song pattern selector.
-                /// </summary>
-                public const int Default = 48;
-
+                public const double Default = 24.0;
             }
 
             /// <summary>
             /// Provides static values that define selector division characteristics.
-            /// </summary
+            /// </summary>
             public static class Division
             {
                 /// <summary>
@@ -77,9 +55,139 @@ namespace Restless.App.DrumMaster.Controls.Core
                 /// </summary>
                 public const int Default = 4;
             }
+
+            /// <summary>
+            /// Provides static values that define selector count characteristics.
+            /// </summary>
+            public static class Count
+            {
+                /// <summary>
+                /// The minimum selector count for the song pattern selector.
+                /// </summary>
+                public const int Min = 16;
+
+                /// <summary>
+                /// The maximum selector count for the song pattern selector.
+                /// </summary>
+                public const int Max = 96;
+
+                /// <summary>
+                /// The default selector count for the song pattern selector.
+                /// </summary>
+                public const int Default = 46;
+
+            }
+            /// <summary>
+            /// Gets the fixed width of the first column.
+            /// </summary>
+            public static int FirstColumnWidth = 64;
+
+
         }
         #endregion
 
         /************************************************************************/
+
+        #region DrumPattern
+        /// <summary>
+        /// Provides static values that define drum pattern characteristics.
+        /// </summary>
+        public static class DrumPattern
+        {
+            /// <summary>
+            /// Provides static values that define selector size characteristics.
+            /// </summary>
+            public static class QuarterNote
+            {
+                /// <summary>
+                /// The minimum number of quarter notes for a drum pattern.
+                /// </summary>
+                public const int Min = 2;
+
+                /// <summary>
+                /// The maximum number of quarter notes for a drum pattern.
+                /// </summary>
+                public const int Max = 8;
+
+                /// <summary>
+                /// The default number of quarter notes for a drum pattern.
+                /// </summary>
+                public const int Default = 4;
+            }
+
+            /// <summary>
+            /// Provides static values that define quarter note tick divisions for a drum pattern
+            /// </summary>
+            public static class TotalTick
+            {
+                /// <summary>
+                /// Total number of ticks (including the quarter note) when divided into eighth notes.
+                /// </summary>
+                public const int Eighth = 2;
+
+                /// <summary>
+                /// Total number of ticks (including the quarter note) when divided into eighth note triplet.
+                /// </summary>
+                public const int EighthTriplet = 3;
+
+                /// <summary>
+                /// Total number of ticks (including the quarter note) when divided into sixteenth notes.
+                /// </summary>
+                public const int Sixteenth = 4;
+
+                /// <summary>
+                /// Total number of ticks (including the quarter note) when divided into 32nd notes.
+                /// </summary>
+                public const int ThirtySecond = 8;
+
+                /// <summary>
+                /// The minimum value of total ticks per quarter note
+                /// </summary>
+                public const int Min = Eighth;
+
+                /// <summary>
+                /// The maximum value of total ticks per quarter note.
+                /// </summary>
+                public const int Max = ThirtySecond;
+
+                /// <summary>
+                /// The default value of total ticks per quarter note.
+                /// </summary>
+                public const int Default = Sixteenth;
+            }
+
+            /// <summary>
+            /// Provides static values that scale values for a drum pattern.
+            /// </summary>
+            public static class Scale
+            {
+                /// <summary>
+                /// The minimum scale allowed.
+                /// </summary>
+                public const double Min = 130.0;
+
+                /// <summary>
+                /// The maxium scale allowed.
+                /// </summary>
+                public const double Max = 180.0;
+
+                /// <summary>
+                /// The default scale allowed.
+                /// </summary>
+                public const double Default = 160.0;
+            }
+
+            /// <summary>
+            /// The number of allowable drum patterns
+            /// </summary>
+            public static int MaxCount = 6;
+
+            /// <summary>
+            /// Gets the fixed width of the first column.
+            /// </summary>
+            public static int FirstColumnWidth = 242;
+
+        }
+        #endregion
     }
 }

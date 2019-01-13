@@ -10,7 +10,7 @@ namespace Restless.App.DrumMaster.Controls
     /// <summary>
     /// Represents a control that provides master play / stop services.
     /// </summary>
-    public class MasterPlay : ControlObjectBase
+    public class MasterPlay : ControlObject
     {
         #region Private
         #endregion
@@ -186,7 +186,9 @@ namespace Restless.App.DrumMaster.Controls
         /// <returns>The XElement that describes the state of this object.</returns>
         public override XElement GetXElement()
         {
-            throw new NotImplementedException();
+            var element = new XElement(nameof(MasterPlay));
+            element.Add(new XElement(nameof(PlayMode), PlayMode));
+            return element;
         }
 
         /// <summary>

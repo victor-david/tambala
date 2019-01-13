@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace Restless.App.DrumMaster.Controls
+namespace Restless.App.DrumMaster.Controls.Obsolete
 {
     /// <summary>
     /// Represents the base class for a container that contains for a series of <see cref="TrackBox"/> items.

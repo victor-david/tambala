@@ -14,11 +14,19 @@
         </GradientBrush.GradientStops>
     </LinearGradientBrush>
 
-    <SolidColorBrush x:Key="SongPointDeselected" Color="#8000B6FF"/>
-    <SolidColorBrush x:Key="SongPointSelected" Color="DarkBlue"/>
+    <!-- Brushes for PointSelector -->
+    <SolidColorBrush x:Key="PointSelectorSongHeaderSelected" Color="#FFCC0000"/>
+    <SolidColorBrush x:Key="PointSelectorSongHeaderDeselected" Color="LightGray"/>
 
-    <SolidColorBrush x:Key="SongPointHeaderDeselected" Color="LightGray"/>
-    <SolidColorBrush x:Key="SongPointHeaderSelected" Color="#FFCC0000"/>
+    <SolidColorBrush x:Key="PointSelectorSongRowSelected" Color="DarkBlue"/>
+    <SolidColorBrush x:Key="PointSelectorSongRowDeselected" Color="#8000B6FF"/>
+    
+    <SolidColorBrush x:Key="PointSelectorPatternHeaderSelected" Color="#FFCC0000"/>
+    <SolidColorBrush x:Key="PointSelectorPatternHeaderDeselected" Color="LightGray"/>
+
+    <SolidColorBrush x:Key="PointSelectorPatternRowSelected" Color="DarkBlue"/>
+    <SolidColorBrush x:Key="PointSelectorPatternRowDeselected" Color="Transparent"/>
+
 
     <SolidColorBrush x:Key="DefaultBorderBrush" Color="LightGray"/>
     

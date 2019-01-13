@@ -88,12 +88,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\AudioResourceAbstraction.cs" />
     <Compile Include="Core\AudioResourceMetadata.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\DrumKit\Default\Clap.Dry.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Default\Cowbell.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Default\Cymbal.Bell.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Default\Cymbal.Crash.Jazz.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Default\Cymbal.Crash.Light.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Default\Cymbal.Jazz.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Default\HighHat.Closed.Dry.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Default\HighHat.Closed.Wet.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Default\HighHat.Pedal.Dry.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Default\Kick.Dry.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Default\Snare.Jazz.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Default\Snare.SideStick.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Default\Snare.Wet.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Default\Tom.Rock.High.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Default\Tom.Rock.Low.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Default\Tom.Rock.Mid.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

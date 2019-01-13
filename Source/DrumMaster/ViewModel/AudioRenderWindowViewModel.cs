@@ -12,6 +12,7 @@ using System.Windows;
 using Microsoft.Win32;
 using Restless.App.DrumMaster.Resources;
 using System.IO;
+using Restless.App.DrumMaster.Controls.Obsolete;
 
 namespace Restless.App.DrumMaster.ViewModel
 {

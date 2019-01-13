@@ -6,13 +6,14 @@
     <!-- Border Styles -->
     <!-- ############# -->
     <Style x:Key="HeaderBorder" TargetType="Border">
-        <Setter Property="Height" Value="25"/>
+        <Setter Property="Height" Value="27"/>
         <Setter Property="Margin" Value="0,0,0,4"/>
         <Setter Property="Padding" Value="4"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="Background" Value="{DynamicResource HeaderBrush}"/>
         <Style.Resources>
             <Style TargetType="TextBlock">
+                <Setter Property="Margin" Value="2,0"/>
                 <Setter Property="FontSize" Value="11.5"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
                 <Setter Property="Foreground" Value="{DynamicResource HeaderForegroundBrush}"/>

@@ -1,4 +1,5 @@
 ﻿using Restless.App.DrumMaster.Controls.Audio;
+using Restless.App.DrumMaster.Controls.Core;
 using Restless.App.DrumMaster.Controls.Resources;
 using SharpDX.XAudio2;
 using System;
@@ -11,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml.Linq;
 
-namespace Restless.App.DrumMaster.Controls
+namespace Restless.App.DrumMaster.Controls.Obsolete
 {
     /// <summary>
     /// Represents a track controller. This control manages the track with volume, pitch, panning, etc.
@@ -38,7 +39,7 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Gets the available audio pieces.
         /// </summary>
-        public AudioPieceCollection AudioPieces
+        public InstrumentCollection AudioPieces
         {
             get => AudioHost.Instance.AudioPieces;
         }
@@ -46,9 +47,9 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Gets or sets the drum piece for this track.
         /// </summary>
-        public AudioPiece Piece
+        public Instrument Piece
         {
-            get => (AudioPiece)GetValue(PieceProperty);
+            get => (Instrument)GetValue(PieceProperty);
             set => SetValue(PieceProperty, value);
         }
 
@@ -57,7 +58,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty PieceProperty = DependencyProperty.Register
             (
-                nameof(Piece), typeof(AudioPiece), typeof(TrackController), new PropertyMetadata(null, OnPieceChanged)
+                nameof(Piece), typeof(Instrument), typeof(TrackController), new PropertyMetadata(null, OnPieceChanged)
             );
 
         private static void OnPieceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -389,8 +390,8 @@ namespace Restless.App.DrumMaster.Controls
             ShiftLeftImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Shift.Left.64.png", UriKind.Relative));
             ShiftRightImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Shift.Right.64.png", UriKind.Relative));
 
-            MinimizeImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Minimize.Blue.64.png", UriKind.Relative));
-            MaximizeImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Maximize.Blue.64.png", UriKind.Relative));
+            CollapsedImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Minimize.Blue.64.png", UriKind.Relative));
+            ExpandedImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Maximize.Blue.64.png", UriKind.Relative));
         }
 
         static TrackController()
@@ -457,12 +458,12 @@ namespace Restless.App.DrumMaster.Controls
                     }
                 }
 
-                if (e.Name == nameof(AudioPiece))
+                if (e.Name == nameof(Instrument))
                 {
                     IEnumerable<XElement> audioList = from el in e.Elements() select el;
                     foreach (XElement ae in audioList)
                     {
-                        if (ae.Name == nameof(AudioPiece.AudioName))
+                        if (ae.Name == nameof(Instrument.AudioName))
                         {
                             Piece = AudioHost.Instance.GetAudioPiece(ae.Value);
                         }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Restless.App.DrumMaster.Controls
+namespace Restless.App.DrumMaster.Controls.Obsolete
 {
     /// <summary>
     /// Provides a enumeration that describes how often an activated step will play.

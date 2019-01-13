@@ -1,4 +1,5 @@
-﻿using SharpDX.XAudio2;
+﻿using Restless.App.DrumMaster.Controls.Core;
+using SharpDX.XAudio2;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Xml.Linq;
 
-namespace Restless.App.DrumMaster.Controls
+namespace Restless.App.DrumMaster.Controls.Obsolete
 {
     /// <summary>
     /// Represents a track box (header or step).

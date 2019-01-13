@@ -3,9 +3,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:con="clr-namespace:Restless.App.DrumMaster.Controls">
     
-    <!-- ############################# -->
-    <!-- SLIDER TEMPLATES / STYLE      -->
-    <!-- ############################# -->
+    <!-- ############################ -->
+    <!-- LevelSlider Templates/Styles -->
+    <!-- ############################ -->
     <Style x:Key="MainSliderThumbStyle" TargetType="Thumb">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="Template">
@@ -70,7 +70,8 @@
             <Border 
                 x:Name="TrackBackground"
                 Grid.Row="1" Grid.Column="1"
-                Width="7"    
+                Width="7"
+                Height="{TemplateBinding BarSize}"
                 Margin="0,10"
                 BorderThickness="3"
                 BorderBrush="LightGray"
@@ -144,7 +145,9 @@
                 Margin="10,0"
                 BorderThickness="2"
                 BorderBrush="LightGray"
-                VerticalAlignment="Center" Height="4" />
+                VerticalAlignment="Center" 
+                Width="{TemplateBinding BarSize}"
+                Height="4" />
             <Track 
                 x:Name="PART_Track"
                 Grid.Row="1" Grid.Column="1">
@@ -191,6 +194,9 @@
     <Style x:Key="MainSliderStyle" TargetType="con:LevelSlider">
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="IsSnapToTickEnabled" Value="False"/>
+        <Setter Property="TickFrequency" Value="10"/>
+        <Setter Property="TickPlacement" Value="None"/>        
         <Style.Triggers>
             <Trigger Property="Orientation" Value="Horizontal">
                 <Setter Property="MinWidth" Value="104" />
@@ -207,18 +213,17 @@
 
     <Style x:Key="VerticalSlider" TargetType="con:LevelSlider" BasedOn="{StaticResource MainSliderStyle}">
         <Setter Property="Orientation" Value="Vertical"/>
-        <Setter Property="IsSnapToTickEnabled" Value="False"/>
-        <Setter Property="TickFrequency" Value="10"/>
-        <Setter Property="TickPlacement" Value="None"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
     </Style>
 
     <Style x:Key="HorizontalSlider" TargetType="con:LevelSlider" BasedOn="{StaticResource MainSliderStyle}">
         <Setter Property="Orientation" Value="Horizontal"/>
-        <Setter Property="IsSnapToTickEnabled" Value="False"/>
-        <Setter Property="TickFrequency" Value="10"/>
-        <Setter Property="TickPlacement" Value="None"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Style x:Key="HorizontalIntSlider" TargetType="con:LevelSlider" BasedOn="{StaticResource HorizontalSlider}">
+        <Setter Property="IsSnapToTickEnabled" Value="True"/>
+        <Setter Property="TickFrequency" Value="1"/>
     </Style>
 
 </ResourceDictionary>

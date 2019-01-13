@@ -14,15 +14,29 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Border Style="{DynamicResource HeaderBorder}">
-                <TextBlock Text="Song Composition"/>
+                <StackPanel Orientation="Horizontal">
+                    <Button
+                        Style="{DynamicResource ButtonBaseFlat}"
+                        Command="{Binding Commands[ChangeContainerHeight], RelativeSource={RelativeSource TemplatedParent}}"
+                        ToolTip="Expand or collapse the entire container">
+                        <Image Source="{TemplateBinding ChangeContainerHeightImageSource}"/>
+                    </Button>
+                    <Button
+                        Style="{DynamicResource ButtonBaseFlat}"
+                        Command="{Binding Commands[ToggleExpanded], RelativeSource={RelativeSource TemplatedParent}}"
+                        ToolTip="Expand or collapse the container controls">
+                        <Image Source="{TemplateBinding ActiveExpandedStateImageSource}"/>
+                    </Button>
+                    <TextBlock Text="Song Composition"/>
+                </StackPanel>
             </Border>
             
             <!-- Controller -->
-            <Grid Grid.Row="1">
+            <Grid Name="e1" Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="84"/>
-                    <ColumnDefinition Width="180"/>
-                    <ColumnDefinition Width="180"/>
+                    <ColumnDefinition Width="202"/>
+                    <ColumnDefinition Width="202"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
@@ -38,9 +52,7 @@
                     Minimum="{Binding MinSelectorSize, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
                     Maximum="{Binding MaxSelectorSize, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
                     Value="{Binding SelectorSize, RelativeSource={RelativeSource TemplatedParent}}"
-                    Style="{DynamicResource HorizontalSlider}"
-                    IsSnapToTickEnabled="True"
-                    TickFrequency="1"/>
+                    Style="{DynamicResource HorizontalIntSlider}"/>
 
                 <con:LevelSlider
                     Grid.Column="2"
@@ -52,20 +64,23 @@
                     Minimum="{Binding MinDivisionCount, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
                     Maximum="{Binding MaxDivisionCount, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
                     Value="{Binding DivisionCount, RelativeSource={RelativeSource TemplatedParent}}"
-                    Style="{DynamicResource HorizontalSlider}"
-                    IsSnapToTickEnabled="False"
-                    TickFrequency="1"/>
+                    Style="{DynamicResource HorizontalIntSlider}"/>
             </Grid>
 
             <!-- Rows of the song patterns-->
-            <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                 <!--Gets populated in code-->  
-                <Grid x:Name="PART_HostGrid"/>
+            <ScrollViewer Name="e2" Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                <ContentPresenter Content="{TemplateBinding SongPresenter}"/>
             </ScrollViewer>
         </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsExpanded" Value="False">
+                <Setter TargetName="e1" Property="Visibility" Value="Collapsed"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
     </ControlTemplate>
     
     <Style TargetType="con:SongContainer">
         <Setter Property="Template" Value="{StaticResource SongContainerControlTemplate}"/>
+        <Setter Property="IsExpanded" Value="False"/>
     </Style>
 </ResourceDictionary>

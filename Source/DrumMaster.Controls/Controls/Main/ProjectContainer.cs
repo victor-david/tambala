@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Restless.App.DrumMaster.Controls.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -14,9 +15,14 @@ namespace Restless.App.DrumMaster.Controls
     /// the controls for the master output (volume, pitch, tempo), the controls to create a song from multiple drum
     /// patterns, and the drum patterns.
     /// </remarks>
-    public class ProjectContainer : ControlObjectBase
+    public class ProjectContainer : ControlObject
     {
         #region Private
+        private DrumKit drumKit;
+        private bool isSongContainerChangeInProgress = false;
+        private double songContainerLastManualHeight;
+        private const double SongContainerDefaultHeight = 300.0;
+        private const double SongContainerThresholdHeight = 106.0;
         #endregion
 
         /************************************************************************/
@@ -30,9 +36,31 @@ namespace Restless.App.DrumMaster.Controls
             MasterPlay = new MasterPlay(this);
             MasterOutput = new MasterOutput(this);
             SongContainer = new SongContainer(this);
-            DrumKitContainer = new DrumPatternContainer(this);
+
+            DrumKit = new DrumKit();
+            DrumKit.LoadBuiltInInstruments();
+
+            DrumPatterns = new List<DrumPattern>();
+            for (int k=1; k <= Constants.DrumPattern.MaxCount; k++)
+            {
+                DrumPatterns.Add(new DrumPattern(this)
+                {
+                    DisplayName = $"Pattern {k}",
+                });
+            }
+
+            ActiveDrumPattern = DrumPatterns[0];
+            SongContainer.SongPresenter.HighlightSelectedPattern(0);
+
             AddHandler(IsChangedSetEvent, new RoutedEventHandler(IsChangedSetEventHandler));
             AddHandler(IsChangedResetEvent, new RoutedEventHandler(IsChangedResetEventHandler));
+            AddHandler(LoadedEvent, new RoutedEventHandler((s,e)=> 
+            {
+                SongContainer.SongPresenter.HighlightSelectedPattern(0);
+                e.Handled = true;
+            }));
+
+            songContainerLastManualHeight = 0.0;
         }
 
         static ProjectContainer()
@@ -112,27 +140,112 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region DrumKitContainer
+        #region SongContainerHeight
         /// <summary>
-        /// Gets the  drum kit container
+        /// Gets the height of the <see cref="SongContainer"/>.
         /// </summary>
-        public DrumPatternContainer DrumKitContainer
+        public GridLength SongContainerHeight
         {
-            get => (DrumPatternContainer)GetValue(DrumKitContainerProperty);
-            private set => SetValue(DrumKitContainerPropertyKey, value);
+            get => (GridLength)GetValue(SongContainerHeightProperty);
+            set => SetValue(SongContainerHeightProperty, value);
         }
-        
-        private static readonly DependencyPropertyKey DrumKitContainerPropertyKey = DependencyProperty.RegisterReadOnly
+
+        /// <summary>
+        /// Identifies the <see cref="SongContainerHeight"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SongContainerHeightProperty = DependencyProperty.Register
             (
-                nameof(DrumKitContainer), typeof(DrumPatternContainer), typeof(ProjectContainer), new PropertyMetadata(null)
+                nameof(SongContainerHeight), typeof(GridLength), typeof(ProjectContainer), new PropertyMetadata(new GridLength(SongContainerDefaultHeight, GridUnitType.Pixel), OnSongContainerHeightChanged)
+            );
+
+        private static void OnSongContainerHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is ProjectContainer c)
+            {
+                if (!c.isSongContainerChangeInProgress) c.songContainerLastManualHeight = c.SongContainerHeight.Value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the minimum height for <see cref="SongContainerHeight"/>. Used to bind to the control template.
+        /// </summary>
+        public double SongContainerMinHeight
+        {
+            get => 76.0;
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region DrumPatternContainer (commented out)
+        ///// <summary>
+        ///// Gets the drum kit container
+        ///// </summary>
+        //public DrumPatternContainer DrumPatternContainer
+        //{
+        //    get => (DrumPatternContainer)GetValue(DrumPatternContainerProperty);
+        //    private set => SetValue(DrumPatternContainerPropertyKey, value);
+        //}
+
+        //private static readonly DependencyPropertyKey DrumPatternContainerPropertyKey = DependencyProperty.RegisterReadOnly
+        //    (
+        //        nameof(DrumPatternContainer), typeof(DrumPatternContainer), typeof(ProjectContainer), new PropertyMetadata(null)
+        //    );
+
+        ///// <summary>
+        ///// Identifies the <see cref="DrumPatternContainer"/> dependency property.
+        ///// </summary>
+        //public static readonly DependencyProperty DrumPatternContainerProperty = DrumPatternContainerPropertyKey.DependencyProperty;
+        #endregion
+
+        /************************************************************************/
+
+        #region DrumPatterns
+        /// <summary>
+        /// Gets the list of drum patterms
+        /// </summary>
+        public List<DrumPattern> DrumPatterns
+        {
+            get;
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region ActiveDrumPattern
+        /// <summary>
+        /// Gets the active <see cref="DrumPattern"/> object.
+        /// </summary>
+        public DrumPattern ActiveDrumPattern
+        {
+            get => (DrumPattern)GetValue(ActiveDrumPatternProperty);
+            private set => SetValue(ActiveDrumPatternPropertyKey, value);
+        }
+
+        private static readonly DependencyPropertyKey ActiveDrumPatternPropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(ActiveDrumPattern), typeof(DrumPattern), typeof(ProjectContainer), new PropertyMetadata(null)
             );
 
         /// <summary>
-        /// Identifies the <see cref="DrumKitContainer"/> dependency property.
+        /// Identifies the <see cref="ActiveDrumPattern"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty DrumKitContainerProperty = DrumKitContainerPropertyKey.DependencyProperty;
+        public static readonly DependencyProperty ActiveDrumPatternProperty = ActiveDrumPatternPropertyKey.DependencyProperty;
         #endregion
-        
+
+        /************************************************************************/
+
+        #region DrumKit
+        /// <summary>
+        /// Gets or sets the drum kit for the project.
+        /// </summary>
+        public DrumKit DrumKit
+        {
+            get => drumKit;
+            set => drumKit = value ?? throw new ArgumentNullException(nameof(DrumKit));
+        }
+        #endregion
+
         /************************************************************************/
 
         #region FileName
@@ -158,6 +271,10 @@ namespace Restless.App.DrumMaster.Controls
         {
             var element = new XElement(nameof(ProjectContainer));
             element.Add(new XElement(nameof(DisplayName), DisplayName));
+            element.Add(MasterOutput.GetXElement());
+            element.Add(MasterPlay.GetXElement());
+            element.Add(SongContainer.GetXElement());
+            ///element.Add(DrumPatternContainer.GetXElement());
             //element.Add(new XElement(nameof(Volume), Volume));
             //element.Add(new XElement(nameof(Tempo), Tempo));
             //element.Add(new XElement(nameof(Beats), Beats));
@@ -274,6 +391,40 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
+        #region Internal methods
+        /// <summary>
+        /// From this assembly, activate the drum patterm at the specified index
+        /// </summary>
+        /// <param name="patternIdx">The index of the drum pattern to active.</param>
+        internal void ActivateDrumPattern(int patternIdx)
+        {
+            if (patternIdx >=0 && patternIdx < DrumPatterns.Count)
+            {
+                ActiveDrumPattern = DrumPatterns[patternIdx];
+                SongContainer.SongPresenter.HighlightSelectedPattern(patternIdx);
+            }
+        }
+
+        internal void ChangeSongContainerHeight()
+        {
+            isSongContainerChangeInProgress = true;
+            bool isOpen = SongContainerHeight.Value >= SongContainerThresholdHeight;
+
+            if (isOpen)
+            {
+                SongContainerHeight = new GridLength(SongContainerMinHeight, GridUnitType.Pixel);
+            }
+            else
+            {
+                double newHeight = songContainerLastManualHeight > SongContainerThresholdHeight ? songContainerLastManualHeight : SongContainerDefaultHeight;
+                SongContainerHeight = new GridLength(newHeight, GridUnitType.Pixel);
+            }
+            isSongContainerChangeInProgress = false;
+        }
+        #endregion
+
+        /************************************************************************/
+
         #region Private methods
         private void IsChangedSetEventHandler(object sender, RoutedEventArgs e)
         {
@@ -291,7 +442,5 @@ namespace Restless.App.DrumMaster.Controls
             }
         }
         #endregion
-
-
     }
 }

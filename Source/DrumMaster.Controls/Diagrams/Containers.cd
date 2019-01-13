@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Restless.App.DrumMaster.Controls.ProjectContainer">
+    <Position X="4.25" Y="0.5" Width="2.5" />
+    <Members>
+      <Field Name="ActiveDrumPatternProperty" Hidden="true" />
+      <Field Name="ActiveDrumPatternPropertyKey" Hidden="true" />
+      <Field Name="drumKit" Hidden="true" />
+      <Field Name="MasterOutputProperty" Hidden="true" />
+      <Field Name="MasterOutputPropertyKey" Hidden="true" />
+      <Field Name="MasterPlayProperty" Hidden="true" />
+      <Field Name="MasterPlayPropertyKey" Hidden="true" />
+      <Field Name="SongContainerProperty" Hidden="true" />
+      <Field Name="SongContainerPropertyKey" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>FJQAAYAAAAgAICAAIABAEQgAIAAACEAAAQAgABhAAAA=</HashCode>
+      <FileName>Controls\Main\ProjectContainer.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="SongContainer" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Restless.App.DrumMaster.Controls.SongContainer">
+    <Position X="8" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgCAAEAAAAEAQAAAAAgAAQAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controls\Main\SongContainer.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Owner" />
+      <Property Name="SongPresenter" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Restless.App.DrumMaster.Controls.ControlObject">
+    <Position X="0.5" Y="0.5" Width="3.25" />
+    <Members>
+      <Field Name="ActiveExpandedStateImageSourceProperty" Hidden="true" />
+      <Field Name="ActiveExpandedStateImageSourcePropertyKey" Hidden="true" />
+      <Field Name="CommandsProperty" Hidden="true" />
+      <Field Name="CommandsPropertyKey" Hidden="true" />
+      <Field Name="DisplayNameProperty" Hidden="true" />
+      <Field Name="IsChangedProperty" Hidden="true" />
+      <Field Name="IsChangedPropertyKey" Hidden="true" />
+      <Field Name="IsChangedResetEvent" Hidden="true" />
+      <Field Name="IsChangedSetEvent" Hidden="true" />
+      <Field Name="IsExpandedProperty" Hidden="true" />
+      <Field Name="MaximizeImageSourceProperty" Hidden="true" />
+      <Field Name="MinimizeImageSourceProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>ABCAMwDAACJABCAABAgkAEgAACQIAGAABhAAEAAIEAA=</HashCode>
+      <FileName>Controls\Main\ControlObject.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Restless.App.DrumMaster.Controls.DrumPatternController">
+    <Position X="8" Y="3.5" Width="2.5" />
+    <Members>
+      <Field Name="QuarterNoteCountChangedEvent" Hidden="true" />
+      <Field Name="QuarterNoteCountProperty" Hidden="true" />
+      <Field Name="ScaleChangedEvent" Hidden="true" />
+      <Field Name="ScaleProperty" Hidden="true" />
+      <Field Name="TickValueChangedEvent" Hidden="true" />
+      <Field Name="TickValueProperty" Hidden="true" />
+      <Field Name="TickValueTextProperty" Hidden="true" />
+      <Field Name="TickValueTextPropertyKey" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AACAAAKAAABCAQAECiIgAIgAQMEAAMABgACAAgACEAA=</HashCode>
+      <FileName>Controls\Main\DrumPatternController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Restless.App.DrumMaster.Controls.AudioControlBase">
+    <Position X="4.25" Y="5" Width="3.25" />
+    <Members>
+      <Field Name="ActiveMutedImageSourceProperty" Hidden="true" />
+      <Field Name="ActiveMutedImageSourcePropertyKey" Hidden="true" />
+      <Field Name="IsMutedProperty" Hidden="true" />
+      <Field Name="MutedImageSourceProperty" Hidden="true" />
+      <Field Name="PanningProperty" Hidden="true" />
+      <Field Name="PanningTextProperty" Hidden="true" />
+      <Field Name="PanningTextPropertyKey" Hidden="true" />
+      <Field Name="PitchProperty" Hidden="true" />
+      <Field Name="PitchSemiToneTextProperty" Hidden="true" />
+      <Field Name="PitchSemiToneTextPropertyKey" Hidden="true" />
+      <Field Name="ShortVolumeTextProperty" Hidden="true" />
+      <Field Name="VoicedImageSourceProperty" Hidden="true" />
+      <Field Name="VolumeBiasProperty" Hidden="true" />
+      <Field Name="VolumeDecibelTextProperty" Hidden="true" />
+      <Field Name="VolumeDecibelTextPropertyKey" Hidden="true" />
+      <Field Name="VolumeProperty" Hidden="true" />
+      <Field Name="VolumeTextProperty" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Restless.App.DrumMaster.Controls.ControlObject" ManuallyRouted="true" FixedToPoint="true">
+      <Path>
+        <Point X="3.75" Y="6" />
+        <Point X="4" Y="6" />
+        <Point X="4" Y="6.25" />
+        <Point X="4.25" Y="6.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>KBABCAAQAojACBAIIQBUCkiCAOAgCEEgQCpEEBIhAsE=</HashCode>
+      <FileName>Controls\Main\AudioControlBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Restless.App.DrumMaster.Controls.DrumPatternPresenter">
+    <Position X="12" Y="4" Width="2.75" />
+    <Members>
+      <Field Name="lastQuarterNoteCount" Hidden="true" />
+      <Field Name="lastTickValue" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>EiAAAASAAAAAAAAAAAAAAAgACABAAEAEAAAAIAAAAAE=</HashCode>
+      <FileName>Controls\Main\DrumPatternPresenter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Restless.App.DrumMaster.Controls.SongPresenter">
+    <Position X="11.5" Y="0.5" Width="2.25" />
+    <Members>
+      <Field Name="isSelectedBrush" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AABAAACAAAAAAAEAAAAAAAmAAQAAAEAgAAAAAAAAAEA=</HashCode>
+      <FileName>Controls\Main\SongPresenter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

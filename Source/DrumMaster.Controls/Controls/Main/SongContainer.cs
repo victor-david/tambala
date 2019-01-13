@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Xml.Linq;
 
 namespace Restless.App.DrumMaster.Controls
@@ -11,15 +11,12 @@ namespace Restless.App.DrumMaster.Controls
     /// </summary>
     /// <remarks>
     /// This control provides the ability to select and manage which individual drum kit patterns
-    /// comprise a song and the timeline for selecting which drum kit patterns play and for how
+    /// that comprise a song and the timeline for selecting which drum kit patterns play and for how
     /// many times.
     /// </remarks>
-    [TemplatePart(Name = PartHostGrid, Type = typeof(Grid))]
-    public class SongContainer : SizeablePatternSelector
+    public class SongContainer : ControlObjectSelector
     {
         #region Private
-        private const string PartHostGrid = "PART_HostGrid";
-        private Grid hostGrid;
         #endregion
         
         /************************************************************************/
@@ -28,9 +25,12 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="SongContainer"/> class.
         /// </summary>
-        internal SongContainer(ProjectContainer owner)
+        internal SongContainer(ProjectContainer owner) : base(PointSelectorType.None)
         {
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));
+            SongPresenter = new SongPresenter(this);
+            ChangeContainerHeightImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Caret.Up.Down.White.32.png", UriKind.Relative));
+            Commands.Add("ChangeContainerHeight", new RelayCommand(RunChangeContainerHeightCommand));
         }
 
         static SongContainer()
@@ -41,7 +41,53 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region Properties
+        #region SongPresenter
+        /// <summary>
+        /// Gets the song pattern panel
+        /// </summary>
+        public SongPresenter SongPresenter
+        {
+            get => (SongPresenter)GetValue(SongPresenterProperty);
+            private set => SetValue(SongPresenterPropertyKey, value);
+        }
+        
+        private static readonly DependencyPropertyKey SongPresenterPropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(SongPresenter), typeof(SongPresenter), typeof(SongContainer), new PropertyMetadata(null)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="SongPresenter"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SongPresenterProperty = SongPresenterPropertyKey.DependencyProperty;
+        #endregion
+
+        /************************************************************************/
+
+        #region ChangeContainerHeightImageSource
+        /// <summary>
+        /// Gets the image source for the change container height button.
+        /// </summary>
+        public ImageSource ChangeContainerHeightImageSource
+        {
+            get => (ImageSource)GetValue(ChangeContainerHeightImageSourceProperty);
+            private set => SetValue(ChangeContainerHeightImageSourcePropertyKey, value);
+        }
+
+        private static readonly DependencyPropertyKey ChangeContainerHeightImageSourcePropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(ChangeContainerHeightImageSource), typeof(ImageSource), typeof(SongContainer), new FrameworkPropertyMetadata(null)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="ChangeContainerHeightImageSource"/> dependency property,
+        /// </summary>
+        public static readonly DependencyProperty ChangeContainerHeightImageSourceProperty = ChangeContainerHeightImageSourcePropertyKey.DependencyProperty;
+        #endregion
+
+        /************************************************************************/
+
+        #region CLR Properties
         /// <summary>
         /// Gets the <see cref="ProjectContainer"/> that owns this instance.
         /// </summary>
@@ -54,15 +100,6 @@ namespace Restless.App.DrumMaster.Controls
         /************************************************************************/
 
         #region Public methods
-        /// <summary>
-        /// Occurs when the template is applied
-        /// </summary>
-        public override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
-            hostGrid = GetTemplateChild(PartHostGrid) as Grid;
-            CreateHostGrid();
-        }
         #endregion
 
         /************************************************************************/
@@ -74,7 +111,14 @@ namespace Restless.App.DrumMaster.Controls
         /// <returns>The XElement that describes the state of this object.</returns>
         public override XElement GetXElement()
         {
-            throw new NotImplementedException();
+            var element = new XElement(nameof(SongContainer));
+            element.Add(new XElement(nameof(SelectorType), SelectorType));
+            element.Add(new XElement(nameof(SelectorSize), SelectorSize));
+            element.Add(new XElement(nameof(DivisionCount), DivisionCount));
+            element.Add(SongPresenter.GetXElement());
+
+
+            return element;
         }
 
         /// <summary>
@@ -83,7 +127,6 @@ namespace Restless.App.DrumMaster.Controls
         /// <param name="element">The element</param>
         public override void RestoreFromXElement(XElement element)
         {
-            throw new NotImplementedException();
         }
         #endregion
 
@@ -91,26 +134,20 @@ namespace Restless.App.DrumMaster.Controls
 
         #region Protected methods
         /// <summary>
-        /// Called when <see cref="SizeablePatternSelector.SelectorSize"/> changes.
+        /// Called when <see cref="ControlObjectSelector.SelectorSize"/> changes.
         /// </summary>
         protected override void OnSelectorSizeChanged()
         {
-            foreach(var selector in hostGrid.Children.OfType<DrumPatternSelector>())
-            {
-                selector.SelectorSize = SelectorSize;
-            }
+            SongPresenter.SelectorSize = SelectorSize;
             SetIsChanged();
         }
 
         /// <summary>
-        /// Called when <see cref="SizeablePatternSelector.DivisionCount"/> changes.
+        /// Called when <see cref="ControlObjectSelector.DivisionCount"/> changes.
         /// </summary>
         protected override void OnDivisionCountChanged()
         {
-            foreach (var selector in hostGrid.Children.OfType<DrumPatternSelector>())
-            {
-                selector.DivisionCount = DivisionCount;
-            }
+            SongPresenter.DivisionCount = DivisionCount;
             SetIsChanged();
         }
         #endregion
@@ -118,24 +155,9 @@ namespace Restless.App.DrumMaster.Controls
         /************************************************************************/
 
         #region Private methods
-        private void CreateHostGrid()
+        private void RunChangeContainerHeightCommand(object parm)
         {
-            if (hostGrid != null)
-            {
-                for (int k=0; k < 9; k++)
-                {
-                    hostGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Auto) });
-                    SongDrumPatternSelectorType type = k == 0 ? SongDrumPatternSelectorType.Header : SongDrumPatternSelectorType.Standard;
-                    DrumPatternSelector selector = new DrumPatternSelector(this, type)
-                    {
-                        DisplayName = "zaz",
-                        Position = k,
-                        
-                    };
-                    Grid.SetRow(selector, k);
-                    hostGrid.Children.Add(selector);
-                }
-            }
+            Owner.ChangeSongContainerHeight();
         }
         #endregion
 

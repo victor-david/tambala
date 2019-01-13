@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -25,6 +26,34 @@ namespace Restless.App.DrumMaster.Controls
         static LevelSlider()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(LevelSlider), new FrameworkPropertyMetadata(typeof(LevelSlider)));
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region BarSize
+        /// <summary>
+        /// Gets or sets the fixed size of the slider bar.
+        /// When vertical, this is the height. When horizontal,the width.
+        /// </summary>
+        public double BarSize
+        {
+            get => (double)GetValue(BarSizeProperty);
+            set => SetValue(BarSizeProperty, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="BarSize"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty BarSizeProperty = DependencyProperty.Register
+            (
+                nameof(BarSize), typeof(double), typeof(LevelSlider), new PropertyMetadata(double.NaN, null, OnBarSizeCoerce)
+            );
+
+        private static object OnBarSizeCoerce(DependencyObject d, object baseValue)
+        {
+            double proposed = (double)baseValue;
+            return Math.Min(1200.0, Math.Max(60.0, proposed));
         }
         #endregion
 

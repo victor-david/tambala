@@ -1,20 +1,21 @@
 ﻿<ResourceDictionary 
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:con="clr-namespace:Restless.App.DrumMaster.Controls">
+    xmlns:con="clr-namespace:Restless.App.DrumMaster.Controls"
+    xmlns:cono="clr-namespace:Restless.App.DrumMaster.Controls.Obsolete">
     
-    <con:StepPlayFrequency x:Key="StepFrequencyNone">None</con:StepPlayFrequency>
-    <con:StepPlayFrequency x:Key="StepFrequencyEvery">EveryPass</con:StepPlayFrequency>
-    <con:StepPlayFrequency x:Key="StepFrequencyOdd">OddPass</con:StepPlayFrequency>
-    <con:StepPlayFrequency x:Key="StepFrequencySecond">SecondPass</con:StepPlayFrequency>
-    <con:StepPlayFrequency x:Key="StepFrequencyThird3">ThirdPass3</con:StepPlayFrequency>
-    <con:StepPlayFrequency x:Key="StepFrequencyThird4">ThirdPass4</con:StepPlayFrequency>
-    <con:StepPlayFrequency x:Key="StepFrequencyFourth">FourthPass</con:StepPlayFrequency>
+    <cono:StepPlayFrequency x:Key="StepFrequencyNone">None</cono:StepPlayFrequency>
+    <cono:StepPlayFrequency x:Key="StepFrequencyEvery">EveryPass</cono:StepPlayFrequency>
+    <cono:StepPlayFrequency x:Key="StepFrequencyOdd">OddPass</cono:StepPlayFrequency>
+    <cono:StepPlayFrequency x:Key="StepFrequencySecond">SecondPass</cono:StepPlayFrequency>
+    <cono:StepPlayFrequency x:Key="StepFrequencyThird3">ThirdPass3</cono:StepPlayFrequency>
+    <cono:StepPlayFrequency x:Key="StepFrequencyThird4">ThirdPass4</cono:StepPlayFrequency>
+    <cono:StepPlayFrequency x:Key="StepFrequencyFourth">FourthPass</cono:StepPlayFrequency>
     
     <!-- ############################# -->
     <!-- TRACK BOX TEMPLATE / STYLE    -->
     <!-- ############################# -->
-    <ControlTemplate x:Key="TrackBoxHeaderControlTemplate" TargetType="con:TrackBox">
+    <ControlTemplate x:Key="TrackBoxHeaderControlTemplate" TargetType="cono:TrackBox">
         <Border x:Name="PART_BORDER" BorderBrush="DarkBlue" BorderThickness="2" Background="#FFE8E8E8" Margin="3" CornerRadius="1">
             <TextBlock
                 Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}"
@@ -39,34 +40,35 @@
         <Setter Property="Template" Value="{StaticResource FlatButtonTemplate}" />
     </Style>
 
-    <ControlTemplate x:Key="StepPlayMarkerControlTemplate" TargetType="con:StepPlayMarker">
+    <ControlTemplate x:Key="StepPlayMarkerControlTemplate" TargetType="cono:StepPlayMarker">
         <Border Width="{TemplateBinding Width}" Height="{TemplateBinding Width}" Background="{TemplateBinding Background}" CornerRadius="{TemplateBinding CornerRadius}">
             <Border 
                 Margin="0"
+                
                 Width="{TemplateBinding Width, Converter={con:DoubleMultiplicationConverter},ConverterParameter=0.45}"
                 Height="{TemplateBinding Width, Converter={con:DoubleMultiplicationConverter},ConverterParameter=0.45}"
                 Background="{TemplateBinding InnerBrush}"/>
         </Border>
     </ControlTemplate>
 
-    <Style TargetType="con:StepPlayMarker">
+    <Style TargetType="cono:StepPlayMarker">
         <Setter Property="Template" Value="{StaticResource StepPlayMarkerControlTemplate}"/>
         <Setter Property="Margin" Value="2"/>
     </Style>
 
     <!-- Step play marker (common, for menu) -->
-    <Style x:Key="PFMenu" TargetType="con:StepPlayMarker">
+    <Style x:Key="PFMenu" TargetType="cono:StepPlayMarker">
         <Setter Property="Width" Value="18"/>
         <Setter Property="CornerRadius" Value="9"/>
     </Style>
 
     <!-- Step play marker (odd) -->
-    <Style x:Key="PF1" TargetType="con:StepPlayMarker" BasedOn="{StaticResource PFMenu}">
+    <Style x:Key="PF1" TargetType="cono:StepPlayMarker" BasedOn="{StaticResource PFMenu}">
         <Setter Property="Background" Value="Red"/>
         <Setter Property="InnerBrush" Value="Red"/>
     </Style>
     
-    <Style x:Key="PF1M" TargetType="con:StepPlayMarker" BasedOn="{StaticResource PF1}">
+    <Style x:Key="PF1M" TargetType="cono:StepPlayMarker" BasedOn="{StaticResource PF1}">
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="VerticalAlignment" Value="Top"/>
         <Setter Property="CornerRadius" Value="0"/>
@@ -74,12 +76,12 @@
     </Style>
 
     <!-- Step play marker (second) -->
-    <Style x:Key="PF2" TargetType="con:StepPlayMarker" BasedOn="{StaticResource PFMenu}">
+    <Style x:Key="PF2" TargetType="cono:StepPlayMarker" BasedOn="{StaticResource PFMenu}">
         <Setter Property="Background" Value="Blue"/>
         <Setter Property="InnerBrush" Value="Blue"/>
     </Style>
 
-    <Style x:Key="PF2M" TargetType="con:StepPlayMarker" BasedOn="{StaticResource PF2}">
+    <Style x:Key="PF2M" TargetType="cono:StepPlayMarker" BasedOn="{StaticResource PF2}">
         <Setter Property="HorizontalAlignment" Value="Right"/>
         <Setter Property="VerticalAlignment" Value="Top"/>
         <Setter Property="CornerRadius" Value="0"/>
@@ -87,12 +89,12 @@
     </Style>
 
     <!-- Step play marker (3, 3 phrase) -->
-    <Style x:Key="PF33" TargetType="con:StepPlayMarker" BasedOn="{StaticResource PFMenu}">
+    <Style x:Key="PF33" TargetType="cono:StepPlayMarker" BasedOn="{StaticResource PFMenu}">
         <Setter Property="Background" Value="DarkRed"/>
         <Setter Property="InnerBrush" Value="White"/>
     </Style>   
     
-    <Style x:Key="PF33M" TargetType="con:StepPlayMarker" BasedOn="{StaticResource PF33}">
+    <Style x:Key="PF33M" TargetType="cono:StepPlayMarker" BasedOn="{StaticResource PF33}">
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="CornerRadius" Value="0"/>
@@ -100,12 +102,12 @@
     </Style>
     
     <!-- Step play marker (3, 4 phrase) -->
-    <Style x:Key="PF34" TargetType="con:StepPlayMarker" BasedOn="{StaticResource PFMenu}">
+    <Style x:Key="PF34" TargetType="cono:StepPlayMarker" BasedOn="{StaticResource PFMenu}">
         <Setter Property="Background" Value="Green"/>
         <Setter Property="InnerBrush" Value="Yellow"/>
     </Style>
 
-    <Style x:Key="PF34M" TargetType="con:StepPlayMarker" BasedOn="{StaticResource PF34}">
+    <Style x:Key="PF34M" TargetType="cono:StepPlayMarker" BasedOn="{StaticResource PF34}">
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="CornerRadius" Value="0"/>
@@ -113,19 +115,19 @@
     </Style>
     
     <!-- Step play marker (fourth) -->
-    <Style x:Key="PF4" TargetType="con:StepPlayMarker" BasedOn="{StaticResource PFMenu}">
+    <Style x:Key="PF4" TargetType="cono:StepPlayMarker" BasedOn="{StaticResource PFMenu}">
         <Setter Property="Background" Value="DarkBlue"/>
         <Setter Property="InnerBrush" Value="White"/>
     </Style>
     
-    <Style x:Key="PF4M" TargetType="con:StepPlayMarker" BasedOn="{StaticResource PF4}">
+    <Style x:Key="PF4M" TargetType="cono:StepPlayMarker" BasedOn="{StaticResource PF4}">
         <Setter Property="HorizontalAlignment" Value="Right"/>
         <Setter Property="VerticalAlignment" Value="Bottom"/>
         <Setter Property="CornerRadius" Value="0"/>
         <Setter Property="Visibility" Value="Collapsed"/>
     </Style>
 
-    <ControlTemplate x:Key="TrackBoxStepControlTemplate" TargetType="con:TrackBox">
+    <ControlTemplate x:Key="TrackBoxStepControlTemplate" TargetType="cono:TrackBox">
          <Border x:Name="PART_BORDER" BorderBrush="DarkBlue" BorderThickness="2" Background="Transparent" Margin="3" CornerRadius="0">
             <Grid>
                 <Grid.Resources>
@@ -156,7 +158,7 @@
                             Command="{Binding Commands[SwitchFrequency], RelativeSource={RelativeSource TemplatedParent}}"
                             CommandParameter="{StaticResource StepFrequencyOdd}">
                             <MenuItem.Icon>
-                                <con:StepPlayMarker Style="{StaticResource PF1}"/>
+                                <cono:StepPlayMarker Style="{StaticResource PF1}"/>
                             </MenuItem.Icon>
                         </MenuItem>
 
@@ -165,7 +167,7 @@
                             Command="{Binding Commands[SwitchFrequency], RelativeSource={RelativeSource TemplatedParent}}"
                             CommandParameter="{StaticResource StepFrequencySecond}">
                             <MenuItem.Icon>
-                                <con:StepPlayMarker Style="{StaticResource PF2}"/>
+                                <cono:StepPlayMarker Style="{StaticResource PF2}"/>
                             </MenuItem.Icon>
                         </MenuItem>
 
@@ -174,7 +176,7 @@
                             Command="{Binding Commands[SwitchFrequency], RelativeSource={RelativeSource TemplatedParent}}"
                             CommandParameter="{StaticResource StepFrequencyThird3}">
                             <MenuItem.Icon>
-                                <con:StepPlayMarker Style="{StaticResource PF33}"/>
+                                <cono:StepPlayMarker Style="{StaticResource PF33}"/>
                             </MenuItem.Icon>
                         </MenuItem>
                         
@@ -183,7 +185,7 @@
                             Command="{Binding Commands[SwitchFrequency], RelativeSource={RelativeSource TemplatedParent}}"
                             CommandParameter="{StaticResource StepFrequencyThird4}">
                             <MenuItem.Icon>
-                                <con:StepPlayMarker Style="{StaticResource PF34}"/>
+                                <cono:StepPlayMarker Style="{StaticResource PF34}"/>
                             </MenuItem.Icon>
                         </MenuItem>
                         
@@ -192,7 +194,7 @@
                             Command="{Binding Commands[SwitchFrequency], RelativeSource={RelativeSource TemplatedParent}}"
                             CommandParameter="{StaticResource StepFrequencyFourth}">
                             <MenuItem.Icon>
-                                <con:StepPlayMarker Style="{StaticResource PF4}"/>
+                                <cono:StepPlayMarker Style="{StaticResource PF4}"/>
                             </MenuItem.Icon>
                         </MenuItem>
                         
@@ -219,40 +221,40 @@
                     Visibility="Collapsed"/>
 
                 <!-- Indicator when the beat is for odd numbered pass only -->
-                <con:StepPlayMarker
+                <cono:StepPlayMarker
                     x:Name="PART_PF1"
                     Style="{StaticResource PF1M}"
                     Width="{Binding ActualWidth,ElementName=PART_BORDER,Converter={con:DoubleMultiplicationConverter},ConverterParameter=0.20}">
                     
-                </con:StepPlayMarker>
+                </cono:StepPlayMarker>
 
                 <!-- Indicator when the beat is for every second pass -->
-                <con:StepPlayMarker 
+                <cono:StepPlayMarker 
                     x:Name="PART_PF2"
                     Style="{StaticResource PF2M}"
                     Width="{Binding ActualWidth,ElementName=PART_BORDER,Converter={con:DoubleMultiplicationConverter},ConverterParameter=0.20}">
-                </con:StepPlayMarker>
+                </cono:StepPlayMarker>
 
                 <!-- Indicator when the beat is for every third pass (3 phrase) -->
-                <con:StepPlayMarker
+                <cono:StepPlayMarker
                     x:Name="PART_PF33"
                     Style="{StaticResource PF33M}"
                     Width="{Binding ActualWidth,ElementName=PART_BORDER,Converter={con:DoubleMultiplicationConverter},ConverterParameter=0.20}">
-                </con:StepPlayMarker>
+                </cono:StepPlayMarker>
                 
                  <!-- Indicator when the beat is for third pass (4 phrase) -->
-                <con:StepPlayMarker
+                <cono:StepPlayMarker
                     x:Name="PART_PF34"
                     Style="{StaticResource PF34M}"
                     Width="{Binding ActualWidth,ElementName=PART_BORDER,Converter={con:DoubleMultiplicationConverter},ConverterParameter=0.20}">
-                </con:StepPlayMarker>               
+                </cono:StepPlayMarker>               
                 
                 <!-- Indicator when the beat is for every fourth pass -->
-                <con:StepPlayMarker
+                <cono:StepPlayMarker
                     x:Name="PART_PF4"
                     Style="{StaticResource PF4M}"
                     Width="{Binding ActualWidth,ElementName=PART_BORDER,Converter={con:DoubleMultiplicationConverter},ConverterParameter=0.20}">
-                </con:StepPlayMarker>
+                </cono:StepPlayMarker>
             </Grid>
         </Border>
         <ControlTemplate.Triggers>
@@ -288,7 +290,7 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <Style TargetType="con:TrackBox">
+    <Style TargetType="cono:TrackBox">
         <Setter Property="Template" Value="{StaticResource TrackBoxHeaderControlTemplate}"/>
         <Style.Triggers>
             <Trigger Property="BoxType" Value="TrackStep">

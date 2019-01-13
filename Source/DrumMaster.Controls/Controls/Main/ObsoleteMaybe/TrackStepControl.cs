@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Restless.App.DrumMaster.Controls.Core;
+using System;
 using System.Windows;
 
-namespace Restless.App.DrumMaster.Controls
+namespace Restless.App.DrumMaster.Controls.Obsolete
 {
     /// <summary>
     /// Represents a track control that handles beats, steps per beat, total steps, and the corresponding sizing

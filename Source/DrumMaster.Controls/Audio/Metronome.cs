@@ -1,4 +1,6 @@
-﻿using SharpDX.XAudio2;
+﻿using Restless.App.DrumMaster.Controls.Core;
+using Restless.App.DrumMaster.Controls.Obsolete;
+using SharpDX.XAudio2;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +12,7 @@ namespace Restless.App.DrumMaster.Controls.Audio
     internal class Metronome
     {
         private readonly TrackContainer owner;
-        private AudioPiece piece;
+        private Instrument piece;
         private bool isAudioEnabled;
         private SubmixVoice submixVoice;
         private VoicePool voicePool;
@@ -21,7 +23,7 @@ namespace Restless.App.DrumMaster.Controls.Audio
         private readonly float pitchNormal;
         private readonly float pitchAccent;
 
-        internal AudioPiece Piece
+        internal Instrument Piece
         {
             get => piece;
             set

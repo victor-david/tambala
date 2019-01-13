@@ -10,15 +10,17 @@
         <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/Grid.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/LevelSlider.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/OnOff.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/BoxRadioButton.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/MasterPlay.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/MasterOutput.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/SongContainer.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/DrumPatternSelector.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/SongPointSelector.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/DrumPatternContainer.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/SongPresenter.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/InstrumentController.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/DrumPattern.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/DrumPatternController.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/DrumPatternPresenter.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/VisualQuarterNote.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/PointSelector.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/ProjectContainer.xaml"/>
-        <!--<ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/ImageButton.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/BoxCheckBox.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/TrackBox.xaml"/>-->
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

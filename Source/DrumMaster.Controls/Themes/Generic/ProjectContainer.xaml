@@ -9,23 +9,17 @@
     <ControlTemplate x:Key="ProjectContainerControlTemplate" TargetType="con:ProjectContainer">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" MinHeight="132"/>
+                <RowDefinition 
+                    Height="{Binding SongContainerHeight, RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}"
+                    MinHeight="{Binding SongContainerMinHeight, RelativeSource={RelativeSource TemplatedParent},Mode=OneTime}"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="1.25*" MinHeight="132"/>
+                <RowDefinition Height="1.75*" MinHeight="132"/>
             </Grid.RowDefinitions>            
            
             <Grid.Resources>
-                <Style TargetType="TextBlock">
-                    <Setter Property="VerticalAlignment" Value="Center"/>
-                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                    <Setter Property="FontSize" Value="16"/>
-                </Style>
                 <Style TargetType="Border">
                     <Setter Property="Margin" Value="0"/>
                     <Setter Property="Padding" Value="3"/>
-                    <!--<Setter Property="Background" Value="OldLace"/>
-                    <Setter Property="BorderBrush" Value="LightCoral"/>
-                    <Setter Property="BorderThickness" Value="1"/>-->
                 </Style>
             </Grid.Resources>
 
@@ -67,13 +61,13 @@
                 </Grid.ColumnDefinitions>
 
                 <Border Grid.Column="0">
-                    <ContentPresenter Content="{TemplateBinding DrumKitContainer}"/>
+                    <ContentPresenter Content="{TemplateBinding ActiveDrumPattern}"/>
                 </Border>
 
                 <GridSplitter Grid.Column="1" Style="{DynamicResource VerticalGridSplitter}"/>
 
                 <Border Grid.Column="2">
-                    <TextBlock Text="Pattern Mixer"/>
+                    <TextBlock Text="Pattern Mixer" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
                 </Border>
             </Grid>
 

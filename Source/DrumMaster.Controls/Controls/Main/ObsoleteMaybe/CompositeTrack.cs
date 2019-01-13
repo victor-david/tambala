@@ -10,7 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Xml.Linq;
 
-namespace Restless.App.DrumMaster.Controls
+namespace Restless.App.DrumMaster.Controls.Obsolete
 {
     /// <summary>
     /// Represents a composite track, a <see cref="TrackController"/> and its corresponding <see cref="TrackBoxContainerStep"/>
@@ -140,7 +140,7 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="CompositeTrack"/> class.
         /// </summary>
-        internal CompositeTrack(TrackContainer owner, AudioPiece piece)
+        internal CompositeTrack(TrackContainer owner, Instrument piece)
         {
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));
 
