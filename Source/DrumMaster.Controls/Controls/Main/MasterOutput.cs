@@ -1,4 +1,5 @@
-﻿using Restless.App.DrumMaster.Controls.Core;
+﻿using Restless.App.DrumMaster.Controls.Audio;
+using Restless.App.DrumMaster.Controls.Core;
 using System;
 using System.Windows;
 using System.Xml.Linq;
@@ -67,7 +68,7 @@ namespace Restless.App.DrumMaster.Controls
         {
             if (d is MasterOutput c)
             {
-                // c.CalculateThreadSafeSleepTime();
+                c.RaiseEvent(new RoutedEventArgs(TempoChangedEvent));
                 c.SetIsChanged();
             }
         }
@@ -77,6 +78,23 @@ namespace Restless.App.DrumMaster.Controls
             double proposed = (double)baseValue;
             return Math.Min(TrackVals.Tempo.Max, Math.Max(TrackVals.Tempo.Min, proposed));
         }
+
+        /// <summary>
+        /// Provides notification when the <see cref="Tempo"/> property is changed.
+        /// </summary>
+        public event RoutedEventHandler TempoChanged
+        {
+            add => AddHandler(TempoChangedEvent, value);
+            remove => RemoveHandler(TempoChangedEvent, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="TempoChanged"/> routed event.
+        /// </summary>
+        public static readonly RoutedEvent TempoChangedEvent = EventManager.RegisterRoutedEvent
+            (
+                nameof(IsChangedSet), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(MasterOutput)
+            );
 
         /// <summary>
         /// Gets or sets the tempo text descriptor
@@ -137,6 +155,20 @@ namespace Restless.App.DrumMaster.Controls
         /// <param name="element">The element</param>
         public override void RestoreFromXElement(XElement element)
         {
+        }
+        #endregion
+
+
+
+        #region Protected methods
+        protected override void OnVolumeChanged()
+        {
+            AudioHost.Instance.SubmixVoice.SetVolume(ThreadSafeVolume);
+        }
+
+        protected override void OnPitchChanged()
+        {
+            //AudioHost.Instance.SubmixVoice.set
         }
         #endregion
     }

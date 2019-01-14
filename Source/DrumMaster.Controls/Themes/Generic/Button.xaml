@@ -5,15 +5,26 @@
     <!-- ##################### -->
     <!-- Button Template/Style -->
     <!-- ##################### -->
-    <ControlTemplate x:Key="PointSelectorButtonControlTemplate" TargetType="ButtonBase">
-        <Border
-            Background="{TemplateBinding Background}"
-            CornerRadius="1"/>
-    </ControlTemplate>
-
-    <Style x:Key="PointSelectorButton" TargetType="ButtonBase">
-        <Setter Property="Template" Value="{StaticResource PointSelectorButtonControlTemplate}"/>
+    <Style x:Key="SongPointSelectorButton" TargetType="ButtonBase">
         <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ButtonBase">
+                    <Border Background="{TemplateBinding Background}" CornerRadius="1"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="PatternPointSelectorButton" TargetType="ButtonBase">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ButtonBase">
+                    <Border Background="{TemplateBinding Background}" Height="12" Width="12" CornerRadius="6"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <ControlTemplate x:Key="FlatButtonTemplate" TargetType="ButtonBase">

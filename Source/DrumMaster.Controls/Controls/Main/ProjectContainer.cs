@@ -15,7 +15,7 @@ namespace Restless.App.DrumMaster.Controls
     /// the controls for the master output (volume, pitch, tempo), the controls to create a song from multiple drum
     /// patterns, and the drum patterns.
     /// </remarks>
-    public class ProjectContainer : ControlObject
+    public sealed class ProjectContainer : ControlObject
     {
         #region Private
         private DrumKit drumKit;
@@ -40,7 +40,7 @@ namespace Restless.App.DrumMaster.Controls
             DrumKit = new DrumKit();
             DrumKit.LoadBuiltInInstruments();
 
-            DrumPatterns = new List<DrumPattern>();
+            DrumPatterns = new GenericList<DrumPattern>();
             for (int k=1; k <= Constants.DrumPattern.MaxCount; k++)
             {
                 DrumPatterns.Add(new DrumPattern(this)
@@ -49,11 +49,12 @@ namespace Restless.App.DrumMaster.Controls
                 });
             }
 
-            ActiveDrumPattern = DrumPatterns[0];
-            SongContainer.SongPresenter.HighlightSelectedPattern(0);
+            ActivateDrumPattern(0);
 
             AddHandler(IsChangedSetEvent, new RoutedEventHandler(IsChangedSetEventHandler));
             AddHandler(IsChangedResetEvent, new RoutedEventHandler(IsChangedResetEventHandler));
+            AddHandler(MasterOutput.TempoChangedEvent, new RoutedEventHandler(TempoChangedEventHandler));
+
             AddHandler(LoadedEvent, new RoutedEventHandler((s,e)=> 
             {
                 SongContainer.SongPresenter.HighlightSelectedPattern(0);
@@ -61,6 +62,7 @@ namespace Restless.App.DrumMaster.Controls
             }));
 
             songContainerLastManualHeight = 0.0;
+            Dispatcher.ShutdownStarted += DispatcherShutdownStarted;
         }
 
         static ProjectContainer()
@@ -204,7 +206,7 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Gets the list of drum patterms
         /// </summary>
-        public List<DrumPattern> DrumPatterns
+        public GenericList<DrumPattern> DrumPatterns
         {
             get;
         }
@@ -231,6 +233,15 @@ namespace Restless.App.DrumMaster.Controls
         /// Identifies the <see cref="ActiveDrumPattern"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ActiveDrumPatternProperty = ActiveDrumPatternPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Gets a thread safe reference to <see cref="ActiveDrumPattern"/>.
+        /// </summary>
+        internal DrumPattern ThreadSafeActiveDrumPattern
+        {
+            get;
+            private set;
+        }
         #endregion
 
         /************************************************************************/
@@ -342,6 +353,15 @@ namespace Restless.App.DrumMaster.Controls
 
         #region Public methods
         /// <summary>
+        /// Called when the template is applied.
+        /// </summary>
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            MasterPlay.SetTempo(MasterOutput.Tempo);
+        }
+
+        /// <summary>
         /// Creates an XDocument representation of the container and saves it to the specified file.
         /// </summary>
         /// <returns>The XDocument object</returns>
@@ -385,7 +405,9 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public void Shutdown()
         {
-            // StopPlayThread();
+            MasterPlay.Shutdown();
+            //RemoveEventHandlers();
+            Dispatcher.ShutdownStarted -= DispatcherShutdownStarted;
         }
         #endregion
 
@@ -400,7 +422,7 @@ namespace Restless.App.DrumMaster.Controls
         {
             if (patternIdx >=0 && patternIdx < DrumPatterns.Count)
             {
-                ActiveDrumPattern = DrumPatterns[patternIdx];
+                ActiveDrumPattern = ThreadSafeActiveDrumPattern = DrumPatterns[patternIdx];
                 SongContainer.SongPresenter.HighlightSelectedPattern(patternIdx);
             }
         }
@@ -441,6 +463,26 @@ namespace Restless.App.DrumMaster.Controls
                 ResetIsChanged();
             }
         }
+
+        private void TempoChangedEventHandler(object sender, RoutedEventArgs e)
+        {
+            MasterPlay.SetTempo(MasterOutput.Tempo);
+            e.Handled = true;
+        }
+
+        private void DispatcherShutdownStarted(object sender, EventArgs e)
+        {
+            // This event handler may not be needed. The important thing is to shutdown
+            // the threads in MasterPlay and this is handled by the Shutdown() method
+            // above. As long as the consumer of ProjectContainer calls Shutdown()
+            // the threads will finish and this handler will be removed.
+            MasterPlay.Shutdown();
+        }
+
+        //private void RemoveEventHandlers()
+        //{
+
+        //}
         #endregion
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Restless.App.DrumMaster.Controls.Core;
+using System;
 using System.Diagnostics;
 using System.Windows;
 using System.Xml.Linq;
@@ -8,7 +9,7 @@ namespace Restless.App.DrumMaster.Controls
     /// <summary>
     /// Represents a single point selector
     /// </summary>
-    public class PointSelector : ControlObjectSelector
+    internal class PointSelector : ControlObjectSelector, ISelectorUnit
     {
         #region Private
         #endregion
@@ -19,17 +20,26 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="PointSelector"/> class.
         /// </summary>
-        internal PointSelector(PointSelectorType type) : base(type)
+        public PointSelector()
         {
-            if (SelectorType == PointSelectorType.SongRow)
-            {
-                Commands.Add("ToggleSelect", new RelayCommand((p) => IsSelected = !IsSelected));
-            }
         }
 
         static PointSelector()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(PointSelector), new FrameworkPropertyMetadata(typeof(PointSelector)));
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region ISelectorUnit
+        /// <summary>
+        /// Gets or sets the selector unit.
+        /// </summary>
+        public PointSelectorUnit SelectorUnit
+        {
+            get;
+            set;
         }
         #endregion
 
@@ -54,6 +64,19 @@ namespace Restless.App.DrumMaster.Controls
         /// <param name="element">The element</param>
         public override void RestoreFromXElement(XElement element)
         {
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region Public methods
+        /// <summary>
+        /// Gets a string representation of this object.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return $"{nameof(PointSelector)} Unit:{SelectorUnit} Position:{ThreadSafePosition}";
         }
         #endregion
 

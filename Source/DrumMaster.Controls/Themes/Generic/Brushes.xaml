@@ -24,8 +24,8 @@
     <SolidColorBrush x:Key="PointSelectorPatternHeaderSelected" Color="#FFCC0000"/>
     <SolidColorBrush x:Key="PointSelectorPatternHeaderDeselected" Color="LightGray"/>
 
-    <SolidColorBrush x:Key="PointSelectorPatternRowSelected" Color="DarkBlue"/>
-    <SolidColorBrush x:Key="PointSelectorPatternRowDeselected" Color="Transparent"/>
+    <SolidColorBrush x:Key="PointSelectorPatternRowSelected" Color="Red"/>
+    <SolidColorBrush x:Key="PointSelectorPatternRowDeselected" Color="#80000000"/>
 
 
     <SolidColorBrush x:Key="DefaultBorderBrush" Color="LightGray"/>

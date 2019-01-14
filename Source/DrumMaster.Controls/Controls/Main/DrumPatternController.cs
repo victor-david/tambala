@@ -1,6 +1,7 @@
-﻿using Restless.App.DrumMaster.Controls.Core;
+﻿using Restless.App.DrumMaster.Controls.Audio;
+using Restless.App.DrumMaster.Controls.Core;
+using SharpDX.XAudio2;
 using System;
-using System.Diagnostics;
 using System.Windows;
 using System.Xml.Linq;
 
@@ -23,6 +24,8 @@ namespace Restless.App.DrumMaster.Controls
         internal DrumPatternController(DrumPattern owner)
         {
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));
+            SubmixVoice = new SubmixVoice(AudioHost.Instance.AudioDevice);
+            SubmixVoice.SetOutputVoices(new VoiceSendDescriptor(AudioHost.Instance.SubmixVoice));
             TickValueText = TickValueToText(Constants.DrumPattern.TotalTick.Default);
         }
 
@@ -43,7 +46,19 @@ namespace Restless.App.DrumMaster.Controls
             get;
         }
         #endregion
-        
+
+        /************************************************************************/
+
+        #region SubmixVoice
+        /// <summary>
+        /// From this assembly, gets the controller's submix voice. All instruments in the pattern route through this voice.
+        /// </summary>
+        internal SubmixVoice SubmixVoice
+        {
+            get;
+        }
+        #endregion
+
         /************************************************************************/
 
         #region QuarterNoteCount
@@ -314,6 +329,21 @@ namespace Restless.App.DrumMaster.Controls
         }
         #endregion
 
+        /************************************************************************/
+
+        #region Protected methods
+        /// <summary>
+        /// Called when <see cref="AudioControlBase.Volume"/> property is changed.
+        /// </summary>
+        protected override void OnVolumeChanged()
+        {
+            if (SubmixVoice != null)
+            {
+                SubmixVoice.SetVolume(ThreadSafeVolume);
+            }
+        }
+        #endregion
+        
         /************************************************************************/
 
         #region Private methods

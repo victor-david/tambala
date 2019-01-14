@@ -109,9 +109,14 @@
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Controls\Main\ControlObjectVisualGrid.cs" />
     <Compile Include="Controls\Main\ControlObjectVisual.cs" />
+    <Compile Include="Controls\Main\DrumPatternQuarter.cs" />
+    <Compile Include="Controls\Main\DrumPatternQuarterType.cs" />
     <Compile Include="Controls\Main\InstrumentController.cs" />
+    <Compile Include="Controls\Main\MasterPlayPlayer.cs" />
+    <Compile Include="Core\GenericList.cs" />
+    <Compile Include="Core\ISelectorUnit.cs" />
+    <Compile Include="Core\PointSelectorUnit.cs" />
     <Compile Include="Controls\Main\VisualBorder.cs" />
-    <Compile Include="Controls\Main\VisualQuarterNote.cs" />
     <Compile Include="Controls\Main\VisualTick.cs" />
     <Compile Include="Controls\Main\DrumKit.cs" />
     <Compile Include="Controls\Main\VisualDivider.cs" />
@@ -162,6 +167,7 @@
     <Compile Include="Core\IXElement.cs" />
     <Compile Include="Core\MaxSizeObservableCollection.cs" />
     <Compile Include="Controls\Main\ObsoleteMaybe\TrackBoxCollection.cs" />
+    <Compile Include="Diagnostics\Diagnostics.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controls\Text\LinkedTextBlock.cs" />
     <Compile Include="Controls\Main\ObsoleteMaybe\TrackBoxType.cs" />
@@ -180,6 +186,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Themes\Generic\DrumPatternQuarter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Themes\Generic\DrumPatternPresenter.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -193,10 +203,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\Generic\InstrumentController.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\Generic\VisualQuarterNote.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -319,9 +325,7 @@
   <ItemGroup>
     <Resource Include="Resources\Images\Image.Slash.64.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Working\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Resources\Images\Image.Maximize.Blue.64.png" />
     <Resource Include="Resources\Images\Image.Minimize.Blue.64.png" />

@@ -84,6 +84,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         protected override void CreateVisualElement()
         {
+            Diagnostics.StartTimer();
             int rowIdx = AddRowDefinition();
             AddColumnDefinition(Constants.Selector.FirstColumnWidth);
             AddElement(new TextBlock(), 0, 0);
@@ -92,8 +93,9 @@ namespace Restless.App.DrumMaster.Controls
             {
                 int colIdx = AddColumnDefinition();
 
-                var sps = new PointSelector(PointSelectorType.SongHeader)
+                var sps = new PointSelector()
                 {
+                    SelectorType = PointSelectorType.SongHeader,
                     Margin = new Thickness(1),
                     Position = k,
                 };
@@ -116,10 +118,11 @@ namespace Restless.App.DrumMaster.Controls
             {
                 CreatePatternRow(idx);
             }
+            Diagnostics.StopTimer("SongPresenter.CreateVisualElement");
         }
 
         /// <summary>
-        /// Called when <see cref="ControlObjectVisual.SelectorSize"/> changes
+        /// Called when <see cref="ControlObjectSelector.SelectorSize"/> changes
         /// to update children of this instance.
         /// </summary>
         protected override void OnSelectorSizeChanged()
@@ -131,7 +134,7 @@ namespace Restless.App.DrumMaster.Controls
         }
 
         /// <summary>
-        /// Called when <see cref="ControlObjectVisual.DivisionCount"/> changes.
+        /// Called when <see cref="ControlObjectSelector.DivisionCount"/> changes.
         /// to update children of this instance.
         /// </summary>
         protected override void OnDivisionCountChanged()
@@ -192,8 +195,9 @@ namespace Restless.App.DrumMaster.Controls
             for (int k = 1; k <= Constants.Selector.Count.Default; k++)
             {
                 colIdx++;
-                var sps = new PointSelector(PointSelectorType.SongRow)
+                var sps = new PointSelector()
                 {
+                    SelectorType = PointSelectorType.SongRow,
                     Margin = new Thickness(1),
                     Position = k,
                 };

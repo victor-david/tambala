@@ -27,7 +27,7 @@ namespace Restless.App.DrumMaster.Controls.Obsolete
         /// </summary>
         /// <param name="owner">The owner.</param>
         /// <param name="type">The selector type</param>
-        internal DrumPatternSelector(SongContainer owner, PointSelectorType type) : base(type)
+        internal DrumPatternSelector(SongContainer owner, PointSelectorType type)
         {
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));
             //DrumPattern = new DrumPattern(this);

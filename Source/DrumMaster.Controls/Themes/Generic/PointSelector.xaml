@@ -35,13 +35,17 @@
         <Button
             Height="{TemplateBinding SelectorSize}"
             Width="{TemplateBinding SelectorSize}"
-            Style="{DynamicResource PointSelectorButton}"
+            Style="{DynamicResource SongPointSelectorButton}"
             Background="{TemplateBinding ActiveIsSelectedBrush}"
-            Command="{Binding Commands[ToggleSelect], RelativeSource={RelativeSource TemplatedParent}}"/>
+            Command="{TemplateBinding SelectCommand}"/>
     </ControlTemplate>
     
     <ControlTemplate x:Key="PointSelectorPatternRowControlTemplate" TargetType="con:PointSelector">
-        <!-- TODO -->
+        <Button
+            Style="{DynamicResource PatternPointSelectorButton}"
+            Background="{TemplateBinding ActiveIsSelectedBrush}"
+            Command="{TemplateBinding SelectCommand}"/>
+
     </ControlTemplate>
     
     <Style TargetType="con:PointSelector">
@@ -64,6 +68,10 @@
                 <Setter Property="Template" Value="{StaticResource PointSelectorPatternRowControlTemplate}"/>
                 <Setter Property="IsSelectedBrush" Value="{DynamicResource PointSelectorPatternRowSelected}"/>
                 <Setter Property="IsDeselectedBrush" Value="{DynamicResource PointSelectorPatternRowDeselected}"/>
+            </Trigger>
+
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.45"/>
             </Trigger>
 
         </Style.Triggers>

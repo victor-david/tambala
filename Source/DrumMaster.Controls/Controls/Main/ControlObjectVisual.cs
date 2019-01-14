@@ -8,12 +8,9 @@ namespace Restless.App.DrumMaster.Controls
     /// Extends <see cref="ControlObjectSelector"/> for classes that require a visual
     /// component that is defined as a property of the class. This class must be inherited.
     /// </summary>
-    public abstract class ControlObjectVisual : ControlObjectSelector //, ISelector
+    public abstract class ControlObjectVisual : ControlObjectSelector
     {
         #region Private
-        //private double selectorSize;
-        //private int divisionCount;
-        //private int position;
         #endregion
 
         /************************************************************************/
@@ -22,12 +19,8 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Initializes a new instance of <see cref="ControlObjectVisual"/>.
         /// </summary>
-        internal ControlObjectVisual() : base(PointSelectorType.None)
+        internal ControlObjectVisual()
         {
-            //// setting the private fields rather than the public properties to avoid triggering the OnXXXChanged().
-            //selectorSize = Constants.Selector.Size.Default;
-            //divisionCount = Constants.Selector.Division.Default;
-            //position = 0;
         }
         #endregion
 

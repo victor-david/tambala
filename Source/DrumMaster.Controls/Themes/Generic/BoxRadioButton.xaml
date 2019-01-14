@@ -6,16 +6,6 @@
     <!-- ################################# -->
     <!-- BoxRadioButton Templates / Styles -->
     <!-- ################################# -->
-
-
-    <!--<ControlTemplate x:Key="aa" TargetType="con:BoxRadioButtonPanel">
-        
-    </ControlTemplate>
-
-    <Style TargetType="con:BoxRadioButtonPanel">
-        <Setter Property="Template" Value="{StaticResource aa}"/>
-    </Style>-->
-    
     <ControlTemplate x:Key="BoxRadioButtonControlTemplate" TargetType="con:BoxRadioButton">
         <Border
             Name="ContentBorder"

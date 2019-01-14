@@ -25,7 +25,7 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="SongContainer"/> class.
         /// </summary>
-        internal SongContainer(ProjectContainer owner) : base(PointSelectorType.None)
+        internal SongContainer(ProjectContainer owner)
         {
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));
             SongPresenter = new SongPresenter(this);

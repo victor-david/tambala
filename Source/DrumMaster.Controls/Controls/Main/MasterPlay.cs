@@ -10,9 +10,10 @@ namespace Restless.App.DrumMaster.Controls
     /// <summary>
     /// Represents a control that provides master play / stop services.
     /// </summary>
-    public class MasterPlay : ControlObject
+    public sealed partial class MasterPlay : AudioControlBase
     {
         #region Private
+        // All thread related fields and methods are in the partial.
         #endregion
 
         /************************************************************************/
@@ -29,6 +30,7 @@ namespace Restless.App.DrumMaster.Controls
             ActivePlayImageSource = StartImageSource;
             Commands.Add("Play", new RelayCommand(RunPlayCommand));
             AddHandler(OnOff.ActiveValueChangedEvent, new RoutedEventHandler(OnOffActiveValueChanged));
+            InitializeThreads();
         }
 
         static MasterPlay()
@@ -75,7 +77,7 @@ namespace Restless.App.DrumMaster.Controls
         {
             if (d is MasterPlay c)
             {
-                c.IsStarted = false;
+                c.OnPlayModeChanged();
             }
         }
         #endregion
@@ -213,15 +215,6 @@ namespace Restless.App.DrumMaster.Controls
             IsStarted = !IsStarted;
         }
 
-        private void OnIsStartedChanged()
-        {
-            //isStarted = IsStarted;
-            //if (isStarted)
-            //{
-            //    playSignaler.Set();
-            //}
-        }
-
         private void OnOffActiveValueChanged(object sender, RoutedEventArgs e)
         {
             if (e.Source is OnOff c && c.ActiveValue is PlayMode mode)
@@ -231,6 +224,5 @@ namespace Restless.App.DrumMaster.Controls
             }
         }
         #endregion
-
     }
 }

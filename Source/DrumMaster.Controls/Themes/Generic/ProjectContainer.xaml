@@ -55,7 +55,7 @@
             <!-- Bottom row. Drum kit space and mixer -->
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2.5*" MinWidth="132"/>
+                    <ColumnDefinition Width="4*" MinWidth="132"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition MinWidth="132"/>
                 </Grid.ColumnDefinitions>

@@ -6,15 +6,20 @@
       <Field Name="ActiveDrumPatternProperty" Hidden="true" />
       <Field Name="ActiveDrumPatternPropertyKey" Hidden="true" />
       <Field Name="drumKit" Hidden="true" />
+      <Field Name="isSongContainerChangeInProgress" Hidden="true" />
       <Field Name="MasterOutputProperty" Hidden="true" />
       <Field Name="MasterOutputPropertyKey" Hidden="true" />
       <Field Name="MasterPlayProperty" Hidden="true" />
       <Field Name="MasterPlayPropertyKey" Hidden="true" />
+      <Field Name="SongContainerDefaultHeight" Hidden="true" />
+      <Field Name="SongContainerHeightProperty" Hidden="true" />
+      <Field Name="songContainerLastManualHeight" Hidden="true" />
       <Field Name="SongContainerProperty" Hidden="true" />
       <Field Name="SongContainerPropertyKey" Hidden="true" />
+      <Field Name="SongContainerThresholdHeight" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>FJQAAYAAAAgAICAAIABAEQgAIAAACEAAAQAgABhAAAA=</HashCode>
+      <HashCode>FJQQQaAQAAgAICBAIABAEQgAKAAAiEAAIQAgABhAAAA=</HashCode>
       <FileName>Controls\Main\ProjectContainer.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -23,13 +28,19 @@
   </Class>
   <Class Name="Restless.App.DrumMaster.Controls.SongContainer">
     <Position X="8" Y="0.5" Width="2.25" />
+    <Members>
+      <Field Name="ChangeContainerHeightImageSourceProperty" Hidden="true" />
+      <Field Name="ChangeContainerHeightImageSourcePropertyKey" Hidden="true" />
+      <Field Name="SongPresenterProperty" Hidden="true" />
+      <Field Name="SongPresenterPropertyKey" Hidden="true" />
+    </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAgCAAEAAAAEAQAAAAAgAAQAAAEAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAoCAAEAAAAEAQAAAAAgAIQAAAEAAAAAAgAEAAAA=</HashCode>
       <FileName>Controls\Main\SongContainer.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Owner" />
       <Property Name="SongPresenter" />
+      <Property Name="Owner" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Restless.App.DrumMaster.Controls.ControlObject">
@@ -45,11 +56,9 @@
       <Field Name="IsChangedResetEvent" Hidden="true" />
       <Field Name="IsChangedSetEvent" Hidden="true" />
       <Field Name="IsExpandedProperty" Hidden="true" />
-      <Field Name="MaximizeImageSourceProperty" Hidden="true" />
-      <Field Name="MinimizeImageSourceProperty" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>ABCAMwDAACJABCAABAgkAEgAACQIAGAABhAAEAAIEAA=</HashCode>
+      <HashCode>ABAAMwDCACJABCAABIggAEgQACQIAGAABBABEAAIEAA=</HashCode>
       <FileName>Controls\Main\ControlObject.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -61,18 +70,16 @@
       <Field Name="QuarterNoteCountProperty" Hidden="true" />
       <Field Name="ScaleChangedEvent" Hidden="true" />
       <Field Name="ScaleProperty" Hidden="true" />
-      <Field Name="TickValueChangedEvent" Hidden="true" />
-      <Field Name="TickValueProperty" Hidden="true" />
       <Field Name="TickValueTextProperty" Hidden="true" />
       <Field Name="TickValueTextPropertyKey" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AACAAAKAAABCAQAECiIgAIgAQMEAAMABgACAAgACEAA=</HashCode>
+      <HashCode>gACAAAKAAABCAAAECSIgAIgAQEEAAMABABSAAAACEAA=</HashCode>
       <FileName>Controls\Main\DrumPatternController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Restless.App.DrumMaster.Controls.AudioControlBase">
-    <Position X="4.25" Y="5" Width="3.25" />
+    <Position X="4.25" Y="5.5" Width="3.25" />
     <Members>
       <Field Name="ActiveMutedImageSourceProperty" Hidden="true" />
       <Field Name="ActiveMutedImageSourcePropertyKey" Hidden="true" />
@@ -96,24 +103,13 @@
       <Path>
         <Point X="3.75" Y="6" />
         <Point X="4" Y="6" />
-        <Point X="4" Y="6.25" />
-        <Point X="4.25" Y="6.25" />
+        <Point X="4" Y="6.75" />
+        <Point X="4.25" Y="6.75" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
       <HashCode>KBABCAAQAojACBAIIQBUCkiCAOAgCEEgQCpEEBIhAsE=</HashCode>
       <FileName>Controls\Main\AudioControlBase.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Restless.App.DrumMaster.Controls.DrumPatternPresenter">
-    <Position X="12" Y="4" Width="2.75" />
-    <Members>
-      <Field Name="lastQuarterNoteCount" Hidden="true" />
-      <Field Name="lastTickValue" Hidden="true" />
-    </Members>
-    <TypeIdentifier>
-      <HashCode>EiAAAASAAAAAAAAAAAAAAAgACABAAEAEAAAAIAAAAAE=</HashCode>
-      <FileName>Controls\Main\DrumPatternPresenter.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Restless.App.DrumMaster.Controls.SongPresenter">

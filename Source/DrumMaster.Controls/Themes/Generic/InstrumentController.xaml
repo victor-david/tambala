@@ -10,7 +10,7 @@
         <Border Padding="3" BorderBrush="LightGray" BorderThickness="0,0,0,2">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="23"/>
                     <RowDefinition Name="r1" Height="Auto"/>
                     <RowDefinition Name="r2" Height="Auto"/>
                 </Grid.RowDefinitions>

@@ -1,11 +1,12 @@
-﻿using System.Windows.Controls;
+﻿using Restless.App.DrumMaster.Controls.Core;
+using System.Windows.Controls;
 
 namespace Restless.App.DrumMaster.Controls
 {
     /// <summary>
     /// Extends Border to provide a lightweight visual. This class must be inherited.
     /// </summary>
-    internal abstract class VisualBorder : Border
+    internal abstract class VisualBorder : Border 
     {
         #region Constructor
         /// <summary>
@@ -24,7 +25,7 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Gets the position.
         /// </summary>
-        internal int Position { get; }
+        public int Position { get; }
         #endregion
     }
 }

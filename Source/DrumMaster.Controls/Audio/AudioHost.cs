@@ -43,6 +43,14 @@ namespace Restless.App.DrumMaster.Controls.Audio
         }
 
         /// <summary>
+        /// Gets the final submix voice
+        /// </summary>
+        internal SubmixVoice SubmixVoice
+        {
+            get;
+        }
+
+        /// <summary>
         /// From this assembly, gets the audio capture effect.
         /// </summary>
         internal AudioCaptureEffect AudioCapture
@@ -63,6 +71,10 @@ namespace Restless.App.DrumMaster.Controls.Audio
         {
             AudioDevice = new XAudio2();
             masteringVoice = new MasteringVoice(AudioDevice);
+
+            SubmixVoice = new SubmixVoice(AudioDevice);
+            SubmixVoice.SetOutputVoices(new VoiceSendDescriptor(masteringVoice));
+
             AudioPieces = new InstrumentCollection();
             voicePools = new List<VoicePool>();
 
@@ -71,9 +83,9 @@ namespace Restless.App.DrumMaster.Controls.Audio
 
             AudioCapture = new AudioCaptureEffect();
             audioCaptureEffectDescriptor = new EffectDescriptor(AudioCapture);
-
-            masteringVoice.SetEffectChain(audioCaptureEffectDescriptor);
-            masteringVoice.DisableEffect(0);
+            // TODO
+            //masteringVoice.SetEffectChain(audioCaptureEffectDescriptor);
+            //masteringVoice.DisableEffect(0);
 
             AudioDevice.StartEngine();
         }
@@ -95,60 +107,7 @@ namespace Restless.App.DrumMaster.Controls.Audio
         /// </summary>
         public void Initialize()
         {
-            //DrumKit kit = new DrumKit()
-            //{
-            //    Name = "Standard",
-            //    ResourcePath = "Resources.DrumKit.Default"
-            //};
-
-            //kit.LoadBuiltInInstruments();
         }
-
-        ///// <summary>
-        ///// Adds a audio piece that resides in the specified assembly.
-        ///// </summary>
-        ///// <param name="audioResourceName">The audio name</param>
-        ///// <param name="displayName">The display name</param>
-        ///// <param name="type">The type</param>
-        ///// <param name="sourceAssembly">The source assembly</param>
-        //public void AddPieceFromAssembly(string audioResourceName, string displayName, InstumentType type, Assembly sourceAssembly)
-        //{
-        //    if (sourceAssembly == null) throw new ArgumentNullException(nameof(sourceAssembly));
-        //    AudioPieces.Add(new Instument(audioResourceName, displayName, type, sourceAssembly));
-        //}
-
-        ///// <summary>
-        ///// Adds a audio piece that resides in the specified assembly.
-        ///// The display name type will be detected automatically if possible.
-        ///// </summary>
-        ///// <param name="audioResourceName">The audio name</param>
-        ///// <param name="sourceAssembly">The source assembly</param>
-        //public void AddPieceFromAssembly(string audioResourceName, Assembly sourceAssembly)
-        //{
-        //    if (sourceAssembly == null) throw new ArgumentNullException(nameof(sourceAssembly));
-        //    AudioPieces.Add(new Instument(audioResourceName, sourceAssembly));
-        //}
-
-        ///// <summary>
-        ///// Adds a audio piece that resides in the file system.
-        ///// </summary>
-        ///// <param name="fileName">The file name.</param>
-        ///// <param name="displayName">The display name.</param>
-        ///// <param name="type">The type.</param>
-        //public void AddPieceFromFileSystem(string fileName, string displayName, InstumentType type)
-        //{
-        //    AudioPieces.Add(new Instument(fileName, displayName, type, null));
-        //}
-
-        ///// <summary>
-        ///// Adds a audio piece that resides in the file system.
-        ///// The display name and type will be detected automatically if possible.
-        ///// </summary>
-        ///// <param name="fileName">The file name.</param>
-        //public void AddPieceFromFileSystem(string fileName)
-        //{
-        //    AudioPieces.Add(new Instument(fileName, null));
-        //}
 
         /// <summary>
         /// Shuts down the audio host. This method should be called when the application closes.

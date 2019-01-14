@@ -121,6 +121,11 @@ namespace Restless.App.DrumMaster.Controls.Core
             public static class TotalTick
             {
                 /// <summary>
+                /// Total number of ticks (including the quarter note) when divided into quarter notes.
+                /// </summary>
+                public const int Quarter = 1;
+
+                /// <summary>
                 /// Total number of ticks (including the quarter note) when divided into eighth notes.
                 /// </summary>
                 public const int Eighth = 2;
@@ -164,28 +169,33 @@ namespace Restless.App.DrumMaster.Controls.Core
                 /// <summary>
                 /// The minimum scale allowed.
                 /// </summary>
-                public const double Min = 130.0;
+                public const double Min = 300.0;
 
                 /// <summary>
                 /// The maxium scale allowed.
                 /// </summary>
-                public const double Max = 180.0;
+                public const double Max = 400.0; // was 180
 
                 /// <summary>
                 /// The default scale allowed.
                 /// </summary>
-                public const double Default = 160.0;
+                public const double Default = 300.0;
             }
 
             /// <summary>
             /// The number of allowable drum patterns
             /// </summary>
-            public static int MaxCount = 6;
+            public const int MaxCount = 4;
+
+            /// <summary>
+            /// The lowest common denominator
+            /// </summary>
+            public const int LowestCommon = 24;
 
             /// <summary>
             /// Gets the fixed width of the first column.
             /// </summary>
-            public static int FirstColumnWidth = 242;
+            public const int FirstColumnWidth = 252;
 
         }
         #endregion

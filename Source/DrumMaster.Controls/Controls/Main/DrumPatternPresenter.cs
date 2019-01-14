@@ -1,9 +1,11 @@
 ﻿using Restless.App.DrumMaster.Controls.Audio;
 using Restless.App.DrumMaster.Controls.Core;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Xml.Linq;
 
 namespace Restless.App.DrumMaster.Controls
@@ -17,6 +19,8 @@ namespace Restless.App.DrumMaster.Controls
         private int quarterNoteCount;
         private int totalTicks;
         private double scale;
+        private readonly GenericList<DrumPatternQuarter> headQuarters;
+        private readonly GenericList<DrumPatternQuarter> bodyQuarters;
         #endregion
 
         /************************************************************************/
@@ -25,6 +29,9 @@ namespace Restless.App.DrumMaster.Controls
         internal DrumPatternPresenter(DrumPattern owner)
         {
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));
+            Controllers = new GenericList<InstrumentController>();
+            headQuarters = new GenericList<DrumPatternQuarter>();
+            bodyQuarters = new GenericList<DrumPatternQuarter>();
             // Setting private fields instead of properties to avoid triggering the setters
             quarterNoteCount = Constants.DrumPattern.QuarterNote.Default;
             totalTicks = Constants.DrumPattern.TotalTick.Default;
@@ -44,6 +51,14 @@ namespace Restless.App.DrumMaster.Controls
         /// Gets the <see cref="DrumPattern"/> that owns this instance.
         /// </summary>
         internal DrumPattern Owner
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the list of instrument controllers.
+        /// </summary>
+        internal GenericList<InstrumentController> Controllers
         {
             get;
         }
@@ -101,17 +116,31 @@ namespace Restless.App.DrumMaster.Controls
         #endregion
 
         /************************************************************************/
+
+        #region Public methods
+        /// <summary>
+        /// Called when the template is applied.
+        /// </summary>
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
+            headQuarters.Clear();
+            bodyQuarters.Clear();
             CreateHeader();
             CreateBody();
         }
 
+        /// <summary>
+        /// Returns a string representation of this object.
+        /// </summary>
+        /// <returns>A string</returns>
         public override string ToString()
         {
             return $"{nameof(DrumPatternPresenter)} Q:{QuarterNoteCount} T:{TotalTicks} Scale:{Scale}";
         }
+        #endregion
+        
+        /************************************************************************/
 
         #region IXElement
         /// <summary>
@@ -142,6 +171,32 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
+        internal void Play(int quarterNote, int position, int operationSet)
+        {
+            // 64 bodyQuarters. 16 instruments. 4 quarters each
+            //Debug.Assert(quarterNote >= 0 && quarterNote < bodyQuarters.Count);
+            int cidx = 0;
+            foreach (InstrumentController controller in Controllers)
+            {
+                int idx = cidx * (quarterNoteCount-1) + quarterNote - 1;
+                Debug.WriteLine($"Idx: {idx}");
+                DrumPatternQuarter quarter = bodyQuarters[idx];
+                if (quarter.IsSelected(position))
+                {
+                    controller.Play(operationSet);
+                }
+                cidx++;
+
+            }
+
+            //DrumPatternQuarter quarter =  bodyQuarters[quarterNote - 1];
+
+            //if (quarter.IsSelected(position))
+            //{
+            //    Debug.WriteLine($"{position} SELECTED");
+            //}
+        }
+
         #region Private methods
         /// <summary>
         /// Creates the header and ticks. This is a one time operation called when the template is applied.
@@ -151,14 +206,27 @@ namespace Restless.App.DrumMaster.Controls
             Grid.ColumnDefinitions.Clear();
             Grid.Children.Clear();
             AddColumnDefinition(Constants.DrumPattern.FirstColumnWidth);
+            AddElement(new Border()
+            {
+                BorderBrush = Brushes.LightGray,
+                BorderThickness = new Thickness(0, 0, 0, 2)
+            }, 0, 0);
+
             int headerRow = AddRowDefinition();
             for (int q = 1; q <= quarterNoteCount; q++)
             {
-                int colIdx = AddColumnDefinition(scale);
-                AddElement(new VisualQuarterNote(q)
+                int colIdx = AddColumnDefinition(); // scale);
+
+                var quarter = new DrumPatternQuarter()
                 {
-                    TotalTicks = totalTicks
-                }, headerRow, colIdx);
+                    QuarterNote = q,
+                    QuarterType = DrumPatternQuarterType.Header,
+                    TotalTicks = totalTicks,
+                    Width = scale,
+                };
+
+                headQuarters.Add(quarter);
+                AddElement(quarter, headerRow, colIdx);
             }
         }
 
@@ -169,7 +237,7 @@ namespace Restless.App.DrumMaster.Controls
 
         private void OnTotalTicksChanged()
         {
-            foreach (var child in Grid.Children.OfType<VisualQuarterNote>())
+            foreach (var child in Grid.Children.OfType<DrumPatternQuarter>())
             {
                 child.TotalTicks = totalTicks;
             }
@@ -177,38 +245,45 @@ namespace Restless.App.DrumMaster.Controls
 
         private void OnScaleChanged()
         {
-            for (int col = 1; col < Grid.ColumnDefinitions.Count; col++)
+            foreach (var child in Grid.Children.OfType<DrumPatternQuarter>())
             {
-                Grid.ColumnDefinitions[col].Width = new GridLength(scale);
+                child.Width = scale;
             }
         }
 
 
         private void CreateBody()
         {
+            Controllers.Clear();
+
             foreach (Instrument ins in DrumKit.Instruments)
             {
                 int rowIdx = AddRowDefinition();
 
-                var controller = new InstrumentController()
+                var controller = new InstrumentController(this)
                 {
                     DisplayName = ins.DisplayName,
-                    Margin = new Thickness(0,2,2,0)
+                    Margin = new Thickness(0,2,0,0),
+                    Padding = new Thickness(0,2,12,0),
+                    Instrument = ins,
+                    IsMuted = true,
                 };
 
+                Controllers.Add(controller);
                 AddElement(controller, rowIdx, 0);
 
-                //    for (int col = 1; col < Grid.ColumnDefinitions.Count; col++)
-                //    {
-
-                //        var ps = new PointSelector(PointSelectorType.SongRow);
-                //        AddElement(ps, rowIdx, col);
-                //    }
-
-                //    //rowIdx = AddRowDefinition();
-                //    //Separator s = new Separator();
-                //    //AddElement(s, rowIdx, 0);
-
+                for (int q = 1; q <= quarterNoteCount; q++)
+                {
+                    var quarter = new DrumPatternQuarter()
+                    {
+                        QuarterNote = q,
+                        QuarterType = DrumPatternQuarterType.Selector,
+                        TotalTicks = totalTicks,
+                        Width = scale,
+                    };
+                    bodyQuarters.Add(quarter);
+                    AddElement(quarter, rowIdx, q);
+                }
             }
         }
         #endregion

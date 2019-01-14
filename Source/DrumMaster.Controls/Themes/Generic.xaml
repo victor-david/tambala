@@ -19,7 +19,7 @@
         <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/DrumPattern.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/DrumPatternController.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/DrumPatternPresenter.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/VisualQuarterNote.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/DrumPatternQuarter.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/PointSelector.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/ProjectContainer.xaml"/>
     </ResourceDictionary.MergedDictionaries>

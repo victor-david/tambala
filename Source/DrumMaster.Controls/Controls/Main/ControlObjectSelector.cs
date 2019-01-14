@@ -1,6 +1,7 @@
 ﻿using Restless.App.DrumMaster.Controls.Core;
 using System;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace Restless.App.DrumMaster.Controls
@@ -19,9 +20,10 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="ControlObjectSelector"/> class.
         /// </summary>
-        internal ControlObjectSelector(PointSelectorType type)
+        internal ControlObjectSelector() // PointSelectorType type)
         {
-            SelectorType = type;
+            // SelectorType = type;
+            SelectCommand = new RelayCommand((p) => IsSelected = !IsSelected);
         }
 
         static ControlObjectSelector()
@@ -38,18 +40,16 @@ namespace Restless.App.DrumMaster.Controls
         public PointSelectorType SelectorType
         {
             get => (PointSelectorType)GetValue(SelectorTypeProperty);
-            private set => SetValue(SelectorTypePropertyKey, value);
+            set => SetValue(SelectorTypeProperty, value);
         }
-
-        private static readonly DependencyPropertyKey SelectorTypePropertyKey = DependencyProperty.RegisterReadOnly
-            (
-                nameof(SelectorType), typeof(PointSelectorType), typeof(ControlObjectSelector), new PropertyMetadata(PointSelectorType.None)
-            );
 
         /// <summary>
         /// Identifies the <see cref="SelectorType"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty SelectorTypeProperty = SelectorTypePropertyKey.DependencyProperty;
+        public static readonly DependencyProperty SelectorTypeProperty = DependencyProperty.Register
+            (
+                nameof(SelectorType), typeof(PointSelectorType), typeof(ControlObjectSelector), new PropertyMetadata(PointSelectorType.None)
+            );
         #endregion
 
         /************************************************************************/
@@ -183,8 +183,17 @@ namespace Restless.App.DrumMaster.Controls
         {
             if (d is ControlObjectSelector c)
             {
+                c.ThreadSafePosition = c.Position;
                 c.OnPositionChanged();
             }
+        }
+        /// <summary>
+        /// Gets the thread safe value of <see cref="Position"/>.
+        /// </summary>
+        internal int ThreadSafePosition
+        {
+            get;
+            private set;
         }
         #endregion
 
@@ -213,9 +222,19 @@ namespace Restless.App.DrumMaster.Controls
         {
             if (d is ControlObjectSelector c)
             {
+                c.ThreadSafeIsSelected = c.IsSelected;
                 c.OnIsSelectedChanged();
                 c.OnIsSelectedBrushChanged();
             }
+        }
+
+        /// <summary>
+        /// Gets the thread safe value of <see cref="IsSelected"/>.
+        /// </summary>
+        internal bool ThreadSafeIsSelected
+        {
+            get;
+            private set;
         }
 
         /// <summary>
@@ -282,6 +301,29 @@ namespace Restless.App.DrumMaster.Controls
         /// Identifies the <see cref="ActiveIsSelectedBrush"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ActiveIsSelectedBrushProperty = ActiveIsSelectedBrushPropertyKey.DependencyProperty;
+        #endregion
+
+        /************************************************************************/
+
+        #region SelectCommand
+        /// <summary>
+        /// Gets the select command. This command toggles <see cref="IsSelected"/>.
+        /// </summary>
+        public ICommand SelectCommand
+        {
+            get => (ICommand)GetValue(SelectCommandProperty);
+            private set => SetValue(SelectCommandPropertyKey, value);
+        }
+        
+        private static readonly DependencyPropertyKey SelectCommandPropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(SelectCommand), typeof(ICommand), typeof(ControlObjectSelector), new PropertyMetadata(null)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="IsSelected"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SelectCommandProperty = SelectCommandPropertyKey.DependencyProperty;
         #endregion
 
         /************************************************************************/

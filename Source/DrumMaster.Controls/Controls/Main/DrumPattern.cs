@@ -1,4 +1,6 @@
-﻿using Restless.App.DrumMaster.Controls.Core;
+﻿using Restless.App.DrumMaster.Controls.Audio;
+using Restless.App.DrumMaster.Controls.Core;
+using SharpDX.XAudio2;
 using System;
 using System.Diagnostics;
 using System.Windows;
@@ -25,7 +27,7 @@ namespace Restless.App.DrumMaster.Controls
         {
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));
             Controller = new DrumPatternController(this);
-            Presenter = new DrumPatternPresenter(this);
+            Presenter = ThreadSafePresenter = new DrumPatternPresenter(this);
             AddHandler(DrumPatternController.QuarterNoteCountChangedEvent, new RoutedEventHandler((s, e) => {Presenter.QuarterNoteCount = Controller.QuarterNoteCount; e.Handled = true; }));
             AddHandler(DrumPatternController.TotalTicksChangedEvent, new RoutedEventHandler((s,e) => { Presenter.TotalTicks = Controller.TotalTicks; e.Handled = true; }));
             AddHandler(DrumPatternController.ScaleChangedEvent, new RoutedEventHandler((s,e) => { Presenter.Scale = Controller.Scale; e.Handled = true; }));
@@ -51,193 +53,6 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region QuarterNoteCount (commented out)
-        ///// <summary>
-        ///// Gets or sets the number of quarter notes
-        ///// </summary>
-        //public int QuarterNoteCount
-        //{
-        //    get => (int)GetValue(QuarterNoteCountProperty);
-        //    set => SetValue(QuarterNoteCountProperty, value);
-        //}
-
-        ///// <summary>
-        ///// Identifies the <see cref="QuarterNoteCount"/> dependency property.
-        ///// </summary>
-        //public static readonly DependencyProperty QuarterNoteCountProperty = DependencyProperty.Register
-        //    (
-        //        nameof(QuarterNoteCount), typeof(int), typeof(DrumPattern), new PropertyMetadata(Constants.DrumPattern.QuarterNote.Default, OnQuarterNoteCountChanged, OnQuarterNoteCountCoerce)
-        //    );
-
-        //private static object OnQuarterNoteCountCoerce(DependencyObject d, object baseValue)
-        //{
-        //    int proposed = (int)baseValue;
-        //    return Math.Min(Constants.DrumPattern.QuarterNote.Max, Math.Max(Constants.DrumPattern.QuarterNote.Min, proposed));
-        //}
-
-        //private static void OnQuarterNoteCountChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        //{
-        //    if (d is DrumPattern c)
-        //    {
-        //        c.SetIsChanged();
-        //        c.DrumPatternPresenter.SetPresenterParameters(c.QuarterNoteCount, c.TickValue, c.Scale);
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Gets the minimum allowed value for <see cref="QuarterNoteCount"/>.
-        ///// Used to bind to the control template.
-        ///// </summary>
-        //public int MinQuarterNoteCount
-        //{
-        //    get => Constants.DrumPattern.QuarterNote.Min;
-        //}
-
-        ///// <summary>
-        ///// Gets the maximum allowed value for <see cref="QuarterNoteCount"/>.
-        ///// Used to bind to the control template.
-        ///// </summary>
-        //public int MaxQuarterNoteCount
-        //{
-        //    get => Constants.DrumPattern.QuarterNote.Max;
-        //}
-        #endregion
-
-        /************************************************************************/
-
-        #region TickValue (commented out)
-        ///// <summary>
-        ///// Gets or sets the number of ticks per quarter note.
-        ///// </summary>
-        //public int TickValue
-        //{
-        //    get => (int)GetValue(TickValueProperty);
-        //    set => SetValue(TickValueProperty, value);
-        //}
-
-        ///// <summary>
-        ///// Identifies the <see cref="TickValue"/> dependency property.
-        ///// </summary>
-        //public static readonly DependencyProperty TickValueProperty = DependencyProperty.Register
-        //    (
-        //        nameof(TickValue), typeof(int), typeof(DrumPattern), new PropertyMetadata(Constants.DrumPattern.Tick.Default, OnTickValueChanged, OnTickValueCoerce)
-        //    );
-
-        //private static object OnTickValueCoerce(DependencyObject d, object baseValue)
-        //{
-        //    int proposed = (int)baseValue;
-        //    return Math.Min(Constants.DrumPattern.Tick.Max, Math.Max(Constants.DrumPattern.Tick.Min, proposed));
-        //}
-
-        //private static void OnTickValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        //{
-        //    if (d is DrumPattern c)
-        //    {
-        //        c.SetIsChanged();
-        //        c.TickValueText = c.TickValueToText(c.TickValue);
-        //        c.DrumPatternPresenter.SetPresenterParameters(c.QuarterNoteCount, c.TickValue, c.Scale);
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Gets the minimum allowed value for <see cref="TickValue"/>.
-        ///// Used to bind to the control template.
-        ///// </summary>
-        //public int MinTickValue
-        //{
-        //    get => Constants.DrumPattern.Tick.Min;
-        //}
-
-        ///// <summary>
-        ///// Gets the maximum allowed value for <see cref="TickValue"/>.
-        ///// Used to bind to the control template.
-        ///// </summary>
-        //public int MaxTickValue
-        //{
-        //    get => Constants.DrumPattern.Tick.Max;
-        //}
-        #endregion
-
-        /************************************************************************/
-
-        #region TickValueText (commented out)
-        ///// <summary>
-        ///// Gets the text that corresponds to <see cref="TickValue"/>.
-        ///// </summary>
-        //public string TickValueText
-        //{
-        //    get => (string)GetValue(TickValueTextProperty);
-        //    private set => SetValue(TickValueTextPropertyKey, value);
-        //}
-
-        //private static readonly DependencyPropertyKey TickValueTextPropertyKey = DependencyProperty.RegisterReadOnly
-        //    (
-        //        nameof(TickValueText), typeof(string), typeof(DrumPattern), new PropertyMetadata(null)
-        //    );
-
-        ///// <summary>
-        ///// Identifies the <see cref="TickValueText"/> dependency property.
-        ///// </summary>
-        //public static readonly DependencyProperty TickValueTextProperty = TickValueTextPropertyKey.DependencyProperty;
-        #endregion
-
-        /************************************************************************/
-
-        #region Scale (commented out)
-        ///// <summary>
-        ///// Gets or sets the scale
-        ///// </summary>
-        //public double Scale
-        //{
-        //    get => (double)GetValue(ScaleProperty);
-        //    set => SetValue(ScaleProperty, value);
-        //}
-
-        ///// <summary>
-        ///// Identifies the <see cref="Scale"/> dependency property.
-        ///// </summary>
-        //public static readonly DependencyProperty ScaleProperty = DependencyProperty.Register
-        //    (
-        //        nameof(Scale), typeof(double), typeof(DrumPattern), new PropertyMetadata(Constants.DrumPattern.Scale.Default, OnScaleChanged, OnScaleCoerce)
-        //    );
-
-
-        //private static object OnScaleCoerce(DependencyObject d, object baseValue)
-        //{
-        //    double proposed = (double)baseValue;
-        //    return Math.Min(Constants.DrumPattern.Scale.Max, Math.Max(Constants.DrumPattern.Scale.Min, proposed));
-        //}
-
-        //private static void OnScaleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        //{
-        //    if (d is DrumPattern c)
-        //    {
-        //        c.SetIsChanged();
-        //        c.DrumPatternPresenter.SetPresenterParameters(c.QuarterNoteCount, c.TickValue, c.Scale);
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Gets the minimum allowed value for <see cref="Scale"/>.
-        ///// Used to bind to the control template.
-        ///// </summary>
-        //public double MinScale
-        //{
-        //    get => Constants.DrumPattern.Scale.Min;
-        //}
-
-        ///// <summary>
-        ///// Gets the maximum allowed value for <see cref="Scale"/>.
-        ///// Used to bind to the control template.
-        ///// </summary>
-        //public double MaxScale
-        //{
-        //    get => Constants.DrumPattern.Scale.Max;
-        //}
-        #endregion
-
-        /************************************************************************/
-
         #region Presenter
         /// <summary>
         /// Gets the <see cref="DrumPatternPresenter"/> object.
@@ -257,6 +72,14 @@ namespace Restless.App.DrumMaster.Controls
         /// Identifies the <see cref="Presenter"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PresenterProperty = PresenterPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Gets a thread safe reference to <see cref="Presenter"/>.
+        /// </summary>
+        internal DrumPatternPresenter ThreadSafePresenter
+        {
+            get;
+        }
         #endregion
 
         /************************************************************************/

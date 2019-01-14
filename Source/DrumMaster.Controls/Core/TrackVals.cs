@@ -82,7 +82,7 @@ namespace Restless.App.DrumMaster.Controls.Core
             /// <summary>
             /// The default tempo.
             /// </summary>
-            public const double Default = 120;
+            public const double Default = 60;
 
             /// <summary>
             /// The default tempo text.
@@ -219,7 +219,7 @@ namespace Restless.App.DrumMaster.Controls.Core
             /// <summary>
             /// The minimum volume allowed in decibels.
             /// </summary>
-            public const float Min = -64.0f; 
+            public const float Min = -64.0f;
 
             /// <summary>
             /// The maximum volume allowed in decibels.

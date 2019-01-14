@@ -74,6 +74,9 @@ namespace Restless.App.DrumMaster
             main.Width = 1600;
             main.Height = 900;
             main.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+#if !DEBUG
+            main.WindowState = WindowState.Maximized;
+#endif
             main.Show();
         }
 
@@ -90,6 +93,6 @@ namespace Restless.App.DrumMaster
         //    //    }
         //    //}
         //}
-        #endregion
+#endregion
     }
 }

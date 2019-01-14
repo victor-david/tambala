@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Restless.App.DrumMaster.Controls.Core;
+using System;
 using System.Reflection;
 
 namespace Restless.App.DrumMaster.Controls.Audio
@@ -7,7 +7,7 @@ namespace Restless.App.DrumMaster.Controls.Audio
     /// <summary>
     /// Represents a collection of <see cref="Instrument"/> objects.
     /// </summary>
-    public class InstrumentCollection : List<Instrument>
+    public class InstrumentCollection : GenericList<Instrument>
     {
         #region Internal methods
 
