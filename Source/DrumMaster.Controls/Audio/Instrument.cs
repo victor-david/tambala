@@ -152,6 +152,7 @@ namespace Restless.App.DrumMaster.Controls.Audio
         /// <param name="element">The element</param>
         public void RestoreFromXElement(XElement element)
         {
+            // this gets called but for now does nothing. 
         }
         #endregion
 

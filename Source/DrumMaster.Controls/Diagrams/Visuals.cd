@@ -13,11 +13,9 @@
       <Field Name="IsChangedResetEvent" Hidden="true" />
       <Field Name="IsChangedSetEvent" Hidden="true" />
       <Field Name="IsExpandedProperty" Hidden="true" />
-      <Field Name="MaximizeImageSourceProperty" Hidden="true" />
-      <Field Name="MinimizeImageSourceProperty" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>ABCAMwDAACJABCAABAgkAEgAACQIAGAABhAAEAAIEAA=</HashCode>
+      <HashCode>ABAAMwDCACJABCAABIggAEgQACQIAGAABBABEAAIEAA=</HashCode>
       <FileName>Controls\Main\ControlObject.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -51,12 +49,13 @@
       <Field Name="IsSelectedBrushProperty" Hidden="true" />
       <Field Name="IsSelectedProperty" Hidden="true" />
       <Field Name="PositionProperty" Hidden="true" />
+      <Field Name="SelectCommandProperty" Hidden="true" />
+      <Field Name="SelectCommandPropertyKey" Hidden="true" />
       <Field Name="SelectorSizeProperty" Hidden="true" />
       <Field Name="SelectorTypeProperty" Hidden="true" />
-      <Field Name="SelectorTypePropertyKey" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AIggAQAAQMAAEAEwIBQAQAAAAQAAAABkKGAACAAkQRA=</HashCode>
+      <HashCode>AIgggQAAQMAAEAE4IBQABAAAAwAAAABkKGAACAIkQRA=</HashCode>
       <FileName>Controls\Main\ControlObjectSelector.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -64,21 +63,23 @@
   <Class Name="Restless.App.DrumMaster.Controls.PointSelector">
     <Position X="7.25" Y="4.25" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAEAAICAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAEAABAAAgAAAAAAEAAICAAAAAAAAA=</HashCode>
       <FileName>Controls\Main\PointSelector.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="Restless.App.DrumMaster.Controls.SongContainer">
-    <Position X="4.25" Y="6.25" Width="2.5" />
-    <InheritanceLine Type="Restless.App.DrumMaster.Controls.ControlObjectSelector" ManuallyRouted="true">
+    <Position X="4.5" Y="7.25" Width="2.5" />
+    <InheritanceLine Type="Restless.App.DrumMaster.Controls.ControlObjectSelector" ManuallyRouted="true" FixedToPoint="true">
       <Path>
-        <Point X="5.625" Y="5.838" />
-        <Point X="5.625" Y="6.25" />
-        <Point X="5.5" Y="6.25" />
+        <Point X="5.625" Y="6.415" />
+        <Point X="5.625" Y="6.875" />
+        <Point X="5.375" Y="6.875" />
+        <Point X="5.375" Y="7.25" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAAAAgCAAEAAAAEAQAAAAAgAAQAAAEAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAoCAAEAAAAEAQAAAAAgAIQAAAEAAAAAAgAEAAAA=</HashCode>
       <FileName>Controls\Main\SongContainer.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -92,7 +93,7 @@
   <Class Name="Restless.App.DrumMaster.Controls.DrumPatternPresenter">
     <Position X="9.75" Y="4.5" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>EAAAAACAAABAAAAECAICAAhCAAAIAEAEAAAAAAACAAE=</HashCode>
+      <HashCode>EAAAAACAAABAAAAECIICAAhCAAAIAEAEgAAAAAACAAE=</HashCode>
       <FileName>Controls\Main\DrumPatternPresenter.cs</FileName>
     </TypeIdentifier>
   </Class>

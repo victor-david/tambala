@@ -94,7 +94,10 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\DrumKit\Cuban\Kick.Deep.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Cuban\Kick.Tock.wav" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\DrumKit\Default\Clap.Dry.wav" />
     <EmbeddedResource Include="Resources\DrumKit\Default\Cowbell.wav" />
@@ -112,6 +115,24 @@
     <EmbeddedResource Include="Resources\DrumKit\Default\Tom.Rock.High.wav" />
     <EmbeddedResource Include="Resources\DrumKit\Default\Tom.Rock.Low.wav" />
     <EmbeddedResource Include="Resources\DrumKit\Default\Tom.Rock.Mid.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\DrumKit\Cuban\Cymbal.Harsh.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Cuban\Cymbal.Light.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\DrumKit\Cuban\Snare.Crisp.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\DrumKit\Cuban\Percussion.01.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Cuban\Percussion.02.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Cuban\Percussion.03.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Cuban\Percussion.05.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Cuban\Percussion.07.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\DrumKit\Cuban\Tom.04.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Cuban\Tom.06.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

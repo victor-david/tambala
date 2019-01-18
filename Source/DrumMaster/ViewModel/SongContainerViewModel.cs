@@ -7,6 +7,7 @@ using Restless.App.DrumMaster.Resources;
 using System;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace Restless.App.DrumMaster.ViewModel
@@ -83,7 +84,7 @@ namespace Restless.App.DrumMaster.ViewModel
         /// Opens the specified file
         /// </summary>
         /// <returns>true if opened successfully; otherwise, false.</returns>
-        public bool Open()
+        public async Task<bool> Open()
         {
             try
             {
@@ -99,7 +100,8 @@ namespace Restless.App.DrumMaster.ViewModel
 
                 if (dialog.ShowDialog() == true)
                 {
-                    Container.Open(dialog.FileName);
+                    var result = await Container.Open(dialog.FileName);
+                    if (result != null) throw result;
                     return true;
                 }
                 else

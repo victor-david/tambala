@@ -196,7 +196,7 @@ namespace Restless.App.DrumMaster.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to open the track container and layout.
+        ///   Looks up a localized string similar to The file could not be opened..
         /// </summary>
         public static string MessageOpenFailure {
             get {
@@ -205,7 +205,7 @@ namespace Restless.App.DrumMaster.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to save the track container and layout.
+        ///   Looks up a localized string similar to The file could not be saved..
         /// </summary>
         public static string MessageSaveFailure {
             get {

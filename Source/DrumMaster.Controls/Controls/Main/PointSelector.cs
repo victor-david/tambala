@@ -1,6 +1,4 @@
 ﻿using Restless.App.DrumMaster.Controls.Core;
-using System;
-using System.Diagnostics;
 using System.Windows;
 using System.Xml.Linq;
 
@@ -9,7 +7,7 @@ namespace Restless.App.DrumMaster.Controls
     /// <summary>
     /// Represents a single point selector
     /// </summary>
-    internal class PointSelector : ControlObjectSelector, ISelectorUnit
+    internal class PointSelector : ControlObjectSelector, ISelectorUnit, IXElement
     {
         #region Private
         #endregion
@@ -45,6 +43,19 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
+        #region SelectorRow
+        /// <summary>
+        /// Gets or sets the selector row
+        /// </summary>
+        public int Row
+        {
+            get;
+            set;
+        }
+        #endregion
+
+        /************************************************************************/
+
         #region IXElement
         /// <summary>
         /// Gets the XElement for this object.
@@ -53,6 +64,7 @@ namespace Restless.App.DrumMaster.Controls
         public override XElement GetXElement()
         {
             var element = new XElement(nameof(PointSelector));
+            element.Add(new XAttribute(nameof(Row), Row));
             element.Add(new XAttribute(nameof(Position), Position));
             element.Add(new XAttribute(nameof(IsSelected), IsSelected));
             return element;
@@ -64,6 +76,12 @@ namespace Restless.App.DrumMaster.Controls
         /// <param name="element">The element</param>
         public override void RestoreFromXElement(XElement element)
         {
+            XAttribute pos = element.Attribute(nameof(Position));
+            XAttribute isSelected = element.Attribute(nameof(IsSelected));
+            if (isSelected != null)
+            {
+                SetDependencyProperty(IsSelectedProperty, isSelected.Value);
+            }
         }
         #endregion
 
@@ -100,7 +118,6 @@ namespace Restless.App.DrumMaster.Controls
         protected override void OnIsSelectedChanged()
         {
             SetIsChanged();
-            Debug.WriteLine($"{DisplayName} Position {Position}");
         }
         #endregion
     }

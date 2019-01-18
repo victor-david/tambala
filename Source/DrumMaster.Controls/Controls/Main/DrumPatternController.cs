@@ -10,7 +10,7 @@ namespace Restless.App.DrumMaster.Controls
     /// <summary>
     /// Represents a controller for a drum pattern.
     /// </summary>
-    public class DrumPatternController : AudioControlBase
+    public class DrumPatternController : AudioControlBase, IQuarterNote
     {
         #region Private
         #endregion
@@ -25,8 +25,8 @@ namespace Restless.App.DrumMaster.Controls
         {
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));
             SubmixVoice = new SubmixVoice(AudioHost.Instance.AudioDevice);
-            SubmixVoice.SetOutputVoices(new VoiceSendDescriptor(AudioHost.Instance.SubmixVoice));
-            TickValueText = TickValueToText(Constants.DrumPattern.TotalTick.Default);
+            TickValueText = TickValueToText(Constants.DrumPattern.TicksPerQuarterNote.Default);
+            ThreadSafeQuarterNoteCount = Constants.DrumPattern.QuarterNoteCount.Default;
         }
 
         static DrumPatternController()
@@ -76,25 +76,33 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty QuarterNoteCountProperty = DependencyProperty.Register
             (
-                nameof(QuarterNoteCount), typeof(int), typeof(DrumPatternController), new PropertyMetadata(Constants.DrumPattern.QuarterNote.Default, OnQuarterNoteCountChanged, OnQuarterNoteCountCoerce)
+                nameof(QuarterNoteCount), typeof(int), typeof(DrumPatternController), new PropertyMetadata(Constants.DrumPattern.QuarterNoteCount.Default, OnQuarterNoteCountChanged, OnQuarterNoteCountCoerce)
             );
 
         private static object OnQuarterNoteCountCoerce(DependencyObject d, object baseValue)
         {
             int proposed = (int)baseValue;
-            return Math.Min(Constants.DrumPattern.QuarterNote.Max, Math.Max(Constants.DrumPattern.QuarterNote.Min, proposed));
+            return Math.Min(Constants.DrumPattern.QuarterNoteCount.Max, Math.Max(Constants.DrumPattern.QuarterNoteCount.Min, proposed));
         }
 
         private static void OnQuarterNoteCountChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is DrumPatternController c)
             {
+                c.ThreadSafeQuarterNoteCount = c.QuarterNoteCount;
                 c.SetIsChanged();
-                RoutedEventArgs args = new RoutedEventArgs(QuarterNoteCountChangedEvent);
-                c.RaiseEvent(args);
+                c.RaiseEvent(new RoutedEventArgs(QuarterNoteCountChangedEvent));
             }
         }
 
+        /// <summary>
+        /// Gets a thread safe value for <see cref="QuarterNoteCount"/>.
+        /// </summary>
+        internal int ThreadSafeQuarterNoteCount
+        {
+            get;
+            private set;
+        }
         /// <summary>
         /// Provides notification when the <see cref="QuarterNoteCount"/> property is changed.
         /// </summary>
@@ -118,7 +126,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public int MinQuarterNoteCount
         {
-            get => Constants.DrumPattern.QuarterNote.Min;
+            get => Constants.DrumPattern.QuarterNoteCount.Min;
         }
 
         /// <summary>
@@ -127,62 +135,64 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public int MaxQuarterNoteCount
         {
-            get => Constants.DrumPattern.QuarterNote.Max;
+            get => Constants.DrumPattern.QuarterNoteCount.Max;
         }
         #endregion
 
         /************************************************************************/
 
-        #region TickValue
+        #region TicksPerQuarterNote
         /// <summary>
         /// Gets or sets the number of ticks per quarter note.
         /// </summary>
-        public int TotalTicks
+        public int TicksPerQuarterNote
         {
-            get => (int)GetValue(TotalTicksProperty);
-            set => SetValue(TotalTicksProperty, value);
+            get => (int)GetValue(TicksPerQuarterNoteProperty);
+            set => SetValue(TicksPerQuarterNoteProperty, value);
         }
 
         /// <summary>
-        /// Identifies the <see cref="TotalTicks"/> dependency property.
+        /// Identifies the <see cref="TicksPerQuarterNote"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty TotalTicksProperty = DependencyProperty.Register
+        public static readonly DependencyProperty TicksPerQuarterNoteProperty = DependencyProperty.Register
             (
-                nameof(TotalTicks), typeof(int), typeof(DrumPatternController), new PropertyMetadata(Constants.DrumPattern.TotalTick.Default, OnOnTotalTicksChanged, OnTotalTicksCoerce)
+                nameof(TicksPerQuarterNote), typeof(int), typeof(DrumPatternController), new PropertyMetadata
+                    (
+                        Constants.DrumPattern.TicksPerQuarterNote.Default, OnTicksPerQuarterNoteChanged, OnTicksPerQuarterNoteCoerce
+                    )
             );
 
-        private static object OnTotalTicksCoerce(DependencyObject d, object baseValue)
+        private static object OnTicksPerQuarterNoteCoerce(DependencyObject d, object baseValue)
         {
             int proposed = (int)baseValue;
-            return Math.Min(Constants.DrumPattern.TotalTick.Max, Math.Max(Constants.DrumPattern.TotalTick.Min, proposed));
+            return Math.Min(Constants.DrumPattern.TicksPerQuarterNote.Max, Math.Max(Constants.DrumPattern.TicksPerQuarterNote.Min, proposed));
         }
 
-        private static void OnOnTotalTicksChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnTicksPerQuarterNoteChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is DrumPatternController c)
             {
                 c.SetIsChanged();
-                c.TickValueText = c.TickValueToText(c.TotalTicks);
-                RoutedEventArgs args = new RoutedEventArgs(TotalTicksChangedEvent);
-                c.RaiseEvent(args);
+                c.TickValueText = c.TickValueToText(c.TicksPerQuarterNote);
+                c.RaiseEvent(new RoutedEventArgs(TicksPerQuarterNoteChangedEvent));
             }
         }
 
         /// <summary>
-        /// Provides notification when the <see cref="TotalTicks"/> property is changed.
+        /// Provides notification when the <see cref="TicksPerQuarterNote"/> property is changed.
         /// </summary>
-        public event RoutedEventHandler TotalTicksChanged
+        public event RoutedEventHandler TicksPerQuarterNoteChanged
         {
-            add => AddHandler(TotalTicksChangedEvent, value);
-            remove => RemoveHandler(TotalTicksChangedEvent, value);
+            add => AddHandler(TicksPerQuarterNoteChangedEvent, value);
+            remove => RemoveHandler(TicksPerQuarterNoteChangedEvent, value);
         }
 
         /// <summary>
-        /// Identifies the <see cref="TotalTicksChanged"/> routed event.
+        /// Identifies the <see cref="TicksPerQuarterNoteChanged"/> routed event.
         /// </summary>
-        public static readonly RoutedEvent TotalTicksChangedEvent = EventManager.RegisterRoutedEvent
+        public static readonly RoutedEvent TicksPerQuarterNoteChangedEvent = EventManager.RegisterRoutedEvent
             (
-                nameof(TotalTicksChanged), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(DrumPatternController)
+                nameof(TicksPerQuarterNoteChanged), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(DrumPatternController)
             );
         #endregion
 
@@ -190,7 +200,7 @@ namespace Restless.App.DrumMaster.Controls
 
         #region TickValueText
         /// <summary>
-        /// Gets the text that corresponds to <see cref="TotalTicks"/>.
+        /// Gets the text that corresponds to <see cref="TicksPerQuarterNote"/>.
         /// </summary>
         public string TickValueText
         {
@@ -229,7 +239,6 @@ namespace Restless.App.DrumMaster.Controls
                 nameof(Scale), typeof(double), typeof(DrumPatternController), new PropertyMetadata(Constants.DrumPattern.Scale.Default, OnScaleChanged, OnScaleCoerce)
             );
 
-
         private static object OnScaleCoerce(DependencyObject d, object baseValue)
         {
             double proposed = (double)baseValue;
@@ -241,8 +250,7 @@ namespace Restless.App.DrumMaster.Controls
             if (d is DrumPatternController c)
             {
                 c.SetIsChanged();
-                RoutedEventArgs args = new RoutedEventArgs(ScaleChangedEvent);
-                c.RaiseEvent(args);
+                c.RaiseEvent(new RoutedEventArgs(ScaleChangedEvent));
             }
         }
 
@@ -292,9 +300,9 @@ namespace Restless.App.DrumMaster.Controls
         public override XElement GetXElement()
         {
             var element = new XElement(nameof(DrumPatternController));
-            element.Add(new XElement(nameof(DisplayName), DisplayName));
+            element.Add(new XElement(nameof(Volume), Volume));
             element.Add(new XElement(nameof(QuarterNoteCount), QuarterNoteCount));
-            element.Add(new XElement(nameof(TotalTicks), TotalTicks));
+            element.Add(new XElement(nameof(TicksPerQuarterNote), TicksPerQuarterNote));
             element.Add(new XElement(nameof(Scale), Scale));
             return element;
         }
@@ -305,6 +313,16 @@ namespace Restless.App.DrumMaster.Controls
         /// <param name="element">The element</param>
         public override void RestoreFromXElement(XElement element)
         {
+            foreach (XElement e in ChildElementList(element))
+            {
+                if (e.Name == nameof(Volume)) SetDependencyProperty(VolumeProperty, e.Value);
+                if (e.Name == nameof(QuarterNoteCount)) SetDependencyProperty(QuarterNoteCountProperty, e.Value);
+                if (e.Name == nameof(TicksPerQuarterNote))
+                {
+                    SetDependencyProperty(TicksPerQuarterNoteProperty, e.Value);
+                }
+                if (e.Name == nameof(Scale)) SetDependencyProperty(ScaleProperty, e.Value);
+            }
         }
         #endregion
 
@@ -325,7 +343,7 @@ namespace Restless.App.DrumMaster.Controls
         /// <returns>A string that describes this object</returns>
         public override string ToString()
         {
-            return $"{nameof(DrumPatternController)} {DisplayName} Q:{QuarterNoteCount} Tick:{TotalTicks} Scale:{Scale}";
+            return $"{nameof(DrumPatternController)} {DisplayName} Q:{QuarterNoteCount} Tick:{TicksPerQuarterNote} Scale:{Scale}";
         }
         #endregion
 
@@ -356,16 +374,16 @@ namespace Restless.App.DrumMaster.Controls
         {
             switch (totalTicks)
             {
-                case Constants.DrumPattern.TotalTick.Eighth:
+                case Constants.DrumPattern.TicksPerQuarterNote.Eighth:
                     return "8th";
 
-                case Constants.DrumPattern.TotalTick.EighthTriplet:
+                case Constants.DrumPattern.TicksPerQuarterNote.EighthTriplet:
                     return "8th (t)";
 
-                case Constants.DrumPattern.TotalTick.Sixteenth:
+                case Constants.DrumPattern.TicksPerQuarterNote.Sixteenth:
                     return "16th";
 
-                case Constants.DrumPattern.TotalTick.ThirtySecond:
+                case Constants.DrumPattern.TicksPerQuarterNote.ThirtySecond:
                     return "32nd";
 
                 default:

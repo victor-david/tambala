@@ -1,18 +1,17 @@
 ﻿using Restless.App.DrumMaster.Controls.Core;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Xml.Linq;
 
 namespace Restless.App.DrumMaster.Controls
 {
     /// <summary>
     /// Represents a single quarter note and its associated ticks for a drum pattern.
     /// </summary>
-    public class DrumPatternQuarter : Control
+    public class DrumPatternQuarter : ControlElement
     {
         #region Private
         private static readonly Dictionary<int, List<int>> FullTickMap = new Dictionary<int, List<int>>
@@ -34,6 +33,8 @@ namespace Restless.App.DrumMaster.Controls
         };
 
         private readonly Dictionary<int, PointSelector> pointSelectors;
+
+        private VisualTick quarterNoteTick;
         #endregion
 
         /************************************************************************/
@@ -113,7 +114,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty TotalTicksProperty = DependencyProperty.Register
             (
-                nameof(TotalTicks), typeof(int), typeof(DrumPatternQuarter), new PropertyMetadata(Constants.DrumPattern.TotalTick.Default, OnTotalTicksChanged)
+                nameof(TotalTicks), typeof(int), typeof(DrumPatternQuarter), new PropertyMetadata(Constants.DrumPattern.TicksPerQuarterNote.Default, OnTotalTicksChanged)
             );
 
         private static void OnTotalTicksChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -151,21 +152,64 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region Public methods
+        #region IXElement 
         /// <summary>
-        /// Called when the template is applied.
+        /// Gets the XElement for this object.
         /// </summary>
-        public override void OnApplyTemplate()
+        /// <returns>The XElement that describes the state of this object.</returns>
+        public override XElement GetXElement()
         {
-            base.OnApplyTemplate();
-            pointSelectors.Clear();
-            Create();
+            var element = new XElement(nameof(DrumPatternQuarter));
+            element.Add(new XElement(nameof(QuarterNote), QuarterNote));
+            element.Add(new XElement(nameof(QuarterType), QuarterType));
+            foreach(var item in pointSelectors.Where((s)=> s.Value.IsSelected))
+            {
+                element.Add(item.Value.GetXElement());
+            }
+            return element;
+        }
+
+        /// <summary>
+        /// Restores the object from the specified XElement
+        /// </summary>
+        /// <param name="element">The element</param>
+        public override void RestoreFromXElement(XElement element)
+        {
+            foreach (XElement e in ChildElementList(element))
+            {
+                if (e.Name == nameof(PointSelector))
+                {
+                    int key = 0;
+                    XAttribute pos = e.Attribute(ControlObjectSelector.PositionProperty.Name);
+                    if (pos != null && int.TryParse(pos.Value, out int result))
+                    {
+                        key = result;
+                    }
+                    if (pointSelectors.ContainsKey(key))
+                    {
+                        pointSelectors[key].RestoreFromXElement(e);
+                    }
+                }
+            }
         }
         #endregion
 
         /************************************************************************/
 
         #region Internal methods
+        /// <summary>
+        /// Get the count of selecteors that are selected.
+        /// </summary>
+        /// <returns>The number of selectors in this quarter that are currently selected.</returns>
+        internal int GetSelectedCount()
+        {
+            int count = 0;
+            foreach (var item in pointSelectors)
+            {
+                if (item.Value.IsSelected) count++;
+            }
+            return count;
+        }
         /// <summary>
         /// Gets a boolean value that indicates if the selector
         /// at the specified position is selected.
@@ -180,13 +224,44 @@ namespace Restless.App.DrumMaster.Controls
             }
             return false;
         }
+
+        /// <summary>
+        /// Adds the highlight on the quarter note tick using Dispatcher.BeginInvoke.
+        /// </summary>
+        internal void InvokeAddQuarterNoteTickHighlight()
+        {
+            // sanity only.
+            if (quarterNoteTick != null)
+            {
+                quarterNoteTick.InvokeAddTickHighlight();
+            }
+        }
+
+        /// <summary>
+        /// Removes the highlight from the quarter note tick using Dispatcher.BeginInvoke.
+        /// </summary>
+        internal void InvokeRemoveQuarterNoteTickHighlight()
+        {
+            // quarterNoteTick can be null because the template hsan't yet been applied.
+            // With the default of 4 quarter notes per pattern, quarterNoteTick is null
+            // for quarters 5 and 6. When the user bumps up the count to 6, the template
+            // is then applied (even though the objects themselves were created ahead of time)
+            // and quarterNoteTick is then set to its normal non-null value.
+            if (quarterNoteTick != null)
+            {
+                quarterNoteTick.InvokeRemoveTickHighlight();
+            }
+        }
         #endregion
 
         /************************************************************************/
 
         #region Private methods
-        private void Create()
+
+        protected override void OnElementCreate()
         {
+            pointSelectors.Clear();
+
             for (int k = 1; k <= Constants.DrumPattern.LowestCommon; k++)
             {
                 Visual.ColumnDefinitions.Add(new ColumnDefinition());
@@ -212,13 +287,16 @@ namespace Restless.App.DrumMaster.Controls
             TextBlock text = new TextBlock() { Text = QuarterNote.ToString(), Foreground = Brushes.DarkBlue };
             text.HorizontalAlignment = HorizontalAlignment.Center;
             AddElement(text, 0, 0);
-            AddElement(new VisualTick(0, PointSelectorUnit.QuarterNote), 1, 0);
+
+            quarterNoteTick = new VisualTick(0, PointSelectorUnit.QuarterNote);
+            AddElement(quarterNoteTick, 1, 0);
 
             foreach(var map in TickColumns)
             {
                 foreach (int col in map.Value)
                 {
-                    AddElement(new VisualTick(col, map.Key), 1, col);
+                    VisualTick tick = new VisualTick(col, map.Key);
+                    AddElement(tick, 1, col);
                 }
             }
         }
@@ -294,10 +372,10 @@ namespace Restless.App.DrumMaster.Controls
                     child.Visibility = Visibility.Visible;
                     switch (TotalTicks)
                     {
-                        case Constants.DrumPattern.TotalTick.Eighth:
+                        case Constants.DrumPattern.TicksPerQuarterNote.Eighth:
                             child.IsEnabled = child.SelectorUnit == PointSelectorUnit.EighthNote;
                             break;
-                        case Constants.DrumPattern.TotalTick.Sixteenth:
+                        case Constants.DrumPattern.TicksPerQuarterNote.Sixteenth:
                             child.IsEnabled = child.SelectorUnit == PointSelectorUnit.SixteenthNote || child.SelectorUnit == PointSelectorUnit.EighthNote;
                             break;
                         default:

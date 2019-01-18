@@ -1,24 +1,21 @@
-﻿using Restless.App.DrumMaster.Controls.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Xml.Linq;
 
 namespace Restless.App.DrumMaster.Controls
 {
     /// <summary>
-    /// Extends ContentControl and represents the base class for controls. This class must be inherited.
+    /// Extends <see cref="ControlElement"/> to provide base functionality for controls. This class must be inherited.
     /// </summary>
     /// <remarks>
     /// This class provides the base methods and properties for commands, <see cref="DisplayName"/>,
     /// <see cref="IsChanged"/> notification, <see cref="IsExpanded"/> functionality, and
     /// <see cref="IsSelected"/> functionality. Not all derived classes use all properties.
     /// </remarks>
-    public abstract class ControlObject : ContentControl, IXElement
+    public abstract class ControlObject : ControlElement
     {
         #region Private
         #endregion
@@ -208,19 +205,6 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region IsTemplateApplied
-        /// <summary>
-        /// Gets a boolean value that indicates if <see cref="OnApplyTemplate"/> has been called.
-        /// </summary>
-        protected bool IsTemplateApplied
-        {
-            get;
-            private set;
-        }
-        #endregion
-
-        /************************************************************************/
-
         #region Routed Events
         /// <summary>
         /// Provides notification when the <see cref="IsChanged"/> property is set to true.
@@ -259,33 +243,6 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region Public methods
-        /// <summary>
-        /// Called when the template is applied.
-        /// </summary>
-        public override void OnApplyTemplate()
-        {
-            IsTemplateApplied = true;
-        }
-        #endregion
-
-        /************************************************************************/
-
-        #region IXElement 
-        /// <summary>
-        /// Gets the XElement for this object.
-        /// </summary>
-        /// <returns>The XElement that describes the state of this object.</returns>
-        public abstract XElement GetXElement();
-        /// <summary>
-        /// Restores the object from the specified XElement
-        /// </summary>
-        /// <param name="element">The element</param>
-        public abstract void RestoreFromXElement(XElement element);
-        #endregion
-
-        /************************************************************************/
-
         #region Protected methods
         /// <summary>
         /// Sets the <see cref="IsChanged"/> property to true and raises the <see cref="IsChangedSetEvent"/>.
@@ -293,8 +250,7 @@ namespace Restless.App.DrumMaster.Controls
         protected void SetIsChanged()
         {
             IsChanged = true;
-            RoutedEventArgs args = new RoutedEventArgs(IsChangedSetEvent);
-            RaiseEvent(args);
+            RaiseEvent(new RoutedEventArgs(IsChangedSetEvent));
         }
 
         /// <summary>
@@ -303,8 +259,7 @@ namespace Restless.App.DrumMaster.Controls
         protected void ResetIsChanged()
         {
             IsChanged = false;
-            RoutedEventArgs args = new RoutedEventArgs(IsChangedResetEvent);
-            RaiseEvent(args);
+            RaiseEvent(new RoutedEventArgs(IsChangedResetEvent));
         }
 
         /// <summary>

@@ -1,13 +1,15 @@
 ﻿using Restless.App.DrumMaster.Controls.Audio;
+using Restless.App.DrumMaster.Controls.Core;
 using System;
 using System.Reflection;
+using System.Xml.Linq;
 
 namespace Restless.App.DrumMaster.Controls
 {
     /// <summary>
     /// Represents a drum kit, a collection of playable instuments
     /// </summary>
-    public class DrumKit
+    public class DrumKit : IXElement
     {
         #region Constructors
         /// <summary>
@@ -48,6 +50,30 @@ namespace Restless.App.DrumMaster.Controls
         public InstrumentCollection Instruments
         {
             get;
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region IXElement
+        /// <summary>
+        /// Gets the XElement for this object.
+        /// </summary>
+        /// <returns>The XElement that describes the state of this object.</returns>
+        public XElement GetXElement()
+        {
+            var element = new XElement(nameof(DrumKit));
+            element.Add(new XElement(nameof(Name), Name));
+            element.Add(new XElement(nameof(ResourcePath), ResourcePath));
+            return element;
+        }
+
+        /// <summary>
+        /// Restores the object from the specified XElement
+        /// </summary>
+        /// <param name="element">The element</param>
+        public void RestoreFromXElement(XElement element)
+        {
         }
         #endregion
 

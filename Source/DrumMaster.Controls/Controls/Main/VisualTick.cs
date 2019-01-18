@@ -1,6 +1,7 @@
 ﻿using Restless.App.DrumMaster.Controls.Core;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace Restless.App.DrumMaster.Controls
 {
@@ -9,6 +10,13 @@ namespace Restless.App.DrumMaster.Controls
     /// </summary>
     internal class VisualTick : VisualBorder, ISelectorUnit
     {
+        #region Private
+        private readonly Brush originalBrush;
+        private double originalWidth;
+        #endregion
+
+        /************************************************************************/
+
         #region Constructor
         /// <summary>
         /// Initializes a new instance of the <see cref="VisualTick"/> class.
@@ -17,7 +25,6 @@ namespace Restless.App.DrumMaster.Controls
         /// <param name="selectorUnit">The selector unit.</param>
         internal VisualTick(int position, PointSelectorUnit selectorUnit) : base(position)
         {
-            // TotalTick = totalTick;
             SelectorUnit = selectorUnit;
             HorizontalAlignment = HorizontalAlignment.Center;
             VerticalAlignment = VerticalAlignment.Bottom;
@@ -27,19 +34,19 @@ namespace Restless.App.DrumMaster.Controls
             {
                 case PointSelectorUnit.QuarterNote:
                     Visibility = Visibility.Visible;
-                    Background = Brushes.DarkBlue;
+                    Background = originalBrush = Brushes.DarkBlue;
                     Height = 14.0;
-                    Width = 2.0;
+                    Width = originalWidth = 2.0;
                     break;
                 case PointSelectorUnit.EighthNote:
-                    Background = Brushes.Black;
+                    Background = originalBrush = Brushes.Black;
                     Height = 12.0;
-                    Width = 1.0;
+                    Width = originalWidth = 1.0;
                     break;
                 default:
-                    Background = Brushes.DarkGray;
+                    Background = originalBrush = Brushes.DarkGray;
                     Height = 10.0;
-                    Width = 1.0;
+                    Width = originalWidth = 1.0;
                     break;
             }
         }
@@ -62,6 +69,33 @@ namespace Restless.App.DrumMaster.Controls
         /************************************************************************/
 
         #region Public methods
+        /// <summary>
+        /// Calls Dispatcher.BeginInvoke to add highlight to the tick.
+        /// </summary>
+        public void InvokeAddTickHighlight()
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Send, new DispatcherOperationCallback
+                ((args) =>
+                {
+                    Background = Brushes.Red;
+                    Width = Width * 3.0;
+                    return null;
+                }), null);
+        }
+
+        /// <summary>
+        /// Calls Dispatcher.BeginInvoke to remove highlight from the tick.
+        /// </summary>
+        public void InvokeRemoveTickHighlight()
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Send, new DispatcherOperationCallback
+                ((args) =>
+                {
+                    Background = originalBrush;
+                    Width = originalWidth;
+                    return null;
+                }), null);
+        }
         /// <summary>
         /// Gets a string representation of this object.
         /// </summary>

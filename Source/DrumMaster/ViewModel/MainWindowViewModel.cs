@@ -88,13 +88,13 @@ namespace Restless.App.DrumMaster.ViewModel
             }
         }
 
-        private void RunOpenSongCommand(object parm)
+        private async void RunOpenSongCommand(object parm)
         {
             if (IsOkayToClose())
             {
                 CloseSongContainer();
                 CreateSong();
-                if (SongContainer.Open())
+                if (await SongContainer.Open())
                 {
                     SongContainer.Show();
                 }

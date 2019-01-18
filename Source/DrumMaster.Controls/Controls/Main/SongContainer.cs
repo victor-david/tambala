@@ -116,8 +116,6 @@ namespace Restless.App.DrumMaster.Controls
             element.Add(new XElement(nameof(SelectorSize), SelectorSize));
             element.Add(new XElement(nameof(DivisionCount), DivisionCount));
             element.Add(SongPresenter.GetXElement());
-
-
             return element;
         }
 
@@ -127,6 +125,16 @@ namespace Restless.App.DrumMaster.Controls
         /// <param name="element">The element</param>
         public override void RestoreFromXElement(XElement element)
         {
+            SongPresenter.Create();
+            foreach (XElement e in ChildElementList(element))
+            {
+                if (e.Name == nameof(SelectorSize)) SetDependencyProperty(SelectorSizeProperty, e.Value);
+                if (e.Name == nameof(DivisionCount)) SetDependencyProperty(DivisionCountProperty, e.Value);
+                if (e.Name == nameof(SongPresenter))
+                {
+                    SongPresenter.RestoreFromXElement(e);
+                }
+            }
         }
         #endregion
 

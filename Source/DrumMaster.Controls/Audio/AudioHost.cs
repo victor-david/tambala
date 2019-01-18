@@ -13,7 +13,7 @@ namespace Restless.App.DrumMaster.Controls.Audio
     public class AudioHost
     {
         #region Private
-        private MasteringVoice masteringVoice;
+        private MasteringVoice masterVoice;
         private List<VoicePool> voicePools;
         private XAudio2 audioDevice;
         private readonly EffectDescriptor audioCaptureEffectDescriptor;
@@ -43,11 +43,12 @@ namespace Restless.App.DrumMaster.Controls.Audio
         }
 
         /// <summary>
-        /// Gets the final submix voice
+        /// Gets the mastering voice
         /// </summary>
-        internal SubmixVoice SubmixVoice
+        internal MasteringVoice MasterVoice
         {
-            get;
+            get => masterVoice;
+            private set => masterVoice = value;
         }
 
         /// <summary>
@@ -70,10 +71,10 @@ namespace Restless.App.DrumMaster.Controls.Audio
         private AudioHost()
         {
             AudioDevice = new XAudio2();
-            masteringVoice = new MasteringVoice(AudioDevice);
+            MasterVoice = new MasteringVoice(AudioDevice);
 
-            SubmixVoice = new SubmixVoice(AudioDevice);
-            SubmixVoice.SetOutputVoices(new VoiceSendDescriptor(masteringVoice));
+            //SubmixVoice = new SubmixVoice(AudioDevice);
+            //SubmixVoice.SetOutputVoices(new VoiceSendDescriptor(masteringVoice));
 
             AudioPieces = new InstrumentCollection();
             voicePools = new List<VoicePool>();
@@ -120,7 +121,7 @@ namespace Restless.App.DrumMaster.Controls.Audio
                 pool.Destroy();
             }
             AudioDevice.StopEngine();
-            SharpDX.Utilities.Dispose(ref masteringVoice);
+            SharpDX.Utilities.Dispose(ref masterVoice);
             SharpDX.Utilities.Dispose(ref audioDevice);
         }
         #endregion

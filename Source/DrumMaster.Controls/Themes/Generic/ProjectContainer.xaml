@@ -26,9 +26,9 @@
             <!-- Top row. Song space and master output -->
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="6*" MinWidth="132"/>
+                    <ColumnDefinition Width="*" MinWidth="132"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition MinWidth="132"/>
+                    <ColumnDefinition Width="180" MinWidth="136" MaxWidth="260"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -57,7 +57,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="4*" MinWidth="132"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition MinWidth="132"/>
+                    <ColumnDefinition MinWidth="136"/>
                 </Grid.ColumnDefinitions>
 
                 <Border Grid.Column="0">

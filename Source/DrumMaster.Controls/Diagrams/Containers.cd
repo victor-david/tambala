@@ -19,7 +19,7 @@
       <Field Name="SongContainerThresholdHeight" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>FJQQQaAQAAgAICBAIABAEQgAKAAAiEAAIQAgABhAAAA=</HashCode>
+      <HashCode>FJQQQaAQAAlAICBAIABAEQgAKAAAiFAAIQAgABhAAAA=</HashCode>
       <FileName>Controls\Main\ProjectContainer.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -74,12 +74,12 @@
       <Field Name="TickValueTextPropertyKey" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>gACAAAKAAABCAAAECSIgAIgAQEEAAMABABSAAAACEAA=</HashCode>
+      <HashCode>gACIAAKAAABCAAAECSIgCIgAQEEAAMABABSAAAACEAA=</HashCode>
       <FileName>Controls\Main\DrumPatternController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Restless.App.DrumMaster.Controls.AudioControlBase">
-    <Position X="4.25" Y="5.5" Width="3.25" />
+    <Position X="4.25" Y="6.5" Width="3.25" />
     <Members>
       <Field Name="ActiveMutedImageSourceProperty" Hidden="true" />
       <Field Name="ActiveMutedImageSourcePropertyKey" Hidden="true" />
@@ -93,7 +93,6 @@
       <Field Name="PitchSemiToneTextPropertyKey" Hidden="true" />
       <Field Name="ShortVolumeTextProperty" Hidden="true" />
       <Field Name="VoicedImageSourceProperty" Hidden="true" />
-      <Field Name="VolumeBiasProperty" Hidden="true" />
       <Field Name="VolumeDecibelTextProperty" Hidden="true" />
       <Field Name="VolumeDecibelTextPropertyKey" Hidden="true" />
       <Field Name="VolumeProperty" Hidden="true" />
@@ -103,12 +102,12 @@
       <Path>
         <Point X="3.75" Y="6" />
         <Point X="4" Y="6" />
-        <Point X="4" Y="6.75" />
-        <Point X="4.25" Y="6.75" />
+        <Point X="4" Y="7.75" />
+        <Point X="4.25" Y="7.75" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>KBABCAAQAojACBAIIQBUCkiCAOAgCEEgQCpEEBIhAsE=</HashCode>
+      <HashCode>KBABCAAQAojACBAIAQBECkCCAOAgCEEgQCpEABIBAsE=</HashCode>
       <FileName>Controls\Main\AudioControlBase.cs</FileName>
     </TypeIdentifier>
   </Class>

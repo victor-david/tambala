@@ -1,6 +1,4 @@
-﻿using Restless.App.DrumMaster.Controls.Core;
-using System;
-using System.Windows;
+﻿using System.Windows;
 
 namespace Restless.App.DrumMaster.Controls
 {
@@ -50,97 +48,23 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region ISelector
-        ///// <summary>
-        ///// Gets or sets the selector size
-        ///// </summary>
-        //public double SelectorSize
-        //{
-        //    get => selectorSize;
-        //    set
-        //    {
-        //        selectorSize = Math.Min(Constants.Selector.Size.Max, Math.Max(Constants.Selector.Size.Min, value));
-        //        OnSelectorSizeChanged();
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Gets or sets the division count
-        ///// </summary>
-        //public int DivisionCount
-        //{
-        //    get => divisionCount;
-        //    set
-        //    {
-        //        divisionCount = Math.Min(Constants.Selector.Division.Max, Math.Max(Constants.Selector.Division.Min, value));
-        //        OnDivisionCountChanged();
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Gets or sets the position
-        ///// </summary>
-        //public int Position
-        //{
-        //    get => position;
-        //    set
-        //    {
-        //        position = value;
-        //        OnPositionChanged();
-        //    }
-        //}
-        #endregion
-
-        /************************************************************************/
-
         #region Public methods
         /// <summary>
-        /// Called when the template is applied
+        /// Called when the template is applied. Calls the base ApplyTemplate
+        /// method and then calls <see cref="ControlElement.Create"/>, which
+        /// in turn (if <see cref="ControlElement.IsCreated"/> is false) 
+        /// calls <see cref="ControlElement.OnElementCreate"/>
         /// </summary>
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            CreateVisualElement();
+            Create();
         }
         #endregion
 
         /************************************************************************/
 
         #region Protected methods
-        ///// <summary>
-        ///// Called when the <see cref="SelectorSize"/> property changes.
-        ///// A derived class can override this method to provide further processing.
-        ///// The base implementation does nothing.
-        ///// </summary>
-        //protected virtual void OnSelectorSizeChanged()
-        //{
-        //}
-
-        ///// <summary>
-        ///// Called when the <see cref="DivisionCount"/> property changes.
-        ///// A derived class can override this method to provide further processing.
-        ///// The base implementation does nothing.
-        ///// </summary>
-        //protected virtual void OnDivisionCountChanged()
-        //{
-        //}
-
-        ///// <summary>
-        ///// Called when <see cref="Position"/> changes. A derived class can override
-        ///// this method to perform updates. The base implementation does nothing.
-        ///// </summary>
-        //protected virtual void OnPositionChanged()
-        //{
-        //}
-
-        /// <summary>
-        /// Override in a derived class to create <see cref="VisualElement"/>
-        /// This method is called after the template is applied.
-        /// The base implementation does nothing.
-        /// </summary>
-        protected virtual void CreateVisualElement()
-        {
-        }
         #endregion
     }
 }

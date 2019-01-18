@@ -22,7 +22,12 @@
                         Command="{Binding Commands[ToggleExpanded], RelativeSource={RelativeSource TemplatedParent}}">
                         <Image Source="{TemplateBinding ActiveExpandedStateImageSource}"/>
                     </Button>
-                    <TextBlock Text="{TemplateBinding DisplayName}"/>
+                    <TextBlock>
+                        <Run Text="{TemplateBinding DisplayName}"/>
+                        <Run Text=" | "/>
+                        <Run Text="{Binding SelectedEventCount, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"/>
+                        <Run Text="events selected"/>
+                    </TextBlock>
                 </StackPanel>
             </Border>
             

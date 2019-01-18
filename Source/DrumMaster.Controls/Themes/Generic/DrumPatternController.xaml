@@ -19,6 +19,7 @@
                     <ColumnDefinition Width="232"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="232"/>
+                    <ColumnDefinition Width="232"/>
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
@@ -35,8 +36,8 @@
                     Value="{Binding QuarterNoteCount, RelativeSource={RelativeSource TemplatedParent}}"
                     Style="{DynamicResource HorizontalIntSlider}"/>
 
-                <!-- Ticks -->
-                <con:BoxRadioButtonPanel Grid.Column="2" SelectedValue="{Binding TotalTicks, RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}">
+                <!-- Ticks per quarter note -->
+                <con:BoxRadioButtonPanel Grid.Column="2" SelectedValue="{Binding TicksPerQuarterNote, RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -71,6 +72,19 @@
                     Maximum="{Binding MaxScale, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
                     Value="{Binding Scale, RelativeSource={RelativeSource TemplatedParent}}"
                     Style="{DynamicResource HorizontalIntSlider}"/>
+
+                <!-- Volume -->
+                <con:LevelSlider
+                    Grid.Column="4"
+                    Margin="8,0"
+                    Style="{DynamicResource HorizontalSlider}"
+                    LabelText="{TemplateBinding VolumeText}"
+                    ValueText="{Binding VolumeDecibelText, RelativeSource={RelativeSource TemplatedParent},Mode=OneWay}"
+                    LabelTextBrush="{DynamicResource SliderLabelTextBrush}"
+                    ValueTextBrush="{DynamicResource SliderValueTextBrush}"
+                    Minimum="{Binding MinVolume, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}" 
+                    Maximum="{Binding MaxVolume, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
+                    Value="{Binding Volume, RelativeSource={RelativeSource TemplatedParent}}" />
 
                 <!--<TextBox Grid.Column="3" Text="{Binding DisplayName, RelativeSource={RelativeSource TemplatedParent},UpdateSourceTrigger=PropertyChanged}"/>-->
             </Grid>

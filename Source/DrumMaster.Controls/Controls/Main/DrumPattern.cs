@@ -1,6 +1,4 @@
-﻿using Restless.App.DrumMaster.Controls.Audio;
-using Restless.App.DrumMaster.Controls.Core;
-using SharpDX.XAudio2;
+﻿using Restless.App.DrumMaster.Controls.Core;
 using System;
 using System.Diagnostics;
 using System.Windows;
@@ -26,11 +24,9 @@ namespace Restless.App.DrumMaster.Controls
         internal DrumPattern(ProjectContainer owner)
         {
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));
-            Controller = new DrumPatternController(this);
+            Controller = ThreadSafeController = new DrumPatternController(this);
             Presenter = ThreadSafePresenter = new DrumPatternPresenter(this);
-            AddHandler(DrumPatternController.QuarterNoteCountChangedEvent, new RoutedEventHandler((s, e) => {Presenter.QuarterNoteCount = Controller.QuarterNoteCount; e.Handled = true; }));
-            AddHandler(DrumPatternController.TotalTicksChangedEvent, new RoutedEventHandler((s,e) => { Presenter.TotalTicks = Controller.TotalTicks; e.Handled = true; }));
-            AddHandler(DrumPatternController.ScaleChangedEvent, new RoutedEventHandler((s,e) => { Presenter.Scale = Controller.Scale; e.Handled = true; }));
+            AddHandler(ControlObjectSelector.IsSelectedChangedEvent, new RoutedEventHandler(SelectorIsSelectedChanged));
         }
 
         static DrumPattern()
@@ -57,7 +53,7 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Gets the <see cref="DrumPatternPresenter"/> object.
         /// </summary>
-        public DrumPatternPresenter Presenter
+        internal DrumPatternPresenter Presenter
         {
             get => (DrumPatternPresenter)GetValue(PresenterProperty);
             private set => SetValue(PresenterPropertyKey, value);
@@ -71,7 +67,7 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Identifies the <see cref="Presenter"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty PresenterProperty = PresenterPropertyKey.DependencyProperty;
+        internal static readonly DependencyProperty PresenterProperty = PresenterPropertyKey.DependencyProperty;
 
         /// <summary>
         /// Gets a thread safe reference to <see cref="Presenter"/>.
@@ -103,6 +99,54 @@ namespace Restless.App.DrumMaster.Controls
         /// Identifies the <see cref="Controller"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ControllerProperty = ControllerPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Gets a thread safe reference to <see cref="Controller"/>.
+        /// </summary>
+        internal DrumPatternController ThreadSafeController
+        {
+            get;
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region SelectedEventCount
+        /// <summary>
+        /// Gets the total number of events selected for this drum pattern
+        /// </summary>
+        public int SelectedEventCount
+        {
+            get => (int)GetValue(SelectedEventCountProperty);
+            private set => SetValue(SelectedEventCountPropertyKey, value);
+        }
+
+        private static readonly DependencyPropertyKey SelectedEventCountPropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(SelectedEventCount), typeof(int), typeof(DrumPattern), new PropertyMetadata(0, OnSelectedEventCountChanged)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="SelectedEventCount"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SelectedEventCountProperty = SelectedEventCountPropertyKey.DependencyProperty;
+
+        private static void OnSelectedEventCountChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is DrumPattern c)
+            {
+                c.ThreadSafeSelectedEventCount = c.SelectedEventCount;
+            }
+        }
+
+        /// <summary>
+        /// Gets the thread safe value of <see cref="SelectedEventCount"/>.
+        /// </summary>
+        internal int ThreadSafeSelectedEventCount
+        {
+            get;
+            private set;
+        }
         #endregion
 
         /************************************************************************/
@@ -116,9 +160,6 @@ namespace Restless.App.DrumMaster.Controls
         {
             var element = new XElement(nameof(DrumPattern));
             element.Add(new XElement(nameof(DisplayName), DisplayName));
-            //element.Add(new XElement(nameof(QuarterNoteCount), QuarterNoteCount));
-            //element.Add(new XElement(nameof(TickValue), TickValue));
-            //element.Add(new XElement(nameof(Scale), Scale));
             element.Add(Controller.GetXElement());
             element.Add(Presenter.GetXElement());
             return element;
@@ -130,6 +171,14 @@ namespace Restless.App.DrumMaster.Controls
         /// <param name="element">The element</param>
         public override void RestoreFromXElement(XElement element)
         {
+            Presenter.Create();
+            foreach (XElement e in ChildElementList(element))
+            {
+                if (e.Name == nameof(DisplayName)) SetDependencyProperty(DisplayNameProperty, e.Value);
+                if (e.Name == nameof(DrumPatternController)) Controller.RestoreFromXElement(e);
+                if (e.Name == nameof(DrumPatternPresenter)) Presenter.RestoreFromXElement(e);
+            }
+            SelectedEventCount = Presenter.GetSelectedCount();
         }
         #endregion
 
@@ -149,6 +198,17 @@ namespace Restless.App.DrumMaster.Controls
         /************************************************************************/
 
         #region Private methods
+
+        private void SelectorIsSelectedChanged(object sender, RoutedEventArgs e)
+        {
+            if (e.OriginalSource is PointSelector selector)
+            {
+                int delta = selector.IsSelected ? 1 : -1;
+                SelectedEventCount += delta;
+                e.Handled = true;
+            }
+        }
+
         /// <summary>
         /// Gets the text for the specified tick value.
         /// </summary>
@@ -158,16 +218,16 @@ namespace Restless.App.DrumMaster.Controls
         {
             switch (tickValue)
             {
-                case Constants.DrumPattern.TotalTick.Eighth:
+                case Constants.DrumPattern.TicksPerQuarterNote.Eighth:
                     return "8th";
 
-                case Constants.DrumPattern.TotalTick.EighthTriplet:
+                case Constants.DrumPattern.TicksPerQuarterNote.EighthTriplet:
                     return "8th(t)";
 
-                case Constants.DrumPattern.TotalTick.Sixteenth:
+                case Constants.DrumPattern.TicksPerQuarterNote.Sixteenth:
                     return "16th";
 
-                case Constants.DrumPattern.TotalTick.ThirtySecond:
+                case Constants.DrumPattern.TicksPerQuarterNote.ThirtySecond:
                     return "32nd";
 
                 default:

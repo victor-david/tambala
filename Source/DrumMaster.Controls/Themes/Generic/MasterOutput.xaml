@@ -16,7 +16,6 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="64"/>
                 <ColumnDefinition Width="64"/>
-                <ColumnDefinition Width="64"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
@@ -49,17 +48,6 @@
                 Maximum="{Binding MaxVolume, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
                 Value="{Binding Volume, RelativeSource={RelativeSource TemplatedParent}}" />
             
-            <!-- Col 2. Pitch adjustment slider -->
-            <con:LevelSlider
-                Grid.Column="2" Grid.Row="1"
-                Style="{DynamicResource VerticalSlider}"
-                LabelText="Pitch"
-                ValueText="{Binding Pitch, RelativeSource={RelativeSource TemplatedParent},Mode=OneWay,StringFormat=N1}"
-                LabelTextBrush="{DynamicResource SliderLabelTextBrush}"
-                ValueTextBrush="{DynamicResource SliderValueTextBrush}"
-                Minimum="{Binding MinPitch, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}" 
-                Maximum="{Binding MaxPitch, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
-                Value="{Binding Pitch, RelativeSource={RelativeSource TemplatedParent}}" />
         </Grid>
     </ControlTemplate>
 

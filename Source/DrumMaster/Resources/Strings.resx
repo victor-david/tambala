@@ -165,11 +165,11 @@
     <value>Drum Master</value>
   </data>
   <data name="MessageOpenFailure" xml:space="preserve">
-    <value>Unable to open the track container and layout</value>
+    <value>The file could not be opened.</value>
     <comment>Message when unable to open</comment>
   </data>
   <data name="MessageSaveFailure" xml:space="preserve">
-    <value>Unable to save the track container and layout</value>
+    <value>The file could not be saved.</value>
     <comment>Message when unable to save</comment>
   </data>
 </root>

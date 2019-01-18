@@ -9,7 +9,7 @@ namespace Restless.App.DrumMaster.Controls
     /// <summary>
     /// Represents the master output control. Handles the final voice.
     /// </summary>
-    public class MasterOutput : AudioControlBase
+    public sealed class MasterOutput : AudioControlBase
     {
         #region Private
         #endregion
@@ -61,7 +61,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty TempoProperty = DependencyProperty.Register
             (
-                nameof(Tempo), typeof(double), typeof(MasterOutput), new PropertyMetadata(TrackVals.Tempo.Default, OnTempoChanged, OnTempoCoerce)
+                nameof(Tempo), typeof(double), typeof(MasterOutput), new PropertyMetadata(Constants.Tempo.Default, OnTempoChanged, OnTempoCoerce)
             );
 
         private static void OnTempoChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -76,7 +76,7 @@ namespace Restless.App.DrumMaster.Controls
         private static object OnTempoCoerce(DependencyObject d, object baseValue)
         {
             double proposed = (double)baseValue;
-            return Math.Min(TrackVals.Tempo.Max, Math.Max(TrackVals.Tempo.Min, proposed));
+            return Math.Min(Constants.Tempo.Max, Math.Max(Constants.Tempo.Min, proposed));
         }
 
         /// <summary>
@@ -93,8 +93,9 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly RoutedEvent TempoChangedEvent = EventManager.RegisterRoutedEvent
             (
-                nameof(IsChangedSet), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(MasterOutput)
+                nameof(TempoChanged), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(MasterOutput)
             );
+
 
         /// <summary>
         /// Gets or sets the tempo text descriptor
@@ -110,7 +111,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty TempoTextProperty = DependencyProperty.Register
             (
-                nameof(TempoText), typeof(string), typeof(MasterOutput), new PropertyMetadata(TrackVals.Tempo.DefaultText)
+                nameof(TempoText), typeof(string), typeof(MasterOutput), new PropertyMetadata(Constants.Tempo.DefaultText)
             );
 
 
@@ -119,7 +120,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public double MinTempo
         {
-            get => TrackVals.Tempo.Min;
+            get => Constants.Tempo.Min;
         }
 
         /// <summary>
@@ -127,7 +128,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public double MaxTempo
         {
-            get => TrackVals.Tempo.Max;
+            get => Constants.Tempo.Max;
         }
         #endregion
 
@@ -155,20 +156,23 @@ namespace Restless.App.DrumMaster.Controls
         /// <param name="element">The element</param>
         public override void RestoreFromXElement(XElement element)
         {
+            foreach (XElement e in ChildElementList(element))
+            {
+                if (e.Name == nameof(Tempo)) SetDependencyProperty(TempoProperty, e.Value);
+                if (e.Name == nameof(Volume)) SetDependencyProperty(VolumeProperty, e.Value);
+                if (e.Name == nameof(Panning)) SetDependencyProperty(PanningProperty, e.Value);
+                if (e.Name == nameof(Pitch)) SetDependencyProperty(PitchProperty, e.Value);
+                if (e.Name == nameof(IsMuted)) SetDependencyProperty(IsMutedProperty, e.Value);
+            }
         }
         #endregion
 
-
+        /************************************************************************/
 
         #region Protected methods
         protected override void OnVolumeChanged()
         {
-            AudioHost.Instance.SubmixVoice.SetVolume(ThreadSafeVolume);
-        }
-
-        protected override void OnPitchChanged()
-        {
-            //AudioHost.Instance.SubmixVoice.set
+            AudioHost.Instance.MasterVoice.SetVolume(ThreadSafeVolume);
         }
         #endregion
     }

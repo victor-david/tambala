@@ -114,7 +114,7 @@ namespace Restless.App.DrumMaster.Controls.Obsolete
         /// </summary>
         public static readonly DependencyProperty TempoProperty = DependencyProperty.Register
             (
-                nameof(Tempo), typeof(double), typeof(TrackContainer), new PropertyMetadata(TrackVals.Tempo.Default, OnTempoChanged, OnTempoCoerce)
+                nameof(Tempo), typeof(double), typeof(TrackContainer), new PropertyMetadata(Constants.Tempo.Default, OnTempoChanged, OnTempoCoerce)
             );
 
         private static void OnTempoChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -129,7 +129,7 @@ namespace Restless.App.DrumMaster.Controls.Obsolete
         private static object OnTempoCoerce(DependencyObject d, object baseValue)
         {
             double proposed = (double)baseValue;
-            return Math.Min(TrackVals.Tempo.Max, Math.Max(TrackVals.Tempo.Min, proposed));
+            return Math.Min(Constants.Tempo.Max, Math.Max(Constants.Tempo.Min, proposed));
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace Restless.App.DrumMaster.Controls.Obsolete
         /// </summary>
         public static readonly DependencyProperty TempoTextProperty = DependencyProperty.Register
             (
-                nameof(TempoText), typeof(string), typeof(TrackContainer), new PropertyMetadata(TrackVals.Tempo.DefaultText)
+                nameof(TempoText), typeof(string), typeof(TrackContainer), new PropertyMetadata(Constants.Tempo.DefaultText)
             );
 
 
@@ -155,7 +155,7 @@ namespace Restless.App.DrumMaster.Controls.Obsolete
         /// </summary>
         public double MinTempo
         {
-            get => TrackVals.Tempo.Min;
+            get => Constants.Tempo.Min;
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace Restless.App.DrumMaster.Controls.Obsolete
         /// </summary>
         public double MaxTempo
         {
-            get => TrackVals.Tempo.Max;
+            get => Constants.Tempo.Max;
         }
         #endregion
 

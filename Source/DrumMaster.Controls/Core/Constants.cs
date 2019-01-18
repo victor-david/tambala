@@ -88,6 +88,69 @@ namespace Restless.App.DrumMaster.Controls.Core
 
         /************************************************************************/
 
+        #region Tempo
+        /// <summary>
+        /// Provides static values that define tempo characteristics.
+        /// </summary>
+        public static class Tempo
+        {
+            /// <summary>
+            /// The minimum tempo allowed.
+            /// </summary>
+            public const double Min = 45;
+
+            /// <summary>
+            /// The maximum tempo allowed.
+            /// </summary>
+            public const double Max = 240;
+
+            /// <summary>
+            /// The default tempo.
+            /// </summary>
+            public const double Default = 120;
+
+            /// <summary>
+            /// The default tempo text.
+            /// </summary>
+            public const string DefaultText = "Tempo";
+        }
+        #endregion
+
+        /************************************************************************/
+
+        /// <summary>
+        /// Provides static values that define volume characteristics.
+        /// </summary>
+        public static class Volume
+        {
+            /// <summary>
+            /// The minimum volume allowed in decibels.
+            /// </summary>
+            public const float Min = -48.0f; // was -64
+
+            /// <summary>
+            /// The maximum volume allowed in decibels.
+            /// </summary>
+            public const float Max = 18.0f;
+
+            /// <summary>
+            /// The default volume
+            /// </summary>
+            public const float Default = 0.0f;
+
+            /// <summary>
+            /// The default volume text.
+            /// </summary>
+            public const string DefaultText = "Volume";
+
+            /// <summary>
+            /// The default short volume text.
+            /// </summary>
+            public const string DefaultShortText = "Vol:";
+        }
+
+        /************************************************************************/
+
         #region DrumPattern
         /// <summary>
         /// Provides static values that define drum pattern characteristics.
@@ -97,7 +160,7 @@ namespace Restless.App.DrumMaster.Controls.Core
             /// <summary>
             /// Provides static values that define selector size characteristics.
             /// </summary>
-            public static class QuarterNote
+            public static class QuarterNoteCount
             {
                 /// <summary>
                 /// The minimum number of quarter notes for a drum pattern.
@@ -107,7 +170,7 @@ namespace Restless.App.DrumMaster.Controls.Core
                 /// <summary>
                 /// The maximum number of quarter notes for a drum pattern.
                 /// </summary>
-                public const int Max = 8;
+                public const int Max = 6;
 
                 /// <summary>
                 /// The default number of quarter notes for a drum pattern.
@@ -118,7 +181,7 @@ namespace Restless.App.DrumMaster.Controls.Core
             /// <summary>
             /// Provides static values that define quarter note tick divisions for a drum pattern
             /// </summary>
-            public static class TotalTick
+            public static class TicksPerQuarterNote
             {
                 /// <summary>
                 /// Total number of ticks (including the quarter note) when divided into quarter notes.
@@ -174,7 +237,7 @@ namespace Restless.App.DrumMaster.Controls.Core
                 /// <summary>
                 /// The maxium scale allowed.
                 /// </summary>
-                public const double Max = 400.0; // was 180
+                public const double Max = 400.0;
 
                 /// <summary>
                 /// The default scale allowed.

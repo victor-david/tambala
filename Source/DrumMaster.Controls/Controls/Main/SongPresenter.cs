@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
+using System.Windows.Threading;
 using System.Xml.Linq;
 
 namespace Restless.App.DrumMaster.Controls
@@ -59,11 +60,11 @@ namespace Restless.App.DrumMaster.Controls
         {
             var element = new XElement(nameof(SongPresenter));
             element.Add(new XComment($"{nameof(SongPresenter)} receives {nameof(SelectorSize)} and {nameof(DivisionCount)} from its owner {nameof(SongContainer)}"));
-            //element.Add(new XComment($"and updates its {nameof(DrumPatternSelectorPanel)} children"));
-            //foreach (var child in Grid.Children.OfType<DrumPatternSelectorPanel>())
-            //{
-            //    element.Add(child.GetXElement());
-            //}
+
+            foreach (var child in Grid.Children.OfType<PointSelector>().Where((ps) => ps.SelectorType == PointSelectorType.SongRow && ps.IsSelected))
+            {
+                element.Add(child.GetXElement());
+            }
             return element;
         }
 
@@ -73,6 +74,26 @@ namespace Restless.App.DrumMaster.Controls
         /// <param name="element">The element</param>
         public override void RestoreFromXElement(XElement element)
         {
+            foreach (XElement e in ChildElementList(element))
+            {
+                if (e.Name == nameof(PointSelector))
+                {
+                    XAttribute cola = e.Attribute(nameof(Position));
+                    XAttribute rowa = e.Attribute(nameof(PointSelector.Row));
+                    if (cola != null && rowa != null)
+                    {
+                        if (int.TryParse(cola.Value, out int col) && int.TryParse(rowa.Value, out int row))
+                        {
+                            PointSelector ps = GetPointSelectorAt(row, col);
+                            if (ps != null)
+                            {
+                                ps.RestoreFromXElement(e);
+                            }
+                        }
+                    }
+
+                }
+            }
         }
         #endregion
 
@@ -82,9 +103,8 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Creates the content. Called after the template has been applied.
         /// </summary>
-        protected override void CreateVisualElement()
+        protected override void OnElementCreate()
         {
-            Diagnostics.StartTimer();
             int rowIdx = AddRowDefinition();
             AddColumnDefinition(Constants.Selector.FirstColumnWidth);
             AddElement(new TextBlock(), 0, 0);
@@ -118,7 +138,6 @@ namespace Restless.App.DrumMaster.Controls
             {
                 CreatePatternRow(idx);
             }
-            Diagnostics.StopTimer("SongPresenter.CreateVisualElement");
         }
 
         /// <summary>
@@ -155,10 +174,14 @@ namespace Restless.App.DrumMaster.Controls
         /// <param name="patternIdx">The selected pattern index</param>
         internal void HighlightSelectedPattern(int patternIdx)
         {
-            foreach (var child in Grid.Children.OfType<VisualSelector>())
+            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
             {
-                child.IsSelected = child.Position == patternIdx;
-            }
+                foreach (var child in Grid.Children.OfType<VisualSelector>())
+                {
+                    child.IsSelected = child.Position == patternIdx;
+                }
+
+            }));
         }
         #endregion
 
@@ -199,7 +222,8 @@ namespace Restless.App.DrumMaster.Controls
                 {
                     SelectorType = PointSelectorType.SongRow,
                     Margin = new Thickness(1),
-                    Position = k,
+                    Position = colIdx,
+                    Row = rowIdx,
                 };
                 AddElement(sps, rowIdx, colIdx);
                 colIdx++;
@@ -215,32 +239,17 @@ namespace Restless.App.DrumMaster.Controls
             }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        private PointSelector GetPointSelectorAt(int row, int col)
+        {
+            foreach (var child in Grid.Children.OfType<PointSelector>().Where((ps) => ps.SelectorType == PointSelectorType.SongRow))
+            {
+                if (Grid.GetRow(child) == row && Grid.GetColumn(child) == col)
+                {
+                    return child;
+                }
+            }
+            return null;
+        }
         #endregion
     }
 }

@@ -20,9 +20,8 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="ControlObjectSelector"/> class.
         /// </summary>
-        internal ControlObjectSelector() // PointSelectorType type)
+        internal ControlObjectSelector()
         {
-            // SelectorType = type;
             SelectCommand = new RelayCommand((p) => IsSelected = !IsSelected);
         }
 
@@ -213,7 +212,7 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Identifies the <see cref="IsSelected"/> dependency property.
         /// </summary>
-        private static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register
+        public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register
             (
                 nameof(IsSelected), typeof(bool), typeof(ControlObjectSelector), new FrameworkPropertyMetadata(false, OnIsSelectedChanged)
             );
@@ -225,8 +224,26 @@ namespace Restless.App.DrumMaster.Controls
                 c.ThreadSafeIsSelected = c.IsSelected;
                 c.OnIsSelectedChanged();
                 c.OnIsSelectedBrushChanged();
+                c.RaiseEvent(new RoutedEventArgs(IsSelectedChangedEvent));
             }
         }
+
+        /// <summary>
+        /// Provides notification when the <see cref="IsSelected"/> property is set to true.
+        /// </summary>
+        public event RoutedEventHandler IsSelectedChanged
+        {
+            add => AddHandler(IsSelectedChangedEvent, value);
+            remove => RemoveHandler(IsSelectedChangedEvent, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="IsSelectedChanged"/> routed event.
+        /// </summary>
+        public static readonly RoutedEvent IsSelectedChangedEvent = EventManager.RegisterRoutedEvent
+            (
+                nameof(IsSelectedChanged), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(ControlObjectSelector)
+            );
 
         /// <summary>
         /// Gets the thread safe value of <see cref="IsSelected"/>.

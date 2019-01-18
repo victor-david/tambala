@@ -107,6 +107,7 @@
     <Compile Include="Controls\Button\ImageButton.cs" />
     <Compile Include="Commands\CommandDictionary.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Controls\Main\ControlElement.cs" />
     <Compile Include="Controls\Main\ControlObjectVisualGrid.cs" />
     <Compile Include="Controls\Main\ControlObjectVisual.cs" />
     <Compile Include="Controls\Main\DrumPatternQuarter.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="Controls\Main\InstrumentController.cs" />
     <Compile Include="Controls\Main\MasterPlayPlayer.cs" />
     <Compile Include="Core\GenericList.cs" />
+    <Compile Include="Core\IQuarterNote.cs" />
     <Compile Include="Core\ISelectorUnit.cs" />
     <Compile Include="Core\PointSelectorUnit.cs" />
     <Compile Include="Controls\Main\VisualBorder.cs" />
@@ -167,7 +169,7 @@
     <Compile Include="Core\IXElement.cs" />
     <Compile Include="Core\MaxSizeObservableCollection.cs" />
     <Compile Include="Controls\Main\ObsoleteMaybe\TrackBoxCollection.cs" />
-    <Compile Include="Diagnostics\Diagnostics.cs" />
+    <Compile Include="Core\Diagnostics.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controls\Text\LinkedTextBlock.cs" />
     <Compile Include="Controls\Main\ObsoleteMaybe\TrackBoxType.cs" />
@@ -296,6 +298,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Diagrams\Containers.cd" />
+    <None Include="Diagrams\Players.cd" />
     <None Include="Diagrams\Visuals.cd" />
     <None Include="packages.config" />
   </ItemGroup>

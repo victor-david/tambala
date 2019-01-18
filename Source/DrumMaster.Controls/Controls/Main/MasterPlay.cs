@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -30,6 +29,7 @@ namespace Restless.App.DrumMaster.Controls
             ActivePlayImageSource = StartImageSource;
             Commands.Add("Play", new RelayCommand(RunPlayCommand));
             AddHandler(OnOff.ActiveValueChangedEvent, new RoutedEventHandler(OnOffActiveValueChanged));
+            Owner.AddHandler(MasterOutput.TempoChangedEvent, new RoutedEventHandler(MasterOutputTempoChanged));
             InitializeThreads();
         }
 
@@ -199,6 +199,13 @@ namespace Restless.App.DrumMaster.Controls
         /// <param name="element">The element</param>
         public override void RestoreFromXElement(XElement element)
         {
+            //foreach (XElement e in ChildElementList(element))
+            //{
+            //    if (e.Name == nameof(PlayMode) && Enum.TryParse(e.Value, out PlayMode result))
+            //    {
+            //        PlayMode = result;
+            //    }
+            //}
         }
         #endregion
 
@@ -220,6 +227,15 @@ namespace Restless.App.DrumMaster.Controls
             if (e.Source is OnOff c && c.ActiveValue is PlayMode mode)
             {
                 PlayMode = mode;
+                e.Handled = true;
+            }
+        }
+
+        private void MasterOutputTempoChanged(object sender, RoutedEventArgs e)
+        {
+            if (e.OriginalSource is MasterOutput master)
+            {
+                SetTempo(master.Tempo);
                 e.Handled = true;
             }
         }

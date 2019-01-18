@@ -63,32 +63,32 @@ namespace Restless.App.DrumMaster.Controls.Core
 
         /************************************************************************/
 
-        #region Tempo
-        /// <summary>
-        /// Provides static values that define tempo characteristics.
-        /// </summary>
-        public static class Tempo
-        {
-            /// <summary>
-            /// The minimum tempo allowed.
-            /// </summary>
-            public const double Min = 45;
+        #region Tempo (commented out)
+        ///// <summary>
+        ///// Provides static values that define tempo characteristics.
+        ///// </summary>
+        //public static class Tempo
+        //{
+        //    /// <summary>
+        //    /// The minimum tempo allowed.
+        //    /// </summary>
+        //    public const double Min = 45;
 
-            /// <summary>
-            /// The maximum tempo allowed.
-            /// </summary>
-            public const double Max = 240;
+        //    /// <summary>
+        //    /// The maximum tempo allowed.
+        //    /// </summary>
+        //    public const double Max = 240;
 
-            /// <summary>
-            /// The default tempo.
-            /// </summary>
-            public const double Default = 60;
+        //    /// <summary>
+        //    /// The default tempo.
+        //    /// </summary>
+        //    public const double Default = 120;
 
-            /// <summary>
-            /// The default tempo text.
-            /// </summary>
-            public const string DefaultText = "Tempo";
-        }
+        //    /// <summary>
+        //    /// The default tempo text.
+        //    /// </summary>
+        //    public const string DefaultText = "Tempo";
+        //}
         #endregion
 
         /************************************************************************/
@@ -210,37 +210,37 @@ namespace Restless.App.DrumMaster.Controls.Core
 
         /************************************************************************/
 
-        #region Volume
-        /// <summary>
-        /// Provides static values that define volume characteristics.
-        /// </summary>
-        public static class Volume
-        {
-            /// <summary>
-            /// The minimum volume allowed in decibels.
-            /// </summary>
-            public const float Min = -64.0f;
+        #region Volume (commented out)
+        ///// <summary>
+        ///// Provides static values that define volume characteristics.
+        ///// </summary>
+        //public static class Volume
+        //{
+        //    /// <summary>
+        //    /// The minimum volume allowed in decibels.
+        //    /// </summary>
+        //    public const float Min = -64.0f;
 
-            /// <summary>
-            /// The maximum volume allowed in decibels.
-            /// </summary>
-            public const float Max = 18.0f;
+        //    /// <summary>
+        //    /// The maximum volume allowed in decibels.
+        //    /// </summary>
+        //    public const float Max = 18.0f;
 
-            /// <summary>
-            /// The default volume
-            /// </summary>
-            public const float Default = 0.0f;
+        //    /// <summary>
+        //    /// The default volume
+        //    /// </summary>
+        //    public const float Default = 0.0f;
 
-            /// <summary>
-            /// The default volume text.
-            /// </summary>
-            public const string DefaultText = "Volume";
+        //    /// <summary>
+        //    /// The default volume text.
+        //    /// </summary>
+        //    public const string DefaultText = "Volume";
 
-            /// <summary>
-            /// The default short volume text.
-            /// </summary>
-            public const string DefaultShortText = "Vol:";
-        }
+        //    /// <summary>
+        //    /// The default short volume text.
+        //    /// </summary>
+        //    public const string DefaultShortText = "Vol:";
+        //}
         #endregion
 
         /************************************************************************/

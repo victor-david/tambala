@@ -1,8 +1,8 @@
 ﻿using Restless.App.DrumMaster.Controls.Core;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using System.Xml.Linq;
 
 namespace Restless.App.DrumMaster.Controls
@@ -37,7 +37,11 @@ namespace Restless.App.DrumMaster.Controls
             MasterOutput = new MasterOutput(this);
             SongContainer = new SongContainer(this);
 
-            DrumKit = new DrumKit();
+            DrumKit = new DrumKit
+            {
+                Name = "Cuban",
+                ResourcePath = "Resources.DrumKit.Cuban"
+            };
             DrumKit.LoadBuiltInInstruments();
 
             DrumPatterns = new GenericList<DrumPattern>();
@@ -53,13 +57,6 @@ namespace Restless.App.DrumMaster.Controls
 
             AddHandler(IsChangedSetEvent, new RoutedEventHandler(IsChangedSetEventHandler));
             AddHandler(IsChangedResetEvent, new RoutedEventHandler(IsChangedResetEventHandler));
-            AddHandler(MasterOutput.TempoChangedEvent, new RoutedEventHandler(TempoChangedEventHandler));
-
-            AddHandler(LoadedEvent, new RoutedEventHandler((s,e)=> 
-            {
-                SongContainer.SongPresenter.HighlightSelectedPattern(0);
-                e.Handled = true;
-            }));
 
             songContainerLastManualHeight = 0.0;
             Dispatcher.ShutdownStarted += DispatcherShutdownStarted;
@@ -179,29 +176,6 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region DrumPatternContainer (commented out)
-        ///// <summary>
-        ///// Gets the drum kit container
-        ///// </summary>
-        //public DrumPatternContainer DrumPatternContainer
-        //{
-        //    get => (DrumPatternContainer)GetValue(DrumPatternContainerProperty);
-        //    private set => SetValue(DrumPatternContainerPropertyKey, value);
-        //}
-
-        //private static readonly DependencyPropertyKey DrumPatternContainerPropertyKey = DependencyProperty.RegisterReadOnly
-        //    (
-        //        nameof(DrumPatternContainer), typeof(DrumPatternContainer), typeof(ProjectContainer), new PropertyMetadata(null)
-        //    );
-
-        ///// <summary>
-        ///// Identifies the <see cref="DrumPatternContainer"/> dependency property.
-        ///// </summary>
-        //public static readonly DependencyProperty DrumPatternContainerProperty = DrumPatternContainerPropertyKey.DependencyProperty;
-        #endregion
-
-        /************************************************************************/
-
         #region DrumPatterns
         /// <summary>
         /// Gets the list of drum patterms
@@ -282,21 +256,15 @@ namespace Restless.App.DrumMaster.Controls
         {
             var element = new XElement(nameof(ProjectContainer));
             element.Add(new XElement(nameof(DisplayName), DisplayName));
+            element.Add(DrumKit.GetXElement());
             element.Add(MasterOutput.GetXElement());
             element.Add(MasterPlay.GetXElement());
             element.Add(SongContainer.GetXElement());
-            ///element.Add(DrumPatternContainer.GetXElement());
-            //element.Add(new XElement(nameof(Volume), Volume));
-            //element.Add(new XElement(nameof(Tempo), Tempo));
-            //element.Add(new XElement(nameof(Beats), Beats));
-            //element.Add(new XElement(nameof(StepsPerBeat), StepsPerBeat));
-            //element.Add(new XElement(nameof(BoxSize), BoxSize));
-            //element.Add(RenderParms.GetXElement());
-
-            //Tracks.DoForAll((track) =>
-            //{
-            //    element.Add(track.GetXElement());
-            //});
+             
+            DrumPatterns.DoForAll((pattern) =>
+            {
+                element.Add(pattern.GetXElement());
+             });
             return element;
         }
 
@@ -306,45 +274,24 @@ namespace Restless.App.DrumMaster.Controls
         /// <param name="element">The element</param>
         public override void RestoreFromXElement(XElement element)
         {
-            IEnumerable<XElement> childList = from el in element.Elements() select el;
-
-            foreach (XElement e in childList)
+            int idx = 0;
+            foreach (XElement e in ChildElementList(element))
             {
                 if (e.Name == nameof(DisplayName)) SetDependencyProperty(DisplayNameProperty, e.Value);
-                //if (e.Name == nameof(Volume)) SetDependencyProperty(VolumeProperty, e.Value);
-                //if (e.Name == nameof(Tempo)) SetDependencyProperty(TempoProperty, e.Value);
-                //if (e.Name == nameof(Beats)) SetDependencyProperty(BeatsProperty, e.Value);
-                //if (e.Name == nameof(StepsPerBeat)) SetDependencyProperty(StepsPerBeatProperty, e.Value);
-                //if (e.Name == nameof(BoxSize)) SetDependencyProperty(BoxSizeProperty, e.Value);
-                //if (e.Name == nameof(AudioRenderParameters))
-                //{
-                //    RenderParms.RestoreFromXElement(e);
-                //    AudioHost.Instance.AudioCapture.RenderParms = RenderParms;
-                //}
+                if (e.Name == nameof(DrumKit)) DrumKit.RestoreFromXElement(e);
+                if (e.Name == nameof(MasterOutput)) MasterOutput.RestoreFromXElement(e);
+                if (e.Name == nameof(MasterPlay)) MasterPlay.RestoreFromXElement(e);
+                if (e.Name == nameof(SongContainer)) SongContainer.RestoreFromXElement(e);
 
-                // For backward compatibility
-                //if (e.Name == nameof(TrackController))
-                //{
-                //    AddTrack(null);
-                //    OnBoxSizeChanged();
-                //    OnTotalStepsChanged();
-                //    Tracks[Tracks.Count - 1].Controller.RestoreFromXElement(e);
-                //    IEnumerable<XElement> subChildList = from subE in e.Elements() select subE;
-                //    foreach (XElement ee in subChildList)
-                //    {
-                //        if (ee.Name == "TrackBoxContainer")
-                //        {
-                //            Tracks[Tracks.Count - 1].BoxContainer.RestoreFromXElement(ee);
-                //        }
-                //    }
-                //}
-
-                // For new format
-                //if (e.Name == nameof(CompositeTrack))
-                //{
-                //    AddTrack(null);
-                //    Tracks[Tracks.Count - 1].RestoreFromXElement(e);
-                //}
+                if (e.Name == nameof(DrumPattern))
+                {
+                    if (idx < DrumPatterns.Count)
+                    {
+                        DrumPatterns[idx].Create();
+                        DrumPatterns[idx].RestoreFromXElement(e);
+                    }
+                    idx++;
+                }
             }
         }
         #endregion
@@ -384,20 +331,25 @@ namespace Restless.App.DrumMaster.Controls
         /// Opens the specified file and sets all tracks and values according to the contents.
         /// </summary>
         /// <param name="filename">The file name</param>
-        public void Open(string filename)
+        /// <returns>An exception object if an exception occurred; otherwise, null.</returns>
+        public async Task<Exception> Open(string filename)
         {
             try
             {
-                //Tracks.Clear();
-                XDocument doc = XDocument.Load(filename);
-                RestoreFromXElement(doc.Root);
-                ResetIsChanged();
-                DisplayName = FileName = filename;
+                await Dispatcher.InvokeAsync(() =>
+                {
+                    XDocument doc = XDocument.Load(filename);
+                    RestoreFromXElement(doc.Root);
+                    ResetIsChanged();
+                    DisplayName = FileName = filename;
+                    OnLoaded();
+                }, DispatcherPriority.Loaded);
             }
             catch (Exception ex)
             {
-                throw new System.IO.IOException($"Unable to load {filename}", ex);
+                return new System.IO.IOException($"Dispatcher Unable to load {filename}", ex);
             }
+            return null;
         }
 
         /// <summary>
@@ -408,6 +360,18 @@ namespace Restless.App.DrumMaster.Controls
             MasterPlay.Shutdown();
             //RemoveEventHandlers();
             Dispatcher.ShutdownStarted -= DispatcherShutdownStarted;
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region Protected methods
+        /// <summary>
+        /// Called when the control has been loaded.
+        /// </summary>
+        protected override void OnLoaded()
+        {
+            SongContainer.SongPresenter.HighlightSelectedPattern(0);
         }
         #endregion
 
@@ -426,6 +390,18 @@ namespace Restless.App.DrumMaster.Controls
                 SongContainer.SongPresenter.HighlightSelectedPattern(patternIdx);
             }
         }
+
+        ///// <summary>
+        ///// From this assembly, activate the drum patterm at the specified index
+        ///// </summary>
+        ///// <param name="patternIdx">The index of the drum pattern to active.</param>
+        //internal void ActivateThreadSafeDrumPattern(int patternIdx)
+        //{
+        //    if (patternIdx >= 0 && patternIdx < DrumPatterns.Count)
+        //    {
+        //        ThreadSafeActiveDrumPattern = DrumPatterns[patternIdx];
+        //    }
+        //}
 
         internal void ChangeSongContainerHeight()
         {
@@ -462,12 +438,6 @@ namespace Restless.App.DrumMaster.Controls
             {
                 ResetIsChanged();
             }
-        }
-
-        private void TempoChangedEventHandler(object sender, RoutedEventArgs e)
-        {
-            MasterPlay.SetTempo(MasterOutput.Tempo);
-            e.Handled = true;
         }
 
         private void DispatcherShutdownStarted(object sender, EventArgs e)

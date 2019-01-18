@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
+using System.Windows;
 
-namespace Restless.App.DrumMaster.Controls
+namespace Restless.App.DrumMaster.Controls.Core
 {
     /// <summary>
     /// Provides some simple diagnositics.
@@ -45,6 +41,18 @@ namespace Restless.App.DrumMaster.Controls
 #if DEBUG
             Stopwatch.Stop();
             Debug.WriteLine($"{message} ms:{Stopwatch.ElapsedMilliseconds}");
+#endif
+        }
+
+        public static void DisplayRoutedEvent(object sender, RoutedEventArgs e)
+        {
+#if DEBUG
+            Debug.WriteLine("Routed Event Handler");
+            Debug.WriteLine("====================");
+            Debug.WriteLine($"Event: {e.RoutedEvent.OwnerType}.{e.RoutedEvent.Name} ({e.RoutedEvent.RoutingStrategy})");
+            Debug.WriteLine($"Sender: {sender}");
+            Debug.WriteLine($"Source: {e.Source}");
+            Debug.WriteLine($"Orig Source: {e.OriginalSource}");
 #endif
         }
     }

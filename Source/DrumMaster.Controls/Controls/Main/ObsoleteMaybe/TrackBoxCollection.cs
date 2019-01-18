@@ -31,30 +31,30 @@ namespace Restless.App.DrumMaster.Controls.Obsolete
         /// <param name="shiftVolume">true to shift the volume bias.</param>
         public void ShiftLeft(bool shiftFrequency, bool shiftVolume)
         {
-            if (Count > 1)
-            {
-                StepPlayFrequency firstBoxFreq = this[0].PlayFrequency;
-                float firstBoxBias = this[0].VolumeBias;
-                for (int k = 0; k < Count - 1; k++)
-                {
-                    if (shiftFrequency)
-                    {
-                        this[k].PlayFrequency = this[k + 1].PlayFrequency;
-                    }
-                    if (shiftVolume)
-                    {
-                        this[k].VolumeBias = this[k + 1].VolumeBias;
-                    }
-                }
-                if (shiftFrequency)
-                {
-                    this[Count - 1].PlayFrequency = firstBoxFreq;
-                }
-                if (shiftVolume)
-                {
-                    this[Count - 1].VolumeBias = firstBoxBias;
-                }
-            }
+            //if (Count > 1)
+            //{
+            //    StepPlayFrequency firstBoxFreq = this[0].PlayFrequency;
+            //    float firstBoxBias = this[0].VolumeBias;
+            //    for (int k = 0; k < Count - 1; k++)
+            //    {
+            //        if (shiftFrequency)
+            //        {
+            //            this[k].PlayFrequency = this[k + 1].PlayFrequency;
+            //        }
+            //        if (shiftVolume)
+            //        {
+            //            this[k].VolumeBias = this[k + 1].VolumeBias;
+            //        }
+            //    }
+            //    if (shiftFrequency)
+            //    {
+            //        this[Count - 1].PlayFrequency = firstBoxFreq;
+            //    }
+            //    if (shiftVolume)
+            //    {
+            //        this[Count - 1].VolumeBias = firstBoxBias;
+            //    }
+            //}
         }
 
         /// <summary>
@@ -64,31 +64,31 @@ namespace Restless.App.DrumMaster.Controls.Obsolete
         /// <param name="shiftVolume">true to shift the volume bias.</param>
         public void ShiftRight(bool shiftFrequency, bool shiftVolume)
         {
-            if (Count > 1)
-            {
-                StepPlayFrequency lastBoxFreq = this[Count - 1].PlayFrequency;
-                float lastBoxBias = this[Count - 1].VolumeBias;
+            //if (Count > 1)
+            //{
+            //    StepPlayFrequency lastBoxFreq = this[Count - 1].PlayFrequency;
+            //    float lastBoxBias = this[Count - 1].VolumeBias;
 
-                for (int k = Count - 1; k > 0; k--)
-                {
-                    if (shiftFrequency)
-                    {
-                        this[k].PlayFrequency = this[k - 1].PlayFrequency;
-                    }
-                    if (shiftVolume)
-                    {
-                        this[k].VolumeBias = this[k - 1].VolumeBias;
-                    }
-                }
-                if (shiftFrequency)
-                {
-                    this[0].PlayFrequency = lastBoxFreq;
-                }
-                if (shiftVolume)
-                {
-                    this[0].VolumeBias = lastBoxBias;
-                }
-            }
+            //    for (int k = Count - 1; k > 0; k--)
+            //    {
+            //        if (shiftFrequency)
+            //        {
+            //            this[k].PlayFrequency = this[k - 1].PlayFrequency;
+            //        }
+            //        if (shiftVolume)
+            //        {
+            //            this[k].VolumeBias = this[k - 1].VolumeBias;
+            //        }
+            //    }
+            //    if (shiftFrequency)
+            //    {
+            //        this[0].PlayFrequency = lastBoxFreq;
+            //    }
+            //    if (shiftVolume)
+            //    {
+            //        this[0].VolumeBias = lastBoxBias;
+            //    }
+            //}
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace Restless.App.DrumMaster.Controls.Obsolete
         {
             foreach (TrackBox box in this)
             {
-                box.VolumeBias = TrackVals.VolumeBias.Default;
+                //box.VolumeBias = TrackVals.VolumeBias.Default;
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿using Restless.App.DrumMaster.Controls.Audio;
 using Restless.App.DrumMaster.Controls.Core;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
@@ -13,14 +14,13 @@ namespace Restless.App.DrumMaster.Controls
     /// <summary>
     /// Extends <see cref="ControlObjectVisualGrid"/> to provide a visual display panel for <see cref="DrumPattern"/>
     /// </summary>
-    public class DrumPatternPresenter : ControlObjectVisualGrid
+    internal class DrumPatternPresenter : ControlObjectVisualGrid
     {
         #region Private
         private int quarterNoteCount;
-        private int totalTicks;
+        private int ticksPerQuarterNote;
         private double scale;
-        private readonly GenericList<DrumPatternQuarter> headQuarters;
-        private readonly GenericList<DrumPatternQuarter> bodyQuarters;
+        private readonly Dictionary<int, DrumPatternQuarter> headQuarters;
         #endregion
 
         /************************************************************************/
@@ -30,12 +30,15 @@ namespace Restless.App.DrumMaster.Controls
         {
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));
             Controllers = new GenericList<InstrumentController>();
-            headQuarters = new GenericList<DrumPatternQuarter>();
-            bodyQuarters = new GenericList<DrumPatternQuarter>();
-            // Setting private fields instead of properties to avoid triggering the setters
-            quarterNoteCount = Constants.DrumPattern.QuarterNote.Default;
-            totalTicks = Constants.DrumPattern.TotalTick.Default;
+            quarterNoteCount = Constants.DrumPattern.QuarterNoteCount.Default;
+            ticksPerQuarterNote = Constants.DrumPattern.TicksPerQuarterNote.Default;
             scale = Constants.DrumPattern.Scale.Default;
+
+            headQuarters = new Dictionary<int, DrumPatternQuarter>();
+
+            Owner.AddHandler(DrumPatternController.QuarterNoteCountChangedEvent, new RoutedEventHandler(ControllerQuarterNoteCountChanged));
+            Owner.AddHandler(DrumPatternController.TicksPerQuarterNoteChangedEvent, new RoutedEventHandler(ControllerTicksPerQuarterNoteChanged));
+            Owner.AddHandler(DrumPatternController.ScaleChangedEvent, new RoutedEventHandler(ControllerScaleChanged));
         }
 
         static DrumPatternPresenter()
@@ -58,48 +61,9 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Gets the list of instrument controllers.
         /// </summary>
-        internal GenericList<InstrumentController> Controllers
+        private GenericList<InstrumentController> Controllers
         {
             get;
-        }
-
-        /// <summary>
-        /// From this assembly, gets or sets the quarter note count.
-        /// </summary>
-        internal int QuarterNoteCount
-        {
-            get => quarterNoteCount;
-            set
-            {
-                quarterNoteCount = value;
-                OnQuarterNoteChanged();
-            }
-        }
-
-        /// <summary>
-        /// From this assembly, gets or sets the total number of ticks.
-        /// </summary>
-        internal int TotalTicks
-        {
-            get => totalTicks;
-            set
-            {
-                totalTicks = value;
-                OnTotalTicksChanged();
-            }
-        }
-
-        /// <summary>
-        /// From this assembly, gets or sets the scale
-        /// </summary>
-        internal double Scale
-        {
-            get => scale;
-            set
-            {
-                scale = value;
-                OnScaleChanged();
-            }
         }
         #endregion
 
@@ -118,17 +82,6 @@ namespace Restless.App.DrumMaster.Controls
         /************************************************************************/
 
         #region Public methods
-        /// <summary>
-        /// Called when the template is applied.
-        /// </summary>
-        public override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
-            headQuarters.Clear();
-            bodyQuarters.Clear();
-            CreateHeader();
-            CreateBody();
-        }
 
         /// <summary>
         /// Returns a string representation of this object.
@@ -136,10 +89,10 @@ namespace Restless.App.DrumMaster.Controls
         /// <returns>A string</returns>
         public override string ToString()
         {
-            return $"{nameof(DrumPatternPresenter)} Q:{QuarterNoteCount} T:{TotalTicks} Scale:{Scale}";
+            return $"{nameof(DrumPatternPresenter)}";
         }
         #endregion
-        
+
         /************************************************************************/
 
         #region IXElement
@@ -152,50 +105,120 @@ namespace Restless.App.DrumMaster.Controls
         public override XElement GetXElement()
         {
             var element = new XElement(nameof(DrumPatternPresenter));
-
-
+            Controllers.DoForAll((controller) =>
+            {
+                element.Add(controller.GetXElement());
+            });
             return element;
         }
 
         /// <summary>
         /// Restores the object from the specified XElement.
-        /// This method satisfies the interface requirement but is not used.
-        /// It always throws an InvalidOperationException.
         /// </summary>
         /// <param name="element">The element</param>
         public override void RestoreFromXElement(XElement element)
         {
-            throw new InvalidOperationException();
+            int idx = 0;
+            foreach (XElement e in ChildElementList(element))
+            {
+                if (e.Name == nameof(InstrumentController))
+                {
+                    if (idx < Controllers.Count)
+                    {
+                        Controllers[idx].Create();
+                        Controllers[idx].RestoreFromXElement(e);
+                    }
+                    idx++;
+                }
+            }
+            ResetIsChanged();
         }
         #endregion
 
         /************************************************************************/
 
-        internal void Play(int quarterNote, int position, int operationSet)
+        #region Protected methods
+        /// <summary>
+        /// Called in response to the <see cref="ControlElement.Create"/> method.
+        /// </summary>
+        protected override void OnElementCreate()
         {
-            // 64 bodyQuarters. 16 instruments. 4 quarters each
-            //Debug.Assert(quarterNote >= 0 && quarterNote < bodyQuarters.Count);
-            int cidx = 0;
+            headQuarters.Clear();
+            CreateHeader();
+            CreateBody();
+        }
+
+        /// <summary>
+        /// Called when the control has been loaded.
+        /// </summary>
+        protected override void OnLoaded()
+        {
+            // This class listens to the following events (assigned in the constructor). When restoring,
+            // the controller raises the events in response to changes made by its RestoreFromXElement()
+            // method. However, the events don't arrive here because (at the time), this control isn't yet loaded
+            // and attached to the element tree. Once loaded, we raise the events to modify the quarter note
+            // count, ticks per quarter note and scale.
+            Owner.Controller.RaiseEvent(new RoutedEventArgs(DrumPatternController.QuarterNoteCountChangedEvent));
+            Owner.Controller.RaiseEvent(new RoutedEventArgs(DrumPatternController.TicksPerQuarterNoteChangedEvent));
+            Owner.Controller.RaiseEvent(new RoutedEventArgs(DrumPatternController.ScaleChangedEvent));
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region Internal methods
+        /// <summary>
+        /// Get the count of selecteors that are selected.
+        /// </summary>
+        /// <returns>The number of selectors in this drum pattern presenter that are currently selected.</returns>
+        internal int GetSelectedCount()
+        {
+            int count = 0;
             foreach (InstrumentController controller in Controllers)
             {
-                int idx = cidx * (quarterNoteCount-1) + quarterNote - 1;
-                Debug.WriteLine($"Idx: {idx}");
-                DrumPatternQuarter quarter = bodyQuarters[idx];
-                if (quarter.IsSelected(position))
+                foreach (var item in controller.Quarters)
                 {
-                    controller.Play(operationSet);
+                    count += item.Value.GetSelectedCount();
                 }
-                cidx++;
-
             }
-
-            //DrumPatternQuarter quarter =  bodyQuarters[quarterNote - 1];
-
-            //if (quarter.IsSelected(position))
-            //{
-            //    Debug.WriteLine($"{position} SELECTED");
-            //}
+            return count;
         }
+
+        internal void Play(int quarterNote, int position, int operationSet)
+        {
+            // 64 bodyQuarters. 16 instruments. 4-6 quarters each
+            foreach (InstrumentController controller in Controllers)
+            {
+                controller.Play(quarterNote, position, operationSet);
+            }
+        }
+
+        /// <summary>
+        /// Adds the highlight on the specified quarter note tick using Dispatcher.BeginInvoke.
+        /// </summary>
+        /// <param name="quarterNote">The quarter note to highlight.</param>
+        internal void InvokeAddTickHighlight(int quarterNote)
+        {
+            if (headQuarters.ContainsKey(quarterNote))
+            {
+                headQuarters[quarterNote].InvokeAddQuarterNoteTickHighlight();
+            }
+        }
+
+        /// <summary>
+        /// Removes the highlight from the specified quarter note tick using Dispatcher.BeginInvoke.
+        /// </summary>
+        /// <param name="quarterNote">The quarter note to remove the highlight from.</param>
+        internal void InvokeRemoveTickHighlight(int quarterNote)
+        {
+            if (headQuarters.ContainsKey(quarterNote))
+            {
+                headQuarters[quarterNote].InvokeRemoveQuarterNoteTickHighlight();
+            }
+        }
+        #endregion
+
+        /************************************************************************/
 
         #region Private methods
         /// <summary>
@@ -213,37 +236,43 @@ namespace Restless.App.DrumMaster.Controls
             }, 0, 0);
 
             int headerRow = AddRowDefinition();
-            for (int q = 1; q <= quarterNoteCount; q++)
+            for (int q = 1; q <= Constants.DrumPattern.QuarterNoteCount.Max; q++)
             {
-                int colIdx = AddColumnDefinition(); // scale);
+                int colIdx = AddColumnDefinition(); 
 
                 var quarter = new DrumPatternQuarter()
                 {
                     QuarterNote = q,
                     QuarterType = DrumPatternQuarterType.Header,
-                    TotalTicks = totalTicks,
+                    TotalTicks = ticksPerQuarterNote,
                     Width = scale,
+                    Visibility = q <= quarterNoteCount ? Visibility.Visible : Visibility.Collapsed
                 };
 
-                headQuarters.Add(quarter);
+                quarter.Create();
+                headQuarters.Add(q, quarter);
                 AddElement(quarter, headerRow, colIdx);
             }
         }
 
-        private void OnQuarterNoteChanged()
-        {
-
-        }
-
-        private void OnTotalTicksChanged()
+        private void ChangeQuarterNoteCount()
         {
             foreach (var child in Grid.Children.OfType<DrumPatternQuarter>())
             {
-                child.TotalTicks = totalTicks;
+                child.Visibility = child.QuarterNote <= quarterNoteCount ? Visibility.Visible : Visibility.Collapsed;
+            }
+
+        }
+
+        private void ChangeTicksPerQuarterNote()
+        {
+            foreach (var child in Grid.Children.OfType<DrumPatternQuarter>())
+            {
+                child.TotalTicks = ticksPerQuarterNote;
             }
         }
 
-        private void OnScaleChanged()
+        private void ChangeScale()
         {
             foreach (var child in Grid.Children.OfType<DrumPatternQuarter>())
             {
@@ -266,24 +295,55 @@ namespace Restless.App.DrumMaster.Controls
                     Margin = new Thickness(0,2,0,0),
                     Padding = new Thickness(0,2,12,0),
                     Instrument = ins,
-                    IsMuted = true,
                 };
 
                 Controllers.Add(controller);
                 AddElement(controller, rowIdx, 0);
 
-                for (int q = 1; q <= quarterNoteCount; q++)
+                for (int q = 1; q <= Constants.DrumPattern.QuarterNoteCount.Max; q++)
                 {
                     var quarter = new DrumPatternQuarter()
                     {
                         QuarterNote = q,
                         QuarterType = DrumPatternQuarterType.Selector,
-                        TotalTicks = totalTicks,
+                        TotalTicks = ticksPerQuarterNote,
                         Width = scale,
+                        Visibility = q <= quarterNoteCount ? Visibility.Visible : Visibility.Collapsed
                     };
-                    bodyQuarters.Add(quarter);
+                    quarter.Create();
+                    controller.Quarters.Add(q, quarter);
                     AddElement(quarter, rowIdx, q);
                 }
+            }
+        }
+
+        private void ControllerQuarterNoteCountChanged(object sender, RoutedEventArgs e)
+        {
+            if (e.OriginalSource is DrumPatternController controller)
+            {
+                quarterNoteCount = controller.QuarterNoteCount;
+                ChangeQuarterNoteCount();
+                e.Handled = true;
+            }
+        }
+
+        private void ControllerTicksPerQuarterNoteChanged(object sender, RoutedEventArgs e)
+        {
+            if (e.OriginalSource is DrumPatternController controller)
+            {
+                ticksPerQuarterNote = controller.TicksPerQuarterNote;
+                ChangeTicksPerQuarterNote();
+                e.Handled = true;
+            }
+        }
+
+        private void ControllerScaleChanged(object sender, RoutedEventArgs e)
+        {
+            if (e.OriginalSource is DrumPatternController controller)
+            {
+                scale = controller.Scale;
+                ChangeScale();
+                e.Handled = true;
             }
         }
         #endregion

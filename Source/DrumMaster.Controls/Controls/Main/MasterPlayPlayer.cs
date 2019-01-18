@@ -24,7 +24,6 @@ namespace Restless.App.DrumMaster.Controls
         private AutoResetEvent songPlaySignaler;
         private AutoResetEvent songEndPlaySignaler;
         private Thread songPlayThread;
-        private Stopwatch songLoopTimer;
         private int songTotalSteps;
         private int songSleepTime;
         private int songOperationSet;
@@ -33,17 +32,16 @@ namespace Restless.App.DrumMaster.Controls
         private AutoResetEvent patternPlaySignaler;
         private AutoResetEvent patternEndPlaySignaler;
         private Thread patternPlayThread;
-        private Stopwatch patternLoopTimer;
         private int patternTotalSteps;
         private int patternSleepTime;
         private int patternOperationSet;
         private bool isControlClosing;
+        private PlayMode playMode;
         #endregion
 
         private void InitializeThreads()
         {
-            songLoopTimer = new Stopwatch();
-            patternLoopTimer = new Stopwatch();
+            playMode = PlayMode.Pattern;
 
             // TODO
             songTotalSteps = 5;
@@ -71,185 +69,107 @@ namespace Restless.App.DrumMaster.Controls
 
         private void SongPlayThreadHandler()
         {
-            Debug.WriteLine("Start SongPlayThread");
+            int patternIdx = 0;
             while (!isControlClosing)
             {
                 songPlaySignaler.WaitOne();
-                int pass = 1;
 
                 if (!isControlClosing)
                 {
+                    isPatternStarted = true;
+
                     while (isSongStarted)
                     {
-                        songLoopTimer.Restart();
-                        int step = 0;
-                        while (isPatternStarted && step < songTotalSteps)
-                        {
-                            PlayOneSongStep(pass, step++);
-                            Thread.Sleep(songSleepTime);
-                        }
+                        // TODO
+                        // Owner.ActivateThreadSafeDrumPattern(patternIdx);
+                        PlayPattern(Owner.DrumPatterns[patternIdx]);
+                        PlayPattern(Owner.DrumPatterns[patternIdx]);
 
-                        ClearAllSteps();
-
-                        songLoopTimer.Stop();
-                        Debug.WriteLine($"SongPlay {pass}. {songLoopTimer.ElapsedMilliseconds}");
-
-                        pass++;
+                        // TODO
+                        patternIdx++;
+                        if (patternIdx == 2) patternIdx++;
+                        if (patternIdx == 4) patternIdx = 0;
                     }
+
+                    isPatternStarted = false;
                 }
             }
-            Debug.WriteLine("End SongPlayThread");
             songEndPlaySignaler.Set();
         }
 
 
         private void PatternPlayThreadHandler()
         {
-            Debug.WriteLine("Start PatternPlayThread");
+            //Debug.WriteLine("Start PatternPlayThread");
+
             while (!isControlClosing)
             {
                 patternPlaySignaler.WaitOne();
-                int pass = 1;
 
                 if (!isControlClosing)
                 {
                     while (isPatternStarted)
                     {
-                        patternLoopTimer.Restart();
-                        int step = 0;
-
-
-                        for (int quarterNote = 1; quarterNote <= 4; quarterNote++)
-                        {
-                            PlayOneQuarterNote(quarterNote);
-                        }
-
-
-
-
-
-
-                        while (isPatternStarted && step < patternTotalSteps)
-                        {
-                            PlayOnePatternStep(pass, step++);
-                            Thread.Sleep(patternSleepTime);
-                        }
-
-                        ClearAllSteps();
-
-                        patternLoopTimer.Stop();
-                        Debug.WriteLine($"PatternPlay {pass}. {patternLoopTimer.ElapsedMilliseconds}");
-
-                        //if (isRendering && pass == maxRenderPass)
-                        //{
-                        //    isStarted = false;
-                        //    Dispatcher.BeginInvoke(DispatcherPriority.Send, new DispatcherOperationCallback
-                        //        ((args) =>
-                        //        {
-                        //            IsStarted = false;
-                        //            return null;
-                        //        }), null);
-
-                        //    AudioHost.Instance.AudioCapture.FadeAndStopCapture();
-                        //    isRendering = false;
-                        //    RenderCompleted?.Invoke(this, new AudioRenderEventArgs(AudioHost.Instance.AudioCapture.RenderParms));
-                        //}
-
-                        pass++;
+                        PlayPattern(Owner.ThreadSafeActiveDrumPattern);
                     }
                 }
             }
-            Debug.WriteLine("End PatternPlayThread");
             patternEndPlaySignaler.Set();
         }
 
-        private void PlayOneSongStep(int pass, int step)
+        private void PlayPattern(DrumPattern pattern)
         {
-            songOperationSet++;
+            int quarterNoteCount = pattern.ThreadSafeController.ThreadSafeQuarterNoteCount;
+
+            for (int quarterNote = 1; quarterNote <= quarterNoteCount; quarterNote++)
+            {
+                pattern.ThreadSafePresenter.InvokeAddTickHighlight(quarterNote);
+                PlayOneQuarterNote(pattern, quarterNote);
+                pattern.ThreadSafePresenter.InvokeRemoveTickHighlight(quarterNote);
+            }
         }
 
 
-
-
-
-        private void PlayOneQuarterNote(int quarterNote)
+        private void PlayOneQuarterNote(DrumPattern pattern, int quarterNote)
         {
             for (int position = 0; position < Constants.DrumPattern.LowestCommon; position++)
             {
                 if (isPatternStarted)
                 {
                     patternOperationSet++;
-                    Owner.ThreadSafeActiveDrumPattern.ThreadSafePresenter.Play(quarterNote, position, patternOperationSet);
-                    Thread.Sleep(patternSleepTime);
+                    pattern.ThreadSafePresenter.Play(quarterNote, position, patternOperationSet);
                     AudioHost.Instance.AudioDevice.CommitChanges(patternOperationSet);
+                    Thread.Sleep(patternSleepTime);
                 }
             }
         }
 
-        private void PlayOnePatternStep(int pass, int step)
-        {
-            //Dispatcher.BeginInvoke(DispatcherPriority.Send, new DispatcherOperationCallback
-            //    ((args) =>
-            //    {
-            //        HeaderBoxes.Boxes[step].PlayFrequency = StepPlayFrequency.EveryPass;
-            //        int subDiv = (step % StepsPerBeat) + 1;
-            //        int beat = (step / StepsPerBeat) + 1;
-            //        PassText = $"00{pass}";
-            //        CounterText = $"0{beat}:0{subDiv}";
-            //        return null;
-            //    }), null);
-
-            if (!IsUserMuted && !IsAutoMuted)
-            {
-                patternOperationSet++;
-                //metronome.Play(step, operationSet);
-
-                //Owner.DrumKit.Instruments.DoForAll((instrument) =>
-                //{
-
-                //});
-
-                Owner.ThreadSafeActiveDrumPattern.ThreadSafePresenter.Controllers.DoForAll((c) =>
-                {
-                    //c.Play(pass, step, patternOperationSet);
-                });
-
-                //Tracks.DoForAll((track) =>
-                //{
-                //    track.ThreadSafeController.Play(pass, step, operationSet);
-                //});
-
-                AudioHost.Instance.AudioDevice.CommitChanges(patternOperationSet);
-            }
-        }
-
-        private void ClearAllSteps()
-        {
-            //Dispatcher.BeginInvoke(DispatcherPriority.Send, new DispatcherOperationCallback
-            //    ((args) =>
-            //    {
-            //        HeaderBoxes.DeselectAllBoxes();
-            //        PassText = DefaultPassText;
-            //        CounterText = DefaultCounterText;
-            //        return null;
-            //    }), null);
-        }
-
         private void OnPlayModeChanged()
         {
-            // TODO
+            IsStarted = false;
+            playMode = PlayMode;
         }
 
         private void OnIsStartedChanged()
         {
-            // isSongStarted = IsStarted;
-            isPatternStarted = IsStarted;
-            // TODO -deal with mode
+            isPatternStarted = isSongStarted = false;
+            SetWhoIsStarted(PlayMode.Pattern, ref isPatternStarted);
+            SetWhoIsStarted(PlayMode.Song, ref isSongStarted);
+
+            if (isSongStarted)
+            {
+                songPlaySignaler.Set();
+            }
             if (isPatternStarted)
             {
-                //songPlaySignaler.Set();
                 patternPlaySignaler.Set();
             }
+
+        }
+
+        private void SetWhoIsStarted(PlayMode mode, ref bool isStarted)
+        {
+            if (PlayMode == mode) isStarted = IsStarted;
         }
 
         #region Internal methods
@@ -285,7 +205,8 @@ namespace Restless.App.DrumMaster.Controls
 
         internal void SetTempo(double tempo)
         {
-            patternSleepTime = MilliSecondsPerMinute / (int)tempo / 24;
+            int tempoInt = (int)tempo;
+            patternSleepTime = MilliSecondsPerMinute / tempoInt / Constants.DrumPattern.LowestCommon;
         }
         #endregion
     }

@@ -166,7 +166,7 @@ namespace Restless.App.DrumMaster.Controls.Obsolete
         {
             var element = new XElement(nameof(TrackBox));
             element.Add(new XElement(nameof(PlayFrequency), PlayFrequency));
-            element.Add(new XElement(nameof(VolumeBias), VolumeBias));
+            //element.Add(new XElement(nameof(VolumeBias), VolumeBias));
             element.Add(new XElement(nameof(IsVolumeVisible), IsVolumeVisible));
             return element;
         }
@@ -190,14 +190,14 @@ namespace Restless.App.DrumMaster.Controls.Obsolete
                     }
                 }
 
-                if (e.Name == nameof(VolumeBias))
-                {
-                    float volBias = TrackVals.VolumeBias.Default;
-                    if (float.TryParse(e.Value, out volBias))
-                    {
-                        VolumeBias = volBias;
-                    }
-                }
+                //if (e.Name == nameof(VolumeBias))
+                //{
+                //    float volBias = TrackVals.VolumeBias.Default;
+                //    if (float.TryParse(e.Value, out volBias))
+                //    {
+                //        VolumeBias = volBias;
+                //    }
+                //}
 
                 if (e.Name == nameof(IsVolumeVisible))
                 {
@@ -257,8 +257,8 @@ namespace Restless.App.DrumMaster.Controls.Obsolete
                 // biasFactor is expressed as a value between zero and HumanVolumeBias.Max (7.5)
                 float minValue = -biasFactor;
                 float result = (float)random.NextDouble() * (biasFactor - minValue) + minValue;
-                float dbVol = ThreadSafeVolumeRaw + ThreadSafeVolumeBiasRaw + result;
-                ThreadSafeVolume = XAudio2.DecibelsToAmplitudeRatio(dbVol);
+                //float dbVol = ThreadSafeVolumeRaw + ThreadSafeVolumeBiasRaw + result;
+                //ThreadSafeVolume = XAudio2.DecibelsToAmplitudeRatio(dbVol);
             }
         }
 
@@ -267,8 +267,8 @@ namespace Restless.App.DrumMaster.Controls.Obsolete
         /// </summary>
         internal void RemoveHumanVolumeBias()
         {
-            float dbVol = ThreadSafeVolumeRaw + ThreadSafeVolumeBiasRaw;
-            ThreadSafeVolume = XAudio2.DecibelsToAmplitudeRatio(dbVol);
+            //float dbVol = ThreadSafeVolumeRaw + ThreadSafeVolumeBiasRaw;
+            //ThreadSafeVolume = XAudio2.DecibelsToAmplitudeRatio(dbVol);
         }
         #endregion
 
