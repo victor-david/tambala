@@ -184,12 +184,19 @@ namespace Restless.App.DrumMaster.Controls
             return count;
         }
 
-        internal void Play(int quarterNote, int position, int operationSet)
+        /// <summary>
+        /// Instructs each instrument controller to submit to the voice pool if appropiate
+        /// according to the parameters.
+        /// </summary>
+        /// <param name="songUnit">The song unit.</param>
+        /// <param name="quarterNote">The quarter note.</param>
+        /// <param name="position">The position within the quarter note.</param>
+        /// <param name="operationSet">The operation set. Used only when submitting the voice to the pool.</param>
+        internal void Play(PointSelectorSongUnit songUnit, int quarterNote, int position, int operationSet)
         {
-            // 64 bodyQuarters. 16 instruments. 4-6 quarters each
             foreach (InstrumentController controller in Controllers)
             {
-                controller.Play(quarterNote, position, operationSet);
+                controller.Play(songUnit, quarterNote, position, operationSet);
             }
         }
 

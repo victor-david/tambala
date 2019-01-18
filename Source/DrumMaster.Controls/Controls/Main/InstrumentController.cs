@@ -193,13 +193,14 @@ namespace Restless.App.DrumMaster.Controls
         /// if the specified position within the specified quarter note
         /// is selected (and if the entire instrument is not muted)
         /// </summary>
+        /// <param name="songUnit">The song unit.</param>
         /// <param name="quarterNote">The quarter note.</param>
         /// <param name="position">The position within the quarter note.</param>
         /// <param name="operationSet">The operation set. Used only when submitting the voice to the pool.</param>
-        internal void Play(int quarterNote, int position, int operationSet)
+        internal void Play(PointSelectorSongUnit songUnit, int quarterNote, int position, int operationSet)
         {
             if (Quarters.ContainsKey(quarterNote) &&
-                Quarters[quarterNote].IsSelected(position) &&
+                Quarters[quarterNote].IsSelected(songUnit, position) &&
                 isAudioEnabled && !IsUserMuted && !IsAutoMuted)
             {
                 voicePool.Play(ThreadSafeVolume, ThreadSafePitch, operationSet);

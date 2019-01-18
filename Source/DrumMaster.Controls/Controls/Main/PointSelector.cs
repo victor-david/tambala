@@ -30,7 +30,7 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region ISelectorUnit
+        #region Public properties
         /// <summary>
         /// Gets or sets the selector unit.
         /// </summary>
@@ -39,11 +39,16 @@ namespace Restless.App.DrumMaster.Controls
             get;
             set;
         }
-        #endregion
 
-        /************************************************************************/
+        /// <summary>
+        /// Gets or sets the selector song unit.
+        /// </summary>
+        public PointSelectorSongUnit SelectorSongUnit
+        {
+            get;
+            set;
+        }
 
-        #region SelectorRow
         /// <summary>
         /// Gets or sets the selector row
         /// </summary>

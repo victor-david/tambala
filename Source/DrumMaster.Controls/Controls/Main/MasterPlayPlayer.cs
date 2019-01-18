@@ -1,14 +1,6 @@
 ﻿using Restless.App.DrumMaster.Controls.Audio;
 using Restless.App.DrumMaster.Controls.Core;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Threading;
 
 namespace Restless.App.DrumMaster.Controls
 {
@@ -24,15 +16,11 @@ namespace Restless.App.DrumMaster.Controls
         private AutoResetEvent songPlaySignaler;
         private AutoResetEvent songEndPlaySignaler;
         private Thread songPlayThread;
-        private int songTotalSteps;
-        private int songSleepTime;
-        private int songOperationSet;
 
         private bool isPatternStarted;
         private AutoResetEvent patternPlaySignaler;
         private AutoResetEvent patternEndPlaySignaler;
         private Thread patternPlayThread;
-        private int patternTotalSteps;
         private int patternSleepTime;
         private int patternOperationSet;
         private bool isControlClosing;
@@ -43,11 +31,6 @@ namespace Restless.App.DrumMaster.Controls
         {
             playMode = PlayMode.Pattern;
 
-            // TODO
-            songTotalSteps = 5;
-            songSleepTime = 125;
-            // TODO
-            patternTotalSteps = 4;
             patternSleepTime = 100;
 
             songPlaySignaler = new AutoResetEvent(false);
@@ -82,8 +65,8 @@ namespace Restless.App.DrumMaster.Controls
                     {
                         // TODO
                         // Owner.ActivateThreadSafeDrumPattern(patternIdx);
-                        PlayPattern(Owner.DrumPatterns[patternIdx]);
-                        PlayPattern(Owner.DrumPatterns[patternIdx]);
+                        PlayPattern(Owner.DrumPatterns[patternIdx],PointSelectorSongUnit.None);
+                        PlayPattern(Owner.DrumPatterns[patternIdx], PointSelectorSongUnit.None);
 
                         // TODO
                         patternIdx++;
@@ -100,8 +83,6 @@ namespace Restless.App.DrumMaster.Controls
 
         private void PatternPlayThreadHandler()
         {
-            //Debug.WriteLine("Start PatternPlayThread");
-
             while (!isControlClosing)
             {
                 patternPlaySignaler.WaitOne();
@@ -110,34 +91,33 @@ namespace Restless.App.DrumMaster.Controls
                 {
                     while (isPatternStarted)
                     {
-                        PlayPattern(Owner.ThreadSafeActiveDrumPattern);
+                        PlayPattern(Owner.ThreadSafeActiveDrumPattern, PointSelectorSongUnit.None);
                     }
                 }
             }
             patternEndPlaySignaler.Set();
         }
 
-        private void PlayPattern(DrumPattern pattern)
+        private void PlayPattern(DrumPattern pattern, PointSelectorSongUnit songUnit)
         {
             int quarterNoteCount = pattern.ThreadSafeController.ThreadSafeQuarterNoteCount;
 
             for (int quarterNote = 1; quarterNote <= quarterNoteCount; quarterNote++)
             {
                 pattern.ThreadSafePresenter.InvokeAddTickHighlight(quarterNote);
-                PlayOneQuarterNote(pattern, quarterNote);
+                PlayOneQuarterNote(pattern, songUnit, quarterNote);
                 pattern.ThreadSafePresenter.InvokeRemoveTickHighlight(quarterNote);
             }
         }
 
-
-        private void PlayOneQuarterNote(DrumPattern pattern, int quarterNote)
+        private void PlayOneQuarterNote(DrumPattern pattern, PointSelectorSongUnit songUnit, int quarterNote)
         {
             for (int position = 0; position < Constants.DrumPattern.LowestCommon; position++)
             {
                 if (isPatternStarted)
                 {
                     patternOperationSet++;
-                    pattern.ThreadSafePresenter.Play(quarterNote, position, patternOperationSet);
+                    pattern.ThreadSafePresenter.Play(songUnit, quarterNote, position, patternOperationSet);
                     AudioHost.Instance.AudioDevice.CommitChanges(patternOperationSet);
                     Thread.Sleep(patternSleepTime);
                 }

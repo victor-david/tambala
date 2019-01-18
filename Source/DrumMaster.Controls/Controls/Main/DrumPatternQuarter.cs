@@ -214,10 +214,12 @@ namespace Restless.App.DrumMaster.Controls
         /// Gets a boolean value that indicates if the selector
         /// at the specified position is selected.
         /// </summary>
+        /// <param name="songUnit">The song unit.</param>
         /// <param name="position">The position.</param>
         /// <returns>true if selected; otherwise, false.</returns>
-        internal bool IsSelected(int position)
+        internal bool IsSelected(PointSelectorSongUnit songUnit, int position)
         {
+            // TODO - songUnit
             if (pointSelectors.ContainsKey(position))
             {
                 return pointSelectors[position].ThreadSafeIsSelected;

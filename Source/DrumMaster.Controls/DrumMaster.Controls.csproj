@@ -117,6 +117,7 @@
     <Compile Include="Core\GenericList.cs" />
     <Compile Include="Core\IQuarterNote.cs" />
     <Compile Include="Core\ISelectorUnit.cs" />
+    <Compile Include="Core\PointSelectorSongUnit.cs" />
     <Compile Include="Core\PointSelectorUnit.cs" />
     <Compile Include="Controls\Main\VisualBorder.cs" />
     <Compile Include="Controls\Main\VisualTick.cs" />
