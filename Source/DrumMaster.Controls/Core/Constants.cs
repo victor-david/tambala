@@ -170,7 +170,7 @@ namespace Restless.App.DrumMaster.Controls.Core
             /// <summary>
             /// The default short volume text.
             /// </summary>
-            public const string DefaultShortText = "Vol:";
+            public const string DefaultShortText = "Vol";
         }
         #endregion
 

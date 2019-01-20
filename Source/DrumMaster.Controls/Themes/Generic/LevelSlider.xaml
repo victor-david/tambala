@@ -106,7 +106,7 @@
                 BorderThickness="2"
                 BorderBrush="LightGray"
                 VerticalAlignment="Center" 
-                Width="{TemplateBinding BarSize}"
+                Width="{TemplateBinding BarWidth}"
                 Height="4" />
             <Track 
                 x:Name="PART_Track"
@@ -121,7 +121,7 @@
                 Margin="0,0,4,0"
                 Foreground="{TemplateBinding LabelTextBrush}"
                 VerticalAlignment="Center"
-                HorizontalAlignment="Right"
+                HorizontalAlignment="{TemplateBinding LabelHorizontalAlignment}"
                 Text="{TemplateBinding LabelText}"/>
 
             <TextBlock
@@ -129,7 +129,7 @@
                 Margin="4,0,0,0"
                 Foreground="{TemplateBinding ValueTextBrush}"
                 VerticalAlignment="Center"
-                HorizontalAlignment="Left"
+                HorizontalAlignment="{TemplateBinding ValueHorizontalAlignment}"
                 Text="{TemplateBinding ValueText}"/>
 
         </Grid>

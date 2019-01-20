@@ -33,33 +33,32 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region BarSize
+        #region BarWidth
         /// <summary>
-        /// Gets or sets the fixed size of the slider bar.
-        /// When vertical, this is the height. When horizontal,the width.
+        /// When horizontal, gets or sets the fixed size of the slider bar.
         /// </summary>
-        public double BarSize
+        public double BarWidth
         {
-            get => (double)GetValue(BarSizeProperty);
-            set => SetValue(BarSizeProperty, value);
+            get => (double)GetValue(BarWidthProperty);
+            set => SetValue(BarWidthProperty, value);
         }
 
         /// <summary>
-        /// Identifies the <see cref="BarSize"/> dependency property.
+        /// Identifies the <see cref="BarWidth"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty BarSizeProperty = DependencyProperty.Register
+        public static readonly DependencyProperty BarWidthProperty = DependencyProperty.Register
             (
-                nameof(BarSize), typeof(double), typeof(LevelSlider), new PropertyMetadata(DefaultBarSize, OnBarSizeChanged, OnBarSizeCoerce)
+                nameof(BarWidth), typeof(double), typeof(LevelSlider), new PropertyMetadata(DefaultBarSize, OnBarWidthChanged, OnBarWidthCoerce)
             );
 
-        private static void OnBarSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnBarWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is LevelSlider c)
             {
             }
         }
 
-        private static object OnBarSizeCoerce(DependencyObject d, object baseValue)
+        private static object OnBarWidthCoerce(DependencyObject d, object baseValue)
         {
             double proposed = (double)baseValue;
             return Math.Min(1200.0, Math.Max(60.0, proposed));
@@ -247,6 +246,48 @@ namespace Restless.App.DrumMaster.Controls
         public static readonly DependencyProperty ValueTextBrushProperty = DependencyProperty.Register
             (
                 nameof(ValueTextBrush), typeof(Brush), typeof(LevelSlider), new PropertyMetadata(new SolidColorBrush(Colors.Black))
+            );
+        #endregion
+
+        /************************************************************************/
+
+        #region LabelHorizontalAlignment
+        /// <summary>
+        /// Gets or set the horizontal alignment for <see cref="LabelText"/> when the slider orientation is horizontal.
+        /// </summary>
+        public HorizontalAlignment LabelHorizontalAlignment
+        {
+            get => (HorizontalAlignment)GetValue(LabelHorizontalAlignmentProperty);
+            set => SetValue(LabelHorizontalAlignmentProperty, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="LabelHorizontalAlignment"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty LabelHorizontalAlignmentProperty = DependencyProperty.Register
+            (
+                nameof(LabelHorizontalAlignment), typeof(HorizontalAlignment), typeof(LevelSlider), new PropertyMetadata(HorizontalAlignment.Right)
+            );
+        #endregion
+
+        /************************************************************************/
+
+        #region ValueHorizontalAlignment
+        /// <summary>
+        /// Gets or set the horizontal alignment for <see cref="ValueText"/> when the slider orientation is horizontal.
+        /// </summary>
+        public HorizontalAlignment ValueHorizontalAlignment
+        {
+            get => (HorizontalAlignment)GetValue(ValueHorizontalAlignmentProperty);
+            set => SetValue(ValueHorizontalAlignmentProperty, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="ValueHorizontalAlignment"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ValueHorizontalAlignmentProperty = DependencyProperty.Register
+            (
+                nameof(ValueHorizontalAlignment), typeof(HorizontalAlignment), typeof(LevelSlider), new PropertyMetadata(HorizontalAlignment.Left)
             );
         #endregion
     }

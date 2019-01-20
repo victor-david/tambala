@@ -13,6 +13,7 @@
                     <RowDefinition Height="23"/>
                     <RowDefinition Name="r1" Height="Auto"/>
                     <RowDefinition Name="r2" Height="Auto"/>
+                    <RowDefinition Name="r3" Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
@@ -20,6 +21,7 @@
                     <ColumnDefinition/>
                     <ColumnDefinition Width="32"/>
                 </Grid.ColumnDefinitions>
+
                 <!-- Expand / collapse track -->
                 <Button
                     Grid.Column="0"
@@ -45,11 +47,13 @@
                     <Image Source="{TemplateBinding ActiveMutedImageSource}"/>
                 </Button>
                 
-                <!-- Col 1. Volume adjustment slider -->
+                <!-- Row 1. Volume adjustment slider -->
                 <con:LevelSlider
                     Grid.Row="1" Grid.ColumnSpan="3"
+                    BarWidth="140"
                     LabelSize="30"
-                    ValueSize="38"
+                    ValueSize="46"
+                    ValueHorizontalAlignment="Center"
                     Style="{DynamicResource HorizontalSlider}"
                     LabelText="{TemplateBinding ShortVolumeText}"
                     ValueText="{Binding VolumeDecibelText, RelativeSource={RelativeSource TemplatedParent},Mode=OneWay}"
@@ -62,8 +66,10 @@
                 <!-- Row 2. Pitch adjustment slider -->
                 <con:LevelSlider
                     Grid.Row="2" Grid.ColumnSpan="3"
+                    BarWidth="140"
                     LabelSize="30"
-                    ValueSize="38"
+                    ValueSize="46"
+                    ValueHorizontalAlignment="Center"
                     Style="{DynamicResource HorizontalIntSlider}"
                     LabelText="Pitch"
                     ValueText="{Binding Pitch, RelativeSource={RelativeSource TemplatedParent},Mode=OneWay,StringFormat=N1}"
@@ -73,6 +79,27 @@
                     Maximum="{Binding MaxPitch, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
                     Value="{Binding Pitch, RelativeSource={RelativeSource TemplatedParent}}" />
 
+                <!-- Row 3. Panning adjustment slider -->
+                <con:LevelSlider
+                    Grid.Row="3" Grid.ColumnSpan="3"
+                    BarWidth="140"
+                    LabelSize="30"
+                    ValueSize="46"
+                    ValueHorizontalAlignment="Center"
+                    Style="{DynamicResource HorizontalSlider}"
+                    LabelText="Pan"
+                    ValueText="{Binding PanningText, RelativeSource={RelativeSource TemplatedParent},Mode=OneWay,StringFormat=N1}"
+                    LabelTextBrush="{DynamicResource SliderLabelTextBrush}"
+                    ValueTextBrush="{DynamicResource SliderValueTextBrush}"
+                    Minimum="{Binding MinPanning, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}" 
+                    Maximum="{Binding MaxPanning, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
+                    Value="{Binding Panning, RelativeSource={RelativeSource TemplatedParent}}" />
+
+
+
+
+
+
 
             </Grid>
         </Border>
@@ -80,6 +107,7 @@
             <Trigger Property="IsExpanded" Value="False">
                 <Setter TargetName="r1" Property="Height" Value="0"/>
                 <Setter TargetName="r2" Property="Height" Value="0"/>
+                <Setter TargetName="r3" Property="Height" Value="0"/>
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>

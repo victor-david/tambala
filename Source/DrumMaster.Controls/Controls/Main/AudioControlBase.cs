@@ -611,13 +611,13 @@ namespace Restless.App.DrumMaster.Controls
             {
                 float pl = (50 - pan) / 50 * 100;
                 double pdl = Math.Round(pl, 0);
-                PanningText = $"{pdl}% left";
+                PanningText = $"{pdl}% L";
             }
             else
             {
                 float pr = (pan - 50) / 50 * 100;
                 double pdr = Math.Round(pr, 0);
-                PanningText = $"{pdr}% right";
+                PanningText = $"{pdr}% R";
             }
         }
         #endregion
