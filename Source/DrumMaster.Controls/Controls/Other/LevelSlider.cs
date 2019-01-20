@@ -11,6 +11,8 @@ namespace Restless.App.DrumMaster.Controls
     public class LevelSlider : Slider
     {
         #region Private
+        private const double DefaultBarSize = 140.0;
+        private const double DefaultLabelValueSize = 80.0;
         #endregion
 
         /************************************************************************/
@@ -47,14 +49,129 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty BarSizeProperty = DependencyProperty.Register
             (
-                nameof(BarSize), typeof(double), typeof(LevelSlider), new PropertyMetadata(double.NaN, null, OnBarSizeCoerce)
+                nameof(BarSize), typeof(double), typeof(LevelSlider), new PropertyMetadata(DefaultBarSize, OnBarSizeChanged, OnBarSizeCoerce)
             );
+
+        private static void OnBarSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is LevelSlider c)
+            {
+            }
+        }
 
         private static object OnBarSizeCoerce(DependencyObject d, object baseValue)
         {
             double proposed = (double)baseValue;
             return Math.Min(1200.0, Math.Max(60.0, proposed));
         }
+        #endregion
+
+        /************************************************************************/
+
+        #region LabelSize
+        /// <summary>
+        /// Gets or sets the space for the label. Default is 60.0
+        /// </summary>
+        public double LabelSize
+        {
+            get => (double)GetValue(LabelSizeProperty);
+            set => SetValue(LabelSizeProperty, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="LabelSize"/> dependency property
+        /// </summary>
+        public static readonly DependencyProperty LabelSizeProperty = DependencyProperty.Register
+            (
+                nameof(LabelSize), typeof(double), typeof(LevelSlider), new PropertyMetadata(DefaultLabelValueSize, OnLabelSizeChanged, OnLabelOrValueSizeCoerce)
+            );
+
+
+        private static void OnLabelSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is LevelSlider c)
+            {
+                c.LabelLength = new GridLength(c.LabelSize);
+            }
+        }
+
+        private static object OnLabelOrValueSizeCoerce(DependencyObject d, object baseValue)
+        {
+            double proposed = (double)baseValue;
+            return Math.Min(150.0, Math.Max(0.0, proposed));
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region ValueSize
+        /// <summary>
+        /// Gets or sets the space for the vale. Default is 60.0
+        /// </summary>
+        public double ValueSize
+        {
+            get => (double)GetValue(ValueSizeProperty);
+            set => SetValue(ValueSizeProperty, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="ValueSize"/> dependency property
+        /// </summary>
+        public static readonly DependencyProperty ValueSizeProperty = DependencyProperty.Register
+            (
+                nameof(ValueSize), typeof(double), typeof(LevelSlider), new PropertyMetadata(DefaultLabelValueSize, OnValueSizeChanged, OnLabelOrValueSizeCoerce)
+            );
+
+
+        private static void OnValueSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is LevelSlider c)
+            {
+                c.ValueLength = new GridLength(c.ValueSize);
+            }
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region LabelGridLengths (read only)
+        /// <summary>
+        /// Gets the grid length for the label.
+        /// </summary>
+        public GridLength LabelLength
+        {
+            get => (GridLength)GetValue(LabelLengthProperty);
+            private set => SetValue(LabelLengthPropertyKey, value);
+        }
+        
+        private static readonly DependencyPropertyKey LabelLengthPropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(LabelLength), typeof(GridLength), typeof(LevelSlider), new PropertyMetadata(new GridLength(DefaultLabelValueSize))
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="LabelLength"/> dependency property
+        /// </summary>
+        public static readonly DependencyProperty LabelLengthProperty = LabelLengthPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Gets the grid length for the value.
+        /// </summary>
+        public GridLength ValueLength
+        {
+            get => (GridLength)GetValue(ValueLengthProperty);
+            private set => SetValue(ValueLengthPropertyKey, value);
+        }
+
+        private static readonly DependencyPropertyKey ValueLengthPropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(ValueLength), typeof(GridLength), typeof(LevelSlider), new PropertyMetadata(new GridLength(DefaultLabelValueSize))
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="ValueLength"/> dependency property
+        /// </summary>
+        public static readonly DependencyProperty ValueLengthProperty = ValueLengthPropertyKey.DependencyProperty;
         #endregion
 
         /************************************************************************/

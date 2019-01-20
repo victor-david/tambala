@@ -16,10 +16,10 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="84"/>
-                    <ColumnDefinition Width="232"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="232"/>
-                    <ColumnDefinition Width="232"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
@@ -28,6 +28,8 @@
                     Grid.Column="1"
                     Margin="8,0"
                     LabelText="Notes"
+                    LabelSize="36"
+                    ValueSize="20"
                     ValueText="{Binding QuarterNoteCount, RelativeSource={RelativeSource TemplatedParent}}"
                     LabelTextBrush="{DynamicResource SliderLabelTextBrush}"
                     ValueTextBrush="{DynamicResource SliderValueTextBrush}"
@@ -65,6 +67,8 @@
                     Grid.Column="3"
                     Margin="8,0"
                     LabelText="Scale"
+                    LabelSize="36"
+                    ValueSize="30"
                     ValueText="{Binding Scale, RelativeSource={RelativeSource TemplatedParent}, StringFormat=N0}"
                     LabelTextBrush="{DynamicResource SliderLabelTextBrush}"
                     ValueTextBrush="{DynamicResource SliderValueTextBrush}"
@@ -77,6 +81,7 @@
                 <con:LevelSlider
                     Grid.Column="4"
                     Margin="8,0"
+                    LabelSize="50"
                     Style="{DynamicResource HorizontalSlider}"
                     LabelText="{TemplateBinding VolumeText}"
                     ValueText="{Binding VolumeDecibelText, RelativeSource={RelativeSource TemplatedParent},Mode=OneWay}"

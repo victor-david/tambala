@@ -48,6 +48,8 @@
                 <!-- Col 1. Volume adjustment slider -->
                 <con:LevelSlider
                     Grid.Row="1" Grid.ColumnSpan="3"
+                    LabelSize="30"
+                    ValueSize="38"
                     Style="{DynamicResource HorizontalSlider}"
                     LabelText="{TemplateBinding ShortVolumeText}"
                     ValueText="{Binding VolumeDecibelText, RelativeSource={RelativeSource TemplatedParent},Mode=OneWay}"
@@ -60,6 +62,8 @@
                 <!-- Row 2. Pitch adjustment slider -->
                 <con:LevelSlider
                     Grid.Row="2" Grid.ColumnSpan="3"
+                    LabelSize="30"
+                    ValueSize="38"
                     Style="{DynamicResource HorizontalIntSlider}"
                     LabelText="Pitch"
                     ValueText="{Binding Pitch, RelativeSource={RelativeSource TemplatedParent},Mode=OneWay,StringFormat=N1}"

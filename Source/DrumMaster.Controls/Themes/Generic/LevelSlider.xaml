@@ -49,29 +49,17 @@
     <ControlTemplate x:Key="VerticalSliderTemplate" TargetType="con:LevelSlider">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" MinWidth="{TemplateBinding MinWidth}"/>
-                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <TickBar
-                x:Name="TopTick"
-                Grid.Row="1"
-                Margin="0,0,2,0"
-                Width="4"
-                Placement="Left"
-                SnapsToDevicePixels="True"
-                Visibility="Collapsed"
-                Fill="LightGray" />
             <Border 
                 x:Name="TrackBackground"
-                Grid.Row="1" Grid.Column="1"
+                Grid.Row="1"
                 Width="7"
-                Height="{TemplateBinding BarSize}"
                 Margin="0,10"
                 BorderThickness="3"
                 BorderBrush="LightGray"
@@ -80,68 +68,40 @@
                 HorizontalAlignment="Center" />
             <Track 
                 x:Name="PART_Track"
-                Grid.Column="1" Grid.Row="1">
+                Grid.Row="1">
                 <Track.Thumb>
                     <Thumb x:Name="Thumb" Style="{StaticResource MainSliderThumbStyle}" />
                 </Track.Thumb>
             </Track>
-            <TickBar 
-                x:Name="BottomTick"
-                Grid.Row="1" Grid.Column="2" 
-                Margin="2,0,0,0"
-                Width="4"
-                Placement="Right"
-                SnapsToDevicePixels="True"
-                Visibility="Collapsed"
-                Fill="LightGray"/>
 
             <TextBlock 
-                Grid.Column="1" Grid.Row="0"
+                Grid.Row="0"
                 Foreground="{TemplateBinding ValueTextBrush}"
                 HorizontalAlignment="Center"
                 Text="{TemplateBinding ValueText}"/>
             
             <TextBlock
-                Grid.Column="1" Grid.Row="2"
+                Grid.Row="2"
                 Foreground="{TemplateBinding LabelTextBrush}"
                 HorizontalAlignment="Center"
                 Text="{TemplateBinding LabelText}"/>
         </Grid>
-        <ControlTemplate.Triggers>
-            <Trigger Property="TickPlacement" Value="TopLeft">
-                <Setter TargetName="TopTick" Property="Visibility" Value="Visible" />
-            </Trigger>
-            <Trigger Property="TickPlacement" Value="BottomRight">
-                <Setter TargetName="BottomTick" Property="Visibility" Value="Visible" />
-            </Trigger>
-        </ControlTemplate.Triggers>
     </ControlTemplate>
 
     <ControlTemplate x:Key="HorizontalSliderTemplate" TargetType="con:LevelSlider">
         <Grid Margin="5">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{TemplateBinding LabelLength}"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="{TemplateBinding ValueLength}"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}"/>
-                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             
-            <TickBar 
-                x:Name="TopTick" 
-                Grid.Column="1"
-                Margin="0,0,0,2"
-                Height="4"
-                Placement="Top"
-                SnapsToDevicePixels="True"
-                Visibility="Collapsed"
-                Fill="LightGray"/>
             <Border
                 x:Name="TrackBackground"
-                Grid.Row="1" Grid.Column="1"
+                Grid.Column="1"
                 Margin="10,0"
                 BorderThickness="2"
                 BorderBrush="LightGray"
@@ -150,45 +110,29 @@
                 Height="4" />
             <Track 
                 x:Name="PART_Track"
-                Grid.Row="1" Grid.Column="1">
+                Grid.Column="1">
                 <Track.Thumb>
                     <Thumb x:Name="Thumb" Style="{StaticResource MainSliderThumbStyle}" />
                 </Track.Thumb>
             </Track>
-            <TickBar 
-                x:Name="BottomTick"
-                Grid.Row="2" Grid.Column="1"
-                Margin="0,2,0,0"
-                Height="4"
-                Placement="Bottom"
-                SnapsToDevicePixels="True"
-                Visibility="Collapsed"
-                Fill="LightGray"/>
 
             <TextBlock 
-                Grid.Column="0" Grid.Row="1"
+                Grid.Column="0"
                 Margin="0,0,4,0"
                 Foreground="{TemplateBinding LabelTextBrush}"
                 VerticalAlignment="Center"
+                HorizontalAlignment="Right"
                 Text="{TemplateBinding LabelText}"/>
 
             <TextBlock
-                Grid.Column="2" Grid.Row="1"
+                Grid.Column="2"
                 Margin="4,0,0,0"
                 Foreground="{TemplateBinding ValueTextBrush}"
                 VerticalAlignment="Center"
+                HorizontalAlignment="Left"
                 Text="{TemplateBinding ValueText}"/>
 
         </Grid>
-
-        <ControlTemplate.Triggers>
-            <Trigger Property="TickPlacement" Value="TopLeft">
-                <Setter TargetName="TopTick" Property="Visibility" Value="Visible" />
-            </Trigger>
-            <Trigger Property="TickPlacement" Value="BottomRight">
-                <Setter TargetName="BottomTick" Property="Visibility" Value="Visible" />
-            </Trigger>
-        </ControlTemplate.Triggers>
     </ControlTemplate>
 
     <Style x:Key="MainSliderStyle" TargetType="con:LevelSlider">
