@@ -118,11 +118,14 @@ namespace Restless.App.DrumMaster.Controls
         }
 
         /// <summary>
-        /// Called when <see cref="ControlObject.IsSelected"/> changes.
+        /// Called when <see cref="ControlObjectSelector.IsSelected"/> changes.
         /// </summary>
         protected override void OnIsSelectedChanged()
         {
-            SetIsChanged();
+            if (SelectorType == PointSelectorType.SongRow || SelectorType == PointSelectorType.PatternRow)
+            {
+                SetIsChanged();
+            }
         }
         #endregion
     }

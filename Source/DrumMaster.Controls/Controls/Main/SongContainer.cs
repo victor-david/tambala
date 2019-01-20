@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Restless.App.DrumMaster.Controls.Core;
+using Restless.App.DrumMaster.Controls.Resources;
+using System;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -28,9 +30,11 @@ namespace Restless.App.DrumMaster.Controls
         internal SongContainer(ProjectContainer owner)
         {
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));
-            SongPresenter = new SongPresenter(this);
+            DisplayName = Strings.SongContainerDisplayName;
+            Presenter = new SongPresenter(this);
             ChangeContainerHeightImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Caret.Up.Down.White.32.png", UriKind.Relative));
             Commands.Add("ChangeContainerHeight", new RelayCommand(RunChangeContainerHeightCommand));
+            AddHandler(IsSelectedChangedEvent, new RoutedEventHandler(IsSelectedChangedEventHandler));
         }
 
         static SongContainer()
@@ -41,25 +45,54 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region SongPresenter
+        #region SongPresenter (CLR)
         /// <summary>
-        /// Gets the song pattern panel
+        /// Gets the song presenter
         /// </summary>
-        public SongPresenter SongPresenter
+        public SongPresenter Presenter
         {
-            get => (SongPresenter)GetValue(SongPresenterProperty);
-            private set => SetValue(SongPresenterPropertyKey, value);
+            get;
         }
-        
-        private static readonly DependencyPropertyKey SongPresenterPropertyKey = DependencyProperty.RegisterReadOnly
+        #endregion
+
+        /************************************************************************/
+
+        #region SelectedEventCount
+        /// <summary>
+        /// Gets the total number of events selected for this drum pattern
+        /// </summary>
+        public int SelectedEventCount
+        {
+            get => (int)GetValue(SelectedEventCountProperty);
+            private set => SetValue(SelectedEventCountPropertyKey, value);
+        }
+
+        private static readonly DependencyPropertyKey SelectedEventCountPropertyKey = DependencyProperty.RegisterReadOnly
             (
-                nameof(SongPresenter), typeof(SongPresenter), typeof(SongContainer), new PropertyMetadata(null)
+                nameof(SelectedEventCount), typeof(int), typeof(SongContainer), new PropertyMetadata(0, OnSelectedEventCountChanged)
             );
 
         /// <summary>
-        /// Identifies the <see cref="SongPresenter"/> dependency property.
+        /// Identifies the <see cref="SelectedEventCount"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty SongPresenterProperty = SongPresenterPropertyKey.DependencyProperty;
+        public static readonly DependencyProperty SelectedEventCountProperty = SelectedEventCountPropertyKey.DependencyProperty;
+
+        private static void OnSelectedEventCountChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is SongContainer c)
+            {
+                c.ThreadSafeSelectedEventCount = c.SelectedEventCount;
+            }
+        }
+
+        /// <summary>
+        /// Gets the thread safe value of <see cref="SelectedEventCount"/>.
+        /// </summary>
+        internal int ThreadSafeSelectedEventCount
+        {
+            get;
+            private set;
+        }
         #endregion
 
         /************************************************************************/
@@ -87,7 +120,7 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region CLR Properties
+        #region Owner (CLR)
         /// <summary>
         /// Gets the <see cref="ProjectContainer"/> that owns this instance.
         /// </summary>
@@ -115,7 +148,7 @@ namespace Restless.App.DrumMaster.Controls
             element.Add(new XElement(nameof(SelectorType), SelectorType));
             element.Add(new XElement(nameof(SelectorSize), SelectorSize));
             element.Add(new XElement(nameof(DivisionCount), DivisionCount));
-            element.Add(SongPresenter.GetXElement());
+            element.Add(Presenter.GetXElement());
             return element;
         }
 
@@ -125,16 +158,18 @@ namespace Restless.App.DrumMaster.Controls
         /// <param name="element">The element</param>
         public override void RestoreFromXElement(XElement element)
         {
-            SongPresenter.Create();
+            Presenter.Create();
             foreach (XElement e in ChildElementList(element))
             {
                 if (e.Name == nameof(SelectorSize)) SetDependencyProperty(SelectorSizeProperty, e.Value);
                 if (e.Name == nameof(DivisionCount)) SetDependencyProperty(DivisionCountProperty, e.Value);
                 if (e.Name == nameof(SongPresenter))
                 {
-                    SongPresenter.RestoreFromXElement(e);
+                    Presenter.RestoreFromXElement(e);
                 }
             }
+
+            SelectedEventCount = Presenter.SongSelectors.GetSelectedCount();
         }
         #endregion
 
@@ -146,7 +181,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         protected override void OnSelectorSizeChanged()
         {
-            SongPresenter.SelectorSize = SelectorSize;
+            Presenter.SelectorSize = SelectorSize;
             SetIsChanged();
         }
 
@@ -155,7 +190,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         protected override void OnDivisionCountChanged()
         {
-            SongPresenter.DivisionCount = DivisionCount;
+            Presenter.DivisionCount = DivisionCount;
             SetIsChanged();
         }
         #endregion
@@ -166,6 +201,16 @@ namespace Restless.App.DrumMaster.Controls
         private void RunChangeContainerHeightCommand(object parm)
         {
             Owner.ChangeSongContainerHeight();
+        }
+
+        private void IsSelectedChangedEventHandler(object sender, RoutedEventArgs e)
+        {
+            if (e.OriginalSource is PointSelector selector && selector.SelectorType == PointSelectorType.SongRow)
+            {
+                int delta = selector.IsSelected ? 1 : -1;
+                SelectedEventCount += delta;
+                e.Handled = true;
+            }
         }
         #endregion
 

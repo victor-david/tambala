@@ -116,13 +116,11 @@ namespace Restless.App.DrumMaster.Controls.Obsolete
 
         #region Protected methods
         /// <summary>
-        /// Called when <see cref="PatternSelectorOrig.Position"/> changes.
+        /// Called when position changes.
         /// </summary>
         protected override void OnPositionChanged()
         {
-            // Debug.WriteLine(ToString());
             DrumPattern.DisplayName = $"Pattern {Position}";
-        
         }
 
         ///// <summary>

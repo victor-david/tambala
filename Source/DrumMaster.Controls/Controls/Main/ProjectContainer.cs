@@ -44,7 +44,7 @@ namespace Restless.App.DrumMaster.Controls
             };
             DrumKit.LoadBuiltInInstruments();
 
-            DrumPatterns = new GenericList<DrumPattern>();
+            DrumPatterns = new DrumPatternCollection();
             for (int k=1; k <= Constants.DrumPattern.MaxCount; k++)
             {
                 DrumPatterns.Add(new DrumPattern(this)
@@ -116,25 +116,14 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region SongContainer
+        #region SongContainer (CLR)
         /// <summary>
         /// Gets the song container.
         /// </summary>
         public SongContainer SongContainer
         {
-            get => (SongContainer)GetValue(SongContainerProperty);
-            set => SetValue(SongContainerPropertyKey, value);
+            get;
         }
-        
-        private static readonly DependencyPropertyKey SongContainerPropertyKey = DependencyProperty.RegisterReadOnly
-            (
-                nameof(SongContainer), typeof(SongContainer), typeof(ProjectContainer), new PropertyMetadata(null)
-            );
-
-        /// <summary>
-        /// Identifies the <see cref="SongContainer"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty SongContainerProperty = SongContainerPropertyKey.DependencyProperty;
         #endregion
 
         /************************************************************************/
@@ -180,7 +169,7 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Gets the list of drum patterms
         /// </summary>
-        public GenericList<DrumPattern> DrumPatterns
+        public DrumPatternCollection DrumPatterns
         {
             get;
         }
@@ -371,7 +360,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         protected override void OnLoaded()
         {
-            SongContainer.SongPresenter.HighlightSelectedPattern(0);
+            SongContainer.Presenter.HighlightSelectedPattern(0);
         }
         #endregion
 
@@ -387,21 +376,9 @@ namespace Restless.App.DrumMaster.Controls
             if (patternIdx >=0 && patternIdx < DrumPatterns.Count)
             {
                 ActiveDrumPattern = ThreadSafeActiveDrumPattern = DrumPatterns[patternIdx];
-                SongContainer.SongPresenter.HighlightSelectedPattern(patternIdx);
+                SongContainer.Presenter.HighlightSelectedPattern(patternIdx);
             }
         }
-
-        ///// <summary>
-        ///// From this assembly, activate the drum patterm at the specified index
-        ///// </summary>
-        ///// <param name="patternIdx">The index of the drum pattern to active.</param>
-        //internal void ActivateThreadSafeDrumPattern(int patternIdx)
-        //{
-        //    if (patternIdx >= 0 && patternIdx < DrumPatterns.Count)
-        //    {
-        //        ThreadSafeActiveDrumPattern = DrumPatterns[patternIdx];
-        //    }
-        //}
 
         internal void ChangeSongContainerHeight()
         {

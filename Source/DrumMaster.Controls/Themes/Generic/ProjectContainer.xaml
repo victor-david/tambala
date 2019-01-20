@@ -40,7 +40,7 @@
                 </Border>
 
                 <Border Grid.Column="0" Grid.Row="1">
-                    <ContentPresenter Content="{TemplateBinding SongContainer}"/>
+                    <ContentPresenter Content="{Binding SongContainer, RelativeSource={RelativeSource TemplatedParent}}"/>
                 </Border>
                 
                 <GridSplitter Grid.Column="1" Grid.RowSpan="2" Style="{DynamicResource VerticalGridSplitter}"/>
@@ -61,7 +61,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Border Grid.Column="0">
-                    <ContentPresenter Content="{TemplateBinding ActiveDrumPattern}"/>
+                    <ContentPresenter Content="{Binding ActiveDrumPattern, RelativeSource={RelativeSource TemplatedParent}}"/>
                 </Border>
 
                 <GridSplitter Grid.Column="1" Style="{DynamicResource VerticalGridSplitter}"/>

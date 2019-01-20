@@ -26,6 +26,10 @@ namespace Restless.App.DrumMaster.Controls
         /************************************************************************/
 
         #region Constructors
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DrumPatternPresenter"/> class.
+        /// </summary>
+        /// <param name="owner">The <see cref="DrumPattern"/> that owns this presenter.</param>
         internal DrumPatternPresenter(DrumPattern owner)
         {
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));
@@ -82,7 +86,6 @@ namespace Restless.App.DrumMaster.Controls
         /************************************************************************/
 
         #region Public methods
-
         /// <summary>
         /// Returns a string representation of this object.
         /// </summary>
@@ -168,7 +171,7 @@ namespace Restless.App.DrumMaster.Controls
 
         #region Internal methods
         /// <summary>
-        /// Get the count of selecteors that are selected.
+        /// Get the count of selectors that are selected.
         /// </summary>
         /// <returns>The number of selectors in this drum pattern presenter that are currently selected.</returns>
         internal int GetSelectedCount()
@@ -287,7 +290,6 @@ namespace Restless.App.DrumMaster.Controls
             }
         }
 
-
         private void CreateBody()
         {
             Controllers.Clear();
@@ -354,6 +356,5 @@ namespace Restless.App.DrumMaster.Controls
             }
         }
         #endregion
-
     }
 }

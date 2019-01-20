@@ -1,5 +1,7 @@
 ﻿using Restless.App.DrumMaster.Controls.Core;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,6 +18,8 @@ namespace Restless.App.DrumMaster.Controls
     public class SongPresenter : ControlObjectVisualGrid
     {
         #region Private
+        private readonly Dictionary<int, PointSelector> headerSelectors;
+        
         private Brush isSelectedBrush;
         #endregion
 
@@ -28,6 +32,8 @@ namespace Restless.App.DrumMaster.Controls
         internal SongPresenter(SongContainer owner)
         {
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));
+            headerSelectors = new Dictionary<int, PointSelector>();
+            SongSelectors = new SongSelectorCollection();
             isSelectedBrush = new SolidColorBrush(Colors.LightGray);
         }
 
@@ -39,11 +45,23 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region CLR Properties
+        #region Owner (CLR)
         /// <summary>
         /// Gets the <see cref="SongContainer"/> that owns this instance.
         /// </summary>
         internal SongContainer Owner
+        {
+            get;
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region SongSelectors
+        /// <summary>
+        /// Gets the body selectors
+        /// </summary>
+        internal SongSelectorCollection SongSelectors
         {
             get;
         }
@@ -78,13 +96,14 @@ namespace Restless.App.DrumMaster.Controls
             {
                 if (e.Name == nameof(PointSelector))
                 {
-                    XAttribute cola = e.Attribute(nameof(Position));
                     XAttribute rowa = e.Attribute(nameof(PointSelector.Row));
-                    if (cola != null && rowa != null)
+                    XAttribute posa = e.Attribute(nameof(Position));
+                    
+                    if (rowa != null && posa != null)
                     {
-                        if (int.TryParse(cola.Value, out int col) && int.TryParse(rowa.Value, out int row))
+                        if (int.TryParse(rowa.Value, out int row) && int.TryParse(posa.Value, out int pos))
                         {
-                            PointSelector ps = GetPointSelectorAt(row, col);
+                            PointSelector ps = GetPointSelectorAt(row, pos);
                             if (ps != null)
                             {
                                 ps.RestoreFromXElement(e);
@@ -105,6 +124,8 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         protected override void OnElementCreate()
         {
+            headerSelectors.Clear();
+            SongSelectors.Clear();
             int rowIdx = AddRowDefinition();
             AddColumnDefinition(Constants.Selector.FirstColumnWidth);
             AddElement(new TextBlock(), 0, 0);
@@ -120,6 +141,7 @@ namespace Restless.App.DrumMaster.Controls
                     Position = k,
                 };
 
+                headerSelectors.Add(k, sps);
                 AddElement(sps, rowIdx, colIdx);
 
                 if (k < Constants.Selector.Count.Default)
@@ -183,6 +205,22 @@ namespace Restless.App.DrumMaster.Controls
 
             }));
         }
+
+        /// <summary>
+        /// Highlights the song header at the specified position using the Dispatcher.
+        /// </summary>
+        /// <param name="position">The position.</param>
+        /// <param name="select">true to highlight; false to turn highlight off.</param>
+        internal void InvokeHighlightSongHeader(int position, bool select)
+        {
+            if (headerSelectors.ContainsKey(position))
+            {
+                Dispatcher.BeginInvoke(DispatcherPriority.Send, new Action(() =>
+                {
+                    headerSelectors[position].IsSelected = select;
+                }));
+            }
+        }
         #endregion
 
         /************************************************************************/
@@ -201,7 +239,7 @@ namespace Restless.App.DrumMaster.Controls
                 CommandParameter = patternIdx,
             };
 
-            Binding binding = new Binding(nameof(DrumPattern.DisplayName))
+            Binding binding = new Binding(nameof(DisplayName))
             {
                 Source = Owner.Owner.DrumPatterns[patternIdx]
             };
@@ -222,12 +260,12 @@ namespace Restless.App.DrumMaster.Controls
                 {
                     SelectorType = PointSelectorType.SongRow,
                     Margin = new Thickness(1),
-                    Position = colIdx,
+                    Position = k,
                     Row = rowIdx,
                 };
+                SongSelectors.Add(rowIdx-1, k, sps);
                 AddElement(sps, rowIdx, colIdx);
                 colIdx++;
-
             }
         }
 
@@ -239,11 +277,11 @@ namespace Restless.App.DrumMaster.Controls
             }
         }
 
-        private PointSelector GetPointSelectorAt(int row, int col)
+        private PointSelector GetPointSelectorAt(int row, int position)
         {
             foreach (var child in Grid.Children.OfType<PointSelector>().Where((ps) => ps.SelectorType == PointSelectorType.SongRow))
             {
-                if (Grid.GetRow(child) == row && Grid.GetColumn(child) == col)
+                if (child.Row == row && child.Position == position)
                 {
                     return child;
                 }

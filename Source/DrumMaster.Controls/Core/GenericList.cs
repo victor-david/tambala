@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Restless.App.DrumMaster.Controls.Core
 {
     /// <summary>
-    /// Extends List<> to provide additional functionality.
+    /// Extends List to provide additional functionality.
     /// </summary>
     /// <typeparam name="T">The type of objects for the list</typeparam>
     public class GenericList<T> : List<T>

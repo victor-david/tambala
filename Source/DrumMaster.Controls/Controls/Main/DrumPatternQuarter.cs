@@ -259,7 +259,10 @@ namespace Restless.App.DrumMaster.Controls
         /************************************************************************/
 
         #region Private methods
-
+        /// <summary>
+        /// Called when the <see cref="ControlElement.Create"/> method is invoked
+        /// by a client. This method creates the drum pattern quarter.
+        /// </summary>
         protected override void OnElementCreate()
         {
             pointSelectors.Clear();

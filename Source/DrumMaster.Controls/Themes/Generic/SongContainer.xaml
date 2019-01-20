@@ -27,7 +27,12 @@
                         ToolTip="Expand or collapse the container controls">
                         <Image Source="{TemplateBinding ActiveExpandedStateImageSource}"/>
                     </Button>
-                    <TextBlock Text="Song Composition"/>
+                    <TextBlock>
+                        <Run Text="{TemplateBinding DisplayName}"/>
+                        <Run Text=" | "/>
+                        <Run Text="{Binding SelectedEventCount, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"/>
+                        <Run Text="events selected"/>
+                    </TextBlock>
                 </StackPanel>
             </Border>
             
@@ -69,7 +74,7 @@
 
             <!-- Rows of the song patterns-->
             <ScrollViewer Name="e2" Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                <ContentPresenter Content="{TemplateBinding SongPresenter}"/>
+                <ContentPresenter Content="{Binding Presenter, RelativeSource={RelativeSource TemplatedParent}}"/>
             </ScrollViewer>
         </Grid>
         <ControlTemplate.Triggers>

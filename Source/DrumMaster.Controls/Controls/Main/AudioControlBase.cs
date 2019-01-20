@@ -476,7 +476,7 @@ namespace Restless.App.DrumMaster.Controls
 
         /// <summary>
         /// Gets a thread safe boolean value that indicates if audio has been automatically muted
-        /// due to the <see cref="Volume"/> having reached a value of <see cref="TrackVals.Volume.Min"/>.
+        /// due to the <see cref="Volume"/> having reached a value of <see cref="Constants.Volume.Min"/>.
         /// </summary>
         protected bool IsAutoMuted
         {

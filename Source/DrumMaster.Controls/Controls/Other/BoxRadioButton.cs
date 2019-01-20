@@ -35,7 +35,7 @@ namespace Restless.App.DrumMaster.Controls
         }
 
         /// <summary>
-        /// Identifies the <see cref="IsSelectedBrush"/> dependency property.
+        /// Identifies the <see cref="Value"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register
             (

@@ -170,6 +170,10 @@ namespace Restless.App.DrumMaster.Controls
         /************************************************************************/
 
         #region Protected methods
+        /// <summary>
+        /// Called when <see cref="AudioControlBase.Volume"/> is changed
+        /// to set the volume on the mastering voice.
+        /// </summary>
         protected override void OnVolumeChanged()
         {
             AudioHost.Instance.MasterVoice.SetVolume(ThreadSafeVolume);

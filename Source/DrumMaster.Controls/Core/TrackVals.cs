@@ -15,17 +15,17 @@ namespace Restless.App.DrumMaster.Controls.Core
         public static class Track
         {
             /// <summary>
-            /// The minimum number of tracks allowed on a <see cref="TrackContainer"/>.
+            /// The minimum number of tracks allowed a TrackContainer.
             /// </summary>
             public const int Min = 0;
 
             /// <summary>
-            /// The maximum number of tracks allowed on a <see cref="TrackContainer"/>.
+            /// The maximum number of tracks allowed on a TrackContainer.
             /// </summary>
             public const int Max = 12;
 
             /// <summary>
-            /// The default number of tracks placed automatically on a new <see cref="TrackContainer"/>.
+            /// The default number of tracks placed automatically on a new TrackContainer.
             /// </summary>
             public const int Default = 3;
         }

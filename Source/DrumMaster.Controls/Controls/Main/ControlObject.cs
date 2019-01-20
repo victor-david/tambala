@@ -12,8 +12,7 @@ namespace Restless.App.DrumMaster.Controls
     /// </summary>
     /// <remarks>
     /// This class provides the base methods and properties for commands, <see cref="DisplayName"/>,
-    /// <see cref="IsChanged"/> notification, <see cref="IsExpanded"/> functionality, and
-    /// <see cref="IsSelected"/> functionality. Not all derived classes use all properties.
+    /// <see cref="IsChanged"/> notification, <see cref="IsExpanded"/> functionality.
     /// </remarks>
     public abstract class ControlObject : ControlElement
     {
