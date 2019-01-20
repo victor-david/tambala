@@ -1,20 +1,15 @@
 ﻿using Restless.App.DrumMaster.Controls.Core;
-using Restless.App.DrumMaster.Controls.Obsolete;
 using SharpDX.XAudio2;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Restless.App.DrumMaster.Controls.Audio
 {
     internal class Metronome
     {
-        private readonly TrackContainer owner;
+        private readonly ProjectContainer owner;
         private Instrument piece;
         private bool isAudioEnabled;
-        private SubmixVoice submixVoice;
+        private readonly SubmixVoice submixVoice;
         private VoicePool voicePool;
         private int beats;
         private int stepsPerBeat;
@@ -40,13 +35,14 @@ namespace Restless.App.DrumMaster.Controls.Audio
         }
 
 
-        internal Metronome(TrackContainer owner)
+        internal Metronome(ProjectContainer owner)
         {
             this.owner = owner ?? throw new ArgumentNullException(nameof(owner));
             submixVoice = new SubmixVoice(AudioHost.Instance.AudioDevice);
-            submixVoice.SetOutputVoices(new VoiceSendDescriptor(this.owner.SubmixVoice));
+
+            //submixVoice.SetOutputVoices(new VoiceSendDescriptor(this.owner.SubmixVoice));
             volume = XAudio2.DecibelsToAmplitudeRatio(-11.0f);
-            pitchNormal = XAudio2.SemitonesToFrequencyRatio(TrackVals.Pitch.Default);
+            pitchNormal = XAudio2.SemitonesToFrequencyRatio(Constants.Pitch.Default);
             pitchAccent = XAudio2.SemitonesToFrequencyRatio(1.5f);
 
         }
@@ -66,14 +62,13 @@ namespace Restless.App.DrumMaster.Controls.Audio
             }
         }
 
-
         private void OnPieceChanged()
         {
             isAudioEnabled = (Piece != null && Piece.IsAudioInitialized);
             if (isAudioEnabled)
             {
                 AudioHost.Instance.DestroyVoicePool(voicePool);
-                voicePool = AudioHost.Instance.CreateVoicePool("Metronome", Piece.Audio, submixVoice, TrackVals.InitialVoicePool.Normal);
+                voicePool = AudioHost.Instance.CreateVoicePool("Metronome", Piece.Audio, submixVoice, Constants.InitialVoicePool.Normal);
             }
         }
     }

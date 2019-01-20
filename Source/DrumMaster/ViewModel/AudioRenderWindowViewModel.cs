@@ -1,18 +1,11 @@
-﻿using Restless.App.DrumMaster.Controls;
+﻿using Microsoft.Win32;
+using Restless.App.DrumMaster.Controls;
 using Restless.App.DrumMaster.Controls.Audio;
-using Restless.App.DrumMaster.Core;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using Microsoft.Win32;
 using Restless.App.DrumMaster.Resources;
+using System;
+using System.ComponentModel;
 using System.IO;
-using Restless.App.DrumMaster.Controls.Obsolete;
+using System.Windows;
 
 namespace Restless.App.DrumMaster.ViewModel
 {
@@ -85,9 +78,9 @@ namespace Restless.App.DrumMaster.ViewModel
         }
 
         /// <summary>
-        /// Gets the <see cref="TrackContainer"/> object associated with this render window.
+        /// Gets the <see cref="ProjectContainer"/> object associated with this render window.
         /// </summary>
-        public TrackContainer Container
+        public ProjectContainer Container
         {
             get;
         }
@@ -101,10 +94,10 @@ namespace Restless.App.DrumMaster.ViewModel
         /// </summary>
         /// <param name="owner">The owner of this view model.</param>
         /// <param name="trackContainer">The track container.</param>
-        public AudioRenderWindowViewModel(Window owner, TrackContainer trackContainer) : base(owner)
+        public AudioRenderWindowViewModel(Window owner, ProjectContainer projectContainer) : base(owner)
         {
-            Container = trackContainer ?? throw new ArgumentNullException(nameof(trackContainer));
-            Container.RenderCompleted += ContainerRenderCompleted;
+            Container = projectContainer ?? throw new ArgumentNullException(nameof(projectContainer));
+            // Container.RenderCompleted += ContainerRenderCompleted;
             Commands.Add("Output", RunChangeOutputCommand);
             Commands.Add("Render", RunRenderCommand);
             Commands.Add("Close", RunCloseCommand);
@@ -126,7 +119,7 @@ namespace Restless.App.DrumMaster.ViewModel
                 DefaultExt = DottedFileExtension,
                 Filter = $"{Strings.CaptionWaveFile} | *{DottedFileExtension}",
                 OverwritePrompt = true,
-                InitialDirectory = Path.GetDirectoryName(Container.RenderParms.FileName)
+                //InitialDirectory = Path.GetDirectoryName(Container.RenderParms.FileName)
             };
 
             if (dialog.ShowDialog() == true)
@@ -139,14 +132,14 @@ namespace Restless.App.DrumMaster.ViewModel
                     fileName = Path.ChangeExtension(fileName, FileExtension);
                 }
 
-                Container.RenderParms.FileName = fileName;
+                //Container.RenderParms.FileName = fileName;
             }
         }
 
         private void RunRenderCommand(object parm)
         {
             IsRenderInProgress = true;
-            Container.StartRender();
+            //Container.StartRender();
         }
 
         private void ContainerRenderCompleted(object sender, AudioRenderEventArgs e)
@@ -168,7 +161,7 @@ namespace Restless.App.DrumMaster.ViewModel
 
         private void WindowOwnerClosed(object sender, EventArgs e)
         {
-            Container.RenderCompleted -= ContainerRenderCompleted;
+            //Container.RenderCompleted -= ContainerRenderCompleted;
         }
         #endregion
     }

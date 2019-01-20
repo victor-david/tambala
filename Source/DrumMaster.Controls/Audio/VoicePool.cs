@@ -70,7 +70,7 @@ namespace Restless.App.DrumMaster.Controls.Audio
             this.audio = audio ?? throw new ArgumentNullException(nameof(audio));
             this.outputVoice = outputVoice ?? throw new ArgumentNullException(nameof(outputVoice));
             Name = name;
-            initialSize = Math.Max(Math.Min(initialSize, TrackVals.InitialVoicePool.High), TrackVals.InitialVoicePool.Normal);
+            initialSize = Math.Max(Math.Min(initialSize, Constants.InitialVoicePool.High), Constants.InitialVoicePool.Normal);
             voiceSendDescriptor = new VoiceSendDescriptor(outputVoice);
             Size = initialSize;
             InitializeVoices(initialSize);
@@ -170,7 +170,7 @@ namespace Restless.App.DrumMaster.Controls.Audio
 
         private SourceVoice CreateVoice()
         {
-            SourceVoice voice = new SourceVoice(AudioHost.Instance.AudioDevice, audio.WaveFormat, VoiceFlags.None, TrackVals.Pitch.Max);
+            SourceVoice voice = new SourceVoice(AudioHost.Instance.AudioDevice, audio.WaveFormat, VoiceFlags.None, Constants.Pitch.Max);
             voice.SetOutputVoices(voiceSendDescriptor);
             voice.SetVolume(1);
             return voice;

@@ -217,7 +217,7 @@ namespace Restless.App.DrumMaster.Controls
             if (isAudioEnabled)
             {
                 AudioHost.Instance.DestroyVoicePool(voicePool);
-                voicePool = AudioHost.Instance.CreateVoicePool(Instrument.DisplayName, Instrument.Audio, submixVoice, TrackVals.InitialVoicePool.Normal);
+                voicePool = AudioHost.Instance.CreateVoicePool(Instrument.DisplayName, Instrument.Audio, submixVoice, Constants.InitialVoicePool.Normal);
             }
         }
 

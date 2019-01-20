@@ -48,7 +48,7 @@ namespace Restless.App.DrumMaster.Controls
             ThreadSafeVolumeRaw = Constants.Volume.Default;
             //ThreadSafeVolumeBiasRaw = TrackVals.VolumeBias.Default;
             ThreadSafeVolume = XAudio2.DecibelsToAmplitudeRatio(Constants.Volume.Default);
-            ThreadSafePitch = XAudio2.SemitonesToFrequencyRatio(TrackVals.Pitch.Default);
+            ThreadSafePitch = XAudio2.SemitonesToFrequencyRatio(Constants.Pitch.Default);
             VolumeDecibelText = (Volume <= Constants.Volume.Min) ? "Off" : $"{Volume:N1}dB";
 
             SetPanningText();
@@ -118,42 +118,42 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty VolumeDecibelTextProperty = VolumeDecibelTextPropertyKey.DependencyProperty;
 
-        ///// <summary>
-        ///// Gets or sets the volume bias.
-        ///// Volume bias is expressed as a dB value between <see cref="TrackVals.VolumeBias.Min"/> and <see cref="TrackVals.VolumeBias.Max"/>
-        ///// </summary>
-        //public float VolumeBias
-        //{
-        //    get => (float)GetValue(VolumeBiasProperty);
-        //    set => SetValue(VolumeBiasProperty, value);
-        //}
+        /// <summary>
+        /// Gets or sets the volume bias.
+        /// Volume bias is expressed as a dB value between <see cref="Constants.VolumeBias.Min"/> and <see cref="Constants.VolumeBias.Max"/>
+        /// </summary>
+        public float VolumeBias
+        {
+            get => (float)GetValue(VolumeBiasProperty);
+            set => SetValue(VolumeBiasProperty, value);
+        }
 
-        ///// <summary>
-        ///// Identifies the <see cref="VolumeBias"/> dependency property.
-        ///// </summary>
-        //public static readonly DependencyProperty VolumeBiasProperty = DependencyProperty.Register
-        //    (
-        //        nameof(VolumeBias), typeof(float), typeof(AudioControlBase), new PropertyMetadata(TrackVals.VolumeBias.Default, OnVolumeBiasChanged, OnVolumeBiasCoerce)
-        //    );
+        /// <summary>
+        /// Identifies the <see cref="VolumeBias"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty VolumeBiasProperty = DependencyProperty.Register
+            (
+                nameof(VolumeBias), typeof(float), typeof(AudioControlBase), new PropertyMetadata(Constants.VolumeBias.Default, OnVolumeBiasChanged, OnVolumeBiasCoerce)
+            );
 
-        //private static void OnVolumeBiasChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        //{
-        //    if (d is AudioControlBase c)
-        //    {
-        //        // Save volume bias in private var for later thread safe access.
-        //        c.ThreadSafeVolumeBiasRaw = (float)e.NewValue;
-        //        float dbVol = c.ThreadSafeVolumeRaw + c.ThreadSafeVolumeBiasRaw;
-        //        c.ThreadSafeVolume = XAudio2.DecibelsToAmplitudeRatio(dbVol);
-        //        c.OnVolumeChanged();
-        //        c.SetIsChanged();
-        //    }
-        //}
+        private static void OnVolumeBiasChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is AudioControlBase c)
+            {
+                // Save volume bias in private var for later thread safe access.
+                c.ThreadSafeVolumeBiasRaw = (float)e.NewValue;
+                float dbVol = c.ThreadSafeVolumeRaw + c.ThreadSafeVolumeBiasRaw;
+                c.ThreadSafeVolume = XAudio2.DecibelsToAmplitudeRatio(dbVol);
+                c.OnVolumeChanged();
+                c.SetIsChanged();
+            }
+        }
 
-        //private static object OnVolumeBiasCoerce(DependencyObject d, object baseValue)
-        //{
-        //    float proposed = (float)baseValue;
-        //    return Math.Min(TrackVals.VolumeBias.Max, Math.Max(TrackVals.VolumeBias.Min, proposed));
-        //}
+        private static object OnVolumeBiasCoerce(DependencyObject d, object baseValue)
+        {
+            float proposed = (float)baseValue;
+            return Math.Min(Constants.VolumeBias.Max, Math.Max(Constants.VolumeBias.Min, proposed));
+        }
 
         /// <summary>
         /// Gets or sets the volume text
@@ -237,7 +237,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public float MinVolumeBias
         {
-            get => TrackVals.VolumeBias.Min;
+            get => Constants.VolumeBias.Min;
         }
 
         /// <summary>
@@ -245,7 +245,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public float MaxVolumeBias
         {
-            get => TrackVals.VolumeBias.Max;
+            get => Constants.VolumeBias.Max;
         }
         #endregion
 
@@ -266,7 +266,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty PanningProperty = DependencyProperty.Register
             (
-                nameof(Panning), typeof(float), typeof(AudioControlBase), new PropertyMetadata(TrackVals.Panning.Default, OnPanningChanged, OnPanningCoerce)
+                nameof(Panning), typeof(float), typeof(AudioControlBase), new PropertyMetadata(Constants.Panning.Default, OnPanningChanged, OnPanningCoerce)
             );
 
         private static void OnPanningChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -282,7 +282,7 @@ namespace Restless.App.DrumMaster.Controls
         private static object OnPanningCoerce(DependencyObject d, object baseValue)
         {
             float proposed = (float)baseValue;
-            return Math.Min(TrackVals.Panning.Max, Math.Max(TrackVals.Panning.Min, proposed));
+            return Math.Min(Constants.Panning.Max, Math.Max(Constants.Panning.Min, proposed));
         }
 
         /// <summary>
@@ -310,7 +310,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public float MinPanning
         {
-            get => TrackVals.Panning.Min;
+            get => Constants.Panning.Min;
         }
 
         /// <summary>
@@ -318,7 +318,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public float MaxPanning
         {
-            get => TrackVals.Panning.Max;
+            get => Constants.Panning.Max;
         }
 
         #endregion
@@ -341,7 +341,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty PitchProperty = DependencyProperty.Register
             (
-                nameof(Pitch), typeof(float), typeof(AudioControlBase), new PropertyMetadata(TrackVals.Pitch.Default, OnPitchChanged, OnPitchCoerce)
+                nameof(Pitch), typeof(float), typeof(AudioControlBase), new PropertyMetadata(Constants.Pitch.Default, OnPitchChanged, OnPitchCoerce)
             );
 
         private static void OnPitchChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -357,7 +357,7 @@ namespace Restless.App.DrumMaster.Controls
         private static object OnPitchCoerce(DependencyObject d, object baseValue)
         {
             float proposed = (float)baseValue;
-            return Math.Min(TrackVals.Pitch.Max, Math.Max(TrackVals.Pitch.Min, proposed));
+            return Math.Min(Constants.Pitch.Max, Math.Max(Constants.Pitch.Min, proposed));
         }
 
         /// <summary>
@@ -384,7 +384,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public float MinPitch
         {
-            get => TrackVals.Pitch.Min;
+            get => Constants.Pitch.Min;
         }
 
         /// <summary>
@@ -392,7 +392,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public float MaxPitch
         {
-            get => TrackVals.Pitch.Max;
+            get => Constants.Pitch.Max;
         }
         #endregion
 
@@ -493,14 +493,14 @@ namespace Restless.App.DrumMaster.Controls
             private set;
         }
 
-        ///// <summary>
-        ///// Gets the thread safe raw value of <see cref="VolumeBias"/>. This value is expressed in dB.
-        ///// </summary>
-        //protected float ThreadSafeVolumeBiasRaw
-        //{
-        //    get;
-        //    private set;
-        //}
+        /// <summary>
+        /// Gets the thread safe raw value of <see cref="VolumeBias"/>. This value is expressed in dB.
+        /// </summary>
+        protected float ThreadSafeVolumeBiasRaw
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Gets the thread safe volume value. 

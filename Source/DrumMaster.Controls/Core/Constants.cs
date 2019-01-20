@@ -8,6 +8,29 @@ namespace Restless.App.DrumMaster.Controls.Core
     /// </summary>
     public static class Constants
     {
+        #region InitialVoicePool
+        /// <summary>
+        /// Provides static values for a track's initial voice pool size
+        /// </summary>
+        public static class InitialVoicePool
+        {
+            /// <summary>
+            /// Normal voice pool initial size.
+            /// </summary>
+            public const int Normal = 16;
+            /// <summary>
+            /// Medium voice pool initial size.
+            /// </summary>
+            public const int Medium = 32;
+            /// <summary>
+            /// High voice pool initial size.
+            /// </summary>
+            public const int High = 48;
+        }
+        #endregion
+
+        /************************************************************************/
+
         #region Selector
         /// <summary>
         /// Provides static values that define characteristics of the song presenter
@@ -118,6 +141,7 @@ namespace Restless.App.DrumMaster.Controls.Core
 
         /************************************************************************/
 
+        #region Volume
         /// <summary>
         /// Provides static values that define volume characteristics.
         /// </summary>
@@ -148,6 +172,98 @@ namespace Restless.App.DrumMaster.Controls.Core
             /// </summary>
             public const string DefaultShortText = "Vol:";
         }
+        #endregion
+
+        /************************************************************************/
+
+        #region Volume Bias
+        /// <summary>
+        /// Provides static values that define volume bias.
+        /// See remarks for how these values are used.
+        /// </summary>
+        /// <remarks>
+        /// Volume bias is used on individual beats to provide accents
+        /// and ghost notes. The user can set the volume bias of each beat
+        /// and the volume will be adjusted accordingly during playback.
+        /// Volume bias is expressed as dB.
+        /// </remarks>
+        public static class VolumeBias
+        {
+            /// <summary>
+            /// The minimum volume bias allowed in decibels.
+            /// </summary>
+            public const float Min = -9.5f;
+
+            /// <summary>
+            /// The maximum volume bias allowed in decibels.
+            /// </summary>
+            public const float Max = 9.5f;
+
+            /// <summary>
+            /// The default volume bias, i.e. none.
+            /// </summary>
+            public const float Default = 0.0f;
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region Pitch
+        /// <summary>
+        /// Provides static values that define pitch characteristics.
+        /// </summary>
+        /// <remarks>
+        /// Pitches are expressed as input rate/output rate ratios between 1/1,024 and 1,024/1, inclusive.
+        /// A ratio of 1/1,024 lowers pitch by 10 octaves, while a ratio of 1,024/1 raises it by 10 octaves. 
+        /// This class provides values expressed in semitones
+        /// </remarks>
+        public static class Pitch
+        {
+            /// <summary>
+            /// The minimum value for pitch change in semitones. Corresponds to 3 octaves down.
+            /// </summary>
+            public const float Min = -36.0f;
+
+            /// <summary>
+            /// The maximum value for pitch change in semitones. Corresponds to 3 octave up.
+            /// </summary>
+            public const float Max = 36.0f;
+
+            /// <summary>
+            /// The default pitch. Corresponds to no pitch change.
+            /// </summary>
+            public const float Default = 0.0f;
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region Panning
+        /// <summary>
+        /// Provides static values that define panning characteristics.
+        /// </summary>
+        /// <remarks>
+        /// Panning is described as a value between zero and 1, zero being full left,
+        /// 0.5 being center and and 1.0 being full right.
+        /// </remarks>
+        public static class Panning
+        {
+            /// <summary>
+            /// The mimimum panning value. represents all the way left.
+            /// </summary>
+            public const float Min = 0.0f;
+
+            /// <summary>
+            /// The maximum panning value. represents all the way right.
+            /// </summary>
+            public const float Max = 1.0f;
+
+            /// <summary>
+            /// The default panning value. represents all the way right.
+            /// </summary>
+            public const float Default = 0.5f;
+        }
+        #endregion
 
         /************************************************************************/
 

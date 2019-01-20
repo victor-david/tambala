@@ -1,5 +1,4 @@
 ﻿using Restless.App.DrumMaster.Controls;
-using Restless.App.DrumMaster.Controls.Obsolete;
 using Restless.App.DrumMaster.View;
 using Restless.App.DrumMaster.ViewModel;
 using System.Windows;
@@ -40,14 +39,14 @@ namespace Restless.App.DrumMaster.Core
             /// Creates an instance of AudioRenderWindow and its corresponding view model.
             /// </summary>
             /// <returns>The window</returns>
-            public static AudioRenderWindow Create(TrackContainer trackContainer)
+            public static AudioRenderWindow Create(ProjectContainer projectContainer)
             {
                 var window = new AudioRenderWindow
                 {
                     Owner = Application.Current.MainWindow
                 };
                 TextOptions.SetTextFormattingMode(window);
-                var viewModel = new AudioRenderWindowViewModel(window, trackContainer);
+                var viewModel = new AudioRenderWindowViewModel(window, projectContainer);
                 window.DataContext = viewModel;
                 return window;
             }
