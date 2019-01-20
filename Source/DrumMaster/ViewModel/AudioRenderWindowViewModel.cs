@@ -93,7 +93,7 @@ namespace Restless.App.DrumMaster.ViewModel
         /// Initializes a new instance of the <see cref="AudioRenderWindowViewModel"/> class.
         /// </summary>
         /// <param name="owner">The owner of this view model.</param>
-        /// <param name="trackContainer">The track container.</param>
+        /// <param name="projectContainer">The project container.</param>
         public AudioRenderWindowViewModel(Window owner, ProjectContainer projectContainer) : base(owner)
         {
             Container = projectContainer ?? throw new ArgumentNullException(nameof(projectContainer));

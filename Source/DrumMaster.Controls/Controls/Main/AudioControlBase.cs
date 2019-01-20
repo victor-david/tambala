@@ -328,7 +328,7 @@ namespace Restless.App.DrumMaster.Controls
         #region Pitch
         /// <summary>
         /// Gets or sets the pitch. 
-        /// Pitch is expressed as a semi tone value between <see cref="TrackVals.Pitch.Min"/> and <see cref="TrackVals.Pitch.Max"/>
+        /// Pitch is expressed as a semi tone value between <see cref="Constants.Pitch.Min"/> and <see cref="Constants.Pitch.Max"/>
         /// </summary>
         public float Pitch
         {
