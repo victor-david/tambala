@@ -241,6 +241,16 @@ namespace Restless.App.DrumMaster.Controls.Audio
         {
             var data = new AudioResourceMetadata(sourceAssembly, AudioName);
             DisplayName = data.Name;
+            if (string.IsNullOrEmpty(DisplayName))
+            {
+                DisplayName = System.IO.Path.GetFileNameWithoutExtension(AudioName);
+                int lastDot = DisplayName.LastIndexOf('.');
+                if (lastDot != -1 && lastDot < DisplayName.Length - 2)
+                {
+                    DisplayName = DisplayName.Substring(lastDot + 1);
+                }
+            }
+            
             Comment = data.Comment;
             IsDefault = data.TrackNumber == "1";
 

@@ -15,10 +15,22 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="DrumKit"/> class.
         /// </summary>
-        public DrumKit()
+        /// <param name="resourcePath">The resource path to the drum kit.</param>
+        public DrumKit(string resourcePath)
         {
-            Name = "Standard";
-            ResourcePath = "Resources.DrumKit.Default";
+            if (string.IsNullOrEmpty(resourcePath)) throw new ArgumentNullException(nameof(resourcePath));
+            ResourcePath = resourcePath;
+            DrumKitType = DrumKitType.UserDefined;
+            Instruments = new InstrumentCollection();
+            Id = Guid.NewGuid().ToString();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DrumKit"/> class.
+        /// </summary>
+        internal DrumKit()
+        {
+            DrumKitType = DrumKitType.BuiltIn;
             Instruments = new InstrumentCollection();
         }
         #endregion
@@ -33,6 +45,20 @@ namespace Restless.App.DrumMaster.Controls
         {
             get;
             set;
+        }
+
+        public DrumKitType DrumKitType
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the unique id for this drum kit.
+        /// </summary>
+        public string Id
+        {
+            get;
+            internal set;
         }
 
         /// <summary>

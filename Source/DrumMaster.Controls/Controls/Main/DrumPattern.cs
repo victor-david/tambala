@@ -1,6 +1,5 @@
 ﻿using Restless.App.DrumMaster.Controls.Core;
 using System;
-using System.Diagnostics;
 using System.Windows;
 using System.Xml.Linq;
 

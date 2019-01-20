@@ -134,5 +134,23 @@
     <EmbeddedResource Include="Resources\DrumKit\Cuban\Tom.04.wav" />
     <EmbeddedResource Include="Resources\DrumKit\Cuban\Tom.06.wav" />
   </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\DrumKit\TR808\Clap.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\TR808\Clave.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\TR808\Conga.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\TR808\Cowbell.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\TR808\Cymbal.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\TR808\High.Hat.Closed.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\TR808\High.Hat.Open.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\TR808\High.Hat.Pedal.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\TR808\Kick.Long.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\TR808\Kick.Short.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\TR808\Shaker.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\TR808\Snare.1.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\TR808\Snare.2.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\TR808\Tom.High.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\TR808\Tom.Low.wav" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
