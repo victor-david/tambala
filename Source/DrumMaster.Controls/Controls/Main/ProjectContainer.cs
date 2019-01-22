@@ -18,7 +18,6 @@ namespace Restless.App.DrumMaster.Controls
     public sealed class ProjectContainer : ControlObject
     {
         #region Private
-        private DrumKit drumKit;
         private bool isSongContainerChangeInProgress = false;
         private double songContainerLastManualHeight;
         private const double SongContainerDefaultHeight = 250.0;

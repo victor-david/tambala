@@ -47,6 +47,9 @@ namespace Restless.App.DrumMaster.Controls
             set;
         }
 
+        /// <summary>
+        /// Get the type of drum kit.
+        /// </summary>
         public DrumKitType DrumKitType
         {
             get;

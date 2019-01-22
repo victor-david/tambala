@@ -2,7 +2,6 @@
 using Restless.App.DrumMaster.Controls.Core;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -76,7 +75,7 @@ namespace Restless.App.DrumMaster.Controls
 
         #region DrumKit
         /// <summary>
-        /// Gets the drum kit. Shorthand property to <see cref="ProjectContainer.DrumKit"/>.
+        /// Gets the drum kit. Shorthand property to <see cref="DrumPattern.DrumKit"/>.
         /// </summary>
         private DrumKit DrumKit
         {
@@ -375,7 +374,7 @@ namespace Restless.App.DrumMaster.Controls
                 MakeController(Controllers[idx], Visibility.Visible);
                 idx++;
             }
-            Debug.WriteLine($"Changed: ControllerCount: {controllerCount} DrumKitCount:{drumKitCount} Idx: {idx}");
+
             while (idx < controllerCount)
             {
                 MakeController(Controllers[idx], Visibility.Collapsed);
@@ -395,9 +394,6 @@ namespace Restless.App.DrumMaster.Controls
 
         private void DrumKitChanged(object sender, RoutedEventArgs e)
         {
-            Diagnostics.DisplayRoutedEvent(sender, e);
-            Debug.WriteLine($"New Drumkit: {DrumKit}");
-            Debug.WriteLine($"Current controller count: {Controllers.Count} - DrumKit instrument count: {DrumKit.Instruments.Count}");
             UpdateControllerInstruments();
             e.Handled = true;
         }

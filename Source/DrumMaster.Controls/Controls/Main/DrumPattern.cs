@@ -69,6 +69,9 @@ namespace Restless.App.DrumMaster.Controls
             set => SetValue(DrumKitIdProperty, value);
         }
 
+        /// <summary>
+        /// Identifies the <see cref="DrumKitId"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty DrumKitIdProperty = DependencyProperty.Register
             (
                 nameof(DrumKitId), typeof(string), typeof(DrumPattern), new PropertyMetadata(DrumKitCollection.DrumKitDefaultId, OnDrumKitIdChanged)
