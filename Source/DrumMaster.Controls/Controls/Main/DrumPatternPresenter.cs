@@ -267,6 +267,10 @@ namespace Restless.App.DrumMaster.Controls
 
         private void ChangeQuarterNoteCount()
         {
+            foreach (var item in headQuarters)
+            {
+                item.Value.Visibility = item.Value.QuarterNote <= quarterNoteCount ? Visibility.Visible : Visibility.Collapsed;
+            }
             Controllers.DoForAll((con) =>
             {
                 foreach (var item in con.Quarters)
@@ -388,7 +392,7 @@ namespace Restless.App.DrumMaster.Controls
             controller.IsEnabledForPlay = visibility == Visibility.Visible;
             foreach (var item in controller.Quarters)
             {
-                item.Value.Visibility = visibility;
+                item.Value.Visibility = item.Value.QuarterNote <= quarterNoteCount ? visibility : Visibility.Collapsed;
             }
         }
 

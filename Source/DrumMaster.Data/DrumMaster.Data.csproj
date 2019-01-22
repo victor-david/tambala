@@ -152,5 +152,23 @@
     <EmbeddedResource Include="Resources\DrumKit\TR808\Tom.High.wav" />
     <EmbeddedResource Include="Resources\DrumKit\TR808\Tom.Low.wav" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\DrumKit\Tribal\Kick.Dry.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Tribal\HighHat.Closed.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Tribal\Cymbal.Crash.Light.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Tribal\Cymbal.Ride.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Tribal\Cymbal.Crash.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Tribal\Cymbal.Bell.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Tribal\Tom.Low.Flam.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Tribal\Tom.Mid.Flam.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Tribal\Tom.Low.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Tribal\Tom.Mid.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Tribal\HighHat.Open.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Tribal\HighHat.Semi.Open.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Tribal\Snare.SideStick.1.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Tribal\Snare.SideStick.2.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Tribal\Snare.1.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Tribal\Snare.2.wav" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

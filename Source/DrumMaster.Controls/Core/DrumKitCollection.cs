@@ -25,6 +25,10 @@ namespace Restless.App.DrumMaster.Controls.Core
         /// </summary>
         public const string DrumKitTr808Id = "A1841D58-4172-40CE-AE56-0E136DCCD09D";
         /// <summary>
+        /// Gets the id for the Tribal drum kit.
+        /// </summary>
+        public const string DrumKitTribalId = "F8402489-D0B5-4448-A515-B63212B50CC2";
+        /// <summary>
         /// Gets the id for the default drum kit (DrumKitStandardId)
         /// </summary>
         public const string DrumKitDefaultId = DrumKitStandardId;
@@ -110,6 +114,12 @@ namespace Restless.App.DrumMaster.Controls.Core
                 Name = "TR-808",
                 ResourcePath = "Resources.DrumKit.TR808",
                 Id = DrumKitTr808Id
+            });
+            Add(new DrumKit()
+            {
+                Name = "Tribal",
+                ResourcePath = "Resources.DrumKit.Tribal",
+                Id = DrumKitTribalId
             });
 
             DoForAll((kit) =>
