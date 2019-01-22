@@ -90,6 +90,7 @@ namespace Restless.App.DrumMaster.Controls
         {
             var element = new XElement(nameof(DrumKit));
             element.Add(new XElement(nameof(Name), Name));
+            element.Add(new XElement(nameof(Id), Id));
             element.Add(new XElement(nameof(ResourcePath), ResourcePath));
             return element;
         }
@@ -124,6 +125,15 @@ namespace Restless.App.DrumMaster.Controls
             if (string.IsNullOrEmpty(ResourcePath)) throw new InvalidOperationException($"{nameof(ResourcePath)} must be set before calling this method");
             Assembly assembly = Assembly.GetAssembly(typeof(Data.Core.AudioResourceMetadata));
             Instruments.LoadFromAssembly(assembly, ResourcePath);
+        }
+
+        /// <summary>
+        /// Gets a string display of this object.
+        /// </summary>
+        /// <returns>A string with <see cref="Name"/> and <see cref="DrumKitType"/></returns>
+        public override string ToString()
+        {
+            return $"{Name} ({DrumKitType})";
         }
         #endregion
     }

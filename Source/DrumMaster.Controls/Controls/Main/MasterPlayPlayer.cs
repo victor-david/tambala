@@ -25,14 +25,11 @@ namespace Restless.App.DrumMaster.Controls
         private int patternOperationSet;
         private bool isControlClosing;
         private PlayMode playMode;
-        private DrumPattern emptyPattern;
         #endregion
 
         private void InitializeThreads()
         {
             playMode = PlayMode.Pattern;
-            emptyPattern = new DrumPattern(Owner);
-
             patternSleepTime = 100;
 
             songPlaySignaler = new AutoResetEvent(false);

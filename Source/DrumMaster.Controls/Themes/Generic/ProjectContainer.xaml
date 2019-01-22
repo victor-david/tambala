@@ -52,26 +52,76 @@
 
             <GridSplitter Grid.Row="1" Style="{DynamicResource HorizontalGridSplitter}"/>
 
-            <!-- Bottom row. Drum kit space and mixer -->
+            <!-- Bottom row. Pattern / Drum kit selector / Mixer -->
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="4*" MinWidth="132"/>
+                    <ColumnDefinition Width="5*" MinWidth="132"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition MinWidth="136"/>
                 </Grid.ColumnDefinitions>
 
+                <!-- Active drum pattern -->
                 <Border Grid.Column="0">
                     <ContentPresenter Content="{Binding ActiveDrumPattern, RelativeSource={RelativeSource TemplatedParent}}"/>
                 </Border>
 
                 <GridSplitter Grid.Column="1" Style="{DynamicResource VerticalGridSplitter}"/>
 
-                <Border Grid.Column="2">
-                    <TextBlock Text="Pattern Mixer" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
-                </Border>
-            </Grid>
+                <!-- Drum kits and mixer-->
+                <Grid Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
 
+                    <!-- Drum kits -->
+                    <Border Grid.Row="0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition x:Name="rKits"/>
+                            </Grid.RowDefinitions>
+                            <Border Style="{DynamicResource HeaderBorder}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Button
+                                    Style="{DynamicResource ButtonBaseFlat}"
+                                    Command="{Binding Commands[ToggleExpanded], RelativeSource={RelativeSource TemplatedParent}}">
+                                        <Image Source="{TemplateBinding ActiveExpandedStateImageSource}"/>
+                                    </Button>
+                                    <TextBlock Text="Kits"/>
+                                </StackPanel>
+                            </Border>
+                            <ListBox
+                                Grid.Row="1"
+                                Style="{DynamicResource ListBoxDrumKit}"
+                                ItemsSource="{Binding DrumKits, RelativeSource={RelativeSource TemplatedParent}}"
+                                SelectedValuePath="Id"
+                                SelectedValue="{Binding ActiveDrumPattern.DrumKitId, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        </Grid>
+                    </Border>
+                    
+                    <!-- Mixer -->
+                    <Border Grid.Row="2">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Border Style="{DynamicResource HeaderBorder}">
+                                <TextBlock Text="Mixer"/>
+                            </Border>
+                            <TextBlock Grid.Row="1" Text="Mixer here"/>
+
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Grid>
         </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsExpanded" Value="False">
+                <Setter TargetName="rKits" Property="Height" Value="0"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
     </ControlTemplate>
 
     <Style TargetType="con:ProjectContainer">

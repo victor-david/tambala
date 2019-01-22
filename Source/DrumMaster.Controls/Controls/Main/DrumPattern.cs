@@ -1,5 +1,6 @@
 ﻿using Restless.App.DrumMaster.Controls.Core;
 using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Xml.Linq;
 
@@ -23,6 +24,7 @@ namespace Restless.App.DrumMaster.Controls
         internal DrumPattern(ProjectContainer owner)
         {
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));
+            DrumKit = Owner.DrumKits[DrumKitCollection.DrumKitDefaultId];
             Controller = ThreadSafeController = new DrumPatternController(this);
             Presenter = ThreadSafePresenter = new DrumPatternPresenter(this);
             AddHandler(ControlObjectSelector.IsSelectedChangedEvent, new RoutedEventHandler(SelectorIsSelectedChanged));
@@ -44,6 +46,63 @@ namespace Restless.App.DrumMaster.Controls
         {
             get;
         }
+        #endregion
+
+        /************************************************************************/
+
+        #region DrumKit / DrumKitId
+        /// <summary>
+        /// Gets the drum kit associated with this drum pattern.
+        /// </summary>
+        public DrumKit DrumKit
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets or sets the drum kit id for this drum pattern.
+        /// </summary>
+        public string DrumKitId
+        {
+            get => (string)GetValue(DrumKitIdProperty);
+            set => SetValue(DrumKitIdProperty, value);
+        }
+
+        public static readonly DependencyProperty DrumKitIdProperty = DependencyProperty.Register
+            (
+                nameof(DrumKitId), typeof(string), typeof(DrumPattern), new PropertyMetadata(DrumKitCollection.DrumKitDefaultId, OnDrumKitIdChanged)
+            );
+
+        private static void OnDrumKitIdChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is DrumPattern c)
+            {
+                if (c.Owner.DrumKits.ContainsDrumKit(c.DrumKitId))
+                {
+                    c.DrumKit = c.Owner.DrumKits[c.DrumKitId];
+                    c.RaiseEvent(new RoutedEventArgs(DrumKitChangedEvent));
+                    c.SetIsChanged();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Provides notification when the <see cref="DrumKit"/> property changes.
+        /// </summary>
+        public event RoutedEventHandler DrumKitChanged
+        {
+            add => AddHandler(DrumKitChangedEvent, value);
+            remove => RemoveHandler(DrumKitChangedEvent, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="DrumKitChanged"/> routed event.
+        /// </summary>
+        public static readonly RoutedEvent DrumKitChangedEvent = EventManager.RegisterRoutedEvent
+            (
+                nameof(DrumKitChanged), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(DrumPattern)
+            );
         #endregion
 
         /************************************************************************/
@@ -159,6 +218,7 @@ namespace Restless.App.DrumMaster.Controls
         {
             var element = new XElement(nameof(DrumPattern));
             element.Add(new XElement(nameof(DisplayName), DisplayName));
+            element.Add(DrumKit.GetXElement());
             element.Add(Controller.GetXElement());
             element.Add(Presenter.GetXElement());
             return element;
@@ -176,6 +236,16 @@ namespace Restless.App.DrumMaster.Controls
                 if (e.Name == nameof(DisplayName)) SetDependencyProperty(DisplayNameProperty, e.Value);
                 if (e.Name == nameof(DrumPatternController)) Controller.RestoreFromXElement(e);
                 if (e.Name == nameof(DrumPatternPresenter)) Presenter.RestoreFromXElement(e);
+                if (e.Name == nameof(Controls.DrumKit))
+                {
+                    foreach (XElement dke in ChildElementList(e))
+                    {
+                        if (dke.Name == nameof(Controls.DrumKit.Id))
+                        {
+                            DrumKitId = dke.Value;
+                        }
+                    }
+                }
             }
             SelectedEventCount = Presenter.GetSelectedCount();
         }

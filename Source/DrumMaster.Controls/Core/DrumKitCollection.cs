@@ -24,6 +24,10 @@ namespace Restless.App.DrumMaster.Controls.Core
         /// Gets the id for the Tr-808 drum kit.
         /// </summary>
         public const string DrumKitTr808Id = "A1841D58-4172-40CE-AE56-0E136DCCD09D";
+        /// <summary>
+        /// Gets the id for the default drum kit (DrumKitStandardId)
+        /// </summary>
+        public const string DrumKitDefaultId = DrumKitStandardId;
         #endregion
         
         /************************************************************************/
@@ -39,6 +43,34 @@ namespace Restless.App.DrumMaster.Controls.Core
         #endregion
 
         /************************************************************************/
+
+        #region Public properties
+        /// <summary>
+        /// Gets the drum kit indexed by its id.
+        /// </summary>
+        /// <param name="id">The drum kit id.</param>
+        /// <returns>The drum kit. Throws if no kit with the specified id.</returns>
+        public DrumKit this[string id]
+        {
+            get
+            {
+                DrumKit kit = GetDrumKit(id);
+                return kit ?? throw new ArgumentOutOfRangeException(nameof(id), "Drum kit with the specified id does not exist");
+            }
+        }
+
+        /// <summary>
+        /// Gets the maximum number of instruments allowed in a single drum kit.
+        /// </summary>
+        public int MaxInstrumentPerKit
+        {
+            get;
+            private set;
+        }
+        #endregion
+
+        /************************************************************************/
+
         #region Public methods
         /// <summary>
         /// Gets a boolean value that indicates if the specified drum kit exists in the collection.
@@ -52,21 +84,6 @@ namespace Restless.App.DrumMaster.Controls.Core
                 if (kit.Id == id) return true;
             }
             return false;
-        }
-
-        /// <summary>
-        /// Gets the specified drum kit. Throws if it doesn't exist.
-        /// </summary>
-        /// <param name="id">The id of the drum kit to get.</param>
-        /// <returns>The drum kit.</returns>
-        public DrumKit GetDrumKit(string id)
-        {
-            foreach (DrumKit kit in this)
-            {
-                if (kit.Id == id) return kit;
-            }
-
-            throw new ArgumentOutOfRangeException(nameof(id), "Drum pattern with the specified id does not exist");
         }
         #endregion
 
@@ -99,6 +116,22 @@ namespace Restless.App.DrumMaster.Controls.Core
             {
                 kit.LoadBuiltInInstruments();
             });
+
+            MaxInstrumentPerKit = this[DrumKitDefaultId].Instruments.Count;
+        }
+
+        /// <summary>
+        /// Gets the specified drum kit.
+        /// </summary>
+        /// <param name="id">The id of the drum kit to get.</param>
+        /// <returns>The drum kit, or null if it doesn't exist.</returns>
+        private DrumKit GetDrumKit(string id)
+        {
+            foreach (DrumKit kit in this)
+            {
+                if (kit.Id == id) return kit;
+            }
+            return null;
         }
         #endregion
     }

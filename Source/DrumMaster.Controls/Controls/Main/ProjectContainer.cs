@@ -37,12 +37,7 @@ namespace Restless.App.DrumMaster.Controls
             MasterOutput = new MasterOutput(this);
             SongContainer = new SongContainer(this);
 
-            DrumKit = new DrumKit
-            {
-                Name = "Cuban",
-                ResourcePath = "Resources.DrumKit.Cuban"
-            };
-            DrumKit.LoadBuiltInInstruments();
+            DrumKits = new DrumKitCollection();
 
             DrumPatterns = new DrumPatternCollection();
             for (int k=1; k <= Constants.DrumPattern.MaxCount; k++)
@@ -52,6 +47,9 @@ namespace Restless.App.DrumMaster.Controls
                     DisplayName = $"Pattern {k}",
                 });
             }
+
+            // IsExpanded is used in the template to expand / contract the drum kit list
+            IsExpanded = false;
 
             ActivateDrumPattern(0);
 
@@ -211,12 +209,11 @@ namespace Restless.App.DrumMaster.Controls
 
         #region DrumKit
         /// <summary>
-        /// Gets or sets the drum kit for the project.
+        /// Gets the collection of available drum kits.
         /// </summary>
-        public DrumKit DrumKit
+        public DrumKitCollection DrumKits
         {
-            get => drumKit;
-            set => drumKit = value ?? throw new ArgumentNullException(nameof(DrumKit));
+            get;
         }
         #endregion
 
@@ -245,7 +242,6 @@ namespace Restless.App.DrumMaster.Controls
         {
             var element = new XElement(nameof(ProjectContainer));
             element.Add(new XElement(nameof(DisplayName), DisplayName));
-            element.Add(DrumKit.GetXElement());
             element.Add(MasterOutput.GetXElement());
             element.Add(MasterPlay.GetXElement());
             element.Add(SongContainer.GetXElement());
@@ -267,7 +263,6 @@ namespace Restless.App.DrumMaster.Controls
             foreach (XElement e in ChildElementList(element))
             {
                 if (e.Name == nameof(DisplayName)) SetDependencyProperty(DisplayNameProperty, e.Value);
-                if (e.Name == nameof(DrumKit)) DrumKit.RestoreFromXElement(e);
                 if (e.Name == nameof(MasterOutput)) MasterOutput.RestoreFromXElement(e);
                 if (e.Name == nameof(MasterPlay)) MasterPlay.RestoreFromXElement(e);
                 if (e.Name == nameof(SongContainer)) SongContainer.RestoreFromXElement(e);

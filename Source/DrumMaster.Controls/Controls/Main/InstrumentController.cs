@@ -32,6 +32,7 @@ namespace Restless.App.DrumMaster.Controls
         internal InstrumentController(DrumPatternPresenter owner)
         {
             this.owner = owner ?? throw new ArgumentNullException(nameof(owner));
+            IsEnabledForPlay = true;
             submixVoice = new SubmixVoice(AudioHost.Instance.AudioDevice);
             submixVoice.SetOutputVoices(new VoiceSendDescriptor(owner.Owner.Controller.SubmixVoice));
             channelCount = submixVoice.VoiceDetails.InputChannelCount;
@@ -93,15 +94,27 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        //public override void OnApplyTemplate()
-        //{
-        //    base.OnApplyTemplate();
-        //    if (DeferredElement != null)
-        //    {
-        //        RestoreFromXElement(DeferredElement);
-        //        DeferredElement = null;
-        //    }
-        //}
+        #region IsEnabledForPlay
+        /// <summary>
+        /// Gets or sets a value that indicate if this instrument controller
+        /// is enabled for play.
+        /// </summary>
+        /// <remarks>
+        /// This property is set when switching drum kits. If a drum kit has fewer
+        /// instruments than the previous (or default) drum kit, the extra controllers
+        /// are hidden and this property is set to false so that any notes that may
+        /// have been set before the drum kit switch aren't played.Cannot use the regular
+        /// IsEnabled property because that is a dependency property and attempting to
+        /// access if from the play thread throws an exception.
+        /// </remarks>
+        internal bool IsEnabledForPlay
+        {
+            get;
+            set;
+        }
+        #endregion
+
+        /************************************************************************/
 
         #region IXElement
         /// <summary>
@@ -135,7 +148,8 @@ namespace Restless.App.DrumMaster.Controls
 
             foreach (XElement e in ChildElementList(element))
             {
-                if (e.Name == nameof(DisplayName)) SetDependencyProperty(DisplayNameProperty, e.Value);
+                // Leave DisplayName as it comes from the instrument.
+                //if (e.Name == nameof(DisplayName)) SetDependencyProperty(DisplayNameProperty, e.Value);
                 if (e.Name == nameof(Volume)) SetDependencyProperty(VolumeProperty, e.Value);
                 if (e.Name == nameof(Panning)) SetDependencyProperty(PanningProperty, e.Value);
                 if (e.Name == nameof(Pitch)) SetDependencyProperty(PitchProperty, e.Value);
@@ -201,7 +215,7 @@ namespace Restless.App.DrumMaster.Controls
         {
             if (Quarters.ContainsKey(quarterNote) &&
                 Quarters[quarterNote].IsSelected(songUnit, position) &&
-                isAudioEnabled && !IsUserMuted && !IsAutoMuted)
+                isAudioEnabled && !IsUserMuted && !IsAutoMuted && IsEnabledForPlay)
             {
                 voicePool.Play(ThreadSafeVolume, ThreadSafePitch, operationSet);
             }

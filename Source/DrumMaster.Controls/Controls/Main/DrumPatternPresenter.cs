@@ -43,6 +43,7 @@ namespace Restless.App.DrumMaster.Controls
             Owner.AddHandler(DrumPatternController.QuarterNoteCountChangedEvent, new RoutedEventHandler(ControllerQuarterNoteCountChanged));
             Owner.AddHandler(DrumPatternController.TicksPerQuarterNoteChangedEvent, new RoutedEventHandler(ControllerTicksPerQuarterNoteChanged));
             Owner.AddHandler(DrumPatternController.ScaleChangedEvent, new RoutedEventHandler(ControllerScaleChanged));
+            Owner.AddHandler(DrumPattern.DrumKitChangedEvent, new RoutedEventHandler(DrumKitChanged));
         }
 
         static DrumPatternPresenter()
@@ -79,7 +80,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         private DrumKit DrumKit
         {
-            get => Owner.Owner.DrumKit;
+            get => Owner.DrumKit;
         }
         #endregion
 
@@ -267,11 +268,15 @@ namespace Restless.App.DrumMaster.Controls
 
         private void ChangeQuarterNoteCount()
         {
-            foreach (var child in Grid.Children.OfType<DrumPatternQuarter>())
+            Controllers.DoForAll((con) =>
             {
-                child.Visibility = child.QuarterNote <= quarterNoteCount ? Visibility.Visible : Visibility.Collapsed;
-            }
-
+                foreach (var item in con.Quarters)
+                {
+                    item.Value.Visibility =
+                        item.Value.QuarterNote <= quarterNoteCount && con.IsEnabledForPlay ?
+                        Visibility.Visible : Visibility.Collapsed;
+                }
+            });
         }
 
         private void ChangeTicksPerQuarterNote()
@@ -293,6 +298,8 @@ namespace Restless.App.DrumMaster.Controls
         private void CreateBody()
         {
             Controllers.Clear();
+
+            int x = Owner.Owner.DrumKits.MaxInstrumentPerKit;
 
             foreach (Instrument ins in DrumKit.Instruments)
             {
@@ -317,7 +324,7 @@ namespace Restless.App.DrumMaster.Controls
                         QuarterType = DrumPatternQuarterType.Selector,
                         TotalTicks = ticksPerQuarterNote,
                         Width = scale,
-                        Visibility = q <= quarterNoteCount ? Visibility.Visible : Visibility.Collapsed
+                        Visibility = q <= quarterNoteCount ? Visibility.Visible : Visibility.Collapsed,
                     };
                     quarter.Create();
                     controller.Quarters.Add(q, quarter);
@@ -354,6 +361,45 @@ namespace Restless.App.DrumMaster.Controls
                 ChangeScale();
                 e.Handled = true;
             }
+        }
+
+        private void UpdateControllerInstruments()
+        {
+            int controllerCount = Controllers.Count;
+            int drumKitCount = DrumKit.Instruments.Count;
+            int idx = 0;
+            while (idx < controllerCount && idx < drumKitCount)
+            {
+                Controllers[idx].Instrument = DrumKit.Instruments[idx];
+                Controllers[idx].DisplayName = DrumKit.Instruments[idx].DisplayName;
+                MakeController(Controllers[idx], Visibility.Visible);
+                idx++;
+            }
+            Debug.WriteLine($"Changed: ControllerCount: {controllerCount} DrumKitCount:{drumKitCount} Idx: {idx}");
+            while (idx < controllerCount)
+            {
+                MakeController(Controllers[idx], Visibility.Collapsed);
+                idx++;
+            }
+        }
+
+        private void MakeController(InstrumentController controller, Visibility visibility)
+        {
+            controller.Visibility = visibility;
+            controller.IsEnabledForPlay = visibility == Visibility.Visible;
+            foreach (var item in controller.Quarters)
+            {
+                item.Value.Visibility = visibility;
+            }
+        }
+
+        private void DrumKitChanged(object sender, RoutedEventArgs e)
+        {
+            Diagnostics.DisplayRoutedEvent(sender, e);
+            Debug.WriteLine($"New Drumkit: {DrumKit}");
+            Debug.WriteLine($"Current controller count: {Controllers.Count} - DrumKit instrument count: {DrumKit.Instruments.Count}");
+            UpdateControllerInstruments();
+            e.Handled = true;
         }
         #endregion
     }
