@@ -12,7 +12,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Thumb">
-                    <Border Height="10" Width="10" CornerRadius="2" Background="DarkGray">
+                    <Border Height="10" Width="10" CornerRadius="3" Background="{TemplateBinding Background}">
                         <Border Height="2" Width="2" Background="Black"/>
                     </Border>
                 </ControlTemplate>
@@ -37,7 +37,7 @@
                 HorizontalAlignment="Center" />
             <Track x:Name="PART_Track">
                 <Track.Thumb>
-                    <Thumb x:Name="Thumb" Style="{StaticResource VelocitySliderThumb}" />
+                    <Thumb x:Name="Thumb" Style="{StaticResource VelocitySliderThumb}" Background="{TemplateBinding Background}" />
                 </Track.Thumb>
             </Track>
         </Grid>

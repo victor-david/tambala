@@ -24,6 +24,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         internal VelocitySlider()
         {
+            Background = new SolidColorBrush(GetBlendedColor(50));
         }
 
         static VelocitySlider()
@@ -73,6 +74,7 @@ namespace Restless.App.DrumMaster.Controls
             {
                 Selector.Volume = (float)newValue;
             }
+            AdjustBackGroundToValue(newValue);
         }
         #endregion
 
@@ -86,6 +88,50 @@ namespace Restless.App.DrumMaster.Controls
         public override string ToString()
         {
             return $"{nameof(VelocitySlider)} SelectorUnit: {SelectorUnit}";
+        }
+        #endregion
+
+        #region Private methods (Colors)
+        private readonly Color highColor = Colors.Red;
+        private readonly Color midColor = Colors.Green;
+        private readonly Color lowColor = Colors.DarkGray;
+
+        private void AdjustBackGroundToValue(double value)
+        {
+            double range = Maximum - Minimum;
+            double diff = Math.Abs(Minimum) + value;
+            int percentage = (int)Math.Round(diff / range * 100);
+            Background = new SolidColorBrush(GetBlendedColor(percentage));
+        }
+
+        /// <summary>
+        /// Blends colors according to a percentage.
+        /// </summary>
+        /// <param name="percentage">The percentage, expressed as an integer between 0-100</param>
+        /// <returns>A blended color</returns>
+        /// <remarks>
+        /// See: https://stackoverflow.com/questions/6394304/algorithm-how-do-i-fade-from-red-to-green-via-yellow-using-rgb-values/7947812 
+        /// </remarks>
+        private Color GetBlendedColor(int percentage)
+        {
+            if (percentage < 50)
+            {
+                return Interpolate(lowColor, midColor, percentage / 50.0);
+            }
+            return Interpolate(midColor, highColor, (percentage - 50) / 50.0);
+        }
+
+        private Color Interpolate(Color color1, Color color2, double fraction)
+        {
+            double r = Interpolate(color1.R, color2.R, fraction);
+            double g = Interpolate(color1.G, color2.G, fraction);
+            double b = Interpolate(color1.B, color2.B, fraction);
+            return Color.FromArgb(255, (byte)Math.Round(r), (byte)Math.Round(g), (byte)Math.Round(b));
+        }
+
+        private double Interpolate(double d1, double d2, double fraction)
+        {
+            return d1 + (d2 - d1) * fraction;
         }
         #endregion
     }
