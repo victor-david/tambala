@@ -3,7 +3,7 @@
     /// <summary>
     /// Defines properties for selectors.
     /// </summary>
-    internal interface ISelector
+    internal interface ISelector : ISelectable
     {
         /// <summary>
         /// Gets or sets the selector size.

@@ -16,6 +16,10 @@
         /// <summary>
         /// The quarter is used in the drum pattern selector body.
         /// </summary>
-        Selector,
+        PatternSelector,
+        /// <summary>
+        /// The quarter is used in the drum pattern velocity selector section.
+        /// </summary>
+        VelocitySelector,
     }
 }

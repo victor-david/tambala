@@ -7,7 +7,7 @@
     <!-- InstrumentController Template/Style  -->
     <!-- #################################### -->
     <ControlTemplate x:Key="InstrumentControllerControlTemplate" TargetType="con:InstrumentController">
-        <Border Padding="3" BorderBrush="LightGray" BorderThickness="0,0,0,2">
+        <Border Name="b1" Padding="3" BorderBrush="{DynamicResource DefaultBorderBrush}" BorderThickness="0,0,0,2">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="23"/>
@@ -94,13 +94,6 @@
                     Minimum="{Binding MinPanning, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}" 
                     Maximum="{Binding MaxPanning, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
                     Value="{Binding Panning, RelativeSource={RelativeSource TemplatedParent}}" />
-
-
-
-
-
-
-
             </Grid>
         </Border>
         <ControlTemplate.Triggers>
@@ -108,6 +101,10 @@
                 <Setter TargetName="r1" Property="Height" Value="0"/>
                 <Setter TargetName="r2" Property="Height" Value="0"/>
                 <Setter TargetName="r3" Property="Height" Value="0"/>
+            </Trigger>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter TargetName="b1" Property="Background" Value="{DynamicResource InstrumentControllerSelectedBrush}"/>
+                <Setter TargetName="b1" Property="BorderBrush" Value="{DynamicResource InstrumentControllerSelectedBorderBrush}"/>
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>

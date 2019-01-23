@@ -19,7 +19,7 @@ namespace Restless.App.DrumMaster.Controls
     /// Not all descendents make use of all properties.
     /// </para>
     /// </remarks>
-    public abstract class AudioControlBase : ControlObject
+    public abstract class AudioControlBase : ControlObject, IVolume
     {
         #region Private
         #endregion
@@ -46,10 +46,9 @@ namespace Restless.App.DrumMaster.Controls
              * later decide to change TrackVals.Volume.Default and/or TrackVals.VolumeBias.Default
              */
             ThreadSafeVolumeRaw = Constants.Volume.Default;
-            //ThreadSafeVolumeBiasRaw = TrackVals.VolumeBias.Default;
             ThreadSafeVolume = XAudio2.DecibelsToAmplitudeRatio(Constants.Volume.Default);
             ThreadSafePitch = XAudio2.SemitonesToFrequencyRatio(Constants.Pitch.Default);
-            VolumeDecibelText = (Volume <= Constants.Volume.Min) ? "Off" : $"{Volume:N1}dB";
+            VolumeDecibelText = (Volume <= Constants.Volume.Main.Min) ? "Off" : $"{Volume:N1}dB";
 
             SetPanningText();
             OnVolumeChanged();
@@ -63,7 +62,7 @@ namespace Restless.App.DrumMaster.Controls
         #region Volume
         /// <summary>
         /// Gets or sets the volume.
-        /// Volume is expressed as a dB value between <see cref="Constants.Volume.Min"/> and <see cref="Constants.Volume.Max"/>
+        /// Volume is expressed as a dB value between <see cref="Constants.Volume.Main.Min"/> and <see cref="Constants.Volume.Main.Max"/>
         /// </summary>
         public float Volume
         {
@@ -86,8 +85,8 @@ namespace Restless.App.DrumMaster.Controls
                 // Save volume for later thread safe access.
                 c.ThreadSafeVolumeRaw = (float)e.NewValue;
                 c.ThreadSafeVolume = XAudio2.DecibelsToAmplitudeRatio(c.ThreadSafeVolumeRaw);
-                c.VolumeDecibelText = (c.Volume <= Constants.Volume.Min) ? "Off" : $"{c.Volume:N1}dB";
-                c.IsAutoMuted = c.Volume == Constants.Volume.Min;
+                c.VolumeDecibelText = (c.Volume <= Constants.Volume.Main.Min) ? "Off" : $"{c.Volume:N1}dB";
+                c.IsAutoMuted = c.Volume == Constants.Volume.Main.Min;
                 c.OnVolumeChanged();
                 c.SetIsChanged();
             }
@@ -96,7 +95,7 @@ namespace Restless.App.DrumMaster.Controls
         private static object OnVolumeCoerce(DependencyObject d, object baseValue)
         {
             float proposed = (float)baseValue;
-            return Math.Min(Constants.Volume.Max, Math.Max(Constants.Volume.Min, proposed));
+            return Math.Min(Constants.Volume.Main.Max, Math.Max(Constants.Volume.Main.Min, proposed));
         }
 
         /// <summary>
@@ -117,43 +116,6 @@ namespace Restless.App.DrumMaster.Controls
         /// Identifies the <see cref="VolumeDecibelText"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty VolumeDecibelTextProperty = VolumeDecibelTextPropertyKey.DependencyProperty;
-
-        /// <summary>
-        /// Gets or sets the volume bias.
-        /// Volume bias is expressed as a dB value between <see cref="Constants.VolumeBias.Min"/> and <see cref="Constants.VolumeBias.Max"/>
-        /// </summary>
-        public float VolumeBias
-        {
-            get => (float)GetValue(VolumeBiasProperty);
-            set => SetValue(VolumeBiasProperty, value);
-        }
-
-        /// <summary>
-        /// Identifies the <see cref="VolumeBias"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty VolumeBiasProperty = DependencyProperty.Register
-            (
-                nameof(VolumeBias), typeof(float), typeof(AudioControlBase), new PropertyMetadata(Constants.VolumeBias.Default, OnVolumeBiasChanged, OnVolumeBiasCoerce)
-            );
-
-        private static void OnVolumeBiasChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is AudioControlBase c)
-            {
-                // Save volume bias in private var for later thread safe access.
-                c.ThreadSafeVolumeBiasRaw = (float)e.NewValue;
-                float dbVol = c.ThreadSafeVolumeRaw + c.ThreadSafeVolumeBiasRaw;
-                c.ThreadSafeVolume = XAudio2.DecibelsToAmplitudeRatio(dbVol);
-                c.OnVolumeChanged();
-                c.SetIsChanged();
-            }
-        }
-
-        private static object OnVolumeBiasCoerce(DependencyObject d, object baseValue)
-        {
-            float proposed = (float)baseValue;
-            return Math.Min(Constants.VolumeBias.Max, Math.Max(Constants.VolumeBias.Min, proposed));
-        }
 
         /// <summary>
         /// Gets or sets the volume text
@@ -221,7 +183,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public float MinVolume
         {
-            get => Constants.Volume.Min;
+            get => Constants.Volume.Main.Min;
         }
 
         /// <summary>
@@ -229,23 +191,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public float MaxVolume
         {
-            get => Constants.Volume.Max;
-        }
-
-        /// <summary>
-        /// Gets the minimum volume bias allowed. Used for binding in the control template.
-        /// </summary>
-        public float MinVolumeBias
-        {
-            get => Constants.VolumeBias.Min;
-        }
-
-        /// <summary>
-        /// Gets the maximum volume bias allowed. Used for binding in the control template.
-        /// </summary>
-        public float MaxVolumeBias
-        {
-            get => Constants.VolumeBias.Max;
+            get => Constants.Volume.Main.Max;
         }
         #endregion
 
@@ -476,7 +422,7 @@ namespace Restless.App.DrumMaster.Controls
 
         /// <summary>
         /// Gets a thread safe boolean value that indicates if audio has been automatically muted
-        /// due to the <see cref="Volume"/> having reached a value of <see cref="Constants.Volume.Min"/>.
+        /// due to the <see cref="Volume"/> having reached a value of <see cref="Constants.Volume.Main.Min"/>.
         /// </summary>
         protected bool IsAutoMuted
         {
@@ -493,14 +439,14 @@ namespace Restless.App.DrumMaster.Controls
             private set;
         }
 
-        /// <summary>
-        /// Gets the thread safe raw value of <see cref="VolumeBias"/>. This value is expressed in dB.
-        /// </summary>
-        protected float ThreadSafeVolumeBiasRaw
-        {
-            get;
-            private set;
-        }
+        ///// <summary>
+        ///// Gets the thread safe raw value of <see cref="VolumeBias"/>. This value is expressed in dB.
+        ///// </summary>
+        //protected float ThreadSafeVolumeBiasRaw
+        //{
+        //    get;
+        //    private set;
+        //}
 
         /// <summary>
         /// Gets the thread safe volume value. 

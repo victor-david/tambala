@@ -4,15 +4,16 @@ using SharpDX.XAudio2;
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Xml.Linq;
 
 namespace Restless.App.DrumMaster.Controls
 {
     /// <summary>
-    /// Represents a controll for a single instrument of a drum pattern.
+    /// Represents a controller for a single instrument of a drum pattern.
     /// </summary>
-    public class InstrumentController : AudioControlBase
+    public class InstrumentController : AudioControlBase, ISelectable
     {
         #region Private
         private bool isAudioEnabled;
@@ -40,7 +41,7 @@ namespace Restless.App.DrumMaster.Controls
             channelVolumes[0] = 1.0f;
             channelVolumes[1] = 1.0f;
 
-            Quarters = new Dictionary<int, DrumPatternQuarter>();
+            PatternQuarters = new Dictionary<int, DrumPatternQuarter>();
             ExpandedImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Caret.Up.Blue.32.png", UriKind.Relative));
             CollapsedImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Caret.Down.Blue.32.png", UriKind.Relative));
         }
@@ -84,9 +85,9 @@ namespace Restless.App.DrumMaster.Controls
 
         #region Quarters
         /// <summary>
-        /// Gets the dictionary of quarters that are controlled by this controller.
+        /// Gets the dictionary of pattern quarters that are controlled by this controller.
         /// </summary>
-        internal Dictionary<int, DrumPatternQuarter> Quarters
+        internal Dictionary<int, DrumPatternQuarter> PatternQuarters
         {
             get;
         }
@@ -116,6 +117,52 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
+        #region IsSelected
+        /// <summary>
+        /// Gets or sets a value that indicates if the <see cref="InstrumentController"/> is selected.
+        /// </summary>
+        public bool IsSelected
+        {
+            get => (bool)GetValue(IsSelectedProperty);
+            set => SetValue(IsSelectedProperty, value);
+        }
+
+        /// <summary>
+        /// Identifes the <see cref="IsSelected"/> dependency property
+        /// </summary>
+        public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register
+            (
+                nameof(IsSelected), typeof(bool), typeof(InstrumentController), new PropertyMetadata(false, OnIsSelectedChanged)
+            );
+
+        private static void OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is InstrumentController c)
+            {
+                c.RaiseEvent(new RoutedEventArgs(IsSelectedChangedEvent));
+            }
+        }
+
+        /// <summary>
+        /// Provides notification when the <see cref="IsSelected"/> property changes.
+        /// </summary>
+        public event RoutedEventHandler IsSelectedChanged
+        {
+            add => AddHandler(IsSelectedChangedEvent, value);
+            remove => RemoveHandler(IsSelectedChangedEvent, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="IsSelectedChanged"/> routed event.
+        /// </summary>
+        public static readonly RoutedEvent IsSelectedChangedEvent = EventManager.RegisterRoutedEvent
+            (
+                nameof(IsSelectedChanged), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(InstrumentController)
+            );
+        #endregion
+
+        /************************************************************************/
+
         #region IXElement
         /// <summary>
         /// Gets the XElement for this object.
@@ -131,7 +178,7 @@ namespace Restless.App.DrumMaster.Controls
             element.Add(new XElement(nameof(IsMuted), IsMuted));
             element.Add(Instrument.GetXElement());
 
-            foreach(var item in Quarters)
+            foreach(var item in PatternQuarters)
             {
                 element.Add(item.Value.GetXElement());
             }
@@ -158,10 +205,10 @@ namespace Restless.App.DrumMaster.Controls
 
                 if (e.Name == nameof(DrumPatternQuarter))
                 {
-                    if (Quarters.ContainsKey(quarterIdx))
+                    if (PatternQuarters.ContainsKey(quarterIdx))
                     {
-                        Quarters[quarterIdx].Create();
-                        Quarters[quarterIdx].RestoreFromXElement(e);
+                        PatternQuarters[quarterIdx].Create();
+                        PatternQuarters[quarterIdx].RestoreFromXElement(e);
                     }
                     quarterIdx++;
                 }
@@ -197,6 +244,16 @@ namespace Restless.App.DrumMaster.Controls
                 submixVoice.SetChannelVolumes(channelCount, channelVolumes);
             }
         }
+
+        /// <summary>
+        /// Called when the left mouse button is released.
+        /// </summary>
+        /// <param name="e">The event arguments</param>
+        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonUp(e);
+            IsSelected = true;
+        }
         #endregion
 
         /************************************************************************/
@@ -213,11 +270,12 @@ namespace Restless.App.DrumMaster.Controls
         /// <param name="operationSet">The operation set. Used only when submitting the voice to the pool.</param>
         internal void Play(PointSelectorSongUnit songUnit, int quarterNote, int position, int operationSet)
         {
-            if (Quarters.ContainsKey(quarterNote) &&
-                Quarters[quarterNote].IsSelected(songUnit, position) &&
+            if (PatternQuarters.ContainsKey(quarterNote) &&
+                PatternQuarters[quarterNote].IsSelected(songUnit, position) &&
                 isAudioEnabled && !IsUserMuted && !IsAutoMuted && IsEnabledForPlay)
             {
-                voicePool.Play(ThreadSafeVolume, ThreadSafePitch, operationSet);
+                float dbVol = PatternQuarters[quarterNote].GetSelectorVolume(position);
+                voicePool.Play(dbVol, ThreadSafePitch, operationSet);
             }
         }
         #endregion

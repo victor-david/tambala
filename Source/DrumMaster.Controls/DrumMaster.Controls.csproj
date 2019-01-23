@@ -115,11 +115,14 @@
     <Compile Include="Controls\Main\DrumPatternQuarterType.cs" />
     <Compile Include="Controls\Main\InstrumentController.cs" />
     <Compile Include="Controls\Main\MasterPlayPlayer.cs" />
+    <Compile Include="Controls\Other\VelocitySlider.cs" />
     <Compile Include="Core\DrumKitCollection.cs" />
     <Compile Include="Core\DrumPatternCollection.cs" />
     <Compile Include="Core\GenericList.cs" />
     <Compile Include="Core\IQuarterNote.cs" />
+    <Compile Include="Core\ISelectable.cs" />
     <Compile Include="Core\ISelectorUnit.cs" />
+    <Compile Include="Core\IVolume.cs" />
     <Compile Include="Core\PointSelectorSongUnit.cs" />
     <Compile Include="Core\PointSelectorUnit.cs" />
     <Compile Include="Controls\Main\VisualBorder.cs" />
@@ -183,6 +186,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\Generic\BoxRadioButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic\VelocitySlider.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

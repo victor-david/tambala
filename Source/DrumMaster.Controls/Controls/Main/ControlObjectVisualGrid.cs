@@ -36,13 +36,25 @@ namespace Restless.App.DrumMaster.Controls
 
         #region Protected methods
         /// <summary>
-        /// Adds a row definition and returns its index.
+        /// Adds a row definition of the specified height and returns its index.
         /// </summary>
-        /// <param name="height">The height. Pass 0 (the default) for Auto</param>
+        /// <param name="height">The height.</param>
         /// <returns>The index of the newly added row definition</returns>
-        protected int AddRowDefinition(double height = 0.0)
+        protected int AddRowDefinition(double height)
         {
-            GridLength glen = (height > 0) ? new GridLength(height) : new GridLength(1, GridUnitType.Auto);
+            if (height < 0.0) height = 0.0;
+            GridLength glen = new GridLength(height);
+            Grid.RowDefinitions.Add(new RowDefinition() { Height = glen });
+            return Grid.RowDefinitions.Count - 1;
+        }
+
+        /// <summary>
+        /// Adds a row definition of auto height and returns its index.
+        /// </summary>
+        /// <returns>The index of the newly added row definition</returns>
+        protected int AddRowDefinition()
+        {
+            GridLength glen = new GridLength(1, GridUnitType.Auto);
             Grid.RowDefinitions.Add(new RowDefinition() { Height = glen });
             return Grid.RowDefinitions.Count - 1;
         }

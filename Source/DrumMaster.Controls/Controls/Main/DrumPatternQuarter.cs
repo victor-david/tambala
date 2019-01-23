@@ -1,5 +1,8 @@
 ﻿using Restless.App.DrumMaster.Controls.Core;
+using SharpDX.XAudio2;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -28,13 +31,14 @@ namespace Restless.App.DrumMaster.Controls
             { PointSelectorUnit.SixteenthNote, new List<int>() { 6, 18 } }, // 16th
             { PointSelectorUnit.ThirtySecondNote, new List<int>() { 3, 9, 15, 21 } }, // 32nd 
             { PointSelectorUnit.EighthNoteTriplet, new List<int>() { 8, 16 } }, // 8th triplet
-
-             // 3, 6, 8, 9, 12, 15, 16, 18, 21,
         };
 
-        private readonly Dictionary<int, PointSelector> pointSelectors;
-
         private VisualTick quarterNoteTick;
+
+        private readonly Dictionary<int, PointSelector> pointSelectors;
+        private readonly Dictionary<int, VelocitySlider> velocitySliders;
+        /************************************************************************/
+
         #endregion
 
         /************************************************************************/
@@ -47,6 +51,7 @@ namespace Restless.App.DrumMaster.Controls
         {
             Visual = new Grid();
             pointSelectors = new Dictionary<int, PointSelector>();
+            velocitySliders = new Dictionary<int, VelocitySlider>();
         }
 
         static DrumPatternQuarter()
@@ -124,7 +129,6 @@ namespace Restless.App.DrumMaster.Controls
                 c.ApplyTotalTicks();
             }
         }
-
         #endregion
 
         /************************************************************************/
@@ -196,6 +200,25 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
+        #region Public methods
+        /// <summary>
+        /// Returns a string representation of this object.
+        /// </summary>
+        /// <returns>A string that describes the object.</returns>
+        public override string ToString()
+        {
+            switch (QuarterType)
+            {
+                case DrumPatternQuarterType.VelocitySelector:
+                    return $"{nameof(DrumPatternQuarter)} Type:{QuarterType} Note:{QuarterNote} Sliders:{velocitySliders.Count}";
+                default:
+                    return $"{nameof(DrumPatternQuarter)} Type:{QuarterType} Note:{QuarterNote} Selectors:{pointSelectors.Count}";
+            }
+        }
+        #endregion
+        
+        /************************************************************************/
+
         #region Internal methods
         /// <summary>
         /// Get the count of selecteors that are selected.
@@ -228,6 +251,21 @@ namespace Restless.App.DrumMaster.Controls
         }
 
         /// <summary>
+        /// Gets the volume for the selector at the specified position.
+        /// </summary>
+        /// <param name="position">The position.</param>
+        /// <returns>A volume value expressed as an XAudio2 amplitude ratio</returns>
+        internal float GetSelectorVolume(int position)
+        {
+            if (pointSelectors.ContainsKey(position))
+            {
+                return pointSelectors[position].ThreadSafeVolume;
+            }
+
+            return XAudio2.DecibelsToAmplitudeRatio(Constants.Volume.Default);
+        }
+
+        /// <summary>
         /// Adds the highlight on the quarter note tick using Dispatcher.BeginInvoke.
         /// </summary>
         internal void InvokeAddQuarterNoteTickHighlight()
@@ -254,11 +292,31 @@ namespace Restless.App.DrumMaster.Controls
                 quarterNoteTick.InvokeRemoveTickHighlight();
             }
         }
+
+        internal void SyncToVelocity(DrumPatternQuarter velocityQuarter)
+        {
+            if (velocityQuarter == null || velocityQuarter.QuarterType != DrumPatternQuarterType.VelocitySelector)
+            {
+                throw new ArgumentException($"{nameof(velocityQuarter)} must be {DrumPatternQuarterType.VelocitySelector}");
+            }
+
+            if (pointSelectors.Count != velocityQuarter.velocitySliders.Count)
+            {
+                throw new InvalidOperationException("Point selectors / Velocity selectors count mismatch");
+            }
+
+            foreach (var item in velocityQuarter.velocitySliders)
+            {
+                item.Value.Selector = pointSelectors[item.Key];
+            }
+
+            // Debug.WriteLine($"This {this} received {velocityQuarter}");
+        }
         #endregion
 
         /************************************************************************/
 
-        #region Private methods
+        #region Protected methods
         /// <summary>
         /// Called when the <see cref="ControlElement.Create"/> method is invoked
         /// by a client. This method creates the drum pattern quarter.
@@ -277,14 +335,21 @@ namespace Restless.App.DrumMaster.Controls
                 case DrumPatternQuarterType.Header:
                     CreateHeaderType();
                     break;
-                case DrumPatternQuarterType.Selector:
-                    CreateSelectorType();
+                case DrumPatternQuarterType.PatternSelector:
+                    CreatePatternSelectorType();
+                    break;
+                case DrumPatternQuarterType.VelocitySelector:
+                    CreateVelocitySelectorType();
                     break;
             }
 
             ApplyTotalTicks();
         }
+        #endregion
 
+        /************************************************************************/
+
+        #region Private methods (Create)
         private void CreateHeaderType()
         {
             Visual.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(0, GridUnitType.Auto) });
@@ -306,7 +371,7 @@ namespace Restless.App.DrumMaster.Controls
             }
         }
 
-        private void CreateSelectorType()
+        private void CreatePatternSelectorType()
         {
             Visual.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
 
@@ -339,6 +404,45 @@ namespace Restless.App.DrumMaster.Controls
             }
         }
 
+        private void CreateVelocitySelectorType()
+        {
+            Visual.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+
+            var qs = MakeVelocitySlider();
+            qs.SelectorUnit = PointSelectorUnit.QuarterNote;
+            velocitySliders.Add(0, qs);
+            AddElement(qs, 0, 0);
+
+            foreach (var map in TickColumns)
+            {
+                foreach (int col in map.Value)
+                {
+                    var s = MakeVelocitySlider();
+                    s.SelectorUnit = map.Key;
+                    velocitySliders.Add(col, s);
+                    AddElement(s, 0, col);
+                }
+            }
+        }
+
+        private VelocitySlider MakeVelocitySlider()
+        {
+            VelocitySlider s = new VelocitySlider()
+            {
+                Height = 120.0,
+                Orientation = Orientation.Vertical,
+                Minimum = Constants.Volume.Selector.Min,
+                Maximum = Constants.Volume.Selector.Max,
+                Value = Constants.Volume.Default,
+            };
+
+            return s;
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region Private methods (other)
         private void AddElement(UIElement element, int row, int column)
         {
             Grid.SetRow(element, row);
@@ -370,18 +474,20 @@ namespace Restless.App.DrumMaster.Controls
         }
         private void ApplyTotalEvenTicks()
         {
-            foreach (var child in Visual.Children.OfType<PointSelector>().Where((t) => t.SelectorUnit != PointSelectorUnit.QuarterNote))
+            foreach (var ch in Visual.Children.OfType<ISelectorUnit>().Where((t) => t.SelectorUnit != PointSelectorUnit.QuarterNote))
             {
-                if (child.SelectorUnit != PointSelectorUnit.EighthNoteTriplet)
+                UIElement child = (UIElement)ch;
+
+                if (ch.SelectorUnit != PointSelectorUnit.EighthNoteTriplet)
                 {
                     child.Visibility = Visibility.Visible;
                     switch (TotalTicks)
                     {
                         case Constants.DrumPattern.TicksPerQuarterNote.Eighth:
-                            child.IsEnabled = child.SelectorUnit == PointSelectorUnit.EighthNote;
+                            child.IsEnabled = ch.SelectorUnit == PointSelectorUnit.EighthNote;
                             break;
                         case Constants.DrumPattern.TicksPerQuarterNote.Sixteenth:
-                            child.IsEnabled = child.SelectorUnit == PointSelectorUnit.SixteenthNote || child.SelectorUnit == PointSelectorUnit.EighthNote;
+                            child.IsEnabled = ch.SelectorUnit == PointSelectorUnit.SixteenthNote || ch.SelectorUnit == PointSelectorUnit.EighthNote;
                             break;
                         default:
                             child.IsEnabled = true;
@@ -390,20 +496,17 @@ namespace Restless.App.DrumMaster.Controls
                 }
                 else
                     child.Visibility = Visibility.Collapsed;
-
-                //child.Visibility = child.SelectorUnit != PointSelectorUnit.EighthNoteTriplet ? Visibility.Visible : Visibility.Collapsed;
-                //child.IsEnabled = child.SelectorUnit != PointSelectorUnit.EighthNoteTriplet ? true : false;
             }
         }
 
         private void ApplyTotalTripletTicks()
         {
-            foreach (var child in Visual.Children.OfType<PointSelector>().Where((t) => t.SelectorUnit != PointSelectorUnit.QuarterNote))
+            foreach (var ch in Visual.Children.OfType<ISelectorUnit>().Where((t) => t.SelectorUnit != PointSelectorUnit.QuarterNote))
             {
-                child.Visibility = child.SelectorUnit == PointSelectorUnit.EighthNoteTriplet ? Visibility.Visible : Visibility.Collapsed;
-                child.IsEnabled = child.SelectorUnit == PointSelectorUnit.EighthNoteTriplet ? true : false;
+                UIElement child = (UIElement)ch;
+                child.Visibility = ch.SelectorUnit == PointSelectorUnit.EighthNoteTriplet ? Visibility.Visible : Visibility.Collapsed;
+                child.IsEnabled = ch.SelectorUnit == PointSelectorUnit.EighthNoteTriplet ? true : false;
             }
-
         }
         #endregion
 

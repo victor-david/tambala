@@ -148,14 +148,43 @@ namespace Restless.App.DrumMaster.Controls.Core
         public static class Volume
         {
             /// <summary>
-            /// The minimum volume allowed in decibels.
+            /// Provides static volume values for the master and drum pattern
+            /// submix voices. Values are expressed in decibels.
             /// </summary>
-            public const float Min = -48.0f; // was -64
+            public static class Main
+            {
+                /// <summary>
+                /// The minimum volume allowed in decibels.
+                /// </summary>
+                public const float Min = -48.0f; // was -64
+
+                /// <summary>
+                /// The maximum volume allowed in decibels.
+                /// </summary>
+                public const float Max = 18.0f;
+            }
 
             /// <summary>
-            /// The maximum volume allowed in decibels.
+            /// Provides static volume values for individual point selectors.
+            /// Values are expressed in decibels.
             /// </summary>
-            public const float Max = 18.0f;
+            /// <remarks>
+            /// Selector volume is used on individual beat selectors to provide accents
+            /// and ghost notes. It has a smaller range than main volume.
+            /// </remarks>
+            public static class Selector
+            {
+                /// <summary>
+                /// The minimum volume allowed in decibels.
+                /// </summary>
+                public const float Min = -9.5f;
+
+                /// <summary>
+                /// The maximum volume allowed in decibels.
+                /// </summary>
+                public const float Max = 9.5f;
+
+            }
 
             /// <summary>
             /// The default volume
@@ -171,38 +200,6 @@ namespace Restless.App.DrumMaster.Controls.Core
             /// The default short volume text.
             /// </summary>
             public const string DefaultShortText = "Vol";
-        }
-        #endregion
-
-        /************************************************************************/
-
-        #region Volume Bias
-        /// <summary>
-        /// Provides static values that define volume bias.
-        /// See remarks for how these values are used.
-        /// </summary>
-        /// <remarks>
-        /// Volume bias is used on individual beats to provide accents
-        /// and ghost notes. The user can set the volume bias of each beat
-        /// and the volume will be adjusted accordingly during playback.
-        /// Volume bias is expressed as dB.
-        /// </remarks>
-        public static class VolumeBias
-        {
-            /// <summary>
-            /// The minimum volume bias allowed in decibels.
-            /// </summary>
-            public const float Min = -9.5f;
-
-            /// <summary>
-            /// The maximum volume bias allowed in decibels.
-            /// </summary>
-            public const float Max = 9.5f;
-
-            /// <summary>
-            /// The default volume bias, i.e. none.
-            /// </summary>
-            public const float Default = 0.0f;
         }
         #endregion
 

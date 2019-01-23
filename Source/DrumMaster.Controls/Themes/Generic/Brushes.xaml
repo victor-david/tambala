@@ -14,6 +14,25 @@
         </GradientBrush.GradientStops>
     </LinearGradientBrush>
 
+    <LinearGradientBrush x:Key="InstrumentControllerSelectedBrush" StartPoint="0.00,0.00" EndPoint="1.00,1.00">
+        <GradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FF75A5B7" Offset="0.000"/>
+                <GradientStop Color="#FFFFFFFF" Offset="0.950"/>
+            </GradientStopCollection>
+        </GradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="InstrumentControllerSelectedBorderBrush" StartPoint="0.00,0.00" EndPoint="1.00,1.00">
+        <GradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FF808080" Offset="0.000"/>
+                <GradientStop Color="LightGray" Offset="1.000"/>
+            </GradientStopCollection>
+        </GradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+
     <!-- Brushes for PointSelector -->
     <SolidColorBrush x:Key="PointSelectorSongHeaderSelected" Color="#FFCC0000"/>
     <SolidColorBrush x:Key="PointSelectorSongHeaderDeselected" Color="LightGray"/>

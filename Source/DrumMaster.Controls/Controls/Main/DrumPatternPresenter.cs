@@ -2,6 +2,7 @@
 using Restless.App.DrumMaster.Controls.Core;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,6 +21,9 @@ namespace Restless.App.DrumMaster.Controls
         private int ticksPerQuarterNote;
         private double scale;
         private readonly Dictionary<int, DrumPatternQuarter> headQuarters;
+        private readonly Dictionary<int, DrumPatternQuarter> velocityQuarters;
+        private InstrumentController selectedController;
+        private int velocityRowIdx;
         #endregion
 
         /************************************************************************/
@@ -38,11 +42,14 @@ namespace Restless.App.DrumMaster.Controls
             scale = Constants.DrumPattern.Scale.Default;
 
             headQuarters = new Dictionary<int, DrumPatternQuarter>();
+            velocityQuarters = new Dictionary<int, DrumPatternQuarter>();
 
             Owner.AddHandler(DrumPatternController.QuarterNoteCountChangedEvent, new RoutedEventHandler(ControllerQuarterNoteCountChanged));
             Owner.AddHandler(DrumPatternController.TicksPerQuarterNoteChangedEvent, new RoutedEventHandler(ControllerTicksPerQuarterNoteChanged));
             Owner.AddHandler(DrumPatternController.ScaleChangedEvent, new RoutedEventHandler(ControllerScaleChanged));
-            Owner.AddHandler(DrumPattern.DrumKitChangedEvent, new RoutedEventHandler(DrumKitChanged));
+            Owner.AddHandler(DrumPattern.DrumKitChangedEvent, new RoutedEventHandler(DrumPatternDrumKitChanged));
+            Owner.AddHandler(InstrumentController.IsSelectedChangedEvent, new RoutedEventHandler(ControllerIsSelectedChanged));
+
         }
 
         static DrumPatternPresenter()
@@ -53,7 +60,7 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region Internal properties
+        #region Internal / private properties
         /// <summary>
         /// Gets the <see cref="DrumPattern"/> that owns this instance.
         /// </summary>
@@ -68,6 +75,19 @@ namespace Restless.App.DrumMaster.Controls
         private GenericList<InstrumentController> Controllers
         {
             get;
+        }
+
+        /// <summary>
+        /// Gets or sets the selected controller
+        /// </summary>
+        private InstrumentController SelectedController
+        {
+            get => selectedController;
+            set
+            {
+                selectedController = value;
+                OnSelectedControllerChanged();
+            }
         }
         #endregion
 
@@ -147,8 +167,10 @@ namespace Restless.App.DrumMaster.Controls
         protected override void OnElementCreate()
         {
             headQuarters.Clear();
+            velocityQuarters.Clear();
             CreateHeader();
-            CreateBody();
+            CreateInstrumentRows();
+            CreateVelocityControls();
         }
 
         /// <summary>
@@ -179,7 +201,7 @@ namespace Restless.App.DrumMaster.Controls
             int count = 0;
             foreach (InstrumentController controller in Controllers)
             {
-                foreach (var item in controller.Quarters)
+                foreach (var item in controller.PatternQuarters)
                 {
                     count += item.Value.GetSelectedCount();
                 }
@@ -230,7 +252,7 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region Private methods
+        #region Private methods (Creation)
         /// <summary>
         /// Creates the header and ticks. This is a one time operation called when the template is applied.
         /// </summary>
@@ -265,44 +287,9 @@ namespace Restless.App.DrumMaster.Controls
             }
         }
 
-        private void ChangeQuarterNoteCount()
-        {
-            foreach (var item in headQuarters)
-            {
-                item.Value.Visibility = item.Value.QuarterNote <= quarterNoteCount ? Visibility.Visible : Visibility.Collapsed;
-            }
-            Controllers.DoForAll((con) =>
-            {
-                foreach (var item in con.Quarters)
-                {
-                    item.Value.Visibility =
-                        item.Value.QuarterNote <= quarterNoteCount && con.IsEnabledForPlay ?
-                        Visibility.Visible : Visibility.Collapsed;
-                }
-            });
-        }
-
-        private void ChangeTicksPerQuarterNote()
-        {
-            foreach (var child in Grid.Children.OfType<DrumPatternQuarter>())
-            {
-                child.TotalTicks = ticksPerQuarterNote;
-            }
-        }
-
-        private void ChangeScale()
-        {
-            foreach (var child in Grid.Children.OfType<DrumPatternQuarter>())
-            {
-                child.Width = scale;
-            }
-        }
-
-        private void CreateBody()
+        private void CreateInstrumentRows()
         {
             Controllers.Clear();
-
-            int x = Owner.Owner.DrumKits.MaxInstrumentPerKit;
 
             foreach (Instrument ins in DrumKit.Instruments)
             {
@@ -324,17 +311,42 @@ namespace Restless.App.DrumMaster.Controls
                     var quarter = new DrumPatternQuarter()
                     {
                         QuarterNote = q,
-                        QuarterType = DrumPatternQuarterType.Selector,
+                        QuarterType = DrumPatternQuarterType.PatternSelector,
                         TotalTicks = ticksPerQuarterNote,
                         Width = scale,
                         Visibility = q <= quarterNoteCount ? Visibility.Visible : Visibility.Collapsed,
                     };
                     quarter.Create();
-                    controller.Quarters.Add(q, quarter);
+                    controller.PatternQuarters.Add(q, quarter);
                     AddElement(quarter, rowIdx, q);
                 }
             }
         }
+
+        private void CreateVelocityControls()
+        {
+            velocityRowIdx = AddRowDefinition(0.0);
+
+            for (int q = 1; q <= Constants.DrumPattern.QuarterNoteCount.Max; q++)
+            {
+                var quarter = new DrumPatternQuarter()
+                {
+                    QuarterNote = q,
+                    QuarterType = DrumPatternQuarterType.VelocitySelector,
+                    TotalTicks = ticksPerQuarterNote,
+                    Width = scale,
+                    Visibility = q <= quarterNoteCount ? Visibility.Visible : Visibility.Collapsed,
+                };
+                quarter.Create();
+                velocityQuarters.Add(q, quarter);
+                AddElement(quarter, velocityRowIdx, q);
+            }
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region Private methods (Other)
 
         private void ControllerQuarterNoteCountChanged(object sender, RoutedEventArgs e)
         {
@@ -346,12 +358,36 @@ namespace Restless.App.DrumMaster.Controls
             }
         }
 
+        private void ChangeQuarterNoteCount()
+        {
+            foreach (var item in headQuarters)
+            {
+                item.Value.Visibility = item.Value.QuarterNote <= quarterNoteCount ? Visibility.Visible : Visibility.Collapsed;
+            }
+            Controllers.DoForAll((con) =>
+            {
+                foreach (var item in con.PatternQuarters)
+                {
+                    item.Value.Visibility =
+                        item.Value.QuarterNote <= quarterNoteCount && con.IsEnabledForPlay ?
+                        Visibility.Visible : Visibility.Collapsed;
+                }
+            });
+            foreach (var item in velocityQuarters)
+            {
+                item.Value.Visibility = item.Value.QuarterNote <= quarterNoteCount ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
+
         private void ControllerTicksPerQuarterNoteChanged(object sender, RoutedEventArgs e)
         {
             if (e.OriginalSource is DrumPatternController controller)
             {
                 ticksPerQuarterNote = controller.TicksPerQuarterNote;
-                ChangeTicksPerQuarterNote();
+                foreach (var child in Grid.Children.OfType<DrumPatternQuarter>())
+                {
+                    child.TotalTicks = ticksPerQuarterNote;
+                }
                 e.Handled = true;
             }
         }
@@ -361,7 +397,10 @@ namespace Restless.App.DrumMaster.Controls
             if (e.OriginalSource is DrumPatternController controller)
             {
                 scale = controller.Scale;
-                ChangeScale();
+                foreach (var child in Grid.Children.OfType<DrumPatternQuarter>())
+                {
+                    child.Width = scale;
+                }
                 e.Handled = true;
             }
         }
@@ -384,22 +423,88 @@ namespace Restless.App.DrumMaster.Controls
                 MakeController(Controllers[idx], Visibility.Collapsed);
                 idx++;
             }
+
+            if (SelectedController != null && !SelectedController.IsEnabledForPlay)
+            {
+                SelectedController.IsSelected = false;
+            }
         }
 
         private void MakeController(InstrumentController controller, Visibility visibility)
         {
             controller.Visibility = visibility;
             controller.IsEnabledForPlay = visibility == Visibility.Visible;
-            foreach (var item in controller.Quarters)
+            foreach (var item in controller.PatternQuarters)
             {
                 item.Value.Visibility = item.Value.QuarterNote <= quarterNoteCount ? visibility : Visibility.Collapsed;
             }
         }
 
-        private void DrumKitChanged(object sender, RoutedEventArgs e)
+        private void DrumPatternDrumKitChanged(object sender, RoutedEventArgs e)
         {
             UpdateControllerInstruments();
             e.Handled = true;
+        }
+
+
+        private void UpdateVelocitySliders()
+        {
+            if (selectedController != null)
+            {
+                Grid.RowDefinitions[velocityRowIdx].Height = new GridLength(1.0, GridUnitType.Auto);
+            }
+            else
+            {
+                Grid.RowDefinitions[velocityRowIdx].Height = new GridLength(0.0, GridUnitType.Pixel);
+            }
+        }
+
+        private void OnSelectedControllerChanged()
+        {
+            if (selectedController == null)
+            {
+                Grid.RowDefinitions[velocityRowIdx].Height = new GridLength(0.0, GridUnitType.Pixel);
+                return;
+            }
+            // set the velocity sliders according to the point selectors of the selected controller.
+
+
+
+            foreach (var item in velocityQuarters)
+            {
+                selectedController.PatternQuarters[item.Key].SyncToVelocity(item.Value);
+
+            }
+
+            Grid.RowDefinitions[velocityRowIdx].Height = new GridLength(1.0, GridUnitType.Auto);
+
+        }
+
+        private void ControllerIsSelectedChanged(object sender, RoutedEventArgs e)
+        {
+            if (e.OriginalSource is InstrumentController controller)
+            {
+                // This method will deselect all controllers except
+                // the one that is the original source of this event
+                // which will raise the event again. Need to check
+                // if the controller is selected so we don't get re-entrancy
+                // and a stack overflow.
+                if (controller.IsSelected)
+                {
+                    Controllers.DoForAll((con) =>
+                    {
+                        con.IsSelected = con == controller;
+                    });
+
+                    SelectedController = controller;
+                }
+                else
+                {
+                    SelectedController = null;
+                }
+                
+                e.Handled = true;
+            }
         }
         #endregion
     }
