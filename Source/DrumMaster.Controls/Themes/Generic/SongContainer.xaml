@@ -40,8 +40,8 @@
             <Grid Name="e1" Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="84"/>
-                    <ColumnDefinition Width="202"/>
-                    <ColumnDefinition Width="202"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
@@ -51,6 +51,8 @@
                     Grid.Column="1" 
                     Margin="8,0"
                     LabelText="Size"
+                    LabelSize="36"
+                    ValueSize="20"
                     ValueText="{Binding SelectorSize, RelativeSource={RelativeSource TemplatedParent}}"
                     LabelTextBrush="{DynamicResource SliderLabelTextBrush}"
                     ValueTextBrush="{DynamicResource SliderValueTextBrush}"
@@ -63,6 +65,8 @@
                     Grid.Column="2"
                     Margin="8,0"
                     LabelText="Divisions"
+                    LabelSize="50"
+                    ValueSize="20"
                     ValueText="{Binding DivisionCount, RelativeSource={RelativeSource TemplatedParent}}"
                     LabelTextBrush="{DynamicResource SliderLabelTextBrush}"
                     ValueTextBrush="{DynamicResource SliderValueTextBrush}"
