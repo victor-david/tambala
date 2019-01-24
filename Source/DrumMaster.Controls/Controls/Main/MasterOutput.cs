@@ -1,6 +1,7 @@
 ﻿using Restless.App.DrumMaster.Controls.Audio;
 using Restless.App.DrumMaster.Controls.Core;
 using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Xml.Linq;
 
@@ -9,7 +10,7 @@ namespace Restless.App.DrumMaster.Controls
     /// <summary>
     /// Represents the master output control. Handles the final voice.
     /// </summary>
-    public sealed class MasterOutput : AudioControlBase
+    public sealed class MasterOutput : AudioControlBase, INotifyPropertyChanged
     {
         #region Private
         #endregion
@@ -114,7 +115,6 @@ namespace Restless.App.DrumMaster.Controls
                 nameof(TempoText), typeof(string), typeof(MasterOutput), new PropertyMetadata(Constants.Tempo.DefaultText)
             );
 
-
         /// <summary>
         /// Gets the minimum tempo allowed. Used for binding in the control template.
         /// </summary>
@@ -129,6 +129,19 @@ namespace Restless.App.DrumMaster.Controls
         public double MaxTempo
         {
             get => Constants.Tempo.Max;
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region VolumePeak
+        /// <summary>
+        /// Gets the peak volume.
+        /// </summary>
+        public float VolumePeak
+        {
+            get;
+            private set;
         }
         #endregion
 
@@ -177,6 +190,32 @@ namespace Restless.App.DrumMaster.Controls
         protected override void OnVolumeChanged()
         {
             AudioHost.Instance.MasterVoice.SetVolume(ThreadSafeVolume);
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region INotifyPropertyChanged
+        /// <summary>
+        /// Enables listeners to respond to property changes
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+        #endregion
+
+        /************************************************************************/
+
+        #region Internal methods
+        /// <summary>
+        /// Sets the peak volume.
+        /// </summary>
+        /// <param name="peak">The peak</param>
+        /// <remarks>
+        /// The calling thread should limit how rapidly it callss this method
+        /// </remarks>
+        internal void SetVolumePeak(float peak)
+        {
+            VolumePeak = peak * 100f;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(VolumePeak)));
         }
         #endregion
     }

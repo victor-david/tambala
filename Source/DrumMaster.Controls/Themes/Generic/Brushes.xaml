@@ -48,12 +48,13 @@
 
 
     <SolidColorBrush x:Key="DefaultBorderBrush" Color="LightGray"/>
+    <SolidColorBrush x:Key="LightBorderBrush" Color="#FFEEEEEE"/>
+    <SolidColorBrush x:Key="DefaultBackgroundBrush" Color="White"/>
     
     <SolidColorBrush x:Key="SliderLabelTextBrush" Color="DarkBlue"/>
     <SolidColorBrush x:Key="SliderValueTextBrush" Color="Gray"/>
 
     <SolidColorBrush x:Key="HeaderForegroundBrush" Color="White"/>
-    <SolidColorBrush x:Key="LightBorderBrush" Color="LightGray"/>
     
     <SolidColorBrush x:Key="TrackBorderBrush" Color="LightGray"/>
     <SolidColorBrush x:Key="ButtonBrushOver" Color="#90B9DFFF"/>

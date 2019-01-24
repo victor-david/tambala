@@ -11,6 +11,7 @@
         <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/ListBox.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/LevelSlider.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/VelocitySlider.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/VolumeMeter.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/OnOff.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/BoxRadioButton.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/DrumMaster.Controls;component/Themes/Generic/MasterPlay.xaml"/>

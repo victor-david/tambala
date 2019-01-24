@@ -1,4 +1,5 @@
-﻿using Restless.App.DrumMaster.Controls.Audio;
+﻿using NAudio.CoreAudioApi;
+using Restless.App.DrumMaster.Controls.Audio;
 using Restless.App.DrumMaster.Controls.Core;
 using System.Threading;
 
@@ -14,26 +15,31 @@ namespace Restless.App.DrumMaster.Controls
 
         private bool isSongStarted;
         private AutoResetEvent songPlaySignaler;
-        private AutoResetEvent songEndPlaySignaler;
         private Thread songPlayThread;
 
         private bool isPatternStarted;
         private AutoResetEvent patternPlaySignaler;
-        private AutoResetEvent patternEndPlaySignaler;
         private Thread patternPlayThread;
+
+        private AutoResetEvent audioMonitorSignaler;
+        private Thread audioMonitorThread;
+
+
         private int patternSleepTime;
         private int patternOperationSet;
         private bool isControlClosing;
         private PlayMode playMode;
         #endregion
+            
+        /************************************************************************/
 
+        #region Private methods (InitializeThreads)
         private void InitializeThreads()
         {
             playMode = PlayMode.Pattern;
             patternSleepTime = 100;
 
             songPlaySignaler = new AutoResetEvent(false);
-            songEndPlaySignaler = new AutoResetEvent(false);
             songPlayThread = new Thread(SongPlayThreadHandler)
             {
                 Name = "SongPlay"
@@ -41,12 +47,41 @@ namespace Restless.App.DrumMaster.Controls
             songPlayThread.Start();
 
             patternPlaySignaler = new AutoResetEvent(false);
-            patternEndPlaySignaler = new AutoResetEvent(false);
             patternPlayThread = new Thread(PatternPlayThreadHandler)
             {
                 Name = "PatternPlay"
             };
             patternPlayThread.Start();
+
+            audioMonitorSignaler = new AutoResetEvent(false);
+            audioMonitorThread = new Thread(AudioMonitorThreadHandler)
+            {
+                Name = "AudioMonitor"
+            };
+            audioMonitorThread.Start();
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region Private methods (Thread handlers)
+        private void AudioMonitorThreadHandler()
+        {
+            MMDevice audioEndpoint = new MMDeviceEnumerator().GetDefaultAudioEndpoint(DataFlow.Render, Role.Console);
+            while (!isControlClosing)
+            {
+
+                audioMonitorSignaler.WaitOne();
+                if (!isControlClosing)
+                {
+                    while (isSongStarted || isPatternStarted)
+                    {
+                        Owner.ThreadSafeMasterOutput.SetVolumePeak(audioEndpoint.AudioMeterInformation.MasterPeakValue);
+                        Thread.Sleep(25);
+                    }
+                    Owner.ThreadSafeMasterOutput.SetVolumePeak(0.0f);
+                }
+            }
         }
 
         private void SongPlayThreadHandler()
@@ -84,9 +119,7 @@ namespace Restless.App.DrumMaster.Controls
                 }
                 song = null;
             }
-            songEndPlaySignaler.Set();
         }
-
 
         private void PatternPlayThreadHandler()
         {
@@ -102,9 +135,12 @@ namespace Restless.App.DrumMaster.Controls
                     }
                 }
             }
-            patternEndPlaySignaler.Set();
         }
+        #endregion
 
+        /************************************************************************/
+
+        #region Private methods (Play audio)
         private void PlaySongPatterns(PointSelectorSongUnit songUnit, DrumPatternCollection patterns)
         {
             int quarterNoteCount = patterns.GetMaxQuarterNoteCount();
@@ -175,7 +211,11 @@ namespace Restless.App.DrumMaster.Controls
                 }
             }
         }
+        #endregion
+        
+        /************************************************************************/
 
+        #region Private methods (Start / stop)
         private void OnPlayModeChanged()
         {
             IsStarted = false;
@@ -191,10 +231,12 @@ namespace Restless.App.DrumMaster.Controls
             if (isSongStarted)
             {
                 songPlaySignaler.Set();
+                audioMonitorSignaler.Set();
             }
             if (isPatternStarted)
             {
                 patternPlaySignaler.Set();
+                audioMonitorSignaler.Set();
             }
 
         }
@@ -203,6 +245,9 @@ namespace Restless.App.DrumMaster.Controls
         {
             if (PlayMode == mode) isStarted = IsStarted;
         }
+        #endregion
+
+        /************************************************************************/
 
         #region Internal methods
         internal void Shutdown()
@@ -215,24 +260,19 @@ namespace Restless.App.DrumMaster.Controls
                 songPlaySignaler.Set();
                 songPlaySignaler.Dispose();
             }
-            if (songEndPlaySignaler != null)
-            {
-                songEndPlaySignaler.WaitOne();
-                songEndPlaySignaler.Dispose();
-                songEndPlaySignaler = null;
-            }
 
             if (!patternPlaySignaler.SafeWaitHandle.IsClosed)
             {
                 patternPlaySignaler.Set();
                 patternPlaySignaler.Dispose();
             }
-            if (patternEndPlaySignaler != null)
+
+            if (!audioMonitorSignaler.SafeWaitHandle.IsClosed)
             {
-                patternEndPlaySignaler.WaitOne();
-                patternEndPlaySignaler.Dispose();
-                patternEndPlaySignaler = null;
+                audioMonitorSignaler.Set();
+                audioMonitorSignaler.Dispose();
             }
+
         }
 
         internal void SetTempo(double tempo)

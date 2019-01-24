@@ -33,7 +33,7 @@ namespace Restless.App.DrumMaster.Controls
         public ProjectContainer()
         {
             MasterPlay = new MasterPlay(this);
-            MasterOutput = new MasterOutput(this);
+            MasterOutput = ThreadSafeMasterOutput = new MasterOutput(this);
             SongContainer = new SongContainer(this);
 
             DrumKits = new DrumKitCollection();
@@ -86,6 +86,14 @@ namespace Restless.App.DrumMaster.Controls
         /// Identifies the <see cref="MasterOutput"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MasterOutputProperty = MasterOutputPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Gets a thread safe reference to <see cref="MasterOutput"/>.
+        /// </summary>
+        internal MasterOutput ThreadSafeMasterOutput
+        {
+            get;
+        }
         #endregion
 
         /************************************************************************/
@@ -336,12 +344,11 @@ namespace Restless.App.DrumMaster.Controls
         }
 
         /// <summary>
-        /// Shuts down the song container.
+        /// Shuts down the project container.
         /// </summary>
         public void Shutdown()
         {
             MasterPlay.Shutdown();
-            //RemoveEventHandlers();
             Dispatcher.ShutdownStarted -= DispatcherShutdownStarted;
         }
         #endregion
@@ -419,11 +426,6 @@ namespace Restless.App.DrumMaster.Controls
             // the threads will finish and this handler will be removed.
             MasterPlay.Shutdown();
         }
-
-        //private void RemoveEventHandlers()
-        //{
-
-        //}
         #endregion
     }
 }

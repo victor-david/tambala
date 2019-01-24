@@ -16,6 +16,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="64"/>
                 <ColumnDefinition Width="64"/>
+                <ColumnDefinition Width="16"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
@@ -47,7 +48,13 @@
                 Minimum="{Binding MinVolume, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}" 
                 Maximum="{Binding MaxVolume, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
                 Value="{Binding Volume, RelativeSource={RelativeSource TemplatedParent}}" />
-            
+
+            <!-- Col 2. Volume meter -->
+            <con:VolumeMeter 
+                Grid.Column="2" Grid.Row="1"
+                Margin="0,16"
+                Value="{Binding VolumePeak, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"/>
+
         </Grid>
     </ControlTemplate>
 
