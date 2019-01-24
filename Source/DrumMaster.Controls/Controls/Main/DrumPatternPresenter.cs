@@ -119,8 +119,6 @@ namespace Restless.App.DrumMaster.Controls
         #region IXElement
         /// <summary>
         /// Gets the XElement for this object.
-        /// This method satisfies the interface requirement but is not used.
-        /// It always throws an InvalidOperationException.
         /// </summary>
         /// <returns>The XElement that describes the state of this object.</returns>
         public override XElement GetXElement()
