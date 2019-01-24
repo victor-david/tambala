@@ -252,7 +252,7 @@ namespace Restless.App.DrumMaster.Controls
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonUp(e);
-            IsSelected = true;
+            IsSelected = !IsSelected;
         }
         #endregion
 

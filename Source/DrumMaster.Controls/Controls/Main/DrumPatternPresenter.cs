@@ -49,7 +49,6 @@ namespace Restless.App.DrumMaster.Controls
             Owner.AddHandler(DrumPatternController.ScaleChangedEvent, new RoutedEventHandler(ControllerScaleChanged));
             Owner.AddHandler(DrumPattern.DrumKitChangedEvent, new RoutedEventHandler(DrumPatternDrumKitChanged));
             Owner.AddHandler(InstrumentController.IsSelectedChangedEvent, new RoutedEventHandler(ControllerIsSelectedChanged));
-
         }
 
         static DrumPatternPresenter()
@@ -320,11 +319,19 @@ namespace Restless.App.DrumMaster.Controls
                     controller.PatternQuarters.Add(q, quarter);
                     AddElement(quarter, rowIdx, q);
                 }
+                // Add an extra row after each controller row. Height is Auto with nothing in it.
+                // Later, when selecting the controller, we place the velocity selectors in
+                // this row, i.e selectedController.Row + 1.
+                AddRowDefinition();
             }
         }
 
         private void CreateVelocityControls()
         {
+            // Velocity controls are held in a hidden row, Height = 0.0
+            // Later, when the user selects a controller, we move them into
+            // selectedController.Row + 1. If selected controller is set to null,
+            // the velocity controls go back into the hidden row.
             velocityRowIdx = AddRowDefinition(0.0);
 
             for (int q = 1; q <= Constants.DrumPattern.QuarterNoteCount.Max; q++)
@@ -362,20 +369,18 @@ namespace Restless.App.DrumMaster.Controls
         {
             foreach (var item in headQuarters)
             {
-                item.Value.Visibility = item.Value.QuarterNote <= quarterNoteCount ? Visibility.Visible : Visibility.Collapsed;
+                item.Value.SetVisibility(quarterNoteCount);
             }
             Controllers.DoForAll((con) =>
             {
                 foreach (var item in con.PatternQuarters)
                 {
-                    item.Value.Visibility =
-                        item.Value.QuarterNote <= quarterNoteCount && con.IsEnabledForPlay ?
-                        Visibility.Visible : Visibility.Collapsed;
+                    item.Value.SetVisibility(quarterNoteCount, con.IsEnabledForPlay);
                 }
             });
             foreach (var item in velocityQuarters)
             {
-                item.Value.Visibility = item.Value.QuarterNote <= quarterNoteCount ? Visibility.Visible : Visibility.Collapsed;
+                item.Value.SetVisibility(quarterNoteCount);
             }
         }
 
@@ -446,38 +451,20 @@ namespace Restless.App.DrumMaster.Controls
             e.Handled = true;
         }
 
-
-        private void UpdateVelocitySliders()
-        {
-            if (selectedController != null)
-            {
-                Grid.RowDefinitions[velocityRowIdx].Height = new GridLength(1.0, GridUnitType.Auto);
-            }
-            else
-            {
-                Grid.RowDefinitions[velocityRowIdx].Height = new GridLength(0.0, GridUnitType.Pixel);
-            }
-        }
-
         private void OnSelectedControllerChanged()
         {
-            if (selectedController == null)
-            {
-                Grid.RowDefinitions[velocityRowIdx].Height = new GridLength(0.0, GridUnitType.Pixel);
-                return;
-            }
-            // set the velocity sliders according to the point selectors of the selected controller.
-
-
-
             foreach (var item in velocityQuarters)
             {
-                selectedController.PatternQuarters[item.Key].SyncToVelocity(item.Value);
-
+                if (selectedController != null)
+                {
+                    selectedController.PatternQuarters[item.Key].SyncToVelocity(item.Value);
+                    Grid.SetRow(item.Value, Grid.GetRow(selectedController) + 1);
+                }
+                else
+                {
+                    Grid.SetRow(item.Value, velocityRowIdx);
+                }
             }
-
-            Grid.RowDefinitions[velocityRowIdx].Height = new GridLength(1.0, GridUnitType.Auto);
-
         }
 
         private void ControllerIsSelectedChanged(object sender, RoutedEventArgs e)

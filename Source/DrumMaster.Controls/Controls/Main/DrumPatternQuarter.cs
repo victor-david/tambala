@@ -293,6 +293,21 @@ namespace Restless.App.DrumMaster.Controls
             }
         }
 
+        /// <summary>
+        /// Sets this object's visibility, either visible or collpased.
+        /// </summary>
+        /// <param name="maxQuarter">
+        /// The max quarter. If <see cref="QuarterNote"/> is less than or equal
+        /// to <paramref name="maxQuarter"/> (and <paramref name="otherCondition"/> is true),
+        /// the control is visible; otherwise, collapsed.
+        /// </param>
+        /// <param name="otherCondition">Another condition to evaulate.</param>
+        internal void SetVisibility(int maxQuarter, bool otherCondition = true)
+        {
+            Visibility = QuarterNote <= maxQuarter && otherCondition ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+
         internal void SyncToVelocity(DrumPatternQuarter velocityQuarter)
         {
             if (velocityQuarter == null || velocityQuarter.QuarterType != DrumPatternQuarterType.VelocitySelector)
@@ -309,8 +324,6 @@ namespace Restless.App.DrumMaster.Controls
             {
                 item.Value.Selector = pointSelectors[item.Key];
             }
-
-            // Debug.WriteLine($"This {this} received {velocityQuarter}");
         }
         #endregion
 
@@ -429,7 +442,7 @@ namespace Restless.App.DrumMaster.Controls
         {
             VelocitySlider s = new VelocitySlider()
             {
-                Height = 120.0,
+                Height = 112.0,
                 Orientation = Orientation.Vertical,
                 Minimum = Constants.Volume.Selector.Min,
                 Maximum = Constants.Volume.Selector.Max,
