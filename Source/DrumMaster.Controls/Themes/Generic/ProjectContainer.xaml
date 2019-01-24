@@ -85,7 +85,7 @@
                                 <StackPanel Orientation="Horizontal">
                                     <Button
                                     Style="{DynamicResource ButtonBaseFlat}"
-                                    Command="{Binding Commands[ToggleExpanded], RelativeSource={RelativeSource TemplatedParent}}">
+                                    Command="{TemplateBinding ToggleExpandedCommand}">
                                         <Image Source="{TemplateBinding ActiveExpandedStateImageSource}"/>
                                     </Button>
                                     <TextBlock Text="Kits"/>

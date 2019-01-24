@@ -268,6 +268,22 @@ namespace Restless.App.DrumMaster.Controls
         #endregion
 
         /************************************************************************/
+        
+        #region Protected methods
+        /// <summary>
+        /// Called when the <see cref="ControlObject.IsStretched"/> property changes.
+        /// </summary>
+        /// <remarks>
+        /// This class uses the toggle of <see cref="ControlObject.IsStretched"/> to
+        /// show or hide all instrument controllers except for the selected one.
+        /// </remarks>
+        protected override void OnIsStretchedChanged()
+        {
+            Presenter.SetControllerVisibility(IsStretched);
+        }
+        #endregion
+
+        /************************************************************************/
 
         #region Private methods
 

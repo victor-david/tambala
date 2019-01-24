@@ -2,7 +2,6 @@
 using Restless.App.DrumMaster.Controls.Core;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -247,6 +246,23 @@ namespace Restless.App.DrumMaster.Controls
                 headQuarters[quarterNote].InvokeRemoveQuarterNoteTickHighlight();
             }
         }
+
+        /// <summary>
+        /// Sets the visibility of controllers
+        /// </summary>
+        /// <param name="allVisible">When true, all controllers visible; otherwise, only the selected one.</param>
+        internal void SetControllerVisibility(bool allVisible)
+        {
+            if (selectedController == null && Controllers.Count > 0)
+            {
+                Controllers[0].IsSelected = true;
+            }
+
+            Controllers.DoForAll((con) =>
+            {
+                con.SetIsVisible(allVisible || con == selectedController, quarterNoteCount);
+            });
+        }
         #endregion
 
         /************************************************************************/
@@ -375,7 +391,7 @@ namespace Restless.App.DrumMaster.Controls
             {
                 foreach (var item in con.PatternQuarters)
                 {
-                    item.Value.SetVisibility(quarterNoteCount, con.IsEnabledForPlay);
+                    item.Value.SetVisibility(quarterNoteCount, con.IsEnabledForPlay && con.IsVisible);
                 }
             });
             foreach (var item in velocityQuarters)
@@ -419,29 +435,19 @@ namespace Restless.App.DrumMaster.Controls
             {
                 Controllers[idx].Instrument = DrumKit.Instruments[idx];
                 Controllers[idx].DisplayName = DrumKit.Instruments[idx].DisplayName;
-                MakeController(Controllers[idx], Visibility.Visible);
+                Controllers[idx].SetIsEnabledForPlay(true, quarterNoteCount);
                 idx++;
             }
 
             while (idx < controllerCount)
             {
-                MakeController(Controllers[idx], Visibility.Collapsed);
+                Controllers[idx].SetIsEnabledForPlay(false, quarterNoteCount);
                 idx++;
             }
 
             if (SelectedController != null && !SelectedController.IsEnabledForPlay)
             {
                 SelectedController.IsSelected = false;
-            }
-        }
-
-        private void MakeController(InstrumentController controller, Visibility visibility)
-        {
-            controller.Visibility = visibility;
-            controller.IsEnabledForPlay = visibility == Visibility.Visible;
-            foreach (var item in controller.PatternQuarters)
-            {
-                item.Value.Visibility = item.Value.QuarterNote <= quarterNoteCount ? visibility : Visibility.Collapsed;
             }
         }
 

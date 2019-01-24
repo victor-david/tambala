@@ -30,8 +30,10 @@ namespace Restless.App.DrumMaster.Controls
             Commands = new Dictionary<string, ICommand>();
             ExpandedImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Caret.Up.White.32.png", UriKind.Relative));
             CollapsedImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Caret.Down.White.32.png", UriKind.Relative));
+            StretchedImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Caret.Up.Down.White.32.png", UriKind.Relative));
             ActiveExpandedStateImageSource = ExpandedImageSource;
-            Commands.Add("ToggleExpanded", new RelayCommand(RunToggleExpandedCommand));
+            ToggleExpandedCommand = new RelayCommand(RunToggleExpandedCommand);
+            ToggleStretchedCommand = new RelayCommand(RunToggleStretchedCommand);
         }
         #endregion
 
@@ -66,7 +68,54 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region Commands
+        #region ToggleExpandedCommand
+        /// <summary>
+        /// Gets the command to toggle <see cref="IsExpanded"/>.
+        /// </summary>
+        public ICommand ToggleExpandedCommand
+        {
+            get => (ICommand)GetValue(ToggleExpandedCommandProperty);
+            private set => SetValue(ToggleExpandedCommandPropertyKey, value);
+        }
+        
+        private static readonly DependencyPropertyKey ToggleExpandedCommandPropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(ToggleExpandedCommand), typeof(ICommand), typeof(ControlObject), new PropertyMetadata(null)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="ToggleExpandedCommand"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ToggleExpandedCommandProperty = ToggleExpandedCommandPropertyKey.DependencyProperty;
+        #endregion
+
+
+        /************************************************************************/
+
+        #region ToggleStretchedCommand
+        /// <summary>
+        /// Gets the command to toggle <see cref="IsStretched"/>.
+        /// </summary>
+        public ICommand ToggleStretchedCommand
+        {
+            get => (ICommand)GetValue(ToggleStretchedCommandProperty);
+            private set => SetValue(ToggleStretchedCommandPropertyKey, value);
+        }
+
+        private static readonly DependencyPropertyKey ToggleStretchedCommandPropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(ToggleStretchedCommand), typeof(ICommand), typeof(ControlObject), new PropertyMetadata(null)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="ToggleStretchedCommand"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ToggleStretchedCommandProperty = ToggleStretchedCommandPropertyKey.DependencyProperty;
+        #endregion
+
+        /************************************************************************/
+
+        #region Commands (Generic dictionary)
         /// <summary>
         /// Gets a dictionary of commands. Used internally by the control template
         /// </summary>
@@ -115,8 +164,12 @@ namespace Restless.App.DrumMaster.Controls
 
         #region IsExpanded
         /// <summary>
-        /// Gets or sets a boolean value that indicates if the control is expanded (true) or collapsed (false).
+        /// Gets or sets a boolean value that indicates if the control is expanded.
         /// </summary>
+        /// <remarks>
+        /// It is up to derived classes to determine how to use this property.
+        /// By itself, it does nothing.
+        /// </remarks>
         public bool IsExpanded
         {
             get => (bool)GetValue(IsExpandedProperty);
@@ -126,7 +179,7 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Identifies the <see cref="IsExpanded"/> dependency property.
         /// </summary>
-        private static readonly DependencyProperty IsExpandedProperty = DependencyProperty.Register
+        public static readonly DependencyProperty IsExpandedProperty = DependencyProperty.Register
             (
                 nameof(IsExpanded), typeof(bool), typeof(ControlObject), new FrameworkPropertyMetadata(true, OnIsExpandedChanged)
             );
@@ -204,6 +257,56 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
+        #region IsStretched
+        /// <summary>
+        /// Gets or sets a boolean value that indicates if the control is stretched.
+        /// </summary>
+        /// <remarks>
+        /// It is up to derived classes to determine how to use this property.
+        /// By itself, it does nothing.
+        /// </remarks>
+        public bool IsStretched
+        {
+            get => (bool)GetValue(IsStretchedProperty);
+            set => SetValue(IsStretchedProperty, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="IsStretched"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsStretchedProperty = DependencyProperty.Register
+            (
+                nameof(IsStretched), typeof(bool), typeof(ControlObject), new FrameworkPropertyMetadata(true, OnIsStretchedChanged)
+            );
+
+        private static void OnIsStretchedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is ControlObject c)
+            {
+                c.OnIsStretchedChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the image source to use in connection with the <see cref="IsStretched"/> property.
+        /// This image does not toggle.
+        /// </summary>
+        public ImageSource StretchedImageSource
+        {
+            get => (ImageSource)GetValue(StretchedImageSourceProperty);
+            set => SetValue(StretchedImageSourceProperty, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="StretchedImageSource"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty StretchedImageSourceProperty = DependencyProperty.Register
+            (
+                nameof(StretchedImageSource), typeof(ImageSource), typeof(ControlObject), new PropertyMetadata(null)
+            );
+        #endregion
+        /************************************************************************/
+
         #region Routed Events
         /// <summary>
         /// Provides notification when the <see cref="IsChanged"/> property is set to true.
@@ -270,6 +373,14 @@ namespace Restless.App.DrumMaster.Controls
         }
 
         /// <summary>
+        /// Called when <see cref="IsStretched"/> is changed. A derived class can override this method to perform updates as needed.
+        /// The base implementaion does nothing.
+        /// </summary>
+        protected virtual void OnIsStretchedChanged()
+        {
+        }
+
+        /// <summary>
         /// Sets the specified dependency property to the specified string.
         /// </summary>
         /// <param name="prop">The dependency property.</param>
@@ -328,6 +439,11 @@ namespace Restless.App.DrumMaster.Controls
         private void RunToggleExpandedCommand(object parm)
         {
             IsExpanded = !IsExpanded;
+        }
+
+        private void RunToggleStretchedCommand(object parm)
+        {
+            IsStretched = !IsStretched;
         }
         #endregion
     }

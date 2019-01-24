@@ -19,7 +19,14 @@
                 <StackPanel Orientation="Horizontal">
                     <Button
                         Style="{DynamicResource ButtonBaseFlat}"
-                        Command="{Binding Commands[ToggleExpanded], RelativeSource={RelativeSource TemplatedParent}}">
+                        Command="{TemplateBinding ToggleStretchedCommand}"
+                        ToolTip="Hide or show all instruments except the selected one">
+                        <Image Source="{TemplateBinding StretchedImageSource}"/>
+                    </Button>
+                    <Button
+                        Style="{DynamicResource ButtonBaseFlat}"
+                        Command="{TemplateBinding ToggleExpandedCommand}"
+                        ToolTip="Hide or show the drum pattern controls">
                         <Image Source="{TemplateBinding ActiveExpandedStateImageSource}"/>
                     </Button>
                     <TextBlock>

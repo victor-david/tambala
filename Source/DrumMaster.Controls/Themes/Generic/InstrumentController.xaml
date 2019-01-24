@@ -27,7 +27,7 @@
                     Grid.Column="0"
                     Style="{DynamicResource ButtonBaseFlat}"
                     HorizontalAlignment="Left"
-                    Command="{Binding Commands[ToggleExpanded], RelativeSource={RelativeSource TemplatedParent}}">
+                    Command="{TemplateBinding ToggleExpandedCommand}">
                     <Image Source="{TemplateBinding ActiveExpandedStateImageSource}" />
                 </Button>
 

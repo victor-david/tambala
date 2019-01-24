@@ -97,7 +97,7 @@ namespace Restless.App.DrumMaster.Controls
 
         #region IsEnabledForPlay
         /// <summary>
-        /// Gets or sets a value that indicate if this instrument controller
+        /// Gets a value that indicate if this instrument controller
         /// is enabled for play.
         /// </summary>
         /// <remarks>
@@ -108,10 +108,10 @@ namespace Restless.App.DrumMaster.Controls
         /// IsEnabled property because that is a dependency property and attempting to
         /// access if from the play thread throws an exception.
         /// </remarks>
-        internal bool IsEnabledForPlay
+        public bool IsEnabledForPlay
         {
             get;
-            set;
+            private set;
         }
         #endregion
 
@@ -276,6 +276,34 @@ namespace Restless.App.DrumMaster.Controls
             {
                 float dbVol = PatternQuarters[quarterNote].GetSelectorVolume(position);
                 voicePool.Play(dbVol, ThreadSafePitch, operationSet);
+            }
+        }
+
+        /// <summary>
+        /// Sets whether this controller is enabled for play. When <paramref name="isEnabled"/>
+        /// is false, the controller is disbled for play and is hidden.
+        /// </summary>
+        /// <param name="isEnabled">true if enabled for play.</param>
+        /// <param name="quarterNoteCount">The quarter note count.</param>
+        internal void SetIsEnabledForPlay(bool isEnabled, int quarterNoteCount)
+        {
+            IsEnabledForPlay = isEnabled;
+            SetIsVisible(isEnabled, quarterNoteCount);
+        }
+
+        /// <summary>
+        /// Sets whether this controller is visible. When <paramref name="isVisible"/>
+        /// is false, the controller is hidden.
+        /// </summary>
+        /// <param name="isVisible">true if visible.</param>
+        /// <param name="quarterNoteCount">The quarter note count.</param>
+        internal void SetIsVisible(bool isVisible, int quarterNoteCount)
+        {
+            Visibility = isVisible ? Visibility.Visible : Visibility.Collapsed;
+
+            foreach (var item in PatternQuarters)
+            {
+                item.Value.Visibility = item.Value.QuarterNote <= quarterNoteCount ? Visibility : Visibility.Collapsed;
             }
         }
         #endregion

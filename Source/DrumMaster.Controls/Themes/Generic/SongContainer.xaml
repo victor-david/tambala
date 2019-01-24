@@ -17,14 +17,14 @@
                 <StackPanel Orientation="Horizontal">
                     <Button
                         Style="{DynamicResource ButtonBaseFlat}"
-                        Command="{Binding Commands[ChangeContainerHeight], RelativeSource={RelativeSource TemplatedParent}}"
+                        Command="{TemplateBinding ToggleStretchedCommand}"
                         ToolTip="Expand or collapse the entire container">
-                        <Image Source="{TemplateBinding ChangeContainerHeightImageSource}"/>
+                        <Image Source="{TemplateBinding StretchedImageSource}"/>
                     </Button>
                     <Button
                         Style="{DynamicResource ButtonBaseFlat}"
-                        Command="{Binding Commands[ToggleExpanded], RelativeSource={RelativeSource TemplatedParent}}"
-                        ToolTip="Expand or collapse the container controls">
+                        Command="{TemplateBinding ToggleExpandedCommand}"
+                        ToolTip="Hide or show the song controls">
                         <Image Source="{TemplateBinding ActiveExpandedStateImageSource}"/>
                     </Button>
                     <TextBlock>

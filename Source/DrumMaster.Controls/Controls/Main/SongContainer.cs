@@ -32,8 +32,6 @@ namespace Restless.App.DrumMaster.Controls
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));
             DisplayName = Strings.SongContainerDisplayName;
             Presenter = new SongPresenter(this);
-            ChangeContainerHeightImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Caret.Up.Down.White.32.png", UriKind.Relative));
-            Commands.Add("ChangeContainerHeight", new RelayCommand(RunChangeContainerHeightCommand));
             AddHandler(IsSelectedChangedEvent, new RoutedEventHandler(IsSelectedChangedEventHandler));
         }
 
@@ -93,29 +91,6 @@ namespace Restless.App.DrumMaster.Controls
             get;
             private set;
         }
-        #endregion
-
-        /************************************************************************/
-
-        #region ChangeContainerHeightImageSource
-        /// <summary>
-        /// Gets the image source for the change container height button.
-        /// </summary>
-        public ImageSource ChangeContainerHeightImageSource
-        {
-            get => (ImageSource)GetValue(ChangeContainerHeightImageSourceProperty);
-            private set => SetValue(ChangeContainerHeightImageSourcePropertyKey, value);
-        }
-
-        private static readonly DependencyPropertyKey ChangeContainerHeightImageSourcePropertyKey = DependencyProperty.RegisterReadOnly
-            (
-                nameof(ChangeContainerHeightImageSource), typeof(ImageSource), typeof(SongContainer), new FrameworkPropertyMetadata(null)
-            );
-
-        /// <summary>
-        /// Identifies the <see cref="ChangeContainerHeightImageSource"/> dependency property,
-        /// </summary>
-        public static readonly DependencyProperty ChangeContainerHeightImageSourceProperty = ChangeContainerHeightImageSourcePropertyKey.DependencyProperty;
         #endregion
 
         /************************************************************************/
@@ -193,16 +168,19 @@ namespace Restless.App.DrumMaster.Controls
             Presenter.DivisionCount = DivisionCount;
             SetIsChanged();
         }
+
+        /// <summary>
+        /// Called when the <see cref="ControlObject.IsStretched"/> property changes.
+        /// </summary>
+        protected override void OnIsStretchedChanged()
+        {
+            Owner.ChangeSongContainerHeight();
+        }
         #endregion
 
         /************************************************************************/
 
         #region Private methods
-        private void RunChangeContainerHeightCommand(object parm)
-        {
-            Owner.ChangeSongContainerHeight();
-        }
-
         private void IsSelectedChangedEventHandler(object sender, RoutedEventArgs e)
         {
             if (e.OriginalSource is PointSelector selector && selector.SelectorType == PointSelectorType.SongRow)
