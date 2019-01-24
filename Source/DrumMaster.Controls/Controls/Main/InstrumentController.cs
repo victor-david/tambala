@@ -83,6 +83,46 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
+        #region InitialVoicePoolSize
+        /// <summary>
+        /// Gets the size of the initial voice pool.
+        /// </summary>
+        public int InitialVoicePoolSize
+        {
+            get => (int)GetValue(InitialVoicePoolSizeProperty);
+            private set => SetValue(InitialVoicePoolSizePropertyKey, value);
+        }
+
+        private static readonly DependencyPropertyKey InitialVoicePoolSizePropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(InitialVoicePoolSize), typeof(int), typeof(InstrumentController), new PropertyMetadata
+                    (
+                        Constants.InitialVoicePool.Normal, OnInitialVoicePoolSizeChanged, OnInitialVoicePoolSizeCoerce
+                    )
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="InitialVoicePoolSize"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty InitialVoicePoolSizeProperty = InitialVoicePoolSizePropertyKey.DependencyProperty;
+
+        private static void OnInitialVoicePoolSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is InstrumentController c)
+            {
+                c.OnInstrumentChanged();
+            }
+        }
+
+        private static object OnInitialVoicePoolSizeCoerce(DependencyObject d, object baseValue)
+        {
+            int proposed = (int)baseValue;
+            return Math.Min(Constants.InitialVoicePool.High, Math.Max(Constants.InitialVoicePool.Normal, proposed));
+        }
+        #endregion
+
+        /************************************************************************/
+
         #region Quarters
         /// <summary>
         /// Gets the dictionary of pattern quarters that are controlled by this controller.
@@ -176,6 +216,7 @@ namespace Restless.App.DrumMaster.Controls
             element.Add(new XElement(nameof(Panning), Panning));
             element.Add(new XElement(nameof(Pitch), Pitch));
             element.Add(new XElement(nameof(IsMuted), IsMuted));
+            element.Add(new XElement(nameof(InitialVoicePoolSize), InitialVoicePoolSize));
             element.Add(Instrument.GetXElement());
 
             foreach(var item in PatternQuarters)
@@ -201,6 +242,14 @@ namespace Restless.App.DrumMaster.Controls
                 if (e.Name == nameof(Panning)) SetDependencyProperty(PanningProperty, e.Value);
                 if (e.Name == nameof(Pitch)) SetDependencyProperty(PitchProperty, e.Value);
                 if (e.Name == nameof(IsMuted)) SetDependencyProperty(IsMutedProperty, e.Value);
+                if (e.Name == nameof(InitialVoicePoolSize))
+                {
+                    if (int.TryParse(e.Value, out int result))
+                    {
+                        InitialVoicePoolSize = result;
+                    }
+                }
+
                 if (e.Name == nameof(Instrument)) Instrument.RestoreFromXElement(e);
 
                 if (e.Name == nameof(DrumPatternQuarter))
@@ -317,7 +366,7 @@ namespace Restless.App.DrumMaster.Controls
             if (isAudioEnabled)
             {
                 AudioHost.Instance.DestroyVoicePool(voicePool);
-                voicePool = AudioHost.Instance.CreateVoicePool(Instrument.DisplayName, Instrument.Audio, submixVoice, Constants.InitialVoicePool.Normal);
+                voicePool = AudioHost.Instance.CreateVoicePool(Instrument.DisplayName, Instrument.Audio, submixVoice, InitialVoicePoolSize);
             }
         }
 

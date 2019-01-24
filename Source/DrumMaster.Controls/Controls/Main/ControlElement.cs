@@ -47,7 +47,7 @@ namespace Restless.App.DrumMaster.Controls
 
         #region IsCreated
         /// <summary>
-        /// Gets or sets a value that indicates if
+        /// Gets a value that indicates if the <see cref="Create"/> method has been called.
         /// </summary>
         protected bool IsCreated
         {

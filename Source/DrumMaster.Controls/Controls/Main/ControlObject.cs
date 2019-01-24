@@ -89,7 +89,6 @@ namespace Restless.App.DrumMaster.Controls
         public static readonly DependencyProperty ToggleExpandedCommandProperty = ToggleExpandedCommandPropertyKey.DependencyProperty;
         #endregion
 
-
         /************************************************************************/
 
         #region ToggleStretchedCommand
@@ -305,6 +304,7 @@ namespace Restless.App.DrumMaster.Controls
                 nameof(StretchedImageSource), typeof(ImageSource), typeof(ControlObject), new PropertyMetadata(null)
             );
         #endregion
+
         /************************************************************************/
 
         #region Routed Events
