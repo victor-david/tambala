@@ -5,6 +5,18 @@
     <!-- ################# -->
     <!-- Brush Definitions -->
     <!-- ################# -->
+    <LinearGradientBrush x:Key="WindowHeaderBrush" StartPoint="0.00,0.00" EndPoint="1.00,1.00">
+        <GradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FF00498B" Offset="0.000"/>
+                <GradientStop Color="#FFFFFFFF" Offset="1.000"/>
+            </GradientStopCollection>
+        </GradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="WindowBorderBrush" Color="#FF0060CC"/>
+
+
     <LinearGradientBrush x:Key="HeaderBrush" StartPoint="0.00,0.00" EndPoint="1.00,1.00">
         <GradientBrush.GradientStops>
             <GradientStopCollection>
@@ -33,6 +45,8 @@
     </LinearGradientBrush>
 
 
+
+    
     <!-- Brushes for PointSelector -->
     <SolidColorBrush x:Key="PointSelectorSongHeaderSelected" Color="#FFCC0000"/>
     <SolidColorBrush x:Key="PointSelectorSongHeaderDeselected" Color="LightGray"/>
