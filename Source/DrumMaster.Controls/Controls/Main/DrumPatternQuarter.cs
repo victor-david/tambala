@@ -2,7 +2,6 @@
 using SharpDX.XAudio2;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,28 +16,9 @@ namespace Restless.App.DrumMaster.Controls
     public class DrumPatternQuarter : ControlElement
     {
         #region Private
-        private static readonly Dictionary<int, List<int>> FullTickMap = new Dictionary<int, List<int>>
-        {
-            { 2, new List<int>() { 12 } }, // 8th
-            { 4, new List<int>() { 6, 12, 18 } }, // 16th
-            { 8, new List<int>() { 3, 6, 9, 12, 15, 18, 21 } }, // 32nd 
-            { 3, new List<int>() { 8, 16 } }, // 8th triplet
-        };
-
-        private static readonly Dictionary<PointSelectorUnit, List<int>> TickColumns = new Dictionary<PointSelectorUnit, List<int>>
-        {
-            { PointSelectorUnit.EighthNote, new List<int>() { 12 } }, // 8th
-            { PointSelectorUnit.SixteenthNote, new List<int>() { 6, 18 } }, // 16th
-            { PointSelectorUnit.ThirtySecondNote, new List<int>() { 3, 9, 15, 21 } }, // 32nd 
-            { PointSelectorUnit.EighthNoteTriplet, new List<int>() { 8, 16 } }, // 8th triplet
-        };
-
         private VisualTick quarterNoteTick;
-
         private readonly Dictionary<int, PointSelector> pointSelectors;
         private readonly Dictionary<int, VelocitySlider> velocitySliders;
-        /************************************************************************/
-
         #endregion
 
         /************************************************************************/
@@ -338,7 +318,7 @@ namespace Restless.App.DrumMaster.Controls
         {
             pointSelectors.Clear();
 
-            for (int k = 1; k <= Constants.DrumPattern.LowestCommon; k++)
+            for (int k = 1; k <= Ticks.LowestCommon; k++)
             {
                 Visual.ColumnDefinitions.Add(new ColumnDefinition());
             }
@@ -374,7 +354,7 @@ namespace Restless.App.DrumMaster.Controls
             quarterNoteTick = new VisualTick(0, PointSelectorUnit.QuarterNote);
             AddElement(quarterNoteTick, 1, 0);
 
-            foreach(var map in TickColumns)
+            foreach(var map in Ticks.UniqueTickPositionMap)
             {
                 foreach (int col in map.Value)
                 {
@@ -398,7 +378,7 @@ namespace Restless.App.DrumMaster.Controls
             pointSelectors.Add(0,qs);
             AddElement(qs, 0, 0);
 
-            foreach (var map in TickColumns)
+            foreach (var map in Ticks.UniqueTickPositionMap)
             {
                 foreach (int col in map.Value)
                 {
@@ -426,7 +406,7 @@ namespace Restless.App.DrumMaster.Controls
             velocitySliders.Add(0, qs);
             AddElement(qs, 0, 0);
 
-            foreach (var map in TickColumns)
+            foreach (var map in Ticks.UniqueTickPositionMap)
             {
                 foreach (int col in map.Value)
                 {
@@ -465,11 +445,11 @@ namespace Restless.App.DrumMaster.Controls
 
         private void ApplyTotalTicks()
         {
-            if (FullTickMap.ContainsKey(TotalTicks))
+            if (Ticks.FullTickPositionMap.ContainsKey(TotalTicks))
             {
                 foreach (var child in Visual.Children.OfType<VisualTick>().Where((t)=>t.SelectorUnit != PointSelectorUnit.QuarterNote))
                 {
-                    if (FullTickMap[TotalTicks].Contains(child.Position))
+                    if (Ticks.FullTickPositionMap[TotalTicks].Contains(child.Position))
                     {
                         child.Visibility = Visibility.Visible;
                     }

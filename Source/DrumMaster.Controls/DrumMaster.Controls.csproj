@@ -160,6 +160,7 @@
     <Compile Include="Core\MaxSizeObservableCollection.cs" />
     <Compile Include="Core\Diagnostics.cs" />
     <Compile Include="Core\SongSelectorCollection.cs" />
+    <Compile Include="Core\Ticks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controls\Text\LinkedTextBlock.cs" />
     <Compile Include="Controls\Main\AudioControlBase.cs" />

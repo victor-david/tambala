@@ -84,6 +84,29 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
+        #region CounterText
+        /// <summary>
+        /// Gets the counter text.
+        /// </summary>
+        public string CounterText
+        {
+            get => (string)GetValue(CounterTextProperty);
+            private set => SetValue(CounterTextPropertyKey, value);
+        }
+        
+        private static readonly DependencyPropertyKey CounterTextPropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(CounterText), typeof(string), typeof(MasterPlay), new PropertyMetadata(null)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="CounterText"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty CounterTextProperty = CounterTextPropertyKey.DependencyProperty;
+        #endregion
+
+        /************************************************************************/
+
         #region IsStarted
         /// <summary>
         /// Gets a boolean value that indicates if the song or pattern is playing

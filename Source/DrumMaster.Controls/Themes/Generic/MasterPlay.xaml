@@ -41,7 +41,7 @@
             <TextBlock
                 Grid.Column="2" 
                 Style="{DynamicResource TextBlockCounter}"
-                Text="00:00:00"/>
+                Text="{TemplateBinding CounterText}"/>
         </Grid>
         
     </ControlTemplate>

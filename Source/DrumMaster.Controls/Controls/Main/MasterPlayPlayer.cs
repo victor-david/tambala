@@ -1,7 +1,10 @@
 ﻿using NAudio.CoreAudioApi;
 using Restless.App.DrumMaster.Controls.Audio;
 using Restless.App.DrumMaster.Controls.Core;
+using System;
+using System.Collections.Generic;
 using System.Threading;
+using System.Windows.Threading;
 
 namespace Restless.App.DrumMaster.Controls
 {
@@ -12,6 +15,7 @@ namespace Restless.App.DrumMaster.Controls
     {
         #region Private
         private const int MilliSecondsPerMinute = 60000;
+        private const string DefaultCounterText = "00:00:00";
 
         private bool isSongStarted;
         private AutoResetEvent songPlaySignaler;
@@ -36,6 +40,7 @@ namespace Restless.App.DrumMaster.Controls
         #region Private methods (InitializeThreads)
         private void InitializeThreads()
         {
+            CounterText = DefaultCounterText;
             playMode = PlayMode.Pattern;
             patternSleepTime = 100;
 
@@ -89,7 +94,6 @@ namespace Restless.App.DrumMaster.Controls
             while (!isControlClosing)
             {
                 songPlaySignaler.WaitOne();
-
                 SongPresenter song = Owner.SongContainer.Presenter;
 
                 if (!isControlClosing)
@@ -107,7 +111,7 @@ namespace Restless.App.DrumMaster.Controls
                             int[] selected = song.SongSelectors.GetRowsAtPosition(pos);
                             var patterns = Owner.DrumPatterns.CreateFromIndices(selected);
 
-                            PlaySongPatterns(PointSelectorSongUnit.None, patterns);
+                            PlaySongPatterns(PointSelectorSongUnit.None, pos, patterns);
 
                             song.InvokeHighlightSongHeader(pos, false);
                             pos++;
@@ -126,12 +130,13 @@ namespace Restless.App.DrumMaster.Controls
             while (!isControlClosing)
             {
                 patternPlaySignaler.WaitOne();
-
+                int pass = 0;
                 if (!isControlClosing)
                 {
                     while (isPatternStarted)
                     {
-                        PlayPattern(PointSelectorSongUnit.None, Owner.ThreadSafeActiveDrumPattern);
+                        pass++;
+                        PlayPattern(PointSelectorSongUnit.None, pass, Owner.ThreadSafeActiveDrumPattern);
                     }
                 }
             }
@@ -141,31 +146,38 @@ namespace Restless.App.DrumMaster.Controls
         /************************************************************************/
 
         #region Private methods (Play audio)
-        private void PlaySongPatterns(PointSelectorSongUnit songUnit, DrumPatternCollection patterns)
+        private void PlaySongPatterns(PointSelectorSongUnit songUnit, int pass, DrumPatternCollection patterns)
         {
             int quarterNoteCount = patterns.GetMaxQuarterNoteCount();
             for (int quarterNote = 1; quarterNote <= quarterNoteCount; quarterNote++)
             {
-                PlayOneQuarterNote(songUnit, quarterNote, patterns.ToArray());
+                if (isSongStarted)
+                {
+                    PlayOneQuarterNote(songUnit, pass, quarterNote, patterns.ToArray());
+                }
             }
         }
 
-        private void PlayPattern(PointSelectorSongUnit songUnit, DrumPattern pattern)
+        private void PlayPattern(PointSelectorSongUnit songUnit, int pass, DrumPattern pattern)
         {
             int quarterNoteCount = pattern.ThreadSafeController.ThreadSafeQuarterNoteCount;
 
             for (int quarterNote = 1; quarterNote <= quarterNoteCount; quarterNote++)
             {
-                pattern.ThreadSafePresenter.InvokeAddTickHighlight(quarterNote);
-                PlayOneQuarterNote(songUnit, quarterNote, pattern);
-                pattern.ThreadSafePresenter.InvokeRemoveTickHighlight(quarterNote);
+                if (isPatternStarted)
+                {
+                    pattern.ThreadSafePresenter.InvokeAddTickHighlight(quarterNote);
+                    PlayOneQuarterNote(songUnit, pass, quarterNote, pattern);
+                    pattern.ThreadSafePresenter.InvokeRemoveTickHighlight(quarterNote);
+                }
             }
         }
 
         /// <summary>
         /// Plays a single quarter note
         /// </summary>
-        /// <param name="songUnit">The song unit (currently not used)</param>
+        /// <param name="songUnit">The song unit (currently not used, reserved for future feature)</param>
+        /// <param name="pass">The pass. Used for counter display.</param>
         /// <param name="quarterNote">The quarter note: 1,2,3,4,etc.</param>
         /// <param name="patterns">The patterns</param>
         /// <remarks>
@@ -191,28 +203,33 @@ namespace Restless.App.DrumMaster.Controls
         /// are not altered. A pattern may have notes selected within the fourth quarter note, and then have its
         /// quarter note count reduced to three. The notes in the fourth quarter remain, but are not played.
         /// </remarks>
-        private void PlayOneQuarterNote(PointSelectorSongUnit songUnit, int quarterNote, params DrumPattern[] patterns)
+        private void PlayOneQuarterNote(PointSelectorSongUnit songUnit, int pass, int quarterNote, params DrumPattern[] patterns)
         {
-            for (int position = 0; position < Constants.DrumPattern.LowestCommon; position++)
+            for (int position = 0; position < Ticks.LowestCommon; position++)
             {
-                if (isPatternStarted)
+                if (Ticks.Playable.Contains(position))
                 {
-                    patternOperationSet++;
-                    foreach(DrumPattern pattern in patterns)
+                    if (isPatternStarted)
                     {
-                        if (pattern.ThreadSafeController.ThreadSafeQuarterNoteCount >= quarterNote)
+                        InvokeSetCounterText(pass, quarterNote, position);
+                        patternOperationSet++;
+                        foreach (DrumPattern pattern in patterns)
                         {
-                            pattern.ThreadSafePresenter.Play(songUnit, quarterNote, position, patternOperationSet);
+                            if (pattern.ThreadSafeController.ThreadSafeQuarterNoteCount >= quarterNote)
+                            {
+                                pattern.ThreadSafePresenter.Play(songUnit, quarterNote, position, patternOperationSet);
+                            }
                         }
-                    }
 
-                    AudioHost.Instance.AudioDevice.CommitChanges(patternOperationSet);
-                    Thread.Sleep(patternSleepTime);
+                        AudioHost.Instance.AudioDevice.CommitChanges(patternOperationSet);
+                    }
                 }
+
+                Thread.Sleep(patternSleepTime);
             }
         }
         #endregion
-        
+
         /************************************************************************/
 
         #region Private methods (Start / stop)
@@ -228,6 +245,8 @@ namespace Restless.App.DrumMaster.Controls
             SetWhoIsStarted(PlayMode.Pattern, ref isPatternStarted);
             SetWhoIsStarted(PlayMode.Song, ref isSongStarted);
 
+            InvokeSetCounterText(0, 0, 0);
+
             if (isSongStarted)
             {
                 songPlaySignaler.Set();
@@ -238,12 +257,20 @@ namespace Restless.App.DrumMaster.Controls
                 patternPlaySignaler.Set();
                 audioMonitorSignaler.Set();
             }
-
         }
 
         private void SetWhoIsStarted(PlayMode mode, ref bool isStarted)
         {
             if (PlayMode == mode) isStarted = IsStarted;
+        }
+
+        private void InvokeSetCounterText(int pass, int quarter, int position)
+        {
+            // 00:00:00
+            Dispatcher.BeginInvoke(DispatcherPriority.Send, new Action(()=> 
+            {
+                CounterText = $"{pass:D2}:{quarter:D2}:{position:D2}";
+            }));
         }
         #endregion
 
@@ -278,7 +305,7 @@ namespace Restless.App.DrumMaster.Controls
         internal void SetTempo(double tempo)
         {
             int tempoInt = (int)tempo;
-            patternSleepTime = MilliSecondsPerMinute / tempoInt / Constants.DrumPattern.LowestCommon;
+            patternSleepTime = MilliSecondsPerMinute / tempoInt / Ticks.LowestCommon;
         }
         #endregion
     }

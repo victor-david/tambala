@@ -364,15 +364,9 @@ namespace Restless.App.DrumMaster.Controls.Core
             public const int MaxCount = 4;
 
             /// <summary>
-            /// The lowest common denominator
-            /// </summary>
-            public const int LowestCommon = 24;
-
-            /// <summary>
             /// Gets the fixed width of the first column.
             /// </summary>
             public const int FirstColumnWidth = 252;
-
         }
         #endregion
     }

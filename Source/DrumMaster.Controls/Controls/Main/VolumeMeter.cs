@@ -3,6 +3,9 @@ using System.Windows.Controls;
 
 namespace Restless.App.DrumMaster.Controls
 {
+    /// <summary>
+    /// Represents a volume meter.
+    /// </summary>
     public class VolumeMeter : ProgressBar
     {
         #region Constructors
