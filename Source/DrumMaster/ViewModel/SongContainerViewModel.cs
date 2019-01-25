@@ -102,6 +102,7 @@ namespace Restless.App.DrumMaster.ViewModel
                 {
                     var result = await Container.Open(dialog.FileName);
                     if (result != null) throw result;
+                    ((MainWindowViewModel)Owner).DisplayFileName(dialog.FileName);
                     return true;
                 }
                 else
@@ -125,10 +126,11 @@ namespace Restless.App.DrumMaster.ViewModel
         {
             try
             {
-                string filename = GetFileName();
-                if (!string.IsNullOrEmpty(filename))
+                string fileName = GetFileName();
+                if (!string.IsNullOrEmpty(fileName))
                 {
-                    Container.Save(filename);
+                    Container.Save(fileName);
+                    ((MainWindowViewModel)Owner).DisplayFileName(fileName);
                     return true;
                 }
                 else

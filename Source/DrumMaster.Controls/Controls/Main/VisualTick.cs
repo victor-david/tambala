@@ -1,4 +1,5 @@
 ﻿using Restless.App.DrumMaster.Controls.Core;
+using System;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -74,13 +75,11 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public void InvokeAddTickHighlight()
         {
-            Dispatcher.BeginInvoke(DispatcherPriority.Send, new DispatcherOperationCallback
-                ((args) =>
+            Dispatcher.BeginInvoke(DispatcherPriority.Send, new Action(() =>
                 {
                     Background = Brushes.Red;
                     Width = Width * 3.0;
-                    return null;
-                }), null);
+                }));
         }
 
         /// <summary>
@@ -88,13 +87,11 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public void InvokeRemoveTickHighlight()
         {
-            Dispatcher.BeginInvoke(DispatcherPriority.Send, new DispatcherOperationCallback
-                ((args) =>
+            Dispatcher.BeginInvoke(DispatcherPriority.Send, new Action(()=>
                 {
                     Background = originalBrush;
                     Width = originalWidth;
-                    return null;
-                }), null);
+                }));
         }
         /// <summary>
         /// Gets a string representation of this object.
