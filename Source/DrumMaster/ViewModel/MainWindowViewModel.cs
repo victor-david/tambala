@@ -1,5 +1,4 @@
-﻿using Restless.App.DrumMaster.Controls.Core;
-using Restless.App.DrumMaster.Core;
+﻿using Restless.App.DrumMaster.Core;
 using Restless.App.DrumMaster.Resources;
 using System;
 using System.ComponentModel;
@@ -15,7 +14,6 @@ namespace Restless.App.DrumMaster.ViewModel
     {
         #region Private
         private SongContainerViewModel songContainer;
-        private int songNumber;
         #endregion
 
         /************************************************************************/
@@ -50,8 +48,7 @@ namespace Restless.App.DrumMaster.ViewModel
         public MainWindowViewModel(Window owner) : base (owner)
         {
             WindowOwner.Closing += MainWindowClosing;
-            DisplayName = GetBaseDisplayName();
-
+            DisplayName = $"{ApplicationInfo.Instance.Title} {ApplicationInfo.Instance.VersionMajor}";
             Commands.Add("NewSong", RunNewSongCommand);
             Commands.Add("SaveSong", RunSaveSongCommand, CanRunSaveSongCommand);
             Commands.Add("OpenSong", RunOpenSongCommand);
@@ -64,19 +61,6 @@ namespace Restless.App.DrumMaster.ViewModel
         /************************************************************************/
 
         #region Public methods
-        /// <summary>
-        /// Displays the specified file name in the title bar along with the application name.
-        /// </summary>
-        /// <param name="fileName">The file name to display. Pass null to display only the application name.</param>
-        public void DisplayFileName(string fileName)
-        {
-            string baseName = GetBaseDisplayName();
-            if (!string.IsNullOrEmpty(fileName))
-                DisplayName = $"{baseName} - {fileName}";
-            else
-                DisplayName = baseName;
-
-        }
         #endregion
 
         /************************************************************************/
@@ -143,7 +127,6 @@ namespace Restless.App.DrumMaster.ViewModel
             {
                 SongContainer.Deactivate();
                 SongContainer = null;
-                DisplayFileName(null);
             }
         }
 
@@ -168,9 +151,8 @@ namespace Restless.App.DrumMaster.ViewModel
 
         private void CreateSong()
         {
-            songNumber++;
             SongContainer = null;
-            SongContainer = new SongContainerViewModel($"Song #{songNumber}", this);
+            SongContainer = new SongContainerViewModel(this);
             Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
                 {
                     SongContainer.Activate();
@@ -187,11 +169,6 @@ namespace Restless.App.DrumMaster.ViewModel
             {
                 e.Cancel = true;
             }
-        }
-
-        private string GetBaseDisplayName()
-        {
-            return $"{ApplicationInfo.Instance.Title} {ApplicationInfo.Instance.VersionMajor}";
         }
         #endregion
     }

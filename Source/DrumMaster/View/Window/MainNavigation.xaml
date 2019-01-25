@@ -11,6 +11,7 @@
             <ColumnDefinition Width="72"/>
             <ColumnDefinition Width="72"/>
             <ColumnDefinition Width="72"/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.Resources>
             
@@ -36,5 +37,9 @@
                 <TextBlock Text="Open" Style="{StaticResource TextBlockNavButton}"/>
             </StackPanel>
         </Button>
+        <TextBlock
+            Grid.Column="3"
+            Style="{StaticResource TextBlockFileName}"
+            Text="{Binding SongContainer.DisplayName}"/>
     </Grid>
 </UserControl>

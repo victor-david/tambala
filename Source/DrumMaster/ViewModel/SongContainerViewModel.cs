@@ -1,7 +1,5 @@
 ﻿using Microsoft.Win32;
 using Restless.App.DrumMaster.Controls;
-using Restless.App.DrumMaster.Controls.Audio;
-using Restless.App.DrumMaster.Controls.Core;
 using Restless.App.DrumMaster.Core;
 using Restless.App.DrumMaster.Resources;
 using System;
@@ -52,14 +50,11 @@ namespace Restless.App.DrumMaster.ViewModel
         /// <summary>
         /// Initializes a new instance of the <see cref="SongContainerViewModel"/> class.
         /// </summary>
-        /// <param name="displayName">The display name for the track container</param>
         /// <param name="owner">The owner of this VM.</param>
-        public SongContainerViewModel(string displayName, WorkspaceViewModel owner) : base(owner)
+        public SongContainerViewModel(WorkspaceViewModel owner) : base(owner)
         {
-            DisplayName = displayName;
             Container = new ProjectContainer()
             {
-                DisplayName = displayName,
                 Visibility = Visibility.Collapsed,
             };
 
@@ -102,7 +97,7 @@ namespace Restless.App.DrumMaster.ViewModel
                 {
                     var result = await Container.Open(dialog.FileName);
                     if (result != null) throw result;
-                    ((MainWindowViewModel)Owner).DisplayFileName(dialog.FileName);
+                    DisplayName = dialog.FileName;
                     return true;
                 }
                 else
@@ -115,7 +110,6 @@ namespace Restless.App.DrumMaster.ViewModel
                 ContainerIOException(Strings.MessageOpenFailure, ex);
                 return false;
             }
-
         }
 
         /// <summary>
@@ -130,7 +124,7 @@ namespace Restless.App.DrumMaster.ViewModel
                 if (!string.IsNullOrEmpty(fileName))
                 {
                     Container.Save(fileName);
-                    ((MainWindowViewModel)Owner).DisplayFileName(fileName);
+                    DisplayName = fileName;
                     return true;
                 }
                 else
