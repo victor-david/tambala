@@ -107,6 +107,7 @@
     <Compile Include="Controls\Button\ImageButton.cs" />
     <Compile Include="Commands\CommandDictionary.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Controls\Main\ApplicationWindow.cs" />
     <Compile Include="Controls\Main\ControlElement.cs" />
     <Compile Include="Controls\Main\ControlObjectVisualGrid.cs" />
     <Compile Include="Controls\Main\ControlObjectVisual.cs" />
@@ -171,6 +172,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Themes\Generic\ApplicationWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Themes\Generic\VolumeMeter.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -319,7 +324,9 @@
   <ItemGroup>
     <Resource Include="Resources\Images\Image.Slash.64.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Images\Image.Window.Close.32.png" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\Image.Maximize.Blue.64.png" />
     <Resource Include="Resources\Images\Image.Minimize.Blue.64.png" />
@@ -352,6 +359,20 @@
   <ItemGroup>
     <Resource Include="Resources\Images\Image.Caret.Up.Down.Blue.32.png" />
     <Resource Include="Resources\Images\Image.Caret.Up.Down.White.32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Image.Window.Minimize.32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Image.Window.Maximize.32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Image.Drum.Black.32.png" />
+    <Resource Include="Resources\Images\Image.Drum.Red.32.png" />
+    <Resource Include="Resources\Images\Image.Drum.White.32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Image.Window.Restore.32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

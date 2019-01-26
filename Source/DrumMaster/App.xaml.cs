@@ -1,5 +1,7 @@
-﻿using Restless.App.DrumMaster.Controls.Audio;
+﻿using Restless.App.DrumMaster.Controls;
+using Restless.App.DrumMaster.Controls.Audio;
 using Restless.App.DrumMaster.Core;
+using System;
 using System.Windows;
 
 namespace Restless.App.DrumMaster

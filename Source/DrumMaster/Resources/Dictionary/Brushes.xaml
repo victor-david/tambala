@@ -67,17 +67,7 @@
         </GradientBrush.GradientStops>
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="AlternationBrushStandard" StartPoint="0.00,1.00" EndPoint="1.00,0.01">
-        <GradientBrush.GradientStops>
-            <GradientStopCollection>
-                <GradientStop Color="#FFD6D6D5" Offset="0.069"/>
-                <GradientStop Color="#FFF4F4FA" Offset="1.000"/>
-            </GradientStopCollection>
-        </GradientBrush.GradientStops>
-    </LinearGradientBrush>
-
     <!-- Solid Brushes -->
-    <SolidColorBrush x:Key="AlternationBrushSecondary" Color="#FFDFDFDF"/>
     <SolidColorBrush x:Key="DisabledBorderBrush" Color="#AAA"/>
     <SolidColorBrush x:Key="SolidBorderBrush" Color="#888"/>
     <SolidColorBrush x:Key="LightBorderBrush" Color="#AAA"/>
@@ -86,11 +76,6 @@
     <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#FFF"/>
     <SolidColorBrush x:Key="SelectedBackgroundBrush" Color="#DDD"/>
     <SolidColorBrush x:Key="TextBlockLabelBrush" Color="#FF808080"/>
-    <SolidColorBrush x:Key="DataGridColumnHeaderBrush" Color="Blue"/>
-    <SolidColorBrush x:Key="PositiveAmountBrush" Color="Blue"/>
-    <SolidColorBrush x:Key="NegativeAmountBrush" Color="Red"/>
-    <SolidColorBrush x:Key="ZeroAmountBrush" Color="LightGray"/>
-    <SolidColorBrush x:Key="TotalAmountBrush" Color="DarkSlateGray"/>
 
     <!-- Miscellaneous Brushes -->
     <SolidColorBrush x:Key="GlyphBrush" Color="#444" />
