@@ -1,4 +1,5 @@
 ﻿using Restless.App.DrumMaster.Controls.Core;
+using Restless.App.DrumMaster.Controls.Resources;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
@@ -32,6 +33,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public ProjectContainer()
         {
+            DisplayName = Strings.ProjectContainerDisplayName;
             MasterPlay = new MasterPlay(this);
             MasterOutput = ThreadSafeMasterOutput = new MasterOutput(this);
             SongContainer = new SongContainer(this);
@@ -47,7 +49,8 @@ namespace Restless.App.DrumMaster.Controls
                 });
             }
 
-            // IsExpanded is used in the template to expand / contract the drum kit list
+            // IsExpanded is used in the template to expand / contract the drum kit list.
+            // Drum kits are assigned per pattern but the display is same for all.
             IsExpanded = false;
 
             ActivateDrumPattern(0);

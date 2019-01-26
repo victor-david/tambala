@@ -61,6 +61,15 @@ namespace Restless.App.DrumMaster.Controls.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to (unamed project).
+        /// </summary>
+        internal static string ProjectContainerDisplayName {
+            get {
+                return ResourceManager.GetString("ProjectContainerDisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Song Composition.
         /// </summary>
         internal static string SongContainerDisplayName {
