@@ -84,7 +84,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Icon.Main.1.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="SharpDX, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
@@ -261,9 +262,6 @@
     <Resource Include="Resources\Images\Image.DrumSet.128.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Icon.Main.1.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="ProjectNotes.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -305,6 +303,16 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\Image.Save.Layout.64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Image.Drum.Blue.128.png" />
+    <Resource Include="Resources\Images\Image.Drum.Red.128.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Icon.Drum.Blue.128.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Icon.Drum.Red.128.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

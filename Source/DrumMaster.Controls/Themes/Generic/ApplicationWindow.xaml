@@ -27,7 +27,7 @@
                 <RowDefinition Height="42"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            
+
             <Border Name="WindowBorder" Style="{StaticResource WindowHeaderBorder}" BorderBrush="{TemplateBinding BorderBrush}">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -36,13 +36,13 @@
                         <!-- Title -->
                         <ColumnDefinition/>
                         <!-- Minimize -->
-                        <ColumnDefinition Width="42"/>
+                        <ColumnDefinition Width="44"/>
                         <!-- Restore -->
-                        <ColumnDefinition Name="ColRestore" Width="42"/>
+                        <ColumnDefinition Name="ColRestore" Width="44"/>
                         <!-- Maximize -->
-                        <ColumnDefinition Name="ColMaximize" Width="42"/>
+                        <ColumnDefinition Name="ColMaximize" Width="44"/>
                         <!-- Close -->
-                        <ColumnDefinition Width="42"/>
+                        <ColumnDefinition Width="44"/>
                         <!-- Space at the end -->
                         <ColumnDefinition Width="8"/>
                     </Grid.ColumnDefinitions>
@@ -93,7 +93,9 @@
             </Border>
             
             <Border Name="MainBorder" Grid.Row="1" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="2,0,2,2">
-                <ContentPresenter Content="{TemplateBinding Content}"/>
+                <AdornerDecorator>
+                    <ContentPresenter Content="{TemplateBinding Content}"/>
+                </AdornerDecorator>
             </Border>
         </Grid>
         <ControlTemplate.Triggers>
