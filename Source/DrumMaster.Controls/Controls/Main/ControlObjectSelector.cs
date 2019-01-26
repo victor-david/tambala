@@ -68,13 +68,13 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty SelectorSizeProperty = DependencyProperty.Register
             (
-                nameof(SelectorSize), typeof(double), typeof(ControlObjectSelector), new PropertyMetadata(Constants.Selector.Size.Default, OnSelectorSizeChanged, OnSelectorSizeCoerce)
+                nameof(SelectorSize), typeof(double), typeof(ControlObjectSelector), new PropertyMetadata(Constants.SongSelector.Size.Default, OnSelectorSizeChanged, OnSelectorSizeCoerce)
             );
 
         private static object OnSelectorSizeCoerce(DependencyObject d, object baseValue)
         {
             double proposed = (double)baseValue;
-            return Math.Min(Constants.Selector.Size.Max, Math.Max(Constants.Selector.Size.Min, proposed));
+            return Math.Min(Constants.SongSelector.Size.Max, Math.Max(Constants.SongSelector.Size.Min, proposed));
         }
 
         private static void OnSelectorSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -91,7 +91,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public double MinSelectorSize
         {
-            get => Constants.Selector.Size.Min;
+            get => Constants.SongSelector.Size.Min;
         }
         
         /// <summary>
@@ -100,7 +100,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public double MaxSelectorSize
         {
-            get => Constants.Selector.Size.Max;
+            get => Constants.SongSelector.Size.Max;
         }
         #endregion
 
@@ -122,13 +122,13 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty DivisionCountProperty = DependencyProperty.Register
             (
-                nameof(DivisionCount), typeof(int), typeof(ControlObjectSelector), new PropertyMetadata(Constants.Selector.Division.Default, OnDivisionChanged, OnDivisionCountCoerce)
+                nameof(DivisionCount), typeof(int), typeof(ControlObjectSelector), new PropertyMetadata(Constants.SongSelector.Division.Default, OnDivisionChanged, OnDivisionCountCoerce)
             );
 
         private static object OnDivisionCountCoerce(DependencyObject d, object baseValue)
         {
             int proposed = (int)baseValue;
-            return Math.Min(Constants.Selector.Division.Max, Math.Max(Constants.Selector.Division.Min, proposed));
+            return Math.Min(Constants.SongSelector.Division.Max, Math.Max(Constants.SongSelector.Division.Min, proposed));
         }
 
         private static void OnDivisionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -145,7 +145,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public int MinDivisionCount
         {
-            get => Constants.Selector.Division.Min;
+            get => Constants.SongSelector.Division.Min;
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public int MaxDivisionCount
         {
-            get => Constants.Selector.Division.Max;
+            get => Constants.SongSelector.Division.Max;
         }
         #endregion
 

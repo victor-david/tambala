@@ -31,11 +31,11 @@ namespace Restless.App.DrumMaster.Controls.Core
 
         /************************************************************************/
 
-        #region Selector
+        #region SongSelector
         /// <summary>
         /// Provides static values that define characteristics of the song presenter
         /// </summary>
-        public static class Selector
+        public static class SongSelector
         {
             /// <summary>
             /// Provides static values that define selector size characteristics.
@@ -101,9 +101,14 @@ namespace Restless.App.DrumMaster.Controls.Core
 
             }
             /// <summary>
-            /// Gets the fixed width of the first column.
+            /// Gets the minimum width of the first column.
             /// </summary>
-            public static int FirstColumnWidth = 64;
+            public const int MinFirstColumnWidth = 64;
+
+            /// <summary>
+            /// Gets the maximum width of the first column.
+            /// </summary>
+            public const int MaxFirstColumnWidth = 138;
 
 
         }

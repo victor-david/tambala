@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Xml.Linq;
 
@@ -274,11 +275,24 @@ namespace Restless.App.DrumMaster.Controls
             Grid.ColumnDefinitions.Clear();
             Grid.Children.Clear();
             AddColumnDefinition(Constants.DrumPattern.FirstColumnWidth);
-            AddElement(new Border()
+            // TextBox to edit the pattern name
+            var name = new RationalTextBox();
+            name.SetResourceReference(StyleProperty, "RationalTextBoxPatternNameEdit");
+
+            Border border = new Border()
             {
                 BorderBrush = Brushes.LightGray,
-                BorderThickness = new Thickness(0, 0, 0, 2)
-            }, 0, 0);
+                BorderThickness = new Thickness(0, 0, 0, 2),
+                Child = name
+            };
+
+            Binding binding = new Binding(nameof(DisplayName))
+            {
+                Source = Owner,
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+            };
+            name.SetBinding(TextBox.TextProperty, binding);
+            AddElement(border, 0, 0);
 
             int headerRow = AddRowDefinition();
             for (int q = 1; q <= Constants.DrumPattern.QuarterNoteCount.Max; q++)

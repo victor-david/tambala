@@ -61,7 +61,7 @@ namespace Restless.App.DrumMaster.Controls
         
         /************************************************************************/
 
-        #region Proptected methods
+        #region Protected methods
         /// <summary>
         /// Called when the value changes.
         /// </summary>

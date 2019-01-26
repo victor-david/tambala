@@ -18,8 +18,8 @@ namespace Restless.App.DrumMaster.Controls
     {
         #region Private
         private readonly Dictionary<int, PointSelector> headerSelectors;
-        
         private Brush isSelectedBrush;
+        private const string SplitterName = "Splitter";
         #endregion
 
         /************************************************************************/
@@ -76,7 +76,12 @@ namespace Restless.App.DrumMaster.Controls
         public override XElement GetXElement()
         {
             var element = new XElement(nameof(SongPresenter));
-            element.Add(new XComment($"{nameof(SongPresenter)} receives {nameof(SelectorSize)} and {nameof(DivisionCount)} from its owner {nameof(SongContainer)}"));
+            // sanity check.
+            if (Grid.ColumnDefinitions.Count > 0)
+            {
+                element.Add(new XElement(SplitterName, Grid.ColumnDefinitions[0].Width));
+            }
+
 
             foreach (var child in Grid.Children.OfType<PointSelector>().Where((ps) => ps.SelectorType == PointSelectorType.SongRow && ps.IsSelected))
             {
@@ -93,6 +98,13 @@ namespace Restless.App.DrumMaster.Controls
         {
             foreach (XElement e in ChildElementList(element))
             {
+                if (e.Name == SplitterName && Grid.ColumnDefinitions.Count > 0)
+                {
+                    if (int.TryParse(e.Value, out int result))
+                    {
+                        Grid.ColumnDefinitions[0].Width = new GridLength(result);
+                    }
+                }
                 if (e.Name == nameof(PointSelector))
                 {
                     XAttribute rowa = e.Attribute(nameof(PointSelector.Row));
@@ -126,10 +138,18 @@ namespace Restless.App.DrumMaster.Controls
             headerSelectors.Clear();
             SongSelectors.Clear();
             int rowIdx = AddRowDefinition();
-            AddColumnDefinition(Constants.Selector.FirstColumnWidth);
-            AddElement(new TextBlock(), 0, 0);
 
-            for (int k = 1; k <= Constants.Selector.Count.Default; k++)
+            AddColumnDefinition(Constants.SongSelector.MinFirstColumnWidth);
+            Grid.ColumnDefinitions[0].MinWidth = Constants.SongSelector.MinFirstColumnWidth;
+            Grid.ColumnDefinitions[0].MaxWidth = Constants.SongSelector.MaxFirstColumnWidth;
+
+            int splitterColIdx = AddColumnDefinition(6.0);
+            GridSplitter splitter = new GridSplitter();
+            splitter.SetResourceReference(StyleProperty, "VerticalGridSplitter");
+            Grid.SetRowSpan(splitter, Constants.DrumPattern.MaxCount);
+            AddElement(splitter, rowIdx+1, splitterColIdx);
+
+            for (int k = 1; k <= Constants.SongSelector.Count.Default; k++)
             {
                 int colIdx = AddColumnDefinition();
 
@@ -143,7 +163,7 @@ namespace Restless.App.DrumMaster.Controls
                 headerSelectors.Add(k, sps);
                 AddElement(sps, rowIdx, colIdx);
 
-                if (k < Constants.Selector.Count.Default)
+                if (k < Constants.SongSelector.Count.Default)
                 {
                     VisualDivider div = new VisualDivider(k)
                     {
@@ -251,8 +271,10 @@ namespace Restless.App.DrumMaster.Controls
             };
 
             AddElement(border, rowIdx, colIdx);
+            // skip over the splitter column.
+            colIdx++;
 
-            for (int k = 1; k <= Constants.Selector.Count.Default; k++)
+            for (int k = 1; k <= Constants.SongSelector.Count.Default; k++)
             {
                 colIdx++;
                 var sps = new PointSelector()

@@ -22,7 +22,7 @@ namespace Restless.App.DrumMaster.Controls.Core
         /// </summary>
         internal SongSelectorCollection()
         {
-            points = new PointSelector[Constants.DrumPattern.MaxCount, Constants.Selector.Count.Max];
+            points = new PointSelector[Constants.DrumPattern.MaxCount, Constants.SongSelector.Count.Max];
             rowLen = points.GetLength(0);
             colLen = points.GetLength(1);
             selectedRows = new int[Constants.DrumPattern.MaxCount] { -1, -1, -1, -1 };

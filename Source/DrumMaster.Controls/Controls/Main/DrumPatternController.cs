@@ -41,7 +41,7 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Gets the <see cref="DrumPattern"/> that owns this instance.
         /// </summary>
-        internal DrumPattern Owner
+        public DrumPattern Owner
         {
             get;
         }

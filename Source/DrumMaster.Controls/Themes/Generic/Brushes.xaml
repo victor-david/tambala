@@ -25,7 +25,16 @@
             </GradientStopCollection>
         </GradientBrush.GradientStops>
     </LinearGradientBrush>
-
+    
+    <LinearGradientBrush x:Key="TextBoxBrush" StartPoint="0.00,0.00" EndPoint="1.00,1.00">
+        <GradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFCCCCCC" Offset="0.000"/>
+                <GradientStop Color="White" Offset="1.000"/>
+            </GradientStopCollection>
+        </GradientBrush.GradientStops>
+    </LinearGradientBrush>
+    
     <LinearGradientBrush x:Key="InstrumentControllerSelectedBrush" StartPoint="0.00,0.00" EndPoint="1.00,1.00">
         <GradientBrush.GradientStops>
             <GradientStopCollection>
@@ -43,9 +52,6 @@
             </GradientStopCollection>
         </GradientBrush.GradientStops>
     </LinearGradientBrush>
-
-
-
     
     <!-- Brushes for PointSelector -->
     <SolidColorBrush x:Key="PointSelectorSongHeaderSelected" Color="#FFCC0000"/>
