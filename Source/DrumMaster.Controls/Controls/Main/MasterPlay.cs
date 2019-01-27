@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -9,7 +10,7 @@ namespace Restless.App.DrumMaster.Controls
     /// <summary>
     /// Represents a control that provides master play / stop services.
     /// </summary>
-    public sealed partial class MasterPlay : AudioControlBase
+    internal sealed partial class MasterPlay : AudioControlBase, IDisposable
     {
         #region Private
         // All thread related fields and methods are in the partial.

@@ -10,12 +10,15 @@ namespace Restless.App.DrumMaster.Controls.Audio
     /// <summary>
     /// Manages the XAudio2 device, the mastering voice, and the voice pools for the audio.
     /// </summary>
-    public class AudioHost
+    public sealed class AudioHost
     {
         #region Private
         private MasteringVoice masterVoice;
         private List<VoicePool> voicePools;
         private XAudio2 audioDevice;
+        //private Reverb reverb;
+        //private EffectDescriptor reverbEffectDescriptor;
+        //private AudioCaptureEffect audioCapture;
         private readonly EffectDescriptor audioCaptureEffectDescriptor;
         #endregion
 
@@ -28,10 +31,7 @@ namespace Restless.App.DrumMaster.Controls.Audio
         public XAudio2 AudioDevice
         {
             get => audioDevice;
-            private set
-            {
-                audioDevice = value;
-            }
+            private set => audioDevice = value;
         }
 
         /// <summary>
@@ -47,8 +47,8 @@ namespace Restless.App.DrumMaster.Controls.Audio
         /// </summary>
         internal MasteringVoice MasterVoice
         {
-            get => masterVoice;
-            private set => masterVoice = value;
+            get;
+            private set;
         }
 
         /// <summary>
@@ -57,6 +57,7 @@ namespace Restless.App.DrumMaster.Controls.Audio
         internal AudioCaptureEffect AudioCapture
         {
             get;
+            private set;
         }
         #endregion
 
@@ -84,9 +85,10 @@ namespace Restless.App.DrumMaster.Controls.Audio
 
             AudioCapture = new AudioCaptureEffect();
             audioCaptureEffectDescriptor = new EffectDescriptor(AudioCapture);
+
             // TODO
-            //masteringVoice.SetEffectChain(audioCaptureEffectDescriptor);
-            //masteringVoice.DisableEffect(0);
+            //masterVoice.SetEffectChain(audioCaptureEffectDescriptor);
+            //masterVoice.DisableEffect(0);
 
             AudioDevice.StartEngine();
         }
@@ -120,9 +122,12 @@ namespace Restless.App.DrumMaster.Controls.Audio
             {
                 pool.Destroy();
             }
+
             AudioDevice.StopEngine();
             SharpDX.Utilities.Dispose(ref masterVoice);
             SharpDX.Utilities.Dispose(ref audioDevice);
+            // This throws an exception from SharpDx.CallbackBase
+            // AudioCapture.Dispose();
         }
         #endregion
 

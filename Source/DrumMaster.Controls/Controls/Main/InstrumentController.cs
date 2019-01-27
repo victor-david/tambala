@@ -3,6 +3,7 @@ using Restless.App.DrumMaster.Controls.Core;
 using SharpDX.XAudio2;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -13,7 +14,7 @@ namespace Restless.App.DrumMaster.Controls
     /// <summary>
     /// Represents a controller for a single instrument of a drum pattern.
     /// </summary>
-    public class InstrumentController : AudioControlBase, ISelectable
+    public sealed class InstrumentController : AudioControlBase, ISelectable, IDisposable
     {
         #region Private
         private bool isAudioEnabled;
@@ -260,6 +261,35 @@ namespace Restless.App.DrumMaster.Controls
                         PatternQuarters[quarterIdx].RestoreFromXElement(e);
                     }
                     quarterIdx++;
+                }
+            }
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region IDisposable
+        /// <summary>
+        /// Disposes resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Disposes resources
+        /// </summary>
+        /// <param name="disposing">true if disposing</param>
+        [SuppressMessage("Microsoft.Usage", "CA2213: Disposable fields should be disposed", Justification = "Disposal happens via SharpDx.Utilities")]
+        private void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (submixVoice != null)
+                {
+                    SharpDX.Utilities.Dispose(ref submixVoice);
                 }
             }
         }

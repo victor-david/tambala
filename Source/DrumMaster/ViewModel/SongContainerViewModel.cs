@@ -148,7 +148,7 @@ namespace Restless.App.DrumMaster.ViewModel
         /// </summary>
         protected override void OnDeactivated()
         {
-            container.Shutdown();
+            container.Dispose();
         }
         #endregion
 

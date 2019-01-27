@@ -16,7 +16,7 @@ namespace Restless.App.DrumMaster.Controls
     /// the controls for the master output (volume, pitch, tempo), the controls to create a song from multiple drum
     /// patterns, and the drum patterns.
     /// </remarks>
-    public sealed class ProjectContainer : ControlObject
+    public sealed class ProjectContainer : ControlObject, IDisposable
     {
         #region Private
         private bool isSongContainerChangeInProgress = false;
@@ -105,7 +105,7 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Gets the master play control for the container.
         /// </summary>
-        public MasterPlay MasterPlay
+        internal MasterPlay MasterPlay
         {
             get => (MasterPlay)GetValue(MasterPlayProperty);
             private set => SetValue(MasterPlayPropertyKey, value);
@@ -119,7 +119,7 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Identifies the <see cref="MasterPlay"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty MasterPlayProperty = MasterPlayPropertyKey.DependencyProperty;
+        internal static readonly DependencyProperty MasterPlayProperty = MasterPlayPropertyKey.DependencyProperty;
         #endregion
 
         /************************************************************************/
@@ -292,6 +292,20 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
+        #region IDisposable
+        /// <summary>
+        /// Disposes resources.
+        /// </summary>
+        public void Dispose()
+        {
+            MasterPlay.Dispose();
+            Dispatcher.ShutdownStarted -= DispatcherShutdownStarted;
+            GC.SuppressFinalize(this);
+        }
+        #endregion
+
+        /************************************************************************/
+
         #region Public methods
         /// <summary>
         /// Called when the template is applied.
@@ -344,15 +358,6 @@ namespace Restless.App.DrumMaster.Controls
                 return new System.IO.IOException($"Dispatcher Unable to load {filename}", ex);
             }
             return null;
-        }
-
-        /// <summary>
-        /// Shuts down the project container.
-        /// </summary>
-        public void Shutdown()
-        {
-            MasterPlay.Shutdown();
-            Dispatcher.ShutdownStarted -= DispatcherShutdownStarted;
         }
         #endregion
 
@@ -427,7 +432,7 @@ namespace Restless.App.DrumMaster.Controls
             // the threads in MasterPlay and this is handled by the Shutdown() method
             // above. As long as the consumer of ProjectContainer calls Shutdown()
             // the threads will finish and this handler will be removed.
-            MasterPlay.Shutdown();
+            MasterPlay.Dispose();
         }
         #endregion
     }

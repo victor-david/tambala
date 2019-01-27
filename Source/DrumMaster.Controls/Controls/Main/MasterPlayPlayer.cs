@@ -2,7 +2,7 @@
 using Restless.App.DrumMaster.Controls.Audio;
 using Restless.App.DrumMaster.Controls.Core;
 using System;
-using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Windows.Threading;
 
@@ -11,7 +11,7 @@ namespace Restless.App.DrumMaster.Controls
     /// <summary>
     /// Partial of master play to hold the thread stuff.
     /// </summary>
-    public sealed partial class MasterPlay
+    internal sealed partial class MasterPlay
     {
         #region Private
         private const int MilliSecondsPerMinute = 60000;
@@ -27,7 +27,6 @@ namespace Restless.App.DrumMaster.Controls
 
         private AutoResetEvent audioMonitorSignaler;
         private Thread audioMonitorThread;
-
 
         private int patternSleepTime;
         private int patternOperationSet;
@@ -276,8 +275,30 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
+        #region IDisposable
+        /// <summary>
+        /// Disposes resources.
+        /// </summary>
+        [SuppressMessage("Microsoft.Usage", "CA2213: Disposable fields should be disposed", Justification="Disposal happens via Shutdown() method")]
+        public void Dispose()
+        {
+            Shutdown();
+            GC.SuppressFinalize(this);
+        }
+        #endregion
+
+        /************************************************************************/
+
         #region Internal methods
-        internal void Shutdown()
+        internal void SetTempo(double tempo)
+        {
+            int tempoInt = (int)tempo;
+            patternSleepTime = MilliSecondsPerMinute / tempoInt / Ticks.LowestCommon;
+        }
+        #endregion
+
+        #region Private method
+        private void Shutdown()
         {
             IsStarted = false;
             isControlClosing = true;
@@ -299,14 +320,8 @@ namespace Restless.App.DrumMaster.Controls
                 audioMonitorSignaler.Set();
                 audioMonitorSignaler.Dispose();
             }
-
-        }
-
-        internal void SetTempo(double tempo)
-        {
-            int tempoInt = (int)tempo;
-            patternSleepTime = MilliSecondsPerMinute / tempoInt / Ticks.LowestCommon;
         }
         #endregion
+
     }
 }

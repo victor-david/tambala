@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 namespace Restless.App.DrumMaster.Controls
@@ -83,7 +78,7 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Called when the control loses focus to enforce <see cref="AllowZeroLength"/>.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The parms</param>
         protected override void OnLostFocus(RoutedEventArgs e)
         {
             base.OnLostFocus(e);
@@ -93,7 +88,5 @@ namespace Restless.App.DrumMaster.Controls
             }
         }
         #endregion
-
-
     }
 }

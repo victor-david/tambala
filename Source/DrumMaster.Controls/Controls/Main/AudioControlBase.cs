@@ -36,7 +36,7 @@ namespace Restless.App.DrumMaster.Controls
             VoicedImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Track.Voiced.64.png", UriKind.Relative));
             ActiveMutedImageSource = VoicedImageSource;
 
-            Commands.Add("ToggleMute", new RelayCommand((p)=> IsMuted = !IsMuted));
+            Commands.Add("ToggleMute", new RelayCommand((p) => IsMuted = !IsMuted));
 
             /* 
              * The following are thread safe values used in real time from the play thread.
@@ -51,9 +51,6 @@ namespace Restless.App.DrumMaster.Controls
             VolumeDecibelText = (Volume <= Constants.Volume.Main.Min) ? "Off" : $"{Volume:N1}dB";
 
             SetPanningText();
-            OnVolumeChanged();
-            OnPanningChanged();
-            OnPitchChanged();
         }
         #endregion
 

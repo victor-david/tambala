@@ -2,6 +2,7 @@
 using Restless.App.DrumMaster.Controls.Core;
 using SharpDX.XAudio2;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Xml.Linq;
 
@@ -10,9 +11,10 @@ namespace Restless.App.DrumMaster.Controls
     /// <summary>
     /// Represents a controller for a drum pattern.
     /// </summary>
-    public class DrumPatternController : AudioControlBase, IQuarterNote
+    public sealed class DrumPatternController : AudioControlBase, IQuarterNote, IDisposable
     {
         #region Private
+        private SubmixVoice submixVoice;
         #endregion
 
         /************************************************************************/
@@ -41,7 +43,7 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Gets the <see cref="DrumPattern"/> that owns this instance.
         /// </summary>
-        public DrumPattern Owner
+        internal DrumPattern Owner
         {
             get;
         }
@@ -55,7 +57,8 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         internal SubmixVoice SubmixVoice
         {
-            get;
+            get => submixVoice;
+            private set => submixVoice = value;
         }
         #endregion
 
@@ -322,6 +325,35 @@ namespace Restless.App.DrumMaster.Controls
                     SetDependencyProperty(TicksPerQuarterNoteProperty, e.Value);
                 }
                 if (e.Name == nameof(Scale)) SetDependencyProperty(ScaleProperty, e.Value);
+            }
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region IDisposable
+        /// <summary>
+        /// Disposes resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Disposes resources
+        /// </summary>
+        /// <param name="disposing">true if disposing</param>
+        [SuppressMessage("Microsoft.Usage", "CA2213: Disposable fields should be disposed", Justification = "Disposal happens via SharpDx.Utilities")]
+        private void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (submixVoice != null)
+                {
+                    SharpDX.Utilities.Dispose(ref submixVoice);
+                }
             }
         }
         #endregion
