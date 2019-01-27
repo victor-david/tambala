@@ -281,6 +281,14 @@ namespace Restless.App.DrumMaster.Controls
         {
             Presenter.SetControllerVisibility(IsStretched);
         }
+
+        /// <summary>
+        /// Called when the <see cref="ControlObject.IsSlidRight"/> property changes.
+        /// </summary>
+        protected override void OnIsSlidRightChanged()
+        {
+            Owner.IsSlidRight = IsSlidRight;
+        }
         #endregion
 
         /************************************************************************/

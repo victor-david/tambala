@@ -379,5 +379,9 @@
   <ItemGroup>
     <Resource Include="Resources\Images\Image.Window.Restore.32.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Image.Caret.Left.White.32.png" />
+    <Resource Include="Resources\Images\Image.Caret.Right.White.32.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

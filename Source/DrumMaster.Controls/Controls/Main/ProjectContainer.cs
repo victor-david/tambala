@@ -23,6 +23,11 @@ namespace Restless.App.DrumMaster.Controls
         private double songContainerLastManualHeight;
         private const double SongContainerDefaultHeight = 250.0;
         private const double SongContainerThresholdHeight = 106.0;
+
+        private bool isMixerContainerChangeInProgress = false;
+        private double mixerContainerLastManualWidth;
+        private const double MixerContainerDefaultWidth = 232.0;
+        private const double MixerContainerThresholdWidth = 104.0;
         #endregion
 
         /************************************************************************/
@@ -138,7 +143,7 @@ namespace Restless.App.DrumMaster.Controls
 
         #region SongContainerHeight
         /// <summary>
-        /// Gets the height of the <see cref="SongContainer"/>.
+        /// Gets ot sets the height of the <see cref="SongContainer"/>.
         /// </summary>
         public GridLength SongContainerHeight
         {
@@ -151,7 +156,10 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty SongContainerHeightProperty = DependencyProperty.Register
             (
-                nameof(SongContainerHeight), typeof(GridLength), typeof(ProjectContainer), new PropertyMetadata(new GridLength(SongContainerDefaultHeight, GridUnitType.Pixel), OnSongContainerHeightChanged)
+                nameof(SongContainerHeight), typeof(GridLength), typeof(ProjectContainer), new PropertyMetadata
+                    (
+                        new GridLength(SongContainerDefaultHeight, GridUnitType.Pixel), OnSongContainerHeightChanged
+                    )
             );
 
         private static void OnSongContainerHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -168,6 +176,39 @@ namespace Restless.App.DrumMaster.Controls
         public double SongContainerMinHeight
         {
             get => 76.0;
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region MixerContainerWidth
+
+        /// <summary>
+        /// Gets or sets the width of the mixer container.
+        /// </summary>
+        public GridLength MixerContainerWidth
+        {
+            get => (GridLength)GetValue(MixerContainerWidthProperty);
+            set => SetValue(MixerContainerWidthProperty, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="MixerContainerWidth"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty MixerContainerWidthProperty = DependencyProperty.Register
+            (
+                nameof(MixerContainerWidth), typeof(GridLength), typeof(ProjectContainer), new PropertyMetadata
+                    (
+                        new GridLength(MixerContainerDefaultWidth, GridUnitType.Pixel), OnMixerContainerWidthChanged
+                    )
+            );
+
+        private static void OnMixerContainerWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is ProjectContainer c)
+            {
+                if (!c.isMixerContainerChangeInProgress) c.mixerContainerLastManualWidth = c.MixerContainerWidth.Value;
+            }
         }
         #endregion
 
@@ -371,15 +412,36 @@ namespace Restless.App.DrumMaster.Controls
         {
             SongContainer.Presenter.HighlightSelectedPattern(0);
         }
+
+        /// <summary>
+        /// Called when the <see cref="ControlObject.IsSlidRight"/> property changes.
+        /// </summary>
+        protected override void OnIsSlidRightChanged()
+        {
+            isMixerContainerChangeInProgress = true;
+            if (IsSlidRight)
+            {
+                MixerContainerWidth = new GridLength(0.0, GridUnitType.Pixel);
+            }
+            else
+            {
+                if (mixerContainerLastManualWidth < MixerContainerThresholdWidth)
+                {
+                    mixerContainerLastManualWidth = MixerContainerDefaultWidth;
+                }
+                MixerContainerWidth = new GridLength(mixerContainerLastManualWidth, GridUnitType.Pixel);
+            }
+            isMixerContainerChangeInProgress = false;
+        }
         #endregion
 
         /************************************************************************/
 
         #region Internal methods
         /// <summary>
-        /// From this assembly, activate the drum patterm at the specified index
+        /// From this assembly, activate the drum pattern at the specified index
         /// </summary>
-        /// <param name="patternIdx">The index of the drum pattern to active.</param>
+        /// <param name="patternIdx">The index of the drum pattern to activate.</param>
         internal void ActivateDrumPattern(int patternIdx)
         {
             if (patternIdx >=0 && patternIdx < DrumPatterns.Count)

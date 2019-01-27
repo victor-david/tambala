@@ -31,9 +31,12 @@ namespace Restless.App.DrumMaster.Controls
             ExpandedImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Caret.Up.White.32.png", UriKind.Relative));
             CollapsedImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Caret.Down.White.32.png", UriKind.Relative));
             StretchedImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Caret.Up.Down.White.32.png", UriKind.Relative));
+            SlideRightImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Caret.Right.White.32.png", UriKind.Relative));
+            SlideLeftImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Caret.Left.White.32.png", UriKind.Relative));
             ActiveExpandedStateImageSource = ExpandedImageSource;
-            ToggleExpandedCommand = new RelayCommand(RunToggleExpandedCommand);
-            ToggleStretchedCommand = new RelayCommand(RunToggleStretchedCommand);
+            ToggleExpandedCommand = new RelayCommand((p) => IsExpanded = !IsExpanded);
+            ToggleStretchedCommand = new RelayCommand((p) => IsStretched = !IsStretched);
+            ToggleSlideCommand = new RelayCommand((p) => IsSlidRight = !IsSlidRight);
         }
         #endregion
 
@@ -110,6 +113,29 @@ namespace Restless.App.DrumMaster.Controls
         /// Identifies the <see cref="ToggleStretchedCommand"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ToggleStretchedCommandProperty = ToggleStretchedCommandPropertyKey.DependencyProperty;
+        #endregion
+
+        /************************************************************************/
+
+        #region ToggleSlideCommand
+        /// <summary>
+        /// Gets the command to toggle <see cref="IsSlidRight"/>.
+        /// </summary>
+        public ICommand ToggleSlideCommand
+        {
+            get => (ICommand)GetValue(ToggleSlideCommandProperty);
+            private set => SetValue(ToggleSlideCommandPropertyKey, value);
+        }
+
+        private static readonly DependencyPropertyKey ToggleSlideCommandPropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(ToggleSlideCommand), typeof(ICommand), typeof(ControlObject), new PropertyMetadata(null)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="ToggleSlideCommand"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ToggleSlideCommandProperty = ToggleSlideCommandPropertyKey.DependencyProperty;
         #endregion
 
         /************************************************************************/
@@ -256,6 +282,103 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
+        #region Slide Left/Right
+        /// <summary>
+        /// Gets or sets a boolean value that indicates if the control is expanded.
+        /// </summary>
+        /// <remarks>
+        /// It is up to derived classes to determine how to use this property.
+        /// By itself, it does nothing.
+        /// </remarks>
+        public bool IsSlidRight
+        {
+            get => (bool)GetValue(IsSlidRightProperty);
+            set => SetValue(IsSlidRightProperty, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="IsSlidRight"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsSlidRightProperty = DependencyProperty.Register
+            (
+                nameof(IsSlidRight), typeof(bool), typeof(ControlObject), new FrameworkPropertyMetadata(false, OnIsSlidRightChanged)
+            );
+
+        private static void OnIsSlidRightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is ControlObject c)
+            {
+                c.OnSlideImageSourceChanged();
+                c.OnIsSlidRightChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the image for the slide right button.
+        /// </summary>
+        public ImageSource SlideRightImageSource
+        {
+            get => (ImageSource)GetValue(SlideRightImageSourceProperty);
+            set => SetValue(SlideRightImageSourceProperty, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="SlideRightImageSource"/> dependency property,
+        /// </summary>
+        public static readonly DependencyProperty SlideRightImageSourceProperty = DependencyProperty.Register
+            (
+                nameof(SlideRightImageSource), typeof(ImageSource), typeof(ControlObject), new PropertyMetadata(null, OnSlideImageSourceChanged)
+            );
+
+        /// <summary>
+        /// Gets or sets the image for the slide left button.
+        /// </summary>
+        public ImageSource SlideLeftImageSource
+        {
+            get => (ImageSource)GetValue(SlideLeftImageSourceProperty);
+            set => SetValue(SlideLeftImageSourceProperty, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="SlideLeftImageSource"/> dependency property,
+        /// </summary>
+        public static readonly DependencyProperty SlideLeftImageSourceProperty = DependencyProperty.Register
+            (
+                nameof(SlideLeftImageSource), typeof(ImageSource), typeof(ControlObject), new PropertyMetadata(null, OnSlideImageSourceChanged)
+            );
+
+        /// <summary>
+        /// Gets the currently active image source associated with the state of <see cref="IsSlidRight"/>
+        /// </summary>
+        public ImageSource ActiveSlideStateImageSource
+        {
+            get => (ImageSource)GetValue(ActiveSlideStateImageSourceProperty);
+            private set => SetValue(ActiveSlideStateImageSourcePropertyKey, value);
+        }
+
+
+        private static readonly DependencyPropertyKey ActiveSlideStateImageSourcePropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(ActiveSlideStateImageSource), typeof(ImageSource), typeof(ControlObject), new PropertyMetadata(null)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="ActiveSlideStateImageSource"/> dependency property,
+        /// </summary>
+        public static readonly DependencyProperty ActiveSlideStateImageSourceProperty = ActiveSlideStateImageSourcePropertyKey.DependencyProperty;
+
+
+        private static void OnSlideImageSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is ControlObject c)
+            {
+                c.OnSlideImageSourceChanged();
+            }
+        }
+        #endregion
+
+        /************************************************************************/
+
         #region IsStretched
         /// <summary>
         /// Gets or sets a boolean value that indicates if the control is stretched.
@@ -381,6 +504,14 @@ namespace Restless.App.DrumMaster.Controls
         }
 
         /// <summary>
+        /// Called when <see cref="IsSlidRight"/> is changed. A derived class can override this method to perform updates as needed.
+        /// The base implementaion does nothing.
+        /// </summary>
+        protected virtual void OnIsSlidRightChanged()
+        {
+        }
+
+        /// <summary>
         /// Sets the specified dependency property to the specified string.
         /// </summary>
         /// <param name="prop">The dependency property.</param>
@@ -436,14 +567,9 @@ namespace Restless.App.DrumMaster.Controls
             ActiveExpandedStateImageSource = IsExpanded ? ExpandedImageSource : CollapsedImageSource;
         }
 
-        private void RunToggleExpandedCommand(object parm)
+        private void OnSlideImageSourceChanged()
         {
-            IsExpanded = !IsExpanded;
-        }
-
-        private void RunToggleStretchedCommand(object parm)
-        {
-            IsStretched = !IsStretched;
+            ActiveSlideStateImageSource = IsSlidRight ? SlideLeftImageSource : SlideRightImageSource;
         }
         #endregion
     }

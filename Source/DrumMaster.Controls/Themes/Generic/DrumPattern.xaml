@@ -16,7 +16,7 @@
 
             <!-- Header. Show name of drum pattern -->
             <Border Style="{DynamicResource HeaderBorder}">
-                <StackPanel Orientation="Horizontal">
+                <DockPanel LastChildFill="False" >
                     <Button
                         Style="{DynamicResource ButtonBaseFlat}"
                         Command="{TemplateBinding ToggleStretchedCommand}"
@@ -35,7 +35,13 @@
                         <Run Text="{Binding SelectedEventCount, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"/>
                         <Run Text="events selected"/>
                     </TextBlock>
-                </StackPanel>
+                    <Button
+                        DockPanel.Dock="Right"
+                        Style="{DynamicResource ButtonBaseFlat}"
+                        Command="{TemplateBinding ToggleSlideCommand}">
+                        <Image Source="{TemplateBinding ActiveSlideStateImageSource}"/>
+                    </Button>
+                </DockPanel>
             </Border>
             
             <!-- Controller. Has controls for quarter note count, ticks, scale. -->

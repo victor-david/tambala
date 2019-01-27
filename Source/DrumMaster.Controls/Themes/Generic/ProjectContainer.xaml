@@ -55,9 +55,11 @@
             <!-- Bottom row. Pattern / Drum kit selector / Mixer -->
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="5*" MinWidth="132"/>
+                    <ColumnDefinition Width="5*" MinWidth="252"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition MinWidth="136"/>
+                    <ColumnDefinition 
+                        Width="{Binding MixerContainerWidth, RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}"
+                        />
                 </Grid.ColumnDefinitions>
 
                 <!-- Active drum pattern -->
@@ -121,6 +123,10 @@
             <Trigger Property="IsExpanded" Value="False">
                 <Setter TargetName="rKits" Property="Height" Value="0"/>
             </Trigger>
+            <!--<Trigger Property="IsSlidRight" Value="True">
+                --><!--<Setter TargetName="ColDefMix" Property="MinWidth" Value="0"/>--><!--
+                <Setter TargetName="cMixer" Property="Width" Value="0"/>
+            </Trigger>-->
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
