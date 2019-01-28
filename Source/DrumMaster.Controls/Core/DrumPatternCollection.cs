@@ -48,9 +48,14 @@ namespace Restless.App.DrumMaster.Controls.Core
         /// position with the highest number of quarter notes. The play methods then
         /// cycles through the quarter notes; any patterns that have less than the
         /// maximum only play through their individual quarter note count.
+        /// If the collection has zero drum patterns (i.e. nothing selected at a
+        /// particular song position), this method returns the default number of
+        /// quarter notes; this allows the player to "play" the empty position
+        /// and not just jump over it.
         /// </remarks>
         internal int GetMaxQuarterNoteCount()
         {
+            if (Count == 0) return Constants.DrumPattern.QuarterNoteCount.Default;
             int max = 0;
             foreach (DrumPattern p in this)
             {
