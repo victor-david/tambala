@@ -13,6 +13,7 @@ namespace Restless.App.DrumMaster.ViewModel
     public class MainWindowViewModel : WindowViewModel
     {
         #region Private
+        private bool isTopMost;
         private SongContainerViewModel songContainer;
         #endregion
 
@@ -24,8 +25,8 @@ namespace Restless.App.DrumMaster.ViewModel
         /// </summary>
         public bool IsTopMost
         {
-            // TODO: Make this configurable
-            get => false;
+            get => isTopMost;
+            private set => SetProperty(ref isTopMost, value);
         }
 
         /// <summary>
@@ -54,7 +55,9 @@ namespace Restless.App.DrumMaster.ViewModel
             Commands.Add("OpenSong", RunOpenSongCommand);
             Commands.Add("CloseSong", RunCloseSongCommand, CanRunCloseSongCommand);
             Commands.Add("EditSettings", RunEditSettingsCommand);
+            Commands.Add("ViewAlwaysOnTop", (p)=> IsTopMost = !IsTopMost);
             Commands.Add("CloseApp", (p) => WindowOwner.Close());
+
         }
         #endregion
 

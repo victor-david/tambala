@@ -41,6 +41,13 @@
         <MenuItem Header="{x:Static r:Strings.MenuItemEdit}" Style="{StaticResource L0}">
             <MenuItem Header="{x:Static r:Strings.MenuItemSettings}" Style="{StaticResource L1}" Command="{Binding Commands[EditSettings]}" />
         </MenuItem>
+        <MenuItem Header="{x:Static r:Strings.MenuItemView}" Style="{StaticResource L0}">
+            <MenuItem 
+                Header="{x:Static r:Strings.MenuItemAlwaysOnTop}"
+                Style="{StaticResource L1}"
+                Command="{Binding Commands[ViewAlwaysOnTop]}"
+                IsChecked="{Binding IsTopMost,Mode=OneWay}"/>
+        </MenuItem>
     </Menu>
     
 </UserControl>

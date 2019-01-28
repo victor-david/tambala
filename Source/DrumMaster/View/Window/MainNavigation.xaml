@@ -13,9 +13,6 @@
             <ColumnDefinition Width="72"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Grid.Resources>
-            
-        </Grid.Resources>
         
         <Button Grid.Column="0" Style="{StaticResource FlatButtonStyle}" Command="{Binding Commands[SaveSong]}">
             <StackPanel Orientation="Horizontal">

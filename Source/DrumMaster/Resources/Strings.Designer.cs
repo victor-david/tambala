@@ -97,6 +97,15 @@ namespace Restless.App.DrumMaster.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Always on top.
+        /// </summary>
+        public static string MenuItemAlwaysOnTop {
+            get {
+                return ResourceManager.GetString("MenuItemAlwaysOnTop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close.
         /// </summary>
         public static string MenuItemClose {
@@ -174,6 +183,15 @@ namespace Restless.App.DrumMaster.Resources {
         public static string MenuItemTools {
             get {
                 return ResourceManager.GetString("MenuItemTools", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View.
+        /// </summary>
+        public static string MenuItemView {
+            get {
+                return ResourceManager.GetString("MenuItemView", resourceCulture);
             }
         }
         
