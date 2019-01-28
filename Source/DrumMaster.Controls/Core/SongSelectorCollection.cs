@@ -11,7 +11,7 @@ namespace Restless.App.DrumMaster.Controls.Core
         private readonly PointSelector[,] points;
         private readonly int rowLen;
         private readonly int colLen;
-        private int[] selectedRows; // = new int[Constants.DrumPattern.MaxCount] { 1, 2, 3, 5 };
+        private readonly int[] selectedRows;
         #endregion
 
         /************************************************************************/
@@ -25,7 +25,11 @@ namespace Restless.App.DrumMaster.Controls.Core
             points = new PointSelector[Constants.DrumPattern.MaxCount, Constants.SongSelector.Count.Max];
             rowLen = points.GetLength(0);
             colLen = points.GetLength(1);
-            selectedRows = new int[Constants.DrumPattern.MaxCount] { -1, -1, -1, -1 };
+            selectedRows = new int[Constants.DrumPattern.MaxCount];
+            for (int k = 0; k < Constants.DrumPattern.MaxCount; k++)
+            {
+                selectedRows[k] = -1;
+            }
         }
         #endregion
 
@@ -82,19 +86,11 @@ namespace Restless.App.DrumMaster.Controls.Core
             return max;
         }
 
-        internal int GetRowAtPosition(int position)
-        {
-            if (position < 0 || position > colLen - 1) throw new ArgumentOutOfRangeException(nameof(position));
-            for (int row=0; row < rowLen; row++)
-            {
-                if (points[row, position] != null && points[row, position].ThreadSafeIsSelected)
-                {
-                    return row;
-                }
-            }
-            return -1;
-        }
-
+        /// <summary>
+        /// Gets an array of row indices for the specified position.
+        /// </summary>
+        /// <param name="position">The position to check.</param>
+        /// <returns>An array of row indices. Value of -1 indicate no selection for that row.</returns>
         internal int[] GetRowsAtPosition(int position)
         {
             for (int row = 0; row < rowLen; row++)

@@ -366,7 +366,7 @@ namespace Restless.App.DrumMaster.Controls.Core
             /// <summary>
             /// The number of allowable drum patterns
             /// </summary>
-            public const int MaxCount = 4;
+            public const int MaxCount = 6;
 
             /// <summary>
             /// Gets the fixed width of the first column.
