@@ -96,24 +96,6 @@ namespace Restless.App.DrumMaster.Controls
         /// <param name="element">The element</param>
         public abstract void RestoreFromXElement(XElement element);
 
-        ///// <summary>
-        ///// Gets or sets the element to defer. See remarks.
-        ///// </summary>
-        ///// <remarks>
-        ///// This property is used by some derived classes to defer
-        ///// processing of the XElement until the control has been loaded.
-        ///// If your class cannot restore state at the time of the call
-        ///// to <see cref="RestoreFromXElement(XElement)"/>
-        ///// (because it must wait until the control has finished loading), save
-        ///// its passed element to this property and override <see cref="OnLoaded"/> to
-        ///// perform the operation then.
-        ///// </remarks>
-        //protected XElement DeferredElement
-        //{
-        //    get;
-        //    set;
-        //}
-
         /// <summary>
         /// Gets an IEnumerable fot the child elements of <paramref name="element"/>.
         /// </summary>
