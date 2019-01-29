@@ -1,4 +1,5 @@
-﻿using Restless.App.DrumMaster.Controls.Core;
+﻿using Restless.App.DrumMaster.Controls.Audio;
+using Restless.App.DrumMaster.Controls.Core;
 using Restless.App.DrumMaster.Controls.Resources;
 using System;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace Restless.App.DrumMaster.Controls
     /// </summary>
     /// <remarks>
     /// This class provides the container for all pieces that comprise a project. It holds the controls to play / pause,
-    /// the controls for the master output (volume, pitch, tempo), the controls to create a song from multiple drum
+    /// the controls for the master output (volume, tempo), the controls to create a song from multiple drum
     /// patterns, and the drum patterns.
     /// </remarks>
     public sealed class ProjectContainer : ControlObject, IDisposable
@@ -42,8 +43,6 @@ namespace Restless.App.DrumMaster.Controls
             MasterPlay = new MasterPlay(this);
             MasterOutput = ThreadSafeMasterOutput = new MasterOutput(this);
             SongContainer = new SongContainer(this);
-
-            DrumKits = new DrumKitCollection();
 
             DrumPatterns = new DrumPatternCollection();
             for (int k=1; k <= Constants.DrumPattern.MaxCount; k++)
@@ -261,10 +260,11 @@ namespace Restless.App.DrumMaster.Controls
         #region DrumKit
         /// <summary>
         /// Gets the collection of available drum kits.
+        /// This is a shortcut property to <see cref="AudioHost.DrumKits"/>.
         /// </summary>
         public DrumKitCollection DrumKits
         {
-            get;
+            get => AudioHost.Instance.DrumKits;
         }
         #endregion
 

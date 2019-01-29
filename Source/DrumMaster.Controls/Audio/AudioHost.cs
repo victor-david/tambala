@@ -1,9 +1,7 @@
-﻿using SharpDX.XAudio2;
-using SharpDX.XAudio2.Fx;
-using System;
+﻿using Restless.App.DrumMaster.Controls.Core;
+using SharpDX.XAudio2;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace Restless.App.DrumMaster.Controls.Audio
 {
@@ -17,9 +15,9 @@ namespace Restless.App.DrumMaster.Controls.Audio
         private List<VoicePool> voicePools;
         private XAudio2 audioDevice;
         //private Reverb reverb;
-        //private EffectDescriptor reverbEffectDescriptor;
+        //private readonly EffectDescriptor reverbEffectDescriptor;
         //private AudioCaptureEffect audioCapture;
-        private readonly EffectDescriptor audioCaptureEffectDescriptor;
+        //private readonly EffectDescriptor audioCaptureEffectDescriptor;
         #endregion
 
         /************************************************************************/
@@ -47,14 +45,19 @@ namespace Restless.App.DrumMaster.Controls.Audio
         /// </summary>
         internal MasteringVoice MasterVoice
         {
-            get;
-            private set;
+            get => masterVoice;
         }
 
-        /// <summary>
-        /// From this assembly, gets the audio capture effect.
-        /// </summary>
-        internal AudioCaptureEffect AudioCapture
+        ///// <summary>
+        ///// From this assembly, gets the audio capture effect.
+        ///// </summary>
+        //public AudioCaptureEffect AudioCapture
+        //{
+        //    get;
+        //    private set;
+        //}
+
+        internal DrumKitCollection DrumKits
         {
             get;
             private set;
@@ -72,10 +75,7 @@ namespace Restless.App.DrumMaster.Controls.Audio
         private AudioHost()
         {
             AudioDevice = new XAudio2();
-            MasterVoice = new MasteringVoice(AudioDevice);
-
-            //SubmixVoice = new SubmixVoice(AudioDevice);
-            //SubmixVoice.SetOutputVoices(new VoiceSendDescriptor(masteringVoice));
+            masterVoice = new MasteringVoice(AudioDevice);
 
             AudioPieces = new InstrumentCollection();
             voicePools = new List<VoicePool>();
@@ -83,14 +83,14 @@ namespace Restless.App.DrumMaster.Controls.Audio
             //reverb = new Reverb(AudioDevice);
             //reverbEffectDescriptor = new EffectDescriptor(reverb);
 
-            AudioCapture = new AudioCaptureEffect();
-            audioCaptureEffectDescriptor = new EffectDescriptor(AudioCapture);
-
-            // TODO
-            //masterVoice.SetEffectChain(audioCaptureEffectDescriptor);
-            //masterVoice.DisableEffect(0);
+            //audioCapture = new AudioCaptureEffect();
+            //audioCaptureEffectDescriptor = new EffectDescriptor(audioCapture);
+            
+            //masterVoice.SetEffectChain(reverbEffectDescriptor);
 
             AudioDevice.StartEngine();
+
+            DrumKits = new DrumKitCollection();
         }
 
         /// <summary>
@@ -107,9 +107,11 @@ namespace Restless.App.DrumMaster.Controls.Audio
         #region Public methods
         /// <summary>
         /// Initializes the audio host.
+        /// You must call this method at application startup.
         /// </summary>
         public void Initialize()
         {
+            // Not doing anything right now, but reserved for future expansion. 
         }
 
         /// <summary>
@@ -126,8 +128,9 @@ namespace Restless.App.DrumMaster.Controls.Audio
             AudioDevice.StopEngine();
             SharpDX.Utilities.Dispose(ref masterVoice);
             SharpDX.Utilities.Dispose(ref audioDevice);
-            // This throws an exception from SharpDx.CallbackBase
-            // AudioCapture.Dispose();
+            // SharpDX.Utilities.Dispose(ref reverb);
+            // Note. This will throw in SharpDx.CallbackBase if AudioCapture has not been inserted into the effect chain.
+            //SharpDX.Utilities.Dispose(ref audioCapture);
         }
         #endregion
 
