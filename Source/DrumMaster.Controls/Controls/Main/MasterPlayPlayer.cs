@@ -32,6 +32,7 @@ namespace Restless.App.DrumMaster.Controls
         private int patternOperationSet;
         private bool isControlClosing;
         private PlayMode playMode;
+        private Metronome metronome;
         #endregion
             
         /************************************************************************/
@@ -42,6 +43,9 @@ namespace Restless.App.DrumMaster.Controls
             CounterText = DefaultCounterText;
             playMode = PlayMode.Pattern;
             patternSleepTime = 100;
+
+            metronome = new Metronome();
+            metronome.Instrument = Owner.DrumKits[DrumKitCollection.DrumKitCubanId].Instruments[6];
 
             songPlaySignaler = new AutoResetEvent(false);
             songPlayThread = new Thread(SongPlayThreadHandler)
@@ -212,6 +216,7 @@ namespace Restless.App.DrumMaster.Controls
                     {
                         InvokeSetCounterText(pass, quarterNote, position);
                         patternOperationSet++;
+                        metronome.Play(position, patternOperationSet);
                         foreach (DrumPattern pattern in patterns)
                         {
                             if (pattern.ThreadSafeController.ThreadSafeQuarterNoteCount >= quarterNote)
@@ -297,6 +302,8 @@ namespace Restless.App.DrumMaster.Controls
         }
         #endregion
 
+        /************************************************************************/
+
         #region Private method
         private void Shutdown()
         {
@@ -320,6 +327,8 @@ namespace Restless.App.DrumMaster.Controls
                 audioMonitorSignaler.Set();
                 audioMonitorSignaler.Dispose();
             }
+
+            metronome.Dispose();
         }
         #endregion
 

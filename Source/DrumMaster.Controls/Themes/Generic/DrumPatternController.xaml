@@ -46,15 +46,6 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <con:BoxRadioButtonPanel.Resources>
-                        <Style TargetType="con:BoxRadioButton">
-                            <Setter Property="Margin" Value="1,0"/>
-                            <Setter Property="Padding" Value="2"/>
-                            <Setter Property="Width" Value="54"/>
-                            <Setter Property="Background" Value="#801D6FB4"/>
-                            <Setter Property="Foreground" Value="{DynamicResource SliderLabelTextBrush}"/>
-                        </Style>
-                    </con:BoxRadioButtonPanel.Resources>
 
                     <con:BoxRadioButton Grid.Column="0" Content="8th" Value="2"/>
                     <con:BoxRadioButton Grid.Column="1" Content="8th (t)" Value="3"/>

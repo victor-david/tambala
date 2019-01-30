@@ -374,5 +374,61 @@ namespace Restless.App.DrumMaster.Controls.Core
             public const int FirstColumnWidth = 252;
         }
         #endregion
+
+        /************************************************************************/
+
+        #region Metronome
+        /// <summary>
+        /// Provides static values that define metronome characteristics.
+        /// </summary>
+        public static class Metronome
+        {
+            /// <summary>
+            /// Provides static values that frequency divisions for a metronome
+            /// </summary>
+            /// <remarks>
+            /// This class provides values that are the same as <see cref="DrumPattern.TicksPerQuarterNote"/>,
+            /// but uses different minimum, maximum, and default.
+            /// </remarks>
+            public static class Frequency
+            {
+                /// <summary>
+                /// Total number of ticks (including the quarter note) when divided into quarter notes.
+                /// </summary>
+                public const int Quarter = DrumPattern.TicksPerQuarterNote.Quarter;
+
+                /// <summary>
+                /// Total number of ticks (including the quarter note) when divided into eighth notes.
+                /// </summary>
+                public const int Eighth = DrumPattern.TicksPerQuarterNote.Eighth;
+
+                /// <summary>
+                /// Total number of ticks (including the quarter note) when divided into eighth note triplet.
+                /// </summary>
+                public const int EighthTriplet = DrumPattern.TicksPerQuarterNote.EighthTriplet;
+
+                /// <summary>
+                /// Total number of ticks (including the quarter note) when divided into sixteenth notes.
+                /// </summary>
+                public const int Sixteenth = DrumPattern.TicksPerQuarterNote.Sixteenth;
+
+                /// <summary>
+                /// The minimum value of total ticks per quarter note
+                /// </summary>
+                public const int Min = Quarter;
+
+                /// <summary>
+                /// The maximum value of total ticks per quarter note.
+                /// </summary>
+                public const int Max = Sixteenth;
+
+                /// <summary>
+                /// The default value of total ticks per quarter note.
+                /// </summary>
+                public const int Default = Quarter;
+            }
+
+        }
+        #endregion
     }
 }

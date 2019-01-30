@@ -1,6 +1,7 @@
 ﻿using Restless.App.DrumMaster.Controls.Core;
 using SharpDX.XAudio2;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Restless.App.DrumMaster.Controls.Audio
@@ -11,17 +12,17 @@ namespace Restless.App.DrumMaster.Controls.Audio
     internal sealed class Metronome : IDisposable
     {
         #region Private
-        private readonly ProjectContainer owner;
-        private Instrument piece;
+        // TODO: Make instrument configurable.
+        private Instrument instrument;
         private bool isAudioEnabled;
         private SubmixVoice submixVoice;
         private VoicePool voicePool;
-        private int beats;
-        private int stepsPerBeat;
         // TODO Make volume adjustable.
         private readonly float volume;
         private readonly float pitchNormal;
         private readonly float pitchAccent;
+        private int frequency;
+        private readonly List<int> supportedFrequency;
         #endregion
 
         /************************************************************************/
@@ -30,33 +31,65 @@ namespace Restless.App.DrumMaster.Controls.Audio
         /// <summary>
         /// Initializes a new instance of the <see cref="Metronome"/> class.
         /// </summary>
-        /// <param name="owner">The owner of this instance.</param>
-        internal Metronome(ProjectContainer owner)
+        internal Metronome()
         {
-            this.owner = owner ?? throw new ArgumentNullException(nameof(owner));
             submixVoice = new SubmixVoice(AudioHost.Instance.AudioDevice);
-
             //submixVoice.SetOutputVoices(new VoiceSendDescriptor(this.owner.SubmixVoice));
-            volume = XAudio2.DecibelsToAmplitudeRatio(-11.0f);
+            volume = XAudio2.DecibelsToAmplitudeRatio(0f);
             pitchNormal = XAudio2.SemitonesToFrequencyRatio(Constants.Pitch.Default);
             pitchAccent = XAudio2.SemitonesToFrequencyRatio(1.5f);
-
+            supportedFrequency = new List<int>()
+            {
+                Constants.Metronome.Frequency.Quarter,
+                Constants.Metronome.Frequency.Eighth,
+                Constants.Metronome.Frequency.EighthTriplet,
+                Constants.Metronome.Frequency.Sixteenth
+            };
+            Frequency = Constants.Metronome.Frequency.Default;
         }
         #endregion
 
         /************************************************************************/
 
         #region Properties
-        internal Instrument Piece
+        /// <summary>
+        /// Gets or sets the instrument to use for the metronome.
+        /// </summary>
+        internal Instrument Instrument
         {
-            get => piece;
+            get => instrument;
             set
             {
-                piece = value;
-                OnPieceChanged();
+                instrument = value;
+                OnInstrumentChanged();
             }
         }
 
+        /// <summary>
+        /// Gets or sets the frequency (how often the metronome sounds)
+        /// </summary>
+        /// <remarks>
+        /// This value comes from <see cref="Constants.Metronome.Frequency"/>
+        /// and is expressed as divisions (or ticks) within a quarter note.
+        /// For example, 1 (every quarter note), 2 (eighth notes), 4 (sixteenth notes).
+        /// The metronome always plays on the quarter note.
+        /// </remarks>
+        internal int Frequency
+        {
+            get => frequency;
+            set
+            {
+                if (!supportedFrequency.Contains(value))
+                {
+                    value = Constants.Metronome.Frequency.Default;
+                }
+                frequency = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value that indicates if the metronome is active.
+        /// </summary>
         internal bool IsActive
         {
             get;
@@ -96,18 +129,21 @@ namespace Restless.App.DrumMaster.Controls.Audio
         /************************************************************************/
 
         #region Internal methods
-        internal void UpdateBeatValues(int beats, int stepsPerBeat)
-        {
-            this.beats = beats;
-            this.stepsPerBeat = stepsPerBeat;
-        }
-
-        internal void Play(int step, int operationSet)
+        /// <summary>
+        /// 
+        /// Plays the metronome for the specified position of the quarter note.
+        /// </summary>
+        /// <param name="position">The position.</param>
+        /// <param name="operationSet">The operation set.</param>
+        internal void Play(int position, int operationSet)
         {
             if (IsActive & isAudioEnabled)
             {
-                float pitch = (step % stepsPerBeat == 0) ? pitchAccent : pitchNormal;
-                voicePool.Play(volume, pitch, operationSet);
+                if (position == 0 || (frequency > Constants.Metronome.Frequency.Quarter && Ticks.FullTickPositionMap[frequency].Contains(position)))
+                {
+                    float pitch = (position == 0) ? pitchAccent : pitchNormal;
+                    voicePool.Play(volume, pitch, operationSet);
+                }
             }
         }
         #endregion
@@ -115,13 +151,13 @@ namespace Restless.App.DrumMaster.Controls.Audio
         /************************************************************************/
 
         #region Private methods
-        private void OnPieceChanged()
+        private void OnInstrumentChanged()
         {
-            isAudioEnabled = (Piece != null && Piece.IsAudioInitialized);
+            isAudioEnabled = (Instrument != null && Instrument.IsAudioInitialized);
             if (isAudioEnabled)
             {
                 AudioHost.Instance.DestroyVoicePool(voicePool);
-                voicePool = AudioHost.Instance.CreateVoicePool("Metronome", Piece.Audio, submixVoice, Constants.InitialVoicePool.Normal);
+                voicePool = AudioHost.Instance.CreateVoicePool("Metronome", Instrument.Audio, submixVoice, Constants.InitialVoicePool.Normal);
             }
         }
         #endregion

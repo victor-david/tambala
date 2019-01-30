@@ -31,5 +31,10 @@
         <Setter Property="Template" Value="{StaticResource BoxRadioButtonControlTemplate}"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="1,0"/>
+        <Setter Property="Padding" Value="2"/>
+        <Setter Property="Width" Value="52"/>
+        <Setter Property="Background" Value="#801D6FB4"/>
+        <Setter Property="Foreground" Value="{DynamicResource SliderLabelTextBrush}"/>
     </Style>
 </ResourceDictionary>

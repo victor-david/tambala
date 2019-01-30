@@ -19,6 +19,8 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="64"/>
                 <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
             <con:OnOff
@@ -38,8 +40,35 @@
                 <Image Source="{TemplateBinding ActivePlayImageSource}" Height="28" Margin="2,0"/>
             </Button>
 
+            <con:OnOff
+                Grid.Column="2"
+                Style="{DynamicResource OnOffBox}"
+                Background="White"
+                Foreground="Red"
+                HorizontalAlignment="Right"
+                Margin="0,0,8,0"
+                Id="Metronome"
+                OnText="Metronome"
+                OnTextBrush="{DynamicResource SliderLabelTextBrush}"/>
+
+            <!-- Metronome frequency -->
+            <con:BoxRadioButtonPanel Grid.Column="3" SelectedValue="{Binding MetronomeFrequency, RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <con:BoxRadioButton Grid.Column="0" Content="Q" Value="1"/>
+                <con:BoxRadioButton Grid.Column="1" Content="8th" Value="2"/>
+                <con:BoxRadioButton Grid.Column="2" Content="8th (t)" Value="3"/>
+                <con:BoxRadioButton Grid.Column="3" Content="16th" Value="4"/>
+            </con:BoxRadioButtonPanel>
+
+            <!-- Main counter text -->
             <TextBlock
-                Grid.Column="2" 
+                Grid.Column="4" 
                 Style="{DynamicResource TextBlockCounter}"
                 Text="{TemplateBinding CounterText}"/>
         </Grid>

@@ -6,7 +6,7 @@
     <!-- ##################### -->
     <!-- OnOff Template/Style  -->
     <!-- ##################### -->
-    <ControlTemplate x:Key="OnOffControlTemplate" TargetType="con:OnOff">
+    <ControlTemplate x:Key="OnOffMainControlTemplate" TargetType="con:OnOff">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -66,9 +66,68 @@
 
         </ControlTemplate.Triggers>
     </ControlTemplate>
+
+    <ControlTemplate x:Key="OnOffBoxControlTemplate" TargetType="con:OnOff">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="24"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Border
+                Name="Border0"
+                Height="20"
+                Width="20"
+                CornerRadius="10"
+                BorderBrush="{DynamicResource DefaultBorderBrush}"
+                BorderThickness="1"
+                Background="{TemplateBinding Background}"/>
+
+            <Border
+                Name="Border1"
+                Height="20"
+                Width="20"
+                CornerRadius="10"
+                BorderBrush="{DynamicResource DefaultBorderBrush}"
+                BorderThickness="1"
+                Background="{TemplateBinding Foreground}"
+                Visibility="Collapsed"/>
+
+            <TextBlock
+                Grid.Column="1"
+                Margin="4,0,0,0"
+                VerticalAlignment="Center"
+                Foreground="{TemplateBinding OnTextBrush}"
+                Text="{TemplateBinding OnText}"/>
+
+        </Grid>
+
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter TargetName="Border0" Property="Visibility" Value="Collapsed"/>
+                <Setter TargetName="Border1" Property="Visibility" Value="Visible"/>
+            </Trigger>
+            <Trigger Property="IsChecked" Value="{x:Null}">
+                <Setter TargetName="Border0" Property="Visibility" Value="Visible"/>
+                <Setter TargetName="Border1" Property="Visibility" Value="Collapsed"/>
+                <Setter TargetName="Border0" Property="Background" Value="LightGreen"/>
+            </Trigger>
+
+        </ControlTemplate.Triggers>
+
+
+
+
+
+    </ControlTemplate>
     
     <Style TargetType="con:OnOff">
-        <Setter Property="Template" Value="{StaticResource OnOffControlTemplate}"/>
+        <Setter Property="Template" Value="{StaticResource OnOffMainControlTemplate}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+
+    <Style x:Key="OnOffBox" TargetType="con:OnOff">
+        <Setter Property="Template" Value="{StaticResource OnOffBoxControlTemplate}"/>
         <Setter Property="Cursor" Value="Hand"/>
     </Style>
 </ResourceDictionary>

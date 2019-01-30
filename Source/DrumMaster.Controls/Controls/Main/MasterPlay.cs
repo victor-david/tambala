@@ -1,5 +1,5 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using Restless.App.DrumMaster.Controls.Core;
+using System;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -140,6 +140,45 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
+        #region MetrononeFrequency
+        /// <summary>
+        /// Gets or sets the metronome frequency.
+        /// </summary>
+        public int MetronomeFrequency
+        {
+            get => (int)GetValue(MetronomeFrequencyProperty);
+            set => SetValue(MetronomeFrequencyProperty, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="MetronomeFrequency"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty MetronomeFrequencyProperty = DependencyProperty.Register
+            (
+                nameof(MetronomeFrequency), typeof(int), typeof(MasterPlay), new PropertyMetadata
+                    (
+                        Constants.Metronome.Frequency.Default, OnMetronomeFrequencyChanged, OnMetronomeFrequencyCoerce
+                    )
+            );
+
+        private static object OnMetronomeFrequencyCoerce(DependencyObject d, object baseValue)
+        {
+            int proposed = (int)baseValue;
+            return Math.Min(Constants.Metronome.Frequency.Max, Math.Max(Constants.Metronome.Frequency.Min, proposed));
+        }
+
+        private static void OnMetronomeFrequencyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is MasterPlay c)
+            {
+                c.SetIsChanged();
+                c.metronome.Frequency = c.MetronomeFrequency;
+            }
+        }
+        #endregion
+
+        /************************************************************************/
+
         #region Images (Start / stop [has state change])
         /// <summary>
         /// Gets or sets the image source to use for the play button when <see cref="IsStarted"/> is false.
@@ -214,6 +253,7 @@ namespace Restless.App.DrumMaster.Controls
         {
             var element = new XElement(nameof(MasterPlay));
             element.Add(new XElement(nameof(PlayMode), PlayMode));
+            element.Add(new XElement(nameof(MetronomeFrequency), MetronomeFrequency));
             return element;
         }
 
@@ -223,13 +263,11 @@ namespace Restless.App.DrumMaster.Controls
         /// <param name="element">The element</param>
         public override void RestoreFromXElement(XElement element)
         {
-            //foreach (XElement e in ChildElementList(element))
-            //{
-            //    if (e.Name == nameof(PlayMode) && Enum.TryParse(e.Value, out PlayMode result))
-            //    {
-            //        PlayMode = result;
-            //    }
-            //}
+            foreach (XElement e in ChildElementList(element))
+            {
+                if (e.Name == nameof(MetronomeFrequency)) SetDependencyProperty(MetronomeFrequencyProperty, e.Value);
+                // TODO: Restore PlayMode? It's saved above.
+            }
         }
         #endregion
 
@@ -248,10 +286,22 @@ namespace Restless.App.DrumMaster.Controls
 
         private void OnOffActiveValueChanged(object sender, RoutedEventArgs e)
         {
-            if (e.Source is OnOff c && c.ActiveValue is PlayMode mode)
+            if (e.Source is OnOff c)
             {
-                PlayMode = mode;
-                e.Handled = true;
+                if (c.ActiveValue is PlayMode mode)
+                {
+                    PlayMode = mode;
+                    e.Handled = true;
+                }
+
+                if (c.Id == "Metronome")
+                {
+                    if (c.IsChecked.HasValue)
+                    {
+                        metronome.IsActive = c.IsChecked.Value;
+                    }
+                    e.Handled = true;
+                }
             }
         }
 
