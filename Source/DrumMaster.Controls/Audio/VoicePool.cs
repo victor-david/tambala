@@ -104,6 +104,7 @@ namespace Restless.App.DrumMaster.Controls.Audio
             var voice = GetAvailableVoice();
             if (voice != null)
             {
+                voice.SubmitSourceBuffer(audio, audio.DecodedPacketsInfo);
                 voice.SetFrequencyRatio(pitch, operationSet);
                 voice.SetVolume(volume, operationSet);
                 voice.Start(operationSet);
@@ -147,18 +148,18 @@ namespace Restless.App.DrumMaster.Controls.Audio
                 if (voices[k].State.BuffersQueued == 0)
                 {
                     HighWaterIndex = Math.Max(HighWaterIndex, k);
-                    voices[k].SubmitSourceBuffer(audio, audio.DecodedPacketsInfo);
                     return voices[k];
                 }
             }
             IncreaseCount++;
-            return IncreasePoolSize(4);
+            return IncreasePoolSize(6);
         }
 
         private SourceVoice IncreasePoolSize(int increase)
         {
             int oldSize = voices.Length;
             Size = oldSize + increase;
+            
             Array.Resize(ref voices, Size);
             for (int k = 0; k < increase; k++)
             {
