@@ -73,7 +73,6 @@
                     Grid.Column="4"
                     Margin="8,0"
                     LabelSize="50"
-                    Style="{DynamicResource HorizontalSlider}"
                     LabelText="{TemplateBinding VolumeText}"
                     ValueText="{Binding VolumeDecibelText, RelativeSource={RelativeSource TemplatedParent},Mode=OneWay}"
                     LabelTextBrush="{DynamicResource SliderLabelTextBrush}"

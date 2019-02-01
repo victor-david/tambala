@@ -28,7 +28,7 @@
             <!-- Col 0. Tempo adjustment slider -->
             <con:LevelSlider
                 Grid.Column="0" Grid.Row="1"
-                Style="{DynamicResource VerticalSlider}"
+                Orientation="Vertical"
                 LabelText="{TemplateBinding TempoText}"
                 ValueText="{Binding Tempo, RelativeSource={RelativeSource TemplatedParent},Mode=OneWay,StringFormat=N0}"
                 LabelTextBrush="{DynamicResource SliderLabelTextBrush}"
@@ -40,7 +40,7 @@
             <!-- Col 1. Volume adjustment slider -->
             <con:LevelSlider
                 Grid.Column="1" Grid.Row="1"
-                Style="{DynamicResource VerticalSlider}"
+                Orientation="Vertical"
                 LabelText="{TemplateBinding VolumeText}"
                 ValueText="{Binding VolumeDecibelText, RelativeSource={RelativeSource TemplatedParent},Mode=OneWay}"
                 LabelTextBrush="{DynamicResource SliderLabelTextBrush}"

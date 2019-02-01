@@ -39,32 +39,36 @@
             
             <con:LevelSlider
                 Grid.Column="0" Grid.Row="1"
-                Style="{DynamicResource VerticalSlider}"
-                LabelText="Low"
+                Orientation="Vertical"
+                LabelText="100"
+                LabelTextBrush="{DynamicResource SliderLabelTextBrush}"
                 Minimum="{Binding MinGain, RelativeSource={RelativeSource TemplatedParent},Mode=OneTime}"
                 Maximum="{Binding MaxGain, RelativeSource={RelativeSource TemplatedParent},Mode=OneTime}"
                 Value="{Binding Gain0, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"/>
             
             <con:LevelSlider
                 Grid.Column="1" Grid.Row="1"
-                Style="{DynamicResource VerticalSlider}"
-                LabelText="Mid 1"
+                Orientation="Vertical"
+                LabelText="800"
+                LabelTextBrush="{DynamicResource SliderLabelTextBrush}"
                 Minimum="{Binding MinGain, RelativeSource={RelativeSource TemplatedParent},Mode=OneTime}"
                 Maximum="{Binding MaxGain, RelativeSource={RelativeSource TemplatedParent},Mode=OneTime}"
                 Value="{Binding Gain1, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"/>
 
             <con:LevelSlider
                 Grid.Column="2" Grid.Row="1"
-                Style="{DynamicResource VerticalSlider}"
-                LabelText="Mid 2"
+                Orientation="Vertical"
+                LabelText="2000"
+                LabelTextBrush="{DynamicResource SliderLabelTextBrush}"
                 Minimum="{Binding MinGain, RelativeSource={RelativeSource TemplatedParent},Mode=OneTime}"
                 Maximum="{Binding MaxGain, RelativeSource={RelativeSource TemplatedParent},Mode=OneTime}"
                 Value="{Binding Gain2, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"/>
 
             <con:LevelSlider
                 Grid.Column="3" Grid.Row="1"
-                Style="{DynamicResource VerticalSlider}"
-                LabelText="High"
+                Orientation="Vertical"
+                LabelText="10000"
+                LabelTextBrush="{DynamicResource SliderLabelTextBrush}"
                 Minimum="{Binding MinGain, RelativeSource={RelativeSource TemplatedParent},Mode=OneTime}"
                 Maximum="{Binding MaxGain, RelativeSource={RelativeSource TemplatedParent},Mode=OneTime}"
                 Value="{Binding Gain3, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"/>

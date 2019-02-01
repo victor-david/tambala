@@ -135,7 +135,7 @@
         </Grid>
     </ControlTemplate>
 
-    <Style x:Key="MainSliderStyle" TargetType="con:LevelSlider">
+    <Style TargetType="con:LevelSlider">
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="IsSnapToTickEnabled" Value="False"/>
@@ -145,27 +145,20 @@
             <Trigger Property="Orientation" Value="Horizontal">
                 <Setter Property="MinWidth" Value="104" />
                 <Setter Property="MinHeight" Value="21" />
+                <Setter Property="VerticalAlignment" Value="Center"/>
                 <Setter Property="Template" Value="{StaticResource HorizontalSliderTemplate}" />
             </Trigger>
             <Trigger Property="Orientation" Value="Vertical">
                 <Setter Property="MinWidth" Value="21" />
                 <Setter Property="MinHeight" Value="104" />
+                <Setter Property="HorizontalAlignment" Value="Center"/>
                 <Setter Property="Template" Value="{StaticResource VerticalSliderTemplate}" />
             </Trigger>
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="VerticalSlider" TargetType="con:LevelSlider" BasedOn="{StaticResource MainSliderStyle}">
-        <Setter Property="Orientation" Value="Vertical"/>
-        <Setter Property="HorizontalAlignment" Value="Center"/>
-    </Style>
-
-    <Style x:Key="HorizontalSlider" TargetType="con:LevelSlider" BasedOn="{StaticResource MainSliderStyle}">
+    <Style x:Key="HorizontalIntSlider" TargetType="con:LevelSlider" BasedOn="{StaticResource {x:Type con:LevelSlider}}">
         <Setter Property="Orientation" Value="Horizontal"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-    </Style>
-
-    <Style x:Key="HorizontalIntSlider" TargetType="con:LevelSlider" BasedOn="{StaticResource HorizontalSlider}">
         <Setter Property="IsSnapToTickEnabled" Value="True"/>
         <Setter Property="TickFrequency" Value="1"/>
     </Style>
