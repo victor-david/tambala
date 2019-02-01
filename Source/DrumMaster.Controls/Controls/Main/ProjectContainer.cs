@@ -22,7 +22,7 @@ namespace Restless.App.DrumMaster.Controls
         #region Private
         private bool isSongContainerChangeInProgress = false;
         private double songContainerLastManualHeight;
-        private const double SongContainerDefaultHeight = 250.0;
+        private const double SongContainerDefaultHeight = 264.0;
         private const double SongContainerThresholdHeight = 106.0;
 
         private bool isMixerContainerChangeInProgress = false;
@@ -54,8 +54,8 @@ namespace Restless.App.DrumMaster.Controls
             }
 
             // IsExpanded is used in the template to expand / contract the drum kit list.
-            // Drum kits are assigned per pattern but the display is same for all.
-            IsExpanded = false;
+            // Drum kits are assigned per pattern.
+            // IsExpanded = false;
 
             ActivateDrumPattern(0);
 

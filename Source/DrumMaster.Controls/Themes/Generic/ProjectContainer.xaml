@@ -59,7 +59,7 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition 
                         Width="{Binding MixerContainerWidth, RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}"
-                        />
+                        MaxWidth="360"/>
                 </Grid.ColumnDefinitions>
 
                 <!-- Active drum pattern -->
@@ -96,6 +96,7 @@
                             <ListBox
                                 Grid.Row="1"
                                 Style="{DynamicResource ListBoxDrumKit}"
+                                ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                                 ItemsSource="{Binding DrumKits, RelativeSource={RelativeSource TemplatedParent}}"
                                 SelectedValuePath="Id"
                                 SelectedValue="{Binding ActiveDrumPattern.DrumKitId, RelativeSource={RelativeSource TemplatedParent}}"/>
