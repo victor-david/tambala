@@ -1,6 +1,5 @@
 ﻿using Restless.App.DrumMaster.Controls.Core;
 using System;
-using System.Diagnostics;
 using System.Windows;
 using System.Xml.Linq;
 
@@ -10,7 +9,7 @@ namespace Restless.App.DrumMaster.Controls
     /// Represents a single drum pattern that is comprised of instruments, and the ability
     /// to select which ones play on the timeline.
     /// </summary>
-    public class DrumPattern : AudioControlBase
+    public sealed class DrumPattern : AudioControlBase
     {
         #region Private
         #endregion
@@ -25,7 +24,9 @@ namespace Restless.App.DrumMaster.Controls
         {
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));
             DrumKit = Owner.DrumKits[DrumKitCollection.DrumKitDefaultId];
+            EqualizerController = new EqualizerController();
             Controller = ThreadSafeController = new DrumPatternController(this);
+            
             Presenter = ThreadSafePresenter = new DrumPatternPresenter(this);
             AddHandler(ControlObjectSelector.IsSelectedChangedEvent, new RoutedEventHandler(SelectorIsSelectedChanged));
         }
@@ -172,6 +173,29 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
+        #region EqualizerController
+        /// <summary>
+        /// Gets the equalizer controller for this drum pattern
+        /// </summary>
+        public EqualizerController EqualizerController
+        {
+            get => (EqualizerController)GetValue(EqualizerControllerProperty);
+            private set => SetValue(EqualizerControllerPropertyKey, value);
+        }
+
+        private static readonly DependencyPropertyKey EqualizerControllerPropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(EqualizerController), typeof(EqualizerController), typeof(DrumPattern), new PropertyMetadata(null)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="EqualizerController"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty EqualizerControllerProperty = EqualizerControllerPropertyKey.DependencyProperty;
+        #endregion
+
+        /************************************************************************/
+
         #region SelectedEventCount
         /// <summary>
         /// Gets the total number of events selected for this drum pattern
@@ -223,6 +247,7 @@ namespace Restless.App.DrumMaster.Controls
             element.Add(new XElement(nameof(DisplayName), DisplayName));
             element.Add(DrumKit.GetXElement());
             element.Add(Controller.GetXElement());
+            element.Add(EqualizerController.GetXElement());
             element.Add(Presenter.GetXElement());
             return element;
         }
@@ -238,6 +263,7 @@ namespace Restless.App.DrumMaster.Controls
             {
                 if (e.Name == nameof(DisplayName)) SetDependencyProperty(DisplayNameProperty, e.Value);
                 if (e.Name == nameof(DrumPatternController)) Controller.RestoreFromXElement(e);
+                if (e.Name == nameof(EqualizerController)) EqualizerController.RestoreFromXElement(e);
                 if (e.Name == nameof(DrumPatternPresenter)) Presenter.RestoreFromXElement(e);
                 if (e.Name == nameof(Controls.DrumKit))
                 {

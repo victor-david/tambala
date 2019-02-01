@@ -114,11 +114,13 @@
     <Compile Include="Controls\Main\DrumKitType.cs" />
     <Compile Include="Controls\Main\DrumPatternQuarter.cs" />
     <Compile Include="Controls\Main\DrumPatternQuarterType.cs" />
+    <Compile Include="Controls\Main\EqualizerController.cs" />
     <Compile Include="Controls\Main\InstrumentController.cs" />
     <Compile Include="Controls\Main\MasterPlayPlayer.cs" />
     <Compile Include="Controls\Main\VolumeMeter.cs" />
     <Compile Include="Controls\Other\RationalTextBox.cs" />
     <Compile Include="Controls\Other\VelocitySlider.cs" />
+    <Compile Include="Core\EqualizerRoutedEventArgs.cs" />
     <Compile Include="Core\DrumKitCollection.cs" />
     <Compile Include="Core\DrumPatternCollection.cs" />
     <Compile Include="Core\GenericList.cs" />
@@ -174,6 +176,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Themes\Generic\ApplicationWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic\EqualizerController.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

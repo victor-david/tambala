@@ -27,7 +27,7 @@ namespace Restless.App.DrumMaster.Controls
 
         private bool isMixerContainerChangeInProgress = false;
         private double mixerContainerLastManualWidth;
-        private const double MixerContainerDefaultWidth = 232.0;
+        private const double MixerContainerDefaultWidth = 212.0;
         private const double MixerContainerThresholdWidth = 104.0;
         #endregion
 

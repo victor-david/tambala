@@ -1,5 +1,6 @@
 ﻿using Restless.App.DrumMaster.Controls.Audio;
 using Restless.App.DrumMaster.Controls.Core;
+using SharpDX.XAPO.Fx;
 using SharpDX.XAudio2;
 using System;
 using System.Diagnostics.CodeAnalysis;
@@ -15,6 +16,7 @@ namespace Restless.App.DrumMaster.Controls
     {
         #region Private
         private SubmixVoice submixVoice;
+        private EqualizerParameters equalizerParameters;
         #endregion
 
         /************************************************************************/
@@ -27,8 +29,33 @@ namespace Restless.App.DrumMaster.Controls
         {
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));
             SubmixVoice = new SubmixVoice(AudioHost.Instance.AudioDevice);
+
+            Equalizer equalizer = new Equalizer(AudioHost.Instance.AudioDevice);
+            EffectDescriptor equalizerEffectDescriptor = new EffectDescriptor(equalizer);
+            submixVoice.SetEffectChain(equalizerEffectDescriptor);
+
+            equalizerParameters = new EqualizerParameters()
+            {
+                Bandwidth0 = Equalizer.DefaultBandwidth,
+                Bandwidth1 = Equalizer.DefaultBandwidth,
+                Bandwidth2 = Equalizer.DefaultBandwidth,
+                Bandwidth3 = Equalizer.DefaultBandwidth,
+                FrequencyCenter0 = Equalizer.DefaultFrequencyCenter0,
+                FrequencyCenter1 = Equalizer.DefaultFrequencyCenter1,
+                FrequencyCenter2 = Equalizer.DefaultFrequencyCenter2,
+                FrequencyCenter3 = Equalizer.DefaultFrequencyCenter3,
+                Gain0 = Equalizer.DefaultGain,
+                Gain1 = Equalizer.DefaultGain,
+                Gain2 = Equalizer.DefaultGain,
+                Gain3 = Equalizer.DefaultGain,
+            };
+
+
             TickValueText = TickValueToText(Constants.DrumPattern.TicksPerQuarterNote.Default);
             ThreadSafeQuarterNoteCount = Constants.DrumPattern.QuarterNoteCount.Default;
+
+            Owner.EqualizerController.AddHandler(EqualizerController.IsActiveChangedEvent, new RoutedEventHandler(EqualizerControllerIsActiveChanged));
+            Owner.EqualizerController.AddHandler(EqualizerController.GainChangedEvent, new EqualizerRoutedEventHandler(EqualizerControllerGainChanged));
         }
 
         static DrumPatternController()
@@ -393,10 +420,46 @@ namespace Restless.App.DrumMaster.Controls
             }
         }
         #endregion
-        
+
         /************************************************************************/
 
         #region Private methods
+        private void EqualizerControllerIsActiveChanged(object sender, RoutedEventArgs e)
+        {
+            if (Owner.EqualizerController.IsActive)
+                submixVoice.EnableEffect(0);
+            else
+                submixVoice.DisableEffect(0);
+
+            e.Handled = true;
+        }
+
+        private void EqualizerControllerGainChanged(object sender, EqualizerRoutedEventArgs e)
+        {
+            SetEqualizerGain(e.Band, e.Gain);
+            e.Handled = true;
+        }
+
+        private void SetEqualizerGain(int band, float gain)
+        {
+            switch (band)
+            {
+                case 0:
+                    equalizerParameters.Gain0 = gain;
+                    break;
+                case 1:
+                    equalizerParameters.Gain1 = gain;
+                    break;
+                case 2:
+                    equalizerParameters.Gain2 = gain;
+                    break;
+                case 3:
+                    equalizerParameters.Gain3 = gain;
+                    break;
+            }
+            submixVoice.SetEffectParameters(0, equalizerParameters);
+        }
+
         /// <summary>
         /// Gets the text for the specified tick value.
         /// </summary>

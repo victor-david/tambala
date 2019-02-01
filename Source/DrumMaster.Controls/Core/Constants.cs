@@ -430,5 +430,40 @@ namespace Restless.App.DrumMaster.Controls.Core
 
         }
         #endregion
+
+        /************************************************************************/
+
+        #region Equalizer
+        /// <summary>
+        /// Provides static values that define equalizer characteristics
+        /// </summary>
+        public static class Equalizer
+        {
+            /// <summary>
+            /// Provides static values that define characteristics of equalizer gain.
+            /// </summary>
+            /// <remarks>
+            /// These values are not the actual values used by the equalizer.
+            /// Instead, they represent a percentage so that the gain sliders
+            /// are centered when the gain is none. The <see cref="EqualizerController"/>
+            /// class calculates the values to supply to the equalizer effect.
+            /// </remarks>
+            public static class Gain
+            {
+                /// <summary>
+                /// The minimum gain.
+                /// </summary>
+                public const float Min = -1.0f;
+                /// <summary>
+                /// The maximum gain
+                /// </summary>
+                public const float Max = 1.0f;
+                /// <summary>
+                /// The default gain.
+                /// </summary>
+                public const float Default = 0.0f;
+            }
+        }
+        #endregion
     }
 }

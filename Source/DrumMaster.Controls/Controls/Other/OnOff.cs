@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 
@@ -47,6 +48,88 @@ namespace Restless.App.DrumMaster.Controls
             (
                 nameof(Id), typeof(string), typeof(OnOff), new PropertyMetadata(null)
             );
+        #endregion
+
+        /************************************************************************/
+
+        #region IsCheckBox
+        /// <summary>
+        /// Gets or sets a value that indicates if this is a check box.
+        /// When true, uses another control template. The default is false.
+        /// </summary>
+        public bool IsCheckBox
+        {
+            get => (bool)GetValue(IsCheckBoxProperty);
+            set => SetValue(IsCheckBoxProperty, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="IsCheckBox"/> dependency property
+        /// </summary>
+        public static readonly DependencyProperty IsCheckBoxProperty = DependencyProperty.Register
+            (
+                nameof(IsCheckBox), typeof(bool), typeof(OnOff), new PropertyMetadata(false)
+            );
+        #endregion
+
+        /************************************************************************/
+
+        #region CheckBoxSize
+        /// <summary>
+        /// Gets or sets the check box size. Used when <see cref="IsCheckBox"/> is true.
+        /// </summary>
+        public double CheckBoxSize
+        {
+            get =>(double)GetValue(CheckBoxSizeProperty);
+            set => SetValue(CheckBoxSizeProperty, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="CheckBoxSize"/> dependency property
+        /// </summary>
+        public static readonly DependencyProperty CheckBoxSizeProperty = DependencyProperty.Register
+            (
+                nameof(CheckBoxSize), typeof(double), typeof(OnOff), new PropertyMetadata(20.0, OnCheckBoxSizeChanged, OnCheckBoxSizeCoerce)
+            );
+
+        private static void OnCheckBoxSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is OnOff c)
+            {
+                c.CornerRadius = c.CheckBoxSize / 2;
+            }
+        }
+
+        private static object OnCheckBoxSizeCoerce(DependencyObject d, object baseValue)
+        {
+            double proposed = Math.Abs(Math.Round((double)baseValue));
+            proposed = Math.Min(48, Math.Max(16, proposed));
+            if (proposed % 2 == 1)
+            {
+                proposed++;
+            }
+            return proposed;
+        }
+
+        /// <summary>
+        /// Gets the corner radius associated with <see cref="CheckBoxSize"/>.
+        /// </summary>
+        public double CornerRadius
+        {
+            get => (double)GetValue(CornerRadiusProperty);
+            private set => SetValue(CornerRadiusPropertyKey, value);
+        }
+
+        private static readonly DependencyPropertyKey CornerRadiusPropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(CornerRadius), typeof(double), typeof(OnOff), new PropertyMetadata(10.0)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="CornerRadius"/> dependency property
+        /// </summary>
+        public static readonly DependencyProperty CornerRadiusProperty = CornerRadiusPropertyKey.DependencyProperty;
+
         #endregion
 
         /************************************************************************/

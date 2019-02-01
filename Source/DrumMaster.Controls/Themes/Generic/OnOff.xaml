@@ -76,18 +76,18 @@
 
             <Border
                 Name="Border0"
-                Height="20"
-                Width="20"
-                CornerRadius="10"
+                Height="{TemplateBinding CheckBoxSize}"
+                Width="{TemplateBinding CheckBoxSize}"
+                CornerRadius="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}}"
                 BorderBrush="{DynamicResource DefaultBorderBrush}"
                 BorderThickness="1"
                 Background="{TemplateBinding Background}"/>
 
             <Border
                 Name="Border1"
-                Height="20"
-                Width="20"
-                CornerRadius="10"
+                Height="{TemplateBinding CheckBoxSize}"
+                Width="{TemplateBinding CheckBoxSize}"
+                CornerRadius="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}}"
                 BorderBrush="{DynamicResource DefaultBorderBrush}"
                 BorderThickness="1"
                 Background="{TemplateBinding Foreground}"
@@ -115,19 +115,22 @@
 
         </ControlTemplate.Triggers>
 
-
-
-
-
     </ControlTemplate>
     
     <Style TargetType="con:OnOff">
         <Setter Property="Template" Value="{StaticResource OnOffMainControlTemplate}"/>
         <Setter Property="Cursor" Value="Hand"/>
+        <Style.Triggers>
+            <Trigger Property="IsCheckBox" Value="True">
+                <Setter Property="Foreground" Value="Green"/>
+                <Setter Property="Background" Value="LightGray"/>
+                <Setter Property="Template" Value="{StaticResource OnOffBoxControlTemplate}"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
-    <Style x:Key="OnOffBox" TargetType="con:OnOff">
+    <!--<Style x:Key="OnOffBox" TargetType="con:OnOff">
         <Setter Property="Template" Value="{StaticResource OnOffBoxControlTemplate}"/>
         <Setter Property="Cursor" Value="Hand"/>
-    </Style>
+    </Style>-->
 </ResourceDictionary>

@@ -42,10 +42,10 @@
 
             <con:OnOff
                 Grid.Column="2"
-                Style="{DynamicResource OnOffBox}"
-                Background="White"
-                Foreground="Red"
                 HorizontalAlignment="Right"
+                IsCheckBox="True"
+                Foreground="Red"
+                Background="White"
                 Margin="0,0,8,0"
                 Id="Metronome"
                 OnText="Metronome"

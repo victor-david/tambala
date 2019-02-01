@@ -1,7 +1,6 @@
 ﻿using Restless.App.DrumMaster.Controls.Core;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -54,6 +53,64 @@ namespace Restless.App.DrumMaster.Controls
             get;
             private set;
         }
+        #endregion
+
+        /************************************************************************/
+
+        #region IsChanged
+        /// <summary>
+        /// Gets a boolean value that indicates if changes have occured since this object was established.
+        /// </summary>
+        public bool IsChanged
+        {
+            get => (bool)GetValue(IsChangedProperty);
+            private set => SetValue(IsChangedPropertyKey, value);
+        }
+
+        private static readonly DependencyPropertyKey IsChangedPropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(IsChanged), typeof(bool), typeof(ControlElement), new FrameworkPropertyMetadata(false)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="IsChanged"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsChangedProperty = IsChangedPropertyKey.DependencyProperty;
+
+
+        /// <summary>
+        /// Provides notification when the <see cref="IsChanged"/> property is set to true.
+        /// </summary>
+        public event RoutedEventHandler IsChangedSet
+        {
+            add => AddHandler(IsChangedSetEvent, value);
+            remove => RemoveHandler(IsChangedSetEvent, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="IsChangedSet"/> routed event.
+        /// </summary>
+        public static readonly RoutedEvent IsChangedSetEvent = EventManager.RegisterRoutedEvent
+            (
+                nameof(IsChangedSet), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(ControlElement)
+            );
+
+        /// <summary>
+        /// Provides notification when the <see cref="IsChanged"/> property is set to false.
+        /// </summary>
+        public event RoutedEventHandler IsChangedReset
+        {
+            add => AddHandler(IsChangedResetEvent, value);
+            remove => RemoveHandler(IsChangedResetEvent, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="IsChangedReset"/> routed event.
+        /// </summary>
+        public static readonly RoutedEvent IsChangedResetEvent = EventManager.RegisterRoutedEvent
+            (
+                nameof(IsChangedReset), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(ControlElement)
+            );
         #endregion
 
         /************************************************************************/
@@ -125,6 +182,71 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         protected virtual void OnElementCreate()
         {
+        }
+
+        /// <summary>
+        /// Sets the <see cref="IsChanged"/> property to true and raises the <see cref="IsChangedSetEvent"/>.
+        /// </summary>
+        protected void SetIsChanged()
+        {
+            IsChanged = true;
+            RaiseEvent(new RoutedEventArgs(IsChangedSetEvent));
+        }
+
+        /// <summary>
+        /// Sets the <see cref="IsChanged"/> property to false and raises the <see cref="IsChangedResetEvent"/>.
+        /// </summary>
+        protected void ResetIsChanged()
+        {
+            IsChanged = false;
+            RaiseEvent(new RoutedEventArgs(IsChangedResetEvent));
+        }
+
+        /// <summary>
+        /// Sets the specified dependency property to the specified string.
+        /// </summary>
+        /// <param name="prop">The dependency property.</param>
+        /// <param name="val">The value</param>
+        protected void SetDependencyProperty(DependencyProperty prop, string val)
+        {
+            if (prop == null) throw new ArgumentNullException(nameof(prop));
+
+            if (prop.PropertyType == typeof(string))
+            {
+                SetValue(prop, val);
+            }
+
+            if (prop.PropertyType == typeof(int))
+            {
+                if (int.TryParse(val, out int result))
+                {
+                    SetValue(prop, result);
+                }
+            }
+
+            if (prop.PropertyType == typeof(double))
+            {
+                if (double.TryParse(val, out double result))
+                {
+                    SetValue(prop, result);
+                }
+            }
+
+            if (prop.PropertyType == typeof(float))
+            {
+                if (float.TryParse(val, out float result))
+                {
+                    SetValue(prop, result);
+                }
+            }
+
+            if (prop.PropertyType == typeof(bool))
+            {
+                if (bool.TryParse(val, out bool result))
+                {
+                    SetValue(prop, result);
+                }
+            }
         }
         #endregion
     }

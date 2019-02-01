@@ -12,7 +12,7 @@ namespace Restless.App.DrumMaster.Controls
     /// </summary>
     /// <remarks>
     /// This class provides the base methods and properties for commands, <see cref="DisplayName"/>,
-    /// <see cref="IsChanged"/> notification, <see cref="IsExpanded"/> functionality.
+    /// and <see cref="IsExpanded"/> functionality.
     /// </remarks>
     public abstract class ControlObject : ControlElement
     {
@@ -159,30 +159,6 @@ namespace Restless.App.DrumMaster.Controls
         /// Identifies the <see cref="Commands"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CommandsProperty = CommandsPropertyKey.DependencyProperty;
-        #endregion
-
-        /************************************************************************/
-
-        #region IsChanged
-        /// <summary>
-        /// Gets a boolean value that indicates if changes have occured since this object was established.
-        /// </summary>
-        public bool IsChanged
-        {
-            get => (bool)GetValue(IsChangedProperty);
-            private set => SetValue(IsChangedPropertyKey, value);
-        }
-
-        private static readonly DependencyPropertyKey IsChangedPropertyKey = DependencyProperty.RegisterReadOnly
-            (
-                nameof(IsChanged), typeof(bool), typeof(ControlObject), new FrameworkPropertyMetadata(false)
-            );
-
-        /// <summary>
-        /// Identifies the <see cref="IsChanged"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty IsChangedProperty = IsChangedPropertyKey.DependencyProperty;
-
         #endregion
 
         /************************************************************************/
@@ -430,63 +406,7 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region Routed Events
-        /// <summary>
-        /// Provides notification when the <see cref="IsChanged"/> property is set to true.
-        /// </summary>
-        public event RoutedEventHandler IsChangedSet
-        {
-            add => AddHandler(IsChangedSetEvent, value);
-            remove => RemoveHandler(IsChangedSetEvent, value);
-        }
-
-        /// <summary>
-        /// Identifies the <see cref="IsChangedSet"/> routed event.
-        /// </summary>
-        public static readonly RoutedEvent IsChangedSetEvent = EventManager.RegisterRoutedEvent
-            (
-                nameof(IsChangedSet), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(ControlObject)
-            );
-
-        /// <summary>
-        /// Provides notification when the <see cref="IsChanged"/> property is set to false.
-        /// </summary>
-        public event RoutedEventHandler IsChangedReset
-        {
-            add => AddHandler(IsChangedResetEvent, value);
-            remove => RemoveHandler(IsChangedResetEvent, value);
-        }
-
-        /// <summary>
-        /// Identifies the <see cref="IsChangedReset"/> routed event.
-        /// </summary>
-        public static readonly RoutedEvent IsChangedResetEvent = EventManager.RegisterRoutedEvent
-            (
-                nameof(IsChangedReset), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(ControlObject)
-            );
-        #endregion
-
-        /************************************************************************/
-
         #region Protected methods
-        /// <summary>
-        /// Sets the <see cref="IsChanged"/> property to true and raises the <see cref="IsChangedSetEvent"/>.
-        /// </summary>
-        protected void SetIsChanged()
-        {
-            IsChanged = true;
-            RaiseEvent(new RoutedEventArgs(IsChangedSetEvent));
-        }
-
-        /// <summary>
-        /// Sets the <see cref="IsChanged"/> property to false and raises the <see cref="IsChangedResetEvent"/>.
-        /// </summary>
-        protected void ResetIsChanged()
-        {
-            IsChanged = false;
-            RaiseEvent(new RoutedEventArgs(IsChangedResetEvent));
-        }
-
         /// <summary>
         /// Called when <see cref="IsExpanded"/> is changed. A derived class can override this method to perform updates as needed.
         /// The base implementaion does nothing.
@@ -509,53 +429,6 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         protected virtual void OnIsSlidRightChanged()
         {
-        }
-
-        /// <summary>
-        /// Sets the specified dependency property to the specified string.
-        /// </summary>
-        /// <param name="prop">The dependency property.</param>
-        /// <param name="val">The value</param>
-        protected void SetDependencyProperty(DependencyProperty prop, string val)
-        {
-            if (prop == null) throw new ArgumentNullException(nameof(prop));
-
-            if (prop.PropertyType == typeof(string))
-            {
-                SetValue(prop, val);
-            }
-
-            if (prop.PropertyType == typeof(int))
-            {
-                if (int.TryParse(val, out int result))
-                {
-                    SetValue(prop, result);
-                }
-            }
-
-            if (prop.PropertyType == typeof(double))
-            {
-                if (double.TryParse(val, out double result))
-                {
-                    SetValue(prop, result);
-                }
-            }
-
-            if (prop.PropertyType == typeof(float))
-            {
-                if (float.TryParse(val, out float result))
-                {
-                    SetValue(prop, result);
-                }
-            }
-
-            if (prop.PropertyType == typeof(bool))
-            {
-                if (bool.TryParse(val, out bool result))
-                {
-                    SetValue(prop, result);
-                }
-            }
         }
         #endregion
 
