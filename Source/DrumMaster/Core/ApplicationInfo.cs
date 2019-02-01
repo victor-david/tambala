@@ -197,12 +197,8 @@ namespace Restless.App.DrumMaster.Core
             RootFolder = Path.GetDirectoryName(Assembly.Location);
         }
 
-        /// <summary>
-        /// Static constructor. Tells C# compiler not to mark type as beforefieldinit.
-        /// </summary>
         static ApplicationInfo()
         {
-            // not sure if this is still needed in .NET 4.x
         }
         #endregion
     }

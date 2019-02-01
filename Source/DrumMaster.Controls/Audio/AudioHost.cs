@@ -93,12 +93,8 @@ namespace Restless.App.DrumMaster.Controls.Audio
             DrumKits = new DrumKitCollection();
         }
 
-        /// <summary>
-        /// Static constructor. Tells C# compiler not to mark type as beforefieldinit.
-        /// </summary>
         static AudioHost()
         {
-            // not sure if this is still needed in .NET 4.x
         }
         #endregion
 
