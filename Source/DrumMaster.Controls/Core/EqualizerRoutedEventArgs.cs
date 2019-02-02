@@ -27,6 +27,8 @@ namespace Restless.App.DrumMaster.Controls.Core
         /// Initializes a new instance of the <see cref="EqualizerRoutedEventArgs"/> class.
         /// </summary>
         /// <param name="routedEvent">The routed event</param>
+        /// <param name="band">The band that gain applies to</param>
+        /// <param name="gain">The gain value</param>
         internal EqualizerRoutedEventArgs(RoutedEvent routedEvent, int band, float gain) : base(routedEvent)
         {
             Band = band;
