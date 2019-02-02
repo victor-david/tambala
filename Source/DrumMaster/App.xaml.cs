@@ -1,5 +1,4 @@
-﻿using Restless.App.DrumMaster.Controls;
-using Restless.App.DrumMaster.Controls.Audio;
+﻿using Restless.App.DrumMaster.Controls.Audio;
 using Restless.App.DrumMaster.Core;
 using System;
 using System.Windows;
@@ -62,7 +61,7 @@ namespace Restless.App.DrumMaster
         private void RunApplication(StartupEventArgs e)
         {
 #if !DEBUG
-            //TopLevelExceptionHandler.Initialize();
+            TopLevelExceptionHandler.Initialize();
 #endif
             // Validations.ThrowIfNotWindows7();
             ShutdownMode = ShutdownMode.OnMainWindowClose;

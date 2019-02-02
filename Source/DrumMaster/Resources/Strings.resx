@@ -178,4 +178,16 @@
     <value>The file could not be saved.</value>
     <comment>Message when unable to save</comment>
   </data>
+  <data name="UnhandledExceptionCaption" xml:space="preserve">
+    <value>Unhandled Exception</value>
+  </data>
+  <data name="UnhandledExceptionCurrentDomain" xml:space="preserve">
+    <value>An unknown error occured in the current domain</value>
+  </data>
+  <data name="UnhandledExceptionMessageFooter" xml:space="preserve">
+    <value>The application will now attempt to shutdown gracefully.</value>
+  </data>
+  <data name="UnhandledExceptionMessageHeader" xml:space="preserve">
+    <value>An unhandled exception occurred.</value>
+  </data>
 </root>

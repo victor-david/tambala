@@ -230,5 +230,41 @@ namespace Restless.App.DrumMaster.Resources {
                 return ResourceManager.GetString("MessageSaveFailure", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unhandled Exception.
+        /// </summary>
+        public static string UnhandledExceptionCaption {
+            get {
+                return ResourceManager.GetString("UnhandledExceptionCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An unknown error occured in the current domain.
+        /// </summary>
+        public static string UnhandledExceptionCurrentDomain {
+            get {
+                return ResourceManager.GetString("UnhandledExceptionCurrentDomain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The application will now attempt to shutdown gracefully..
+        /// </summary>
+        public static string UnhandledExceptionMessageFooter {
+            get {
+                return ResourceManager.GetString("UnhandledExceptionMessageFooter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An unhandled exception occurred..
+        /// </summary>
+        public static string UnhandledExceptionMessageHeader {
+            get {
+                return ResourceManager.GetString("UnhandledExceptionMessageHeader", resourceCulture);
+            }
+        }
     }
 }

@@ -171,6 +171,7 @@
     <Compile Include="Core\ApplicationInfo.cs" />
     <Compile Include="Core\FixedSizeObservableCollection.cs" />
     <Compile Include="Core\GridValueCollection.cs" />
+    <Compile Include="Core\TopLevelExceptionHandler.cs" />
     <Compile Include="Core\Utility.cs" />
     <Compile Include="Core\WindowFactory.cs" />
     <Compile Include="Core\WorkspaceViewModel.cs" />
