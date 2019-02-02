@@ -37,6 +37,6 @@
         <TextBlock
             Grid.Column="3"
             Style="{StaticResource TextBlockFileName}"
-            Text="{Binding SongContainer.DisplayName}"/>
+            Text="{Binding ProjectContainer.DisplayName}"/>
     </Grid>
 </UserControl>
