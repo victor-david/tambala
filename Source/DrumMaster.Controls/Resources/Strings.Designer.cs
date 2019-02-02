@@ -61,6 +61,24 @@ namespace Restless.App.DrumMaster.Controls.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to (unamed project).
+        /// </summary>
+        internal static string ProjectContainerDisplayName {
+            get {
+                return ResourceManager.GetString("ProjectContainerDisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Song Composition.
+        /// </summary>
+        internal static string SongContainerDisplayName {
+            get {
+                return ResourceManager.GetString("SongContainerDisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shifts all notes to the left. Hold down Ctrl to shift notes without their volume bias. Hold down Alt to shift only the volume bias..
         /// </summary>
         internal static string ToolTipShiftLeft {

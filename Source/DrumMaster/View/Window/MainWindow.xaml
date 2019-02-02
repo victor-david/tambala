@@ -1,23 +1,33 @@
-﻿<Window 
+﻿<con:ApplicationWindow 
     x:Class="Restless.App.DrumMaster.View.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:con="clr-namespace:Restless.App.DrumMaster.Controls;assembly=DrumMaster.Controls"
     xmlns:vw="clr-namespace:Restless.App.DrumMaster.View"
-    Title="{Binding DisplayName}" Height="350" Width="525" Topmost="{Binding IsTopMost}">
+    xmlns:vm="clr-namespace:Restless.App.DrumMaster.ViewModel"
+    Background="{StaticResource WindowBackgroundBrush}"
+    Topmost="{Binding IsTopMost}"
+    Title="{Binding DisplayName}">
     <Window.Resources>
         <!-- All other resources come via App.xaml -->
-        <ResourceDictionary Source="../../Resources/Dictionary/PageTemplate.xaml"/>
+        <DataTemplate DataType="{x:Type vm:ProjectContainerViewModel}">
+            <vw:ProjectContainerView />
+        </DataTemplate>
     </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        
-        <vw:MainNavigation Grid.Row="0"  Margin="2,4"/>
-        <Separator Grid.Row="1"/>
-        <ContentControl Grid.Row="2" Content="{Binding TrackContainer}" Margin="5"/>
+        <vw:MainMenu/>
+        <vw:MainNavigation Grid.Row="1"  Margin="2,4"/>
+        <Separator Grid.Row="2"/>
+        <ContentControl 
+            Grid.Row="3" 
+            Content="{Binding ProjectContainer}"
+            Margin="6,0,6,6"/>
     </Grid>
-</Window>
+</con:ApplicationWindow>

@@ -1,0 +1,37 @@
+﻿<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:con="clr-namespace:Restless.App.DrumMaster.Controls">
+
+    <!-- ########################### -->
+    <!-- VolumeMeter Template/Styles -->
+    <!-- ########################### -->
+    <ControlTemplate x:Key="VolumeMeterControlTemplate" TargetType="con:VolumeMeter">
+        <Grid>
+            <Grid.LayoutTransform>
+                <RotateTransform Angle="270"/>
+            </Grid.LayoutTransform>
+            <Border Name="PART_Track" CornerRadius="2">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Offset="0" Color="#FF00FF00"/>
+                        <GradientStop Offset="0.9" Color="#FFFFFF00"/>
+                        <GradientStop Offset="1" Color="#FFFF0000"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+            <DockPanel>
+                <Rectangle Name="PART_Indicator"/>
+                <Rectangle Name="Mask" Fill="{DynamicResource DefaultBackgroundBrush}"/>
+            </DockPanel>
+        </Grid>
+    </ControlTemplate>
+    
+    <Style TargetType="con:VolumeMeter">
+        <Setter Property="Template" Value="{StaticResource VolumeMeterControlTemplate}"/>
+        <Setter Property="Orientation" Value="Vertical"/>
+        <Setter Property="Minimum" Value="0"/>
+        <Setter Property="Maximum" Value="100"/>
+    </Style>
+
+</ResourceDictionary>

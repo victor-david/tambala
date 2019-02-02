@@ -1,22 +1,23 @@
-﻿using SharpDX.XAudio2;
-using SharpDX.XAudio2.Fx;
-using System;
+﻿using Restless.App.DrumMaster.Controls.Core;
+using SharpDX.XAudio2;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace Restless.App.DrumMaster.Controls.Audio
 {
     /// <summary>
     /// Manages the XAudio2 device, the mastering voice, and the voice pools for the audio.
     /// </summary>
-    public class AudioHost
+    public sealed class AudioHost
     {
         #region Private
-        private MasteringVoice masteringVoice;
+        private MasteringVoice masterVoice;
         private List<VoicePool> voicePools;
         private XAudio2 audioDevice;
-        private readonly EffectDescriptor audioCaptureEffectDescriptor;
+        //private Reverb reverb;
+        //private readonly EffectDescriptor reverbEffectDescriptor;
+        //private AudioCaptureEffect audioCapture;
+        //private readonly EffectDescriptor audioCaptureEffectDescriptor;
         #endregion
 
         /************************************************************************/
@@ -28,26 +29,38 @@ namespace Restless.App.DrumMaster.Controls.Audio
         public XAudio2 AudioDevice
         {
             get => audioDevice;
-            private set
-            {
-                audioDevice = value;
-            }
+            private set => audioDevice = value;
         }
 
         /// <summary>
         /// Gets the audio pieces
         /// </summary>
-        public AudioPieceCollection AudioPieces
+        public InstrumentCollection AudioPieces
         {
             get;
         }
 
         /// <summary>
-        /// From this assembly, gets the audio capture effect.
+        /// Gets the mastering voice
         /// </summary>
-        internal AudioCaptureEffect AudioCapture
+        internal MasteringVoice MasterVoice
+        {
+            get => masterVoice;
+        }
+
+        ///// <summary>
+        ///// From this assembly, gets the audio capture effect.
+        ///// </summary>
+        //public AudioCaptureEffect AudioCapture
+        //{
+        //    get;
+        //    private set;
+        //}
+
+        internal DrumKitCollection DrumKits
         {
             get;
+            private set;
         }
         #endregion
 
@@ -62,28 +75,26 @@ namespace Restless.App.DrumMaster.Controls.Audio
         private AudioHost()
         {
             AudioDevice = new XAudio2();
-            masteringVoice = new MasteringVoice(AudioDevice);
-            AudioPieces = new AudioPieceCollection();
+            masterVoice = new MasteringVoice(AudioDevice);
+
+            AudioPieces = new InstrumentCollection();
             voicePools = new List<VoicePool>();
 
             //reverb = new Reverb(AudioDevice);
             //reverbEffectDescriptor = new EffectDescriptor(reverb);
 
-            AudioCapture = new AudioCaptureEffect();
-            audioCaptureEffectDescriptor = new EffectDescriptor(AudioCapture);
-
-            masteringVoice.SetEffectChain(audioCaptureEffectDescriptor);
-            masteringVoice.DisableEffect(0);
+            //audioCapture = new AudioCaptureEffect();
+            //audioCaptureEffectDescriptor = new EffectDescriptor(audioCapture);
+            
+            //masterVoice.SetEffectChain(reverbEffectDescriptor);
 
             AudioDevice.StartEngine();
+
+            DrumKits = new DrumKitCollection();
         }
 
-        /// <summary>
-        /// Static constructor. Tells C# compiler not to mark type as beforefieldinit.
-        /// </summary>
         static AudioHost()
         {
-            // not sure if this is still needed in .NET 4.x
         }
         #endregion
 
@@ -92,55 +103,11 @@ namespace Restless.App.DrumMaster.Controls.Audio
         #region Public methods
         /// <summary>
         /// Initializes the audio host.
+        /// You must call this method at application startup.
         /// </summary>
         public void Initialize()
         {
-        }
-
-        /// <summary>
-        /// Adds a audio piece that resides in the specified assembly.
-        /// </summary>
-        /// <param name="audioResourceName">The audio name</param>
-        /// <param name="displayName">The display name</param>
-        /// <param name="type">The type</param>
-        /// <param name="sourceAssembly">The source assembly</param>
-        public void AddPieceFromAssembly(string audioResourceName, string displayName, AudioPieceType type, Assembly sourceAssembly)
-        {
-            if (sourceAssembly == null) throw new ArgumentNullException(nameof(sourceAssembly));
-            AudioPieces.Add(new AudioPiece(audioResourceName, displayName, type, sourceAssembly));
-        }
-
-        /// <summary>
-        /// Adds a audio piece that resides in the specified assembly.
-        /// The display name type will be detected automatically if possible.
-        /// </summary>
-        /// <param name="audioResourceName">The audio name</param>
-        /// <param name="sourceAssembly">The source assembly</param>
-        public void AddPieceFromAssembly(string audioResourceName, Assembly sourceAssembly)
-        {
-            if (sourceAssembly == null) throw new ArgumentNullException(nameof(sourceAssembly));
-            AudioPieces.Add(new AudioPiece(audioResourceName, sourceAssembly));
-        }
-
-        /// <summary>
-        /// Adds a audio piece that resides in the file system.
-        /// </summary>
-        /// <param name="fileName">The file name.</param>
-        /// <param name="displayName">The display name.</param>
-        /// <param name="type">The type.</param>
-        public void AddPieceFromFileSystem(string fileName, string displayName, AudioPieceType type)
-        {
-            AudioPieces.Add(new AudioPiece(fileName, displayName, type, null));
-        }
-
-        /// <summary>
-        /// Adds a audio piece that resides in the file system.
-        /// The display name and type will be detected automatically if possible.
-        /// </summary>
-        /// <param name="fileName">The file name.</param>
-        public void AddPieceFromFileSystem(string fileName)
-        {
-            AudioPieces.Add(new AudioPiece(fileName, null));
+            // Not doing anything right now, but reserved for future expansion. 
         }
 
         /// <summary>
@@ -153,9 +120,13 @@ namespace Restless.App.DrumMaster.Controls.Audio
             {
                 pool.Destroy();
             }
+
             AudioDevice.StopEngine();
-            SharpDX.Utilities.Dispose(ref masteringVoice);
+            SharpDX.Utilities.Dispose(ref masterVoice);
             SharpDX.Utilities.Dispose(ref audioDevice);
+            // SharpDX.Utilities.Dispose(ref reverb);
+            // Note. This will throw in SharpDx.CallbackBase if AudioCapture has not been inserted into the effect chain.
+            //SharpDX.Utilities.Dispose(ref audioCapture);
         }
         #endregion
 
@@ -167,7 +138,7 @@ namespace Restless.App.DrumMaster.Controls.Audio
         /// </summary>
         /// <param name="type">The type</param>
         /// <returns>The default piece for the type, or the first piece of the type if none are marked default, or null.</returns>
-        internal AudioPiece GetAudioPiece(AudioPieceType type)
+        internal Instrument GetAudioPiece(InstrumentType type)
         {
             foreach (var piece in AudioPieces.Where((p)=>p.Type == type))
             {
@@ -184,7 +155,7 @@ namespace Restless.App.DrumMaster.Controls.Audio
         /// </summary>
         /// <param name="audioName">The audio name</param>
         /// <returns>The specified piece, or null if not found.</returns>
-        internal AudioPiece GetAudioPiece(string audioName)
+        internal Instrument GetAudioPiece(string audioName)
         {
             foreach (var piece in AudioPieces)
             {

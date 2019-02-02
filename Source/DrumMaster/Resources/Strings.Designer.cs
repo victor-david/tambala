@@ -97,6 +97,42 @@ namespace Restless.App.DrumMaster.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Always on top.
+        /// </summary>
+        public static string MenuItemAlwaysOnTop {
+            get {
+                return ResourceManager.GetString("MenuItemAlwaysOnTop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        public static string MenuItemClose {
+            get {
+                return ResourceManager.GetString("MenuItemClose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string MenuItemEdit {
+            get {
+                return ResourceManager.GetString("MenuItemEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit.
+        /// </summary>
+        public static string MenuItemExit {
+            get {
+                return ResourceManager.GetString("MenuItemExit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File.
         /// </summary>
         public static string MenuItemFile {
@@ -151,6 +187,15 @@ namespace Restless.App.DrumMaster.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to View.
+        /// </summary>
+        public static string MenuItemView {
+            get {
+                return ResourceManager.GetString("MenuItemView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do you want to save the changes you made to.
         /// </summary>
         public static string MessageConfirmSave {
@@ -169,7 +214,7 @@ namespace Restless.App.DrumMaster.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to open the track container and layout.
+        ///   Looks up a localized string similar to The file could not be opened..
         /// </summary>
         public static string MessageOpenFailure {
             get {
@@ -178,11 +223,47 @@ namespace Restless.App.DrumMaster.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to save the track container and layout.
+        ///   Looks up a localized string similar to The file could not be saved..
         /// </summary>
         public static string MessageSaveFailure {
             get {
                 return ResourceManager.GetString("MessageSaveFailure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unhandled Exception.
+        /// </summary>
+        public static string UnhandledExceptionCaption {
+            get {
+                return ResourceManager.GetString("UnhandledExceptionCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An unknown error occured in the current domain.
+        /// </summary>
+        public static string UnhandledExceptionCurrentDomain {
+            get {
+                return ResourceManager.GetString("UnhandledExceptionCurrentDomain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The application will now attempt to shutdown gracefully..
+        /// </summary>
+        public static string UnhandledExceptionMessageFooter {
+            get {
+                return ResourceManager.GetString("UnhandledExceptionMessageFooter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An unhandled exception occurred..
+        /// </summary>
+        public static string UnhandledExceptionMessageHeader {
+            get {
+                return ResourceManager.GetString("UnhandledExceptionMessageHeader", resourceCulture);
             }
         }
     }

@@ -1,7 +1,6 @@
 ﻿using Restless.App.DrumMaster.Controls.Audio;
 using Restless.App.DrumMaster.Core;
 using System;
-using System.Reflection;
 using System.Windows;
 
 namespace Restless.App.DrumMaster
@@ -62,32 +61,21 @@ namespace Restless.App.DrumMaster
         private void RunApplication(StartupEventArgs e)
         {
 #if !DEBUG
-            //TopLevelExceptionHandler.Initialize();
+            TopLevelExceptionHandler.Initialize();
 #endif
             // Validations.ThrowIfNotWindows7();
             ShutdownMode = ShutdownMode.OnMainWindowClose;
-            InitializeAudioHost();
+            AudioHost.Instance.Initialize();
             Window main = WindowFactory.Main.Create();
             main.MinWidth = 960;
             main.MinHeight = 600;
             main.Width = 1600;
             main.Height = 900;
             main.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+#if !DEBUG
+            main.WindowState = WindowState.Maximized;
+#endif
             main.Show();
-        }
-
-        private void InitializeAudioHost()
-        {
-            AudioHost.Instance.Initialize();
-            var a = Assembly.GetExecutingAssembly();
-
-            foreach (string resourceName in a.GetManifestResourceNames())
-            {
-                if (resourceName.Contains("Resources.Audio."))
-                {
-                    AudioHost.Instance.AddPieceFromAssembly(resourceName, a);
-                }
-            }
         }
         #endregion
     }

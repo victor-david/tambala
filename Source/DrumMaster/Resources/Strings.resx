@@ -129,6 +129,19 @@
   <data name="DialogTitleSaveFile" xml:space="preserve">
     <value>Select the file to save</value>
   </data>
+  <data name="MenuItemAlwaysOnTop" xml:space="preserve">
+    <value>Always on top</value>
+  </data>
+  <data name="MenuItemClose" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="MenuItemEdit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="MenuItemExit" xml:space="preserve">
+    <value>Exit</value>
+    <comment>Exit the application</comment>
+  </data>
   <data name="MenuItemFile" xml:space="preserve">
     <value>File</value>
   </data>
@@ -147,6 +160,9 @@
   <data name="MenuItemTools" xml:space="preserve">
     <value>Tools</value>
   </data>
+  <data name="MenuItemView" xml:space="preserve">
+    <value>View</value>
+  </data>
   <data name="MessageConfirmSave" xml:space="preserve">
     <value>Do you want to save the changes you made to</value>
     <comment>Prompt for saving changes. Name of item to save is appended along with question mark</comment>
@@ -155,11 +171,23 @@
     <value>Drum Master</value>
   </data>
   <data name="MessageOpenFailure" xml:space="preserve">
-    <value>Unable to open the track container and layout</value>
+    <value>The file could not be opened.</value>
     <comment>Message when unable to open</comment>
   </data>
   <data name="MessageSaveFailure" xml:space="preserve">
-    <value>Unable to save the track container and layout</value>
+    <value>The file could not be saved.</value>
     <comment>Message when unable to save</comment>
+  </data>
+  <data name="UnhandledExceptionCaption" xml:space="preserve">
+    <value>Unhandled Exception</value>
+  </data>
+  <data name="UnhandledExceptionCurrentDomain" xml:space="preserve">
+    <value>An unknown error occured in the current domain</value>
+  </data>
+  <data name="UnhandledExceptionMessageFooter" xml:space="preserve">
+    <value>The application will now attempt to shutdown gracefully.</value>
+  </data>
+  <data name="UnhandledExceptionMessageHeader" xml:space="preserve">
+    <value>An unhandled exception occurred.</value>
   </data>
 </root>

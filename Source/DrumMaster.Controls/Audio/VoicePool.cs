@@ -1,4 +1,5 @@
-﻿using SharpDX.XAudio2;
+﻿using Restless.App.DrumMaster.Controls.Core;
+using SharpDX.XAudio2;
 using System;
 
 namespace Restless.App.DrumMaster.Controls.Audio
@@ -69,7 +70,7 @@ namespace Restless.App.DrumMaster.Controls.Audio
             this.audio = audio ?? throw new ArgumentNullException(nameof(audio));
             this.outputVoice = outputVoice ?? throw new ArgumentNullException(nameof(outputVoice));
             Name = name;
-            initialSize = Math.Max(Math.Min(initialSize, TrackVals.InitialVoicePool.High), TrackVals.InitialVoicePool.Normal);
+            initialSize = Math.Max(Math.Min(initialSize, Constants.InitialVoicePool.High), Constants.InitialVoicePool.Normal);
             voiceSendDescriptor = new VoiceSendDescriptor(outputVoice);
             Size = initialSize;
             InitializeVoices(initialSize);
@@ -103,6 +104,7 @@ namespace Restless.App.DrumMaster.Controls.Audio
             var voice = GetAvailableVoice();
             if (voice != null)
             {
+                voice.SubmitSourceBuffer(audio, audio.DecodedPacketsInfo);
                 voice.SetFrequencyRatio(pitch, operationSet);
                 voice.SetVolume(volume, operationSet);
                 voice.Start(operationSet);
@@ -146,18 +148,18 @@ namespace Restless.App.DrumMaster.Controls.Audio
                 if (voices[k].State.BuffersQueued == 0)
                 {
                     HighWaterIndex = Math.Max(HighWaterIndex, k);
-                    voices[k].SubmitSourceBuffer(audio, audio.DecodedPacketsInfo);
                     return voices[k];
                 }
             }
             IncreaseCount++;
-            return IncreasePoolSize(4);
+            return IncreasePoolSize(6);
         }
 
         private SourceVoice IncreasePoolSize(int increase)
         {
             int oldSize = voices.Length;
             Size = oldSize + increase;
+            
             Array.Resize(ref voices, Size);
             for (int k = 0; k < increase; k++)
             {
@@ -169,7 +171,7 @@ namespace Restless.App.DrumMaster.Controls.Audio
 
         private SourceVoice CreateVoice()
         {
-            SourceVoice voice = new SourceVoice(AudioHost.Instance.AudioDevice, audio.WaveFormat, VoiceFlags.None, TrackVals.Pitch.Max);
+            SourceVoice voice = new SourceVoice(AudioHost.Instance.AudioDevice, audio.WaveFormat, VoiceFlags.None, Constants.Pitch.Max);
             voice.SetOutputVoices(voiceSendDescriptor);
             voice.SetVolume(1);
             return voice;

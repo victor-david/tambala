@@ -11,30 +11,32 @@
             <ColumnDefinition Width="72"/>
             <ColumnDefinition Width="72"/>
             <ColumnDefinition Width="72"/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Grid.Resources>
-            
-        </Grid.Resources>
         
-        <Button Grid.Column="0" Style="{StaticResource FlatButtonStyle}" Command="{Binding Commands[SaveLayout]}">
+        <Button Grid.Column="0" Style="{StaticResource FlatButtonStyle}" Command="{Binding Commands[SaveSong]}">
             <StackPanel Orientation="Horizontal">
-                <Image Source="{StaticResource ImageSaveLayout}" Width="32"/>
+                <Image Source="{StaticResource ImageSaveLayout}" Width="28"/>
                 <TextBlock Text="Save" Style="{StaticResource TextBlockNavButton}"/>
             </StackPanel>
         </Button>
         
-        <Button Grid.Column="1" Style="{StaticResource FlatButtonStyle}" Command="{Binding Commands[AddLayout]}">
+        <Button Grid.Column="1" Style="{StaticResource FlatButtonStyle}" Command="{Binding Commands[NewSong]}">
             <StackPanel Orientation="Horizontal">
-                <Image Source="{StaticResource ImageAddLayout}" Width="32"/>
+                <Image Source="{StaticResource ImageAddLayout}" Width="28"/>
                 <TextBlock Text="New" Style="{StaticResource TextBlockNavButton}"/>
             </StackPanel>
         </Button>
         
-        <Button Grid.Column="2" Style="{StaticResource FlatButtonStyle}" Command="{Binding Commands[OpenLayout]}">
+        <Button Grid.Column="2" Style="{StaticResource FlatButtonStyle}" Command="{Binding Commands[OpenSong]}">
             <StackPanel Orientation="Horizontal">
-                <Image Source="{StaticResource ImageOpenLayout}" Width="32"/>
+                <Image Source="{StaticResource ImageOpenLayout}" Width="28"/>
                 <TextBlock Text="Open" Style="{StaticResource TextBlockNavButton}"/>
             </StackPanel>
         </Button>
+        <TextBlock
+            Grid.Column="3"
+            Style="{StaticResource TextBlockFileName}"
+            Text="{Binding ProjectContainer.DisplayName}"/>
     </Grid>
 </UserControl>

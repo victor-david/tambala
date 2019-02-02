@@ -1,0 +1,83 @@
+﻿<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ################# -->
+    <!-- Brush Definitions -->
+    <!-- ################# -->
+    <LinearGradientBrush x:Key="WindowHeaderBrush" StartPoint="0.00,0.00" EndPoint="1.00,1.00">
+        <GradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FF00498B" Offset="0.000"/>
+                <GradientStop Color="#FFFFFFFF" Offset="1.000"/>
+            </GradientStopCollection>
+        </GradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="WindowBorderBrush" Color="#FF0060CC"/>
+
+
+    <LinearGradientBrush x:Key="HeaderBrush" StartPoint="0.00,0.00" EndPoint="1.00,1.00">
+        <GradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FF0060CE" Offset="0.000"/>
+                <GradientStop Color="#C000B6FF" Offset="1.000"/>
+            </GradientStopCollection>
+        </GradientBrush.GradientStops>
+    </LinearGradientBrush>
+    
+    <LinearGradientBrush x:Key="TextBoxBrush" StartPoint="0.00,0.00" EndPoint="1.00,1.00">
+        <GradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FFCCCCCC" Offset="0.000"/>
+                <GradientStop Color="White" Offset="1.000"/>
+            </GradientStopCollection>
+        </GradientBrush.GradientStops>
+    </LinearGradientBrush>
+    
+    <LinearGradientBrush x:Key="InstrumentControllerSelectedBrush" StartPoint="0.00,0.00" EndPoint="1.00,1.00">
+        <GradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FF75A5B7" Offset="0.000"/>
+                <GradientStop Color="#FFFFFFFF" Offset="0.950"/>
+            </GradientStopCollection>
+        </GradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="InstrumentControllerSelectedBorderBrush" StartPoint="0.00,0.00" EndPoint="1.00,1.00">
+        <GradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#FF808080" Offset="0.000"/>
+                <GradientStop Color="LightGray" Offset="1.000"/>
+            </GradientStopCollection>
+        </GradientBrush.GradientStops>
+    </LinearGradientBrush>
+    
+    <!-- Brushes for PointSelector -->
+    <SolidColorBrush x:Key="PointSelectorSongHeaderSelected" Color="#FFCC0000"/>
+    <SolidColorBrush x:Key="PointSelectorSongHeaderDeselected" Color="LightGray"/>
+
+    <SolidColorBrush x:Key="PointSelectorSongRowSelected" Color="DarkBlue"/>
+    <SolidColorBrush x:Key="PointSelectorSongRowDeselected" Color="#8000B6FF"/>
+    
+    <SolidColorBrush x:Key="PointSelectorPatternHeaderSelected" Color="#FFCC0000"/>
+    <SolidColorBrush x:Key="PointSelectorPatternHeaderDeselected" Color="LightGray"/>
+
+    <SolidColorBrush x:Key="PointSelectorPatternRowSelected" Color="Red"/>
+    <SolidColorBrush x:Key="PointSelectorPatternRowDeselected" Color="#80000000"/>
+
+
+    <SolidColorBrush x:Key="DefaultBorderBrush" Color="LightGray"/>
+    <SolidColorBrush x:Key="LightBorderBrush" Color="#FFEEEEEE"/>
+    <SolidColorBrush x:Key="DefaultBackgroundBrush" Color="White"/>
+    
+    <SolidColorBrush x:Key="SliderLabelTextBrush" Color="DarkBlue"/>
+    <SolidColorBrush x:Key="SliderValueTextBrush" Color="Gray"/>
+
+    <SolidColorBrush x:Key="HeaderForegroundBrush" Color="White"/>
+    
+    <SolidColorBrush x:Key="TrackBorderBrush" Color="LightGray"/>
+    <SolidColorBrush x:Key="ButtonBrushOver" Color="#90B9DFFF"/>
+    <SolidColorBrush x:Key="ButtonBrushPressed" Color="#FFB9DFFF"/>
+    <SolidColorBrush x:Key="ButtonBrushBorder" Color="#FF9ADFFF"/>
+</ResourceDictionary>

@@ -117,6 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ProjectContainerDisplayName" xml:space="preserve">
+    <value>(unamed project)</value>
+    <comment>The default display name for a new project</comment>
+  </data>
+  <data name="SongContainerDisplayName" xml:space="preserve">
+    <value>Song Composition</value>
+    <comment>Used in the header of the song panel</comment>
+  </data>
   <data name="ToolTipShiftLeft" xml:space="preserve">
     <value>Shifts all notes to the left. Hold down Ctrl to shift notes without their volume bias. Hold down Alt to shift only the volume bias.</value>
   </data>

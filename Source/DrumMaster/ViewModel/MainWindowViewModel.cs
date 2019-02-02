@@ -1,6 +1,6 @@
-﻿using Restless.App.DrumMaster.Controls.Core;
-using Restless.App.DrumMaster.Core;
+﻿using Restless.App.DrumMaster.Core;
 using Restless.App.DrumMaster.Resources;
+using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Threading;
@@ -13,8 +13,8 @@ namespace Restless.App.DrumMaster.ViewModel
     public class MainWindowViewModel : WindowViewModel
     {
         #region Private
-        private TrackContainerViewModel trackContainer;
-        private int layoutNumber;
+        private bool isTopMost;
+        private ProjectContainerViewModel projectContainer;
         #endregion
 
         /************************************************************************/
@@ -25,17 +25,17 @@ namespace Restless.App.DrumMaster.ViewModel
         /// </summary>
         public bool IsTopMost
         {
-            // TODO: Make this configurable
-            get => false;
+            get => isTopMost;
+            private set => SetProperty(ref isTopMost, value);
         }
 
         /// <summary>
-        /// Gets the track container object.
+        /// Gets the project container object.
         /// </summary>
-        public TrackContainerViewModel TrackContainer
+        public ProjectContainerViewModel ProjectContainer
         {
-            get => trackContainer;
-            private set => SetProperty(ref trackContainer, value);
+            get => projectContainer;
+            private set => SetProperty(ref projectContainer, value);
         }
         #endregion
 
@@ -50,91 +50,99 @@ namespace Restless.App.DrumMaster.ViewModel
         {
             WindowOwner.Closing += MainWindowClosing;
             DisplayName = $"{ApplicationInfo.Instance.Title} {ApplicationInfo.Instance.VersionMajor}";
-            Commands.Add("SaveLayout", RunSaveLayoutCommand, CanRunSaveLayoutCommand);
-            Commands.Add("AddLayout", RunAddLayoutCommand);
-            Commands.Add("OpenLayout", RunOpenLayoutCommand);
+            Commands.Add("NewSong", RunNewSongCommand);
+            Commands.Add("SaveSong", RunSaveSongCommand, CanRunSaveSongCommand);
+            Commands.Add("OpenSong", RunOpenSongCommand);
+            Commands.Add("CloseSong", RunCloseSongCommand, CanRunCloseSongCommand);
+            Commands.Add("EditSettings", RunEditSettingsCommand);
+            Commands.Add("ViewAlwaysOnTop", (p)=> IsTopMost = !IsTopMost);
+            Commands.Add("CloseApp", (p) => WindowOwner.Close());
+
         }
         #endregion
 
         /************************************************************************/
 
         #region Public methods
-        /// <summary>
-        /// Closes the track container.
-        /// </summary>
-        /// <param name="e">The event args</param>
-        public void CloseTrackContainer(CancelRoutedEventArgs e)
-        {
-            if (IsOkayToClose())
-            {
-                CloseTrackContainer();
-            }
-            else
-            {
-                e.Cancel = true;
-            }
-        }
         #endregion
 
         /************************************************************************/
 
         #region Private methods
-        private void RunSaveLayoutCommand(object parm)
+        private void RunSaveSongCommand(object parm)
         {
-            TrackContainer.Save();
+            ProjectContainer.Save();
         }
 
-        private bool CanRunSaveLayoutCommand(object parm)
+        private bool CanRunSaveSongCommand(object parm)
         {
-            return TrackContainer != null && TrackContainer.IsChanged;
+            return ProjectContainer != null && ProjectContainer.IsChanged;
         }
 
-        private void RunAddLayoutCommand(object parm)
+        private void RunNewSongCommand(object parm)
         {
             if (IsOkayToClose())
             {
-                CloseTrackContainer();
-                CreateLayout();
-                TrackContainer.Show();
+                CloseSongContainer();
+                CreateSong();
+                ProjectContainer.Show();
             }
         }
 
-        private void RunOpenLayoutCommand(object parm)
+        private async void RunOpenSongCommand(object parm)
         {
             if (IsOkayToClose())
             {
-                CloseTrackContainer();
-                CreateLayout();
-                if (TrackContainer.Open())
+                CloseSongContainer();
+                CreateSong();
+                if (await ProjectContainer.Open())
                 {
-                    TrackContainer.Show();
+                    ProjectContainer.Show();
                 }
                 else
                 {
-                    CloseTrackContainer();
+                    CloseSongContainer();
                 }
             }
         }
 
-        private void CloseTrackContainer()
+        private void RunCloseSongCommand(object parm)
         {
-            if (TrackContainer != null)
+            if (IsOkayToClose())
             {
-                TrackContainer.Deactivate();
-                TrackContainer = null;
+                CloseSongContainer();
+            }
+        }
+
+        private bool CanRunCloseSongCommand(object parm)
+        {
+            return ProjectContainer != null;
+        }
+
+        private void RunEditSettingsCommand(object parm)
+        {
+            // TODO
+        }
+
+        private void CloseSongContainer()
+        {
+            if (ProjectContainer != null)
+            {
+                ProjectContainer.Deactivate();
+                ProjectContainer = null;
             }
         }
 
         private bool IsOkayToClose()
         {
-            bool isOkay = TrackContainer == null || !TrackContainer.IsChanged;
+            bool isOkay = ProjectContainer == null || !ProjectContainer.IsChanged;
             if (!isOkay)
             {
-                var result = MessageBox.Show($"{Strings.MessageConfirmSave} {TrackContainer.Container.DisplayName}?", Strings.MessageDrumMaster, MessageBoxButton.YesNoCancel);
+                var result = MessageBox.Show($"{Strings.MessageConfirmSave} {ProjectContainer.Container.DisplayName}?", Strings.MessageDrumMaster, MessageBoxButton.YesNoCancel);
                 switch (result)
                 {
                     case MessageBoxResult.Yes:
-                        isOkay = TrackContainer.Save();
+                        isOkay = ProjectContainer.Save();
                         break;
                     case MessageBoxResult.No:
                         isOkay = true;
@@ -144,24 +152,21 @@ namespace Restless.App.DrumMaster.ViewModel
             return isOkay;
         }
 
-        private void CreateLayout()
+        private void CreateSong()
         {
-            layoutNumber++;
-            TrackContainer = null;
-            TrackContainer = new TrackContainerViewModel($"Pattern #{layoutNumber}", this);
-            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new DispatcherOperationCallback
-                ((args) =>
+            ProjectContainer = null;
+            ProjectContainer = new ProjectContainerViewModel(this);
+            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
                 {
-                    TrackContainer.Activate();
-                    return null;
-                }), null);
+                    ProjectContainer.Activate();
+                }));
         }
 
         private void MainWindowClosing(object sender, CancelEventArgs e)
         {
             if (IsOkayToClose())
             {
-                CloseTrackContainer();
+                CloseSongContainer();
             }
             else
             {

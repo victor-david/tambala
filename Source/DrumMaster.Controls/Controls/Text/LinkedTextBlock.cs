@@ -5,7 +5,6 @@ using System.Windows.Media;
 
 namespace Restless.App.DrumMaster.Controls
 {
-
     /// <summary>
     /// Represents a text block that has a command
     /// </summary>
