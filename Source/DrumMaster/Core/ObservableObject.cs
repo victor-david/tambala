@@ -5,11 +5,10 @@ using System.Windows.Threading;
 
 namespace Restless.App.DrumMaster.Core
 {
-
     /// <summary>
     /// Implementation of <see cref="INotifyPropertyChanged"/> to simplify models.
     /// </summary>
-    public abstract class BindableBase : DispatcherObject, INotifyPropertyChanged
+    public abstract class ObservableObject : DispatcherObject, INotifyPropertyChanged
     {
         /// <summary>
         /// Multicast event for property change notifications.

@@ -6,9 +6,9 @@ namespace Restless.App.DrumMaster.Core
     /// <summary>
     /// Provides properties that are common to all view models. This class must be inherited.
     /// </summary>
-    public abstract class WorkspaceViewModel : BindableBase
+    public abstract class WorkspaceViewModel : ObservableObject
     {
-        #region Private Vars
+        #region Private
         private string displayName;
         private bool isActivated;
         #endregion
@@ -157,7 +157,6 @@ namespace Restless.App.DrumMaster.Core
         {
             item = GetOwner<T>() ?? throw new InvalidCastException();
         }
-        
 
         /// <summary>
         /// Called when this view model becomes active.

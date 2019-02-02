@@ -4,12 +4,15 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:con="clr-namespace:Restless.App.DrumMaster.Controls;assembly=DrumMaster.Controls"
     xmlns:vw="clr-namespace:Restless.App.DrumMaster.View"
+    xmlns:vm="clr-namespace:Restless.App.DrumMaster.ViewModel"
     Background="{StaticResource WindowBackgroundBrush}"
     Topmost="{Binding IsTopMost}"
     Title="{Binding DisplayName}">
     <Window.Resources>
         <!-- All other resources come via App.xaml -->
-        <ResourceDictionary Source="../../Resources/Dictionary/PageTemplate.xaml"/>
+        <DataTemplate DataType="{x:Type vm:ProjectContainerViewModel}">
+            <vw:ProjectContainerView />
+        </DataTemplate>
     </Window.Resources>
 
     <Grid>
@@ -22,6 +25,9 @@
         <vw:MainMenu/>
         <vw:MainNavigation Grid.Row="1"  Margin="2,4"/>
         <Separator Grid.Row="2"/>
-        <ContentControl Grid.Row="3" Content="{Binding SongContainer}" Margin="6,0,6,6"/>
+        <ContentControl 
+            Grid.Row="3" 
+            Content="{Binding ProjectContainer}"
+            Margin="6,0,6,6"/>
     </Grid>
 </con:ApplicationWindow>

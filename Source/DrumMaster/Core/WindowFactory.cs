@@ -64,15 +64,5 @@ namespace Restless.App.DrumMaster.Core
             }
         }
         #endregion
-
-
-
-
-
-
-
-
-
-
     }
 }

@@ -14,7 +14,7 @@ namespace Restless.App.DrumMaster.ViewModel
     {
         #region Private
         private bool isTopMost;
-        private SongContainerViewModel songContainer;
+        private ProjectContainerViewModel projectContainer;
         #endregion
 
         /************************************************************************/
@@ -30,12 +30,12 @@ namespace Restless.App.DrumMaster.ViewModel
         }
 
         /// <summary>
-        /// Gets the track container object.
+        /// Gets the project container object.
         /// </summary>
-        public SongContainerViewModel SongContainer
+        public ProjectContainerViewModel ProjectContainer
         {
-            get => songContainer;
-            private set => SetProperty(ref songContainer, value);
+            get => projectContainer;
+            private set => SetProperty(ref projectContainer, value);
         }
         #endregion
 
@@ -71,12 +71,12 @@ namespace Restless.App.DrumMaster.ViewModel
         #region Private methods
         private void RunSaveSongCommand(object parm)
         {
-            SongContainer.Save();
+            ProjectContainer.Save();
         }
 
         private bool CanRunSaveSongCommand(object parm)
         {
-            return SongContainer != null && SongContainer.IsChanged;
+            return ProjectContainer != null && ProjectContainer.IsChanged;
         }
 
         private void RunNewSongCommand(object parm)
@@ -85,7 +85,7 @@ namespace Restless.App.DrumMaster.ViewModel
             {
                 CloseSongContainer();
                 CreateSong();
-                SongContainer.Show();
+                ProjectContainer.Show();
             }
         }
 
@@ -95,9 +95,9 @@ namespace Restless.App.DrumMaster.ViewModel
             {
                 CloseSongContainer();
                 CreateSong();
-                if (await SongContainer.Open())
+                if (await ProjectContainer.Open())
                 {
-                    SongContainer.Show();
+                    ProjectContainer.Show();
                 }
                 else
                 {
@@ -116,7 +116,7 @@ namespace Restless.App.DrumMaster.ViewModel
 
         private bool CanRunCloseSongCommand(object parm)
         {
-            return SongContainer != null;
+            return ProjectContainer != null;
         }
 
         private void RunEditSettingsCommand(object parm)
@@ -126,23 +126,23 @@ namespace Restless.App.DrumMaster.ViewModel
 
         private void CloseSongContainer()
         {
-            if (SongContainer != null)
+            if (ProjectContainer != null)
             {
-                SongContainer.Deactivate();
-                SongContainer = null;
+                ProjectContainer.Deactivate();
+                ProjectContainer = null;
             }
         }
 
         private bool IsOkayToClose()
         {
-            bool isOkay = SongContainer == null || !SongContainer.IsChanged;
+            bool isOkay = ProjectContainer == null || !ProjectContainer.IsChanged;
             if (!isOkay)
             {
-                var result = MessageBox.Show($"{Strings.MessageConfirmSave} {SongContainer.Container.DisplayName}?", Strings.MessageDrumMaster, MessageBoxButton.YesNoCancel);
+                var result = MessageBox.Show($"{Strings.MessageConfirmSave} {ProjectContainer.Container.DisplayName}?", Strings.MessageDrumMaster, MessageBoxButton.YesNoCancel);
                 switch (result)
                 {
                     case MessageBoxResult.Yes:
-                        isOkay = SongContainer.Save();
+                        isOkay = ProjectContainer.Save();
                         break;
                     case MessageBoxResult.No:
                         isOkay = true;
@@ -154,11 +154,11 @@ namespace Restless.App.DrumMaster.ViewModel
 
         private void CreateSong()
         {
-            SongContainer = null;
-            SongContainer = new SongContainerViewModel(this);
+            ProjectContainer = null;
+            ProjectContainer = new ProjectContainerViewModel(this);
             Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
                 {
-                    SongContainer.Activate();
+                    ProjectContainer.Activate();
                 }));
         }
 

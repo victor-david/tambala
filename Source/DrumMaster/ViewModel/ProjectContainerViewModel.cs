@@ -13,7 +13,7 @@ namespace Restless.App.DrumMaster.ViewModel
     /// <summary>
     /// Provides interaction logic for the main drum track container.
     /// </summary>
-    public class SongContainerViewModel : WorkspaceViewModel
+    public class ProjectContainerViewModel : WorkspaceViewModel
     {
         #region Private
         private ProjectContainer container;
@@ -35,7 +35,7 @@ namespace Restless.App.DrumMaster.ViewModel
         }
 
         /// <summary>
-        /// Gets a boolean value that indicates if the track container is changed.
+        /// Gets a boolean value that indicates if the project container is changed.
         /// </summary>
         public bool IsChanged
         {
@@ -48,10 +48,10 @@ namespace Restless.App.DrumMaster.ViewModel
 
         #region Constructor
         /// <summary>
-        /// Initializes a new instance of the <see cref="SongContainerViewModel"/> class.
+        /// Initializes a new instance of the <see cref="ProjectContainerViewModel"/> class.
         /// </summary>
         /// <param name="owner">The owner of this VM.</param>
-        public SongContainerViewModel(WorkspaceViewModel owner) : base(owner)
+        public ProjectContainerViewModel(WorkspaceViewModel owner) : base(owner)
         {
             Container = new ProjectContainer()
             {
@@ -68,7 +68,7 @@ namespace Restless.App.DrumMaster.ViewModel
 
         #region Public methods
         /// <summary>
-        /// Shows the track container control.
+        /// Shows the project container control.
         /// </summary>
         public void Show()
         {
@@ -113,7 +113,7 @@ namespace Restless.App.DrumMaster.ViewModel
         }
 
         /// <summary>
-        /// Saves the track container
+        /// Saves the project container
         /// </summary>
         /// <returns>true if saved; otherwise, false.</returns>
         public bool Save()

@@ -128,10 +128,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Resources\Dictionary\PageTemplate.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Resources\Dictionary\ItemsControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -144,7 +140,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\TrackContainerView.xaml">
+    <Page Include="View\ProjectContainerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -169,26 +165,22 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\ApplicationInfo.cs" />
-    <Compile Include="Core\FixedSizeObservableCollection.cs" />
-    <Compile Include="Core\GridValueCollection.cs" />
     <Compile Include="Core\TopLevelExceptionHandler.cs" />
     <Compile Include="Core\Utility.cs" />
     <Compile Include="Core\WindowFactory.cs" />
     <Compile Include="Core\WorkspaceViewModel.cs" />
-    <Compile Include="Core\WorkspaceViewModelCollection.cs" />
-    <Compile Include="Core\BindableBase.cs" />
+    <Compile Include="Core\ObservableObject.cs" />
     <Compile Include="Resources\Strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\AudioRenderWindowViewModel.cs" />
-    <Compile Include="Core\GridValue.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
-    <Compile Include="ViewModel\SongContainerViewModel.cs" />
+    <Compile Include="ViewModel\ProjectContainerViewModel.cs" />
     <Compile Include="ViewModel\WindowViewModel.cs" />
-    <Compile Include="View\TrackContainerView.xaml.cs">
-      <DependentUpon>TrackContainerView.xaml</DependentUpon>
+    <Compile Include="View\ProjectContainerView.xaml.cs">
+      <DependentUpon>ProjectContainerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Window\AudioRenderWindow.xaml.cs">
       <DependentUpon>AudioRenderWindow.xaml</DependentUpon>
@@ -241,24 +233,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Audio\HiHat\01.hihat.wav" />
-    <EmbeddedResource Include="Resources\Audio\HiHat\02.hihat.wav" />
-    <EmbeddedResource Include="Resources\Audio\HiHat\03.hihat.wav" />
-    <EmbeddedResource Include="Resources\Audio\Kick\01.kick.wav" />
-    <EmbeddedResource Include="Resources\Audio\Kick\02.kick.wav" />
-    <EmbeddedResource Include="Resources\Audio\Snare\01.snare.wav" />
-    <EmbeddedResource Include="Resources\Audio\Snare\02.snare.wav" />
-    <EmbeddedResource Include="Resources\Audio\Snare\03.snare.wav" />
-    <EmbeddedResource Include="Resources\Audio\Snare\04.snare.wav" />
-    <EmbeddedResource Include="Resources\Audio\Snare\05.snare.wav" />
-    <EmbeddedResource Include="Resources\Audio\Tom\01.tom.wav" />
-    <EmbeddedResource Include="Resources\Audio\Tom\02.tom.wav" />
-    <EmbeddedResource Include="Resources\Audio\Tom\03.tom.wav" />
-    <EmbeddedResource Include="Resources\Audio\Tom\04.tom.wav" />
-    <EmbeddedResource Include="Resources\Audio\Tom\05.tom.wav" />
-    <EmbeddedResource Include="Resources\Audio\Tom\06.tom.wav" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\Images\Image.DrumSet.128.png" />
   </ItemGroup>
   <ItemGroup>
@@ -268,38 +242,7 @@
     <Resource Include="Resources\Images\Image.Add.Layout.64.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Audio\HiHat\04.hihat.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\Audio\Cymbal\01.cymbal.wav" />
-    <EmbeddedResource Include="Resources\Audio\Cymbal\02.cymbal.wav" />
-    <EmbeddedResource Include="Resources\Audio\Cymbal\03.cymbal.wav" />
-    <EmbeddedResource Include="Resources\Audio\Cymbal\04.cymbal.wav" />
-    <EmbeddedResource Include="Resources\Audio\Cymbal\05.cymbal.wav" />
-    <EmbeddedResource Include="Resources\Audio\Cymbal\06.cymbal.wav" />
-    <EmbeddedResource Include="Resources\Audio\Cymbal\07.cymbal.wav" />
-    <EmbeddedResource Include="Resources\Audio\Cymbal\08.cymbal.wav" />
-    <EmbeddedResource Include="Resources\Audio\Cymbal\09.cymbal.wav" />
-    <EmbeddedResource Include="Resources\Audio\Cymbal\10.cymbal.wav" />
-    <EmbeddedResource Include="Resources\Audio\Cymbal\11.cymbal.wav" />
-    <EmbeddedResource Include="Resources\Audio\Cymbal\12.cymbal.wav" />
-    <EmbeddedResource Include="Resources\Audio\Cymbal\13.cymbal.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\Audio\Kick\03.kick.wav" />
-    <EmbeddedResource Include="Resources\Audio\Kick\04.kick.wav" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\Images\Image.Open.Layout.64.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\Audio\Percussion\01.percussion.wav" />
-    <EmbeddedResource Include="Resources\Audio\Percussion\02.percussion.wav" />
-    <EmbeddedResource Include="Resources\Audio\Percussion\03.percussion.wav" />
-    <EmbeddedResource Include="Resources\Audio\Percussion\04.percussion.wav" />
-    <EmbeddedResource Include="Resources\Audio\Percussion\05.percussion.wav" />
-    <EmbeddedResource Include="Resources\Audio\Percussion\06.percussion.wav" />
-    <EmbeddedResource Include="Resources\Audio\Percussion\07.percussion.wav" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\Image.Save.Layout.64.png" />
