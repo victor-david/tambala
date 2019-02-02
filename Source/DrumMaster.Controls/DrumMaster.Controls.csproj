@@ -161,7 +161,6 @@
     <Compile Include="Core\CoreHelper.cs" />
     <Compile Include="Core\ISelector.cs" />
     <Compile Include="Core\IXElement.cs" />
-    <Compile Include="Core\MaxSizeObservableCollection.cs" />
     <Compile Include="Core\Diagnostics.cs" />
     <Compile Include="Core\SongSelectorCollection.cs" />
     <Compile Include="Core\Ticks.cs" />
