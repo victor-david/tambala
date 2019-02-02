@@ -134,7 +134,20 @@
     <EmbeddedResource Include="Resources\DrumKit\Cuban\Tom.04.wav" />
     <EmbeddedResource Include="Resources\DrumKit\Cuban\Tom.06.wav" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\DrumKit\Piano\01.piano-g.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Piano\02.piano-f#.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Piano\03.piano-f.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Piano\04.piano-e.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Piano\05.piano-eb.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Piano\06.piano-d.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Piano\07.piano-c#.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Piano\08.piano-c.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Piano\09.piano-b.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Piano\10.piano-bb.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Piano\11.piano-a.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Piano\12.piano-g#.wav" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\DrumKit\TR808\Clap.wav" />
     <EmbeddedResource Include="Resources\DrumKit\TR808\Clave.wav" />

@@ -29,6 +29,10 @@ namespace Restless.App.DrumMaster.Controls.Core
         /// </summary>
         public const string DrumKitTribalId = "F8402489-D0B5-4448-A515-B63212B50CC2";
         /// <summary>
+        /// Gets the id for the Piano drum kit.
+        /// </summary>
+        public const string DrumKitPianoId = "5CF87D0E-FFFB-4AFE-B7CA-D938FC82E092";
+        /// <summary>
         /// Gets the id for the default drum kit (DrumKitStandardId)
         /// </summary>
         public const string DrumKitDefaultId = DrumKitStandardId;
@@ -120,6 +124,12 @@ namespace Restless.App.DrumMaster.Controls.Core
                 Name = "Tribal",
                 ResourcePath = "Resources.DrumKit.Tribal",
                 Id = DrumKitTribalId
+            });
+            Add(new DrumKit()
+            {
+                Name = "Piano",
+                ResourcePath = "Resources.DrumKit.Piano",
+                Id = DrumKitPianoId
             });
 
             DoForAll((kit) =>
