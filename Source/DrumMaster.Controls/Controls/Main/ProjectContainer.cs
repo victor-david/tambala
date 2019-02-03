@@ -181,7 +181,6 @@ namespace Restless.App.DrumMaster.Controls
         /************************************************************************/
 
         #region MixerContainerWidth
-
         /// <summary>
         /// Gets or sets the width of the mixer container.
         /// </summary>
@@ -360,19 +359,21 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Creates an XDocument representation of the container and saves it to the specified file.
         /// </summary>
-        /// <returns>The XDocument object</returns>
-        public void Save(string filename)
+        /// <param name="fileName">The file to save to.</param>
+        public void Save(string fileName)
         {
             try
             {
-                DisplayName = FileName = filename;
+                FileName = fileName;
+                DisplayName = System.IO.Path.GetFileNameWithoutExtension(fileName);
+
                 var xe = GetXElement();
-                System.IO.File.WriteAllText(filename, xe.ToString());
+                System.IO.File.WriteAllText(fileName, xe.ToString());
                 ResetIsChanged();
             }
             catch (Exception ex)
             {
-                throw new System.IO.IOException($"Unable to save {filename}", ex);
+                throw new System.IO.IOException($"Unable to save {fileName}", ex);
             }
         }
 
