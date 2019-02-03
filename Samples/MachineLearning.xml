@@ -1,5 +1,5 @@
 <ProjectContainer>
-  <DisplayName>D:\vds\Music\Drum Patterns\Xml\MachineLearning.xml</DisplayName>
+  <DisplayName>MachineLearning</DisplayName>
   <MasterOutput>
     <Tempo>120</Tempo>
     <Volume>-3.180723</Volume>
@@ -14,7 +14,7 @@
   <SongContainer>
     <SelectorType>None</SelectorType>
     <SelectorSize>24</SelectorSize>
-    <DivisionCount>5</DivisionCount>
+    <DivisionCount>4</DivisionCount>
     <SongPresenter>
       <Splitter>108</Splitter>
       <PointSelector Row="1" Position="1" Volume="0" IsSelected="true" />
@@ -24,6 +24,7 @@
       <PointSelector Row="1" Position="5" Volume="0" IsSelected="true" />
       <PointSelector Row="1" Position="6" Volume="0" IsSelected="true" />
       <PointSelector Row="1" Position="7" Volume="0" IsSelected="true" />
+      <PointSelector Row="1" Position="8" Volume="0" IsSelected="true" />
       <PointSelector Row="2" Position="2" Volume="0" IsSelected="true" />
       <PointSelector Row="2" Position="4" Volume="0" IsSelected="true" />
       <PointSelector Row="3" Position="5" Volume="0" IsSelected="true" />

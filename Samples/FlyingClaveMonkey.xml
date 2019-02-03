@@ -1,5 +1,5 @@
 <ProjectContainer>
-  <DisplayName>D:\vds\Music\Drum Patterns\Xml\FlyingClaveMonkey.xml</DisplayName>
+  <DisplayName>FlyingClaveMonkey</DisplayName>
   <MasterOutput>
     <Tempo>120.18072289156626</Tempo>
     <Volume>0</Volume>
@@ -9,6 +9,7 @@
   </MasterOutput>
   <MasterPlay>
     <PlayMode>Song</PlayMode>
+    <MetronomeFrequency>1</MetronomeFrequency>
   </MasterPlay>
   <SongContainer>
     <SelectorType>None</SelectorType>
@@ -40,6 +41,13 @@
       <TicksPerQuarterNote>4</TicksPerQuarterNote>
       <Scale>300</Scale>
     </DrumPatternController>
+    <EqualizerController>
+      <IsActive>true</IsActive>
+      <Gain0>0</Gain0>
+      <Gain1>0</Gain1>
+      <Gain2>0</Gain2>
+      <Gain3>0</Gain3>
+    </EqualizerController>
     <DrumPatternPresenter>
       <InstrumentController>
         <DisplayName>Clap (Dry)</DisplayName>
@@ -695,6 +703,13 @@
       <TicksPerQuarterNote>4</TicksPerQuarterNote>
       <Scale>300</Scale>
     </DrumPatternController>
+    <EqualizerController>
+      <IsActive>true</IsActive>
+      <Gain0>0</Gain0>
+      <Gain1>0</Gain1>
+      <Gain2>0</Gain2>
+      <Gain3>0</Gain3>
+    </EqualizerController>
     <DrumPatternPresenter>
       <InstrumentController>
         <DisplayName>Clap (Dry)</DisplayName>
@@ -1311,6 +1326,13 @@
       <TicksPerQuarterNote>4</TicksPerQuarterNote>
       <Scale>300</Scale>
     </DrumPatternController>
+    <EqualizerController>
+      <IsActive>true</IsActive>
+      <Gain0>0</Gain0>
+      <Gain1>0</Gain1>
+      <Gain2>0</Gain2>
+      <Gain3>0</Gain3>
+    </EqualizerController>
     <DrumPatternPresenter>
       <InstrumentController>
         <DisplayName>Clap (Dry)</DisplayName>
@@ -1924,6 +1946,13 @@
       <TicksPerQuarterNote>4</TicksPerQuarterNote>
       <Scale>300</Scale>
     </DrumPatternController>
+    <EqualizerController>
+      <IsActive>true</IsActive>
+      <Gain0>0</Gain0>
+      <Gain1>0</Gain1>
+      <Gain2>0</Gain2>
+      <Gain3>0</Gain3>
+    </EqualizerController>
     <DrumPatternPresenter>
       <InstrumentController>
         <DisplayName>Clap (Dry)</DisplayName>
@@ -2518,5 +2547,49 @@
         </DrumPatternQuarter>
       </InstrumentController>
     </DrumPatternPresenter>
+  </DrumPattern>
+  <DrumPattern>
+    <DisplayName>Pattern 5</DisplayName>
+    <DrumKit>
+      <Name>Standard</Name>
+      <Id>1B5E7DEF-A74B-4669-98A3-F42B6702DC05</Id>
+      <ResourcePath>Resources.DrumKit.Default</ResourcePath>
+    </DrumKit>
+    <DrumPatternController>
+      <Volume>0</Volume>
+      <QuarterNoteCount>4</QuarterNoteCount>
+      <TicksPerQuarterNote>4</TicksPerQuarterNote>
+      <Scale>300</Scale>
+    </DrumPatternController>
+    <EqualizerController>
+      <IsActive>true</IsActive>
+      <Gain0>0</Gain0>
+      <Gain1>0</Gain1>
+      <Gain2>0</Gain2>
+      <Gain3>0</Gain3>
+    </EqualizerController>
+    <DrumPatternPresenter />
+  </DrumPattern>
+  <DrumPattern>
+    <DisplayName>Pattern 6</DisplayName>
+    <DrumKit>
+      <Name>Standard</Name>
+      <Id>1B5E7DEF-A74B-4669-98A3-F42B6702DC05</Id>
+      <ResourcePath>Resources.DrumKit.Default</ResourcePath>
+    </DrumKit>
+    <DrumPatternController>
+      <Volume>0</Volume>
+      <QuarterNoteCount>4</QuarterNoteCount>
+      <TicksPerQuarterNote>4</TicksPerQuarterNote>
+      <Scale>300</Scale>
+    </DrumPatternController>
+    <EqualizerController>
+      <IsActive>true</IsActive>
+      <Gain0>0</Gain0>
+      <Gain1>0</Gain1>
+      <Gain2>0</Gain2>
+      <Gain3>0</Gain3>
+    </EqualizerController>
+    <DrumPatternPresenter />
   </DrumPattern>
 </ProjectContainer>
