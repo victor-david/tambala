@@ -218,11 +218,5 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         public static readonly DependencyProperty CloseCommandProperty = CloseCommandPropertyKey.DependencyProperty;
         #endregion
-
-
-        //protected override void OnStateChanged(EventArgs e)
-        //{
-        //    base.OnStateChanged(e);
-        //}
     }
 }
