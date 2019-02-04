@@ -380,24 +380,25 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Opens the specified file and sets all tracks and values according to the contents.
         /// </summary>
-        /// <param name="filename">The file name</param>
+        /// <param name="fileName">The file name</param>
         /// <returns>An exception object if an exception occurred; otherwise, null.</returns>
-        public async Task<Exception> Open(string filename)
+        public async Task<Exception> Open(string fileName)
         {
             try
             {
                 await Dispatcher.InvokeAsync(() =>
                 {
-                    XDocument doc = XDocument.Load(filename);
+                    XDocument doc = XDocument.Load(fileName);
                     RestoreFromXElement(doc.Root);
-                    ResetIsChanged();
-                    DisplayName = FileName = filename;
+                    FileName = fileName;
+                    DisplayName = System.IO.Path.GetFileNameWithoutExtension(fileName);
                     OnLoaded();
+                    ResetIsChanged();
                 }, DispatcherPriority.Loaded);
             }
             catch (Exception ex)
             {
-                return new System.IO.IOException($"Dispatcher Unable to load {filename}", ex);
+                return new System.IO.IOException($"Dispatcher Unable to load {fileName}", ex);
             }
             return null;
         }
