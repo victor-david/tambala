@@ -7,68 +7,82 @@
     <!-- OnOff Template/Style  -->
     <!-- ##################### -->
     <ControlTemplate x:Key="OnOffMainControlTemplate" TargetType="con:OnOff">
-        <Grid>
+        <!-- Transparent background allows hit testing everywhere; otherwise, can't click between text and the bar-->
+        <Grid Background="Transparent">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="62" />
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
+            
+            <!-- Left side text -->
             <TextBlock 
                 Grid.Column="0"
                 Margin="0,0,4,0"
                 VerticalAlignment="Center"
                 Foreground="{TemplateBinding OffTextBrush}"
                 Text="{TemplateBinding OffText}"/>
+
+            <!-- Connecting bar -->
             <Border 
                 Grid.Column="1"
+                Grid.ColumnSpan="3"
+                Margin="2,0"
                 Background="LightGray"
-                Height="4"
-                VerticalAlignment="Center"
-                CornerRadius="1">
-            </Border>
-            
-            <Border
-                x:Name="Thumb"
-                Grid.Column="1"
-                Background="#801D6FB4"
-                BorderBrush="#801D6FB4"
-                BorderThickness="2"
-                CornerRadius="1"
-                Height="17" Width="28">
-                
-               <Border
-                   Background="#FF1D6FB4"
-                   BorderBrush="#FF1D6FB4"
-                   CornerRadius="4"
-                   Height="8" Width="8"/>             
+                Height="{TemplateBinding BarHeight}"
+                Width="{TemplateBinding BarWidth}"
+                CornerRadius="3"
+                VerticalAlignment="Center">
             </Border>
 
+            <!-- Left side circle. Displayed when IsChecked is false -->
+            <Border
+                Name="Border0"
+                Grid.Column="1"
+                Height="{TemplateBinding SelectorSize}"
+                Width="{TemplateBinding SelectorSize}"
+                CornerRadius="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}}"
+                HorizontalAlignment="Left"
+                Background="{TemplateBinding Background}"/>
+
+            <!-- Right side circle. Displayed when IsChecked is true -->
+            <Border
+                Name="Border1"
+                Grid.Column="3"
+                Height="{TemplateBinding SelectorSize}"
+                Width="{TemplateBinding SelectorSize}"
+                CornerRadius="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}}"
+                HorizontalAlignment="Right"
+                Background="{TemplateBinding Foreground}"
+                Visibility="Collapsed"/>
+
+            <!-- Right side text -->
             <TextBlock
-                Grid.Column="2"
+                Grid.Column="4"
                 Margin="4,0,0,0"
                 VerticalAlignment="Center"
                 Foreground="{TemplateBinding OnTextBrush}"
                 Text="{TemplateBinding OnText}"/>
         </Grid>
+
         <ControlTemplate.Triggers>
-            <Trigger Property="IsChecked" Value="False">
-                <Setter Property="HorizontalAlignment" Value="Left" TargetName="Thumb"/>
-            </Trigger>
             <Trigger Property="IsChecked" Value="True">
-                <Setter Property="HorizontalAlignment" Value="Right" TargetName="Thumb"/>
+                <Setter TargetName="Border0" Property="Visibility" Value="Collapsed"/>
+                <Setter TargetName="Border1" Property="Visibility" Value="Visible"/>
             </Trigger>
             <Trigger Property="IsChecked" Value="{x:Null}">
-                <Setter Property="HorizontalAlignment" Value="Center" TargetName="Thumb"/>
+                <Setter TargetName="Border0" Property="Visibility" Value="Collapsed"/>
+                <Setter TargetName="Border1" Property="Visibility" Value="Collapsed"/>
             </Trigger>
-
         </ControlTemplate.Triggers>
+        
     </ControlTemplate>
 
     <ControlTemplate x:Key="OnOffBoxControlTemplate" TargetType="con:OnOff">
-        <Grid>
+        <!-- Transparent background allows hit testing everywhere; otherwise, can't click between text and the circle-->
+        <Grid Background="Transparent">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="24"/>
                 <ColumnDefinition Width="Auto"/>
@@ -76,8 +90,8 @@
 
             <Border
                 Name="Border0"
-                Height="{TemplateBinding CheckBoxSize}"
-                Width="{TemplateBinding CheckBoxSize}"
+                Height="{TemplateBinding SelectorSize}"
+                Width="{TemplateBinding SelectorSize}"
                 CornerRadius="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}}"
                 BorderBrush="{DynamicResource DefaultBorderBrush}"
                 BorderThickness="1"
@@ -85,8 +99,8 @@
 
             <Border
                 Name="Border1"
-                Height="{TemplateBinding CheckBoxSize}"
-                Width="{TemplateBinding CheckBoxSize}"
+                Height="{TemplateBinding SelectorSize}"
+                Width="{TemplateBinding SelectorSize}"
                 CornerRadius="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}}"
                 BorderBrush="{DynamicResource DefaultBorderBrush}"
                 BorderThickness="1"
@@ -110,15 +124,16 @@
             <Trigger Property="IsChecked" Value="{x:Null}">
                 <Setter TargetName="Border0" Property="Visibility" Value="Visible"/>
                 <Setter TargetName="Border1" Property="Visibility" Value="Collapsed"/>
-                <Setter TargetName="Border0" Property="Background" Value="LightGreen"/>
+                <Setter TargetName="Border0" Property="Background" Value="#4000FF00"/>
             </Trigger>
-
         </ControlTemplate.Triggers>
 
     </ControlTemplate>
     
     <Style TargetType="con:OnOff">
         <Setter Property="Template" Value="{StaticResource OnOffMainControlTemplate}"/>
+        <Setter Property="Foreground" Value="#FF0060CE"/>
+        <Setter Property="Background" Value="#FF0060CE"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Style.Triggers>
             <Trigger Property="IsCheckBox" Value="True">
@@ -129,8 +144,4 @@
         </Style.Triggers>
     </Style>
 
-    <!--<Style x:Key="OnOffBox" TargetType="con:OnOff">
-        <Setter Property="Template" Value="{StaticResource OnOffBoxControlTemplate}"/>
-        <Setter Property="Cursor" Value="Hand"/>
-    </Style>-->
 </ResourceDictionary>

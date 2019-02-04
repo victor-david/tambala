@@ -32,7 +32,7 @@
                 HorizontalAlignment="Right"
                 Id="Equalizer"
                 IsCheckBox="True"
-                CheckBoxSize="16"
+                SelectorSize="16"
                 IsChecked="{Binding IsActive, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
                 OnText="Active"
                 OnTextBrush="{DynamicResource SliderLabelTextBrush}"/>

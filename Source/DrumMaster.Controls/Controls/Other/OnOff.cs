@@ -11,6 +11,9 @@ namespace Restless.App.DrumMaster.Controls
     public class OnOff : ToggleButton
     {
         #region Private
+        private const double DefaultSelectorSize = 20.0;
+        private const double BarHeightPercentage = 0.65;
+        private const double BarWidthPercentage = 2.15;
         #endregion
 
         /************************************************************************/
@@ -74,33 +77,35 @@ namespace Restless.App.DrumMaster.Controls
 
         /************************************************************************/
 
-        #region CheckBoxSize
+        #region SelectorSize
         /// <summary>
-        /// Gets or sets the check box size. Used when <see cref="IsCheckBox"/> is true.
+        /// Gets or sets the selector size. The default is 20.0.
         /// </summary>
-        public double CheckBoxSize
+        public double SelectorSize
         {
-            get =>(double)GetValue(CheckBoxSizeProperty);
-            set => SetValue(CheckBoxSizeProperty, value);
+            get =>(double)GetValue(SelectorSizeProperty);
+            set => SetValue(SelectorSizeProperty, value);
         }
 
         /// <summary>
-        /// Identifies the <see cref="CheckBoxSize"/> dependency property
+        /// Identifies the <see cref="SelectorSize"/> dependency property
         /// </summary>
-        public static readonly DependencyProperty CheckBoxSizeProperty = DependencyProperty.Register
+        public static readonly DependencyProperty SelectorSizeProperty = DependencyProperty.Register
             (
-                nameof(CheckBoxSize), typeof(double), typeof(OnOff), new PropertyMetadata(20.0, OnCheckBoxSizeChanged, OnCheckBoxSizeCoerce)
+                nameof(SelectorSize), typeof(double), typeof(OnOff), new PropertyMetadata(DefaultSelectorSize, OnSelectorSizeChanged, OnSelectorSizeCoerce)
             );
 
-        private static void OnCheckBoxSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnSelectorSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is OnOff c)
             {
-                c.CornerRadius = c.CheckBoxSize / 2;
+                c.CornerRadius = c.SelectorSize / 2;
+                c.BarHeight = c.SelectorSize * BarHeightPercentage;
+                c.BarWidth = c.SelectorSize * BarWidthPercentage;
             }
         }
 
-        private static object OnCheckBoxSizeCoerce(DependencyObject d, object baseValue)
+        private static object OnSelectorSizeCoerce(DependencyObject d, object baseValue)
         {
             double proposed = Math.Abs(Math.Round((double)baseValue));
             proposed = Math.Min(48, Math.Max(16, proposed));
@@ -112,7 +117,7 @@ namespace Restless.App.DrumMaster.Controls
         }
 
         /// <summary>
-        /// Gets the corner radius associated with <see cref="CheckBoxSize"/>.
+        /// Gets the corner radius associated with <see cref="SelectorSize"/>.
         /// </summary>
         public double CornerRadius
         {
@@ -122,13 +127,56 @@ namespace Restless.App.DrumMaster.Controls
 
         private static readonly DependencyPropertyKey CornerRadiusPropertyKey = DependencyProperty.RegisterReadOnly
             (
-                nameof(CornerRadius), typeof(double), typeof(OnOff), new PropertyMetadata(10.0)
+                nameof(CornerRadius), typeof(double), typeof(OnOff), new PropertyMetadata(DefaultSelectorSize / 2)
             );
 
         /// <summary>
         /// Identifies the <see cref="CornerRadius"/> dependency property
         /// </summary>
         public static readonly DependencyProperty CornerRadiusProperty = CornerRadiusPropertyKey.DependencyProperty;
+        #endregion
+
+        /************************************************************************/
+
+        #region BarHeight / BarWidth
+        /// <summary>
+        /// Gets the bar height associated with <see cref="SelectorSize"/>.
+        /// </summary>
+        public double BarHeight
+        {
+            get => (double)GetValue(BarHeightProperty);
+            private set => SetValue(BarHeightPropertyKey, value);
+        }
+
+        private static readonly DependencyPropertyKey BarHeightPropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(BarHeight), typeof(double), typeof(OnOff), new PropertyMetadata(DefaultSelectorSize * BarHeightPercentage)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="BarHeight"/> dependency property
+        /// </summary>
+        public static readonly DependencyProperty BarHeightProperty = BarHeightPropertyKey.DependencyProperty;
+
+        /// <summary>
+        /// Gets the bar width associated with <see cref="SelectorSize"/>.
+        /// </summary>
+        public double BarWidth
+        {
+            get => (double)GetValue(BarWidthProperty);
+            private set => SetValue(BarWidthPropertyKey, value);
+        }
+
+        private static readonly DependencyPropertyKey BarWidthPropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(BarWidth), typeof(double), typeof(OnOff), new PropertyMetadata(DefaultSelectorSize * BarWidthPercentage)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="BarWidth"/> dependency property
+        /// </summary>
+        public static readonly DependencyProperty BarWidthProperty = BarWidthPropertyKey.DependencyProperty;
+
 
         #endregion
 
