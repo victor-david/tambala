@@ -287,7 +287,10 @@ namespace Restless.App.DrumMaster.Controls
             Visibility = QuarterNote <= maxQuarter && otherCondition ? Visibility.Visible : Visibility.Collapsed;
         }
 
-
+        /// <summary>
+        /// Sets the sliders in the velocity quarter. Called when changing the selected instrument controller.
+        /// </summary>
+        /// <param name="velocityQuarter">The velocity quarter.</param>
         internal void SyncToVelocity(DrumPatternQuarter velocityQuarter)
         {
             if (velocityQuarter == null || velocityQuarter.QuarterType != DrumPatternQuarterType.VelocitySelector)

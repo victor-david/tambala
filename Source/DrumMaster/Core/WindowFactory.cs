@@ -38,6 +38,7 @@ namespace Restless.App.DrumMaster.Core
             /// <summary>
             /// Creates an instance of AudioRenderWindow and its corresponding view model.
             /// </summary>
+            /// <param name="projectContainer">The project container associated with the window.</param>
             /// <returns>The window</returns>
             public static AudioRenderWindow Create(ProjectContainer projectContainer)
             {

@@ -28,6 +28,7 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="SongPresenter"/> class.
         /// </summary>
+        /// <param name="owner">The song container that owns this instance.</param>
         internal SongPresenter(SongContainer owner)
         {
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));

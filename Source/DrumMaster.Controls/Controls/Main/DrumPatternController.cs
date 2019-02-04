@@ -25,6 +25,7 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="DrumPatternController"/> class.
         /// </summary>
+        /// <param name="owner">The drum pattern that owns this instance.</param>
         internal DrumPatternController(DrumPattern owner)
         {
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));

@@ -67,7 +67,7 @@ namespace Restless.App.DrumMaster.Controls.Core
         /// Gets the count of <see cref="PointSelector"/> objects
         /// that are currently selected.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The number of selectors that are currently selected.</returns>
         internal int GetSelectedCount()
         {
             int count = 0;

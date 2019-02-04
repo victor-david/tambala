@@ -57,6 +57,9 @@ namespace Restless.App.DrumMaster.Controls.Audio
         //    private set;
         //}
 
+        /// <summary>
+        /// Gets the collection of drum kits.
+        /// </summary>
         internal DrumKitCollection DrumKits
         {
             get;

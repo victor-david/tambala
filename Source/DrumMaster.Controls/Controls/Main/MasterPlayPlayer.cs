@@ -295,6 +295,10 @@ namespace Restless.App.DrumMaster.Controls
         /************************************************************************/
 
         #region Internal methods
+        /// <summary>
+        /// Adjusts the thread sleep time according to the specified tempo.
+        /// </summary>
+        /// <param name="tempo">The tempo.</param>
         internal void SetTempo(double tempo)
         {
             int tempoInt = (int)tempo;

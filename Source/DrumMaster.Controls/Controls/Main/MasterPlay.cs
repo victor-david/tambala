@@ -22,6 +22,7 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="MasterPlay"/> class.
         /// </summary>
+        /// <param name="owner">The project container that owns this instance.</param>
         internal MasterPlay(ProjectContainer owner)
         {
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));

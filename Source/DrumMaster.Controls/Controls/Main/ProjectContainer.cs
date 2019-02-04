@@ -453,6 +453,9 @@ namespace Restless.App.DrumMaster.Controls
             }
         }
 
+        /// <summary>
+        /// Changes the height of the song container
+        /// </summary>
         internal void ChangeSongContainerHeight()
         {
             isSongContainerChangeInProgress = true;

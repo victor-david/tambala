@@ -44,6 +44,11 @@ namespace Restless.App.DrumMaster.Controls.Core
 #endif
         }
 
+        /// <summary>
+        /// Displays information about a routed event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The routed event args.</param>
         public static void DisplayRoutedEvent(object sender, RoutedEventArgs e)
         {
 #if DEBUG

@@ -96,7 +96,7 @@ namespace Restless.App.DrumMaster.Controls
         /// <summary>
         /// Gets a string representation of this object.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A string that describes this object.</returns>
         public override string ToString()
         {
             return $"{nameof(VisualTick)} Unit:{SelectorUnit} Position:{Position}";

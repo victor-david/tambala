@@ -83,8 +83,8 @@ namespace Restless.App.DrumMaster.Controls.Core
         /// <summary>
         /// Gets a boolean value that indicates if the specified drum kit exists in the collection.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">The id of the drum kit to check.</param>
+        /// <returns>true if the drum kit with the specified id exists; otherwise, false.</returns>
         public bool ContainsDrumKit(string id)
         {
             foreach (DrumKit kit in this)

@@ -119,7 +119,7 @@ namespace Restless.App.DrumMaster.Core
         /// <summary>
         /// Toggles the specifed view model between activated and deactivated.
         /// </summary>
-        /// <param name="vm"></param>
+        /// <param name="vm">The view model to toggle.</param>
         public void ToggleActivation(WorkspaceViewModel vm)
         {
             if (vm != null)
@@ -181,6 +181,7 @@ namespace Restless.App.DrumMaster.Core
         /// A derived class can override this method to perform update actions.
         /// The base implementation does nothing.
         /// </summary>
+        /// <param name="vm">The view model that is being toggled.</param>
         protected virtual void OnActivationToggled(WorkspaceViewModel vm)
         {
         }

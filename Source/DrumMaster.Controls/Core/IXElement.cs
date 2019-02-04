@@ -2,6 +2,9 @@
 
 namespace Restless.App.DrumMaster.Controls.Core
 {
+    /// <summary>
+    /// Defines methods for controls that can save and restore their state using XElements.
+    /// </summary>
     interface IXElement
     {
         /// <summary>
