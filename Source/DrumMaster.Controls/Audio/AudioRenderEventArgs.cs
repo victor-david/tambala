@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Restless.App.DrumMaster.Controls.Audio
 {
     /// <summary>
-    /// Provides event arguments for the <see cref="TrackContainer.RenderCompleted"/> event.
+    /// Provides event arguments for the for audio render.
     /// </summary>
     public class AudioRenderEventArgs : EventArgs
     {
