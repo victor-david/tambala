@@ -44,13 +44,14 @@
                         <!-- Close -->
                         <ColumnDefinition Width="44"/>
                         <!-- Space at the end -->
-                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="6"/>
                     </Grid.ColumnDefinitions>
                     
                     <Image Source="{TemplateBinding IconImageSource}" Height="28" Margin="4,0,0,0"/>
                     <TextBlock Grid.Column="1" Text="{TemplateBinding Title}"/>
                     
                     <Button
+                        Name="MinimizeButton"
                         Grid.Column="2"
                         Margin="2"
                         Style="{DynamicResource ButtonBaseFlat}"
@@ -61,6 +62,7 @@
                     </Button>
                     
                     <Button
+                        Name="RestoreButton"
                         Grid.Column="3"
                         Margin="2"
                         Style="{DynamicResource ButtonBaseFlat}"
@@ -71,6 +73,7 @@
                     </Button>
                     
                     <Button
+                        Name="MaximizeButton"
                         Grid.Column="4"
                         Margin="2"
                         Style="{DynamicResource ButtonBaseFlat}"
@@ -86,7 +89,7 @@
                         Style="{DynamicResource ButtonBaseFlat}"
                         WindowChrome.IsHitTestVisibleInChrome="True"
                         Command="{TemplateBinding CloseCommand}"
-                        ToolTip="Close the application">
+                        ToolTip="Close the window">
                         <Image Source="{TemplateBinding CloseImageSource}" Height="16"/>
                     </Button>
                 </Grid>
@@ -104,6 +107,15 @@
             </Trigger>
             <Trigger Property="WindowState" Value="Normal">
                 <Setter TargetName="ColRestore" Property="Width" Value="0"/>
+            </Trigger>
+            <Trigger Property="ResizeMode" Value="CanMinimize">
+                <Setter TargetName="RestoreButton" Property="IsEnabled" Value="False"/>
+                <Setter TargetName="MaximizeButton" Property="IsEnabled" Value="False"/>
+            </Trigger>
+            <Trigger Property="ResizeMode" Value="NoResize">
+                <Setter TargetName="MinimizeButton" Property="Visibility" Value="Collapsed"/>
+                <Setter TargetName="RestoreButton" Property="Visibility" Value="Collapsed"/>
+                <Setter TargetName="MaximizeButton" Property="Visibility" Value="Collapsed"/>
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>

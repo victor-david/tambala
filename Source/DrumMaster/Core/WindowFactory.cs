@@ -51,6 +51,29 @@ namespace Restless.App.DrumMaster.Core
                 return window;
             }
         }
+
+        /// <summary>
+        /// Provides static methods for creating the about window.
+        /// </summary>
+        public static class About
+        {
+            /// <summary>
+            /// Creates an instance of AboutWindow and its corresponding view model.
+            /// </summary>
+            /// <returns>The window</returns>
+            public static AboutWindow Create()
+            {
+                var window = new AboutWindow
+                {
+                    Owner = Application.Current.MainWindow
+                };
+                TextOptions.SetTextFormattingMode(window);
+                var viewModel = new AboutWindowViewModel(window);
+                window.DataContext = viewModel;
+                return window;
+            }
+
+        }
         #endregion
 
         /************************************************************************/

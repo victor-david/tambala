@@ -129,6 +129,9 @@
   <data name="DialogTitleSaveFile" xml:space="preserve">
     <value>Select the file to save</value>
   </data>
+  <data name="MenuItemAbout" xml:space="preserve">
+    <value>About</value>
+  </data>
   <data name="MenuItemAlwaysOnTop" xml:space="preserve">
     <value>Always on top</value>
   </data>
@@ -144,6 +147,9 @@
   </data>
   <data name="MenuItemFile" xml:space="preserve">
     <value>File</value>
+  </data>
+  <data name="MenuItemHelp" xml:space="preserve">
+    <value>Help</value>
   </data>
   <data name="MenuItemNew" xml:space="preserve">
     <value>New</value>
@@ -162,6 +168,9 @@
   </data>
   <data name="MenuItemView" xml:space="preserve">
     <value>View</value>
+  </data>
+  <data name="MenuItemWebSite" xml:space="preserve">
+    <value>Visit web site</value>
   </data>
   <data name="MessageConfirmSave" xml:space="preserve">
     <value>Do you want to save the changes you made to</value>

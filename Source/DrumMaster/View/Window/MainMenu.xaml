@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:r="clr-namespace:Restless.App.DrumMaster.Resources"
     mc:Ignorable="d" 
-    d:DesignHeight="30" d:DesignWidth="300">
+    d:DesignHeight="30" d:DesignWidth="500">
     
     <UserControl.Resources>
         <Style TargetType="Menu">
@@ -38,9 +38,12 @@
             <Separator/>
             <MenuItem Header="{x:Static r:Strings.MenuItemExit}" Style="{StaticResource L1}" Command="{Binding Commands[CloseApp]}" />
         </MenuItem>
+        <!-- MenuItemEdit. Not in use yet. -->
+        <!--
         <MenuItem Header="{x:Static r:Strings.MenuItemEdit}" Style="{StaticResource L0}">
             <MenuItem Header="{x:Static r:Strings.MenuItemSettings}" Style="{StaticResource L1}" Command="{Binding Commands[EditSettings]}" />
         </MenuItem>
+        -->
         <MenuItem Header="{x:Static r:Strings.MenuItemView}" Style="{StaticResource L0}">
             <MenuItem 
                 Header="{x:Static r:Strings.MenuItemAlwaysOnTop}"
@@ -48,6 +51,11 @@
                 Command="{Binding Commands[ViewAlwaysOnTop]}"
                 IsChecked="{Binding IsTopMost,Mode=OneWay}"/>
         </MenuItem>
+        <MenuItem Header="{x:Static r:Strings.MenuItemHelp}" Style="{StaticResource L0}">
+            <MenuItem Header="{x:Static r:Strings.MenuItemAbout}" Style="{StaticResource L1}" Command="{Binding Commands[About]}" />
+        </MenuItem>
+
+
     </Menu>
     
 </UserControl>

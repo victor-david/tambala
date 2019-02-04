@@ -56,8 +56,8 @@ namespace Restless.App.DrumMaster.ViewModel
             Commands.Add("CloseSong", RunCloseSongCommand, CanRunCloseSongCommand);
             Commands.Add("EditSettings", RunEditSettingsCommand);
             Commands.Add("ViewAlwaysOnTop", (p)=> IsTopMost = !IsTopMost);
+            Commands.Add("About", RunOpenAboutCommand);
             Commands.Add("CloseApp", (p) => WindowOwner.Close());
-
         }
         #endregion
 
@@ -131,6 +131,11 @@ namespace Restless.App.DrumMaster.ViewModel
                 ProjectContainer.Deactivate();
                 ProjectContainer = null;
             }
+        }
+
+        private void RunOpenAboutCommand(object parm)
+        {
+            WindowFactory.About.Create().ShowDialog();
         }
 
         private bool IsOkayToClose()

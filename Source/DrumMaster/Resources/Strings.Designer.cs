@@ -97,6 +97,15 @@ namespace Restless.App.DrumMaster.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        public static string MenuItemAbout {
+            get {
+                return ResourceManager.GetString("MenuItemAbout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Always on top.
         /// </summary>
         public static string MenuItemAlwaysOnTop {
@@ -138,6 +147,15 @@ namespace Restless.App.DrumMaster.Resources {
         public static string MenuItemFile {
             get {
                 return ResourceManager.GetString("MenuItemFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Help.
+        /// </summary>
+        public static string MenuItemHelp {
+            get {
+                return ResourceManager.GetString("MenuItemHelp", resourceCulture);
             }
         }
         
@@ -192,6 +210,15 @@ namespace Restless.App.DrumMaster.Resources {
         public static string MenuItemView {
             get {
                 return ResourceManager.GetString("MenuItemView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visit web site.
+        /// </summary>
+        public static string MenuItemWebSite {
+            get {
+                return ResourceManager.GetString("MenuItemWebSite", resourceCulture);
             }
         }
         
