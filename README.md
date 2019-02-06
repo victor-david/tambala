@@ -29,3 +29,9 @@ It's not neccessary to focus on a single instrument to adjust its individual vel
 but it can be helpful.
 
 ![Tambala Screenshot #2](/docs/img/tambala.2.jpg)
+
+### Acknowledgements
+Many thanks to the following persons and projects. Without their work, this project wouldn't have been possible.
+
+* [SharpDx](https://github.com/sharpdx/SharpDX)
+* [NAudio](https://github.com/naudio/NAudio)
