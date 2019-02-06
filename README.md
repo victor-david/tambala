@@ -18,3 +18,14 @@ You can use it to create drum tracks for inclusion in other projects or to study
 * Combine patterns into a song. You select at which point each pattern (or patterns) play.
 * Set overall tempo and volume.
 * Make all adjustments while the pattern or song is playing.
+
+### Screen Shots
+This screenshot shows the overall layout
+
+![Tambala Screenshot #1](/docs/img/tambala.1.jpg)
+
+This screenshot shows one instrument focus mode with its corresponding velocity sliders.
+It's not neccessary to focus on a single instrument to adjust its individual velocities,
+but it can be helpful.
+
+![Tambala Screenshot #2](/docs/img/tambala.2.jpg)
