@@ -3,7 +3,7 @@ Tambala is an advanced drum pattern and song generator for Windows.
 You can create various patterns using different drum kits and combine them in various ways.
 You can use it to create drum tracks for inclusion in other projects or to study rhythms that you're interested in.
 
-## Features - You can:
+### Features - You can:
 
 * Establish multiple drum patterns per project.
 * Assign each drum pattern its own drum kit made up of different instruments.
