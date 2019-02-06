@@ -223,7 +223,7 @@ namespace Restless.App.Tambala.ViewModel
                 sb.AppendLine();
                 sb.AppendLine(ex.InnerException.Message);
             }
-            MessageBox.Show(sb.ToString(), Strings.MessageDrumMaster);
+            MessageBox.Show(sb.ToString(), Strings.ApplicationName);
         }
         #endregion
     }

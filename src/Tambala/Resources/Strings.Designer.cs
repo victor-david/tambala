@@ -61,6 +61,15 @@ namespace Restless.App.Tambala.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tambala.
+        /// </summary>
+        public static string ApplicationName {
+            get {
+                return ResourceManager.GetString("ApplicationName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Wave files.
         /// </summary>
         public static string CaptionWaveFile {
@@ -228,15 +237,6 @@ namespace Restless.App.Tambala.Resources {
         public static string MessageConfirmSave {
             get {
                 return ResourceManager.GetString("MessageConfirmSave", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Drum Master.
-        /// </summary>
-        public static string MessageDrumMaster {
-            get {
-                return ResourceManager.GetString("MessageDrumMaster", resourceCulture);
             }
         }
         
