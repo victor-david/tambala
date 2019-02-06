@@ -18,7 +18,7 @@
     <HtmlHelpName>Tambala.Reference</HtmlHelpName>
     <Language>en-US</Language>
     <DocumentationSources>
-      <DocumentationSource sourceFile="Source\Tambala.sln" />
+      <DocumentationSource sourceFile="src\Tambala.sln" />
     </DocumentationSources>
     <HelpFileVersion>1.0.0.0</HelpFileVersion>
     <MaximumGroupParts>2</MaximumGroupParts>
@@ -41,14 +41,13 @@
     <CleanIntermediates>True</CleanIntermediates>
     <VisibleItems>InheritedMembers, Internals, Protected, ProtectedInternalAsProtected</VisibleItems>
     <ApiFilter>
-      <Filter entryType="Namespace" fullName="" isExposed="False" xmlns="" />
-      <Filter entryType="Namespace" fullName="Restless.App.DrumMaster.View" isExposed="True" xmlns="">
-        <Filter entryType="Class" fullName="Restless.App.DrumMaster.View.MainWindow" filterName="MainWindow" isExposed="True">
-          <Filter entryType="Method" fullName="Restless.App.DrumMaster.View.MainWindow._CreateDelegate" filterName="_CreateDelegate" isExposed="False" />
-        </Filter>
-      </Filter>
-      <Filter entryType="Namespace" fullName="XamlGeneratedNamespace" isExposed="False" xmlns="" />
-    </ApiFilter>
+      <Filter entryType="Namespace" fullName="" isExposed="False" />
+<Filter entryType="Namespace" fullName="Restless.App.DrumMaster.View" isExposed="True">
+  <Filter entryType="Class" fullName="Restless.App.DrumMaster.View.MainWindow" filterName="MainWindow" isExposed="True">
+    <Filter entryType="Method" fullName="Restless.App.DrumMaster.View.MainWindow._CreateDelegate" filterName="_CreateDelegate" isExposed="False" />
+  </Filter>
+</Filter>
+<Filter entryType="Namespace" fullName="XamlGeneratedNamespace" isExposed="False" /></ApiFilter>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
 			 the build.  The others are optional common platform types that may appear. -->
