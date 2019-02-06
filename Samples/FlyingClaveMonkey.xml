@@ -8,7 +8,7 @@
     <IsMuted>false</IsMuted>
   </MasterOutput>
   <MasterPlay>
-    <PlayMode>Song</PlayMode>
+    <PlayMode>Pattern</PlayMode>
     <MetronomeFrequency>1</MetronomeFrequency>
   </MasterPlay>
   <SongContainer>
@@ -58,7 +58,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Clap (Dry)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Clap.Dry.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Clap.Dry.wav</AudioName>
           <Type>Percussion</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -103,7 +103,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Cowbell</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Cowbell.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Cowbell.wav</AudioName>
           <Type>Percussion</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -148,7 +148,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Cymbal (Bell)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Cymbal.Bell.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Cymbal.Bell.wav</AudioName>
           <Type>Cymbal</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -189,7 +189,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Cymbal (Crash, jazz)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Cymbal.Crash.Jazz.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Cymbal.Crash.Jazz.wav</AudioName>
           <Type>Cymbal</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -226,7 +226,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Cymbal (Crash, light)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Cymbal.Crash.Light.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Cymbal.Crash.Light.wav</AudioName>
           <Type>Cymbal</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -263,7 +263,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Cymbal (Jazz)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Cymbal.Jazz.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Cymbal.Jazz.wav</AudioName>
           <Type>Cymbal</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -300,7 +300,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>High Hat (Closed, dry)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.HighHat.Closed.Dry.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.HighHat.Closed.Dry.wav</AudioName>
           <Type>HighHat</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -337,7 +337,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>High Hat (Closed, wet)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.HighHat.Closed.Wet.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.HighHat.Closed.Wet.wav</AudioName>
           <Type>HighHat</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -376,7 +376,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>High Hat (Pedal, dry)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.HighHat.Pedal.Dry.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.HighHat.Pedal.Dry.wav</AudioName>
           <Type>HighHat</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -413,7 +413,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Kick (Dry)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Kick.Dry.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Kick.Dry.wav</AudioName>
           <Type>Kick</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -454,7 +454,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Snare (Jazz)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Snare.Jazz.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Snare.Jazz.wav</AudioName>
           <Type>Snare</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -507,7 +507,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Snare (Side stick)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Snare.SideStick.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Snare.SideStick.wav</AudioName>
           <Type>Snare</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -549,7 +549,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Snare (Wet)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Snare.Wet.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Snare.Wet.wav</AudioName>
           <Type>Snare</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -586,7 +586,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Tom (High)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Tom.Rock.High.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Tom.Rock.High.wav</AudioName>
           <Type>Tom</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -623,7 +623,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Tom (Low)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Tom.Rock.Low.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Tom.Rock.Low.wav</AudioName>
           <Type>Tom</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -660,7 +660,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Tom (Mid)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Tom.Rock.Mid.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Tom.Rock.Mid.wav</AudioName>
           <Type>Tom</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -720,7 +720,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Clap (Dry)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Clap.Dry.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Clap.Dry.wav</AudioName>
           <Type>Percussion</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -757,7 +757,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Cowbell</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Cowbell.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Cowbell.wav</AudioName>
           <Type>Percussion</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -794,7 +794,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Cymbal (Bell)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Cymbal.Bell.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Cymbal.Bell.wav</AudioName>
           <Type>Cymbal</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -831,7 +831,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Cymbal (Crash, jazz)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Cymbal.Crash.Jazz.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Cymbal.Crash.Jazz.wav</AudioName>
           <Type>Cymbal</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -868,7 +868,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Cymbal (Crash, light)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Cymbal.Crash.Light.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Cymbal.Crash.Light.wav</AudioName>
           <Type>Cymbal</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -905,7 +905,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Cymbal (Jazz)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Cymbal.Jazz.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Cymbal.Jazz.wav</AudioName>
           <Type>Cymbal</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -942,7 +942,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>High Hat (Closed, dry)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.HighHat.Closed.Dry.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.HighHat.Closed.Dry.wav</AudioName>
           <Type>HighHat</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -979,7 +979,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>High Hat (Closed, wet)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.HighHat.Closed.Wet.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.HighHat.Closed.Wet.wav</AudioName>
           <Type>HighHat</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1016,7 +1016,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>High Hat (Pedal, dry)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.HighHat.Pedal.Dry.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.HighHat.Pedal.Dry.wav</AudioName>
           <Type>HighHat</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1053,7 +1053,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Kick (Dry)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Kick.Dry.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Kick.Dry.wav</AudioName>
           <Type>Kick</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1091,7 +1091,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Snare (Jazz)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Snare.Jazz.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Snare.Jazz.wav</AudioName>
           <Type>Snare</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1128,7 +1128,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Snare (Side stick)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Snare.SideStick.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Snare.SideStick.wav</AudioName>
           <Type>Snare</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1165,7 +1165,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Snare (Wet)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Snare.Wet.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Snare.Wet.wav</AudioName>
           <Type>Snare</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1209,7 +1209,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Tom (High)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Tom.Rock.High.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Tom.Rock.High.wav</AudioName>
           <Type>Tom</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1246,7 +1246,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Tom (Low)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Tom.Rock.Low.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Tom.Rock.Low.wav</AudioName>
           <Type>Tom</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1283,7 +1283,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Tom (Mid)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Tom.Rock.Mid.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Tom.Rock.Mid.wav</AudioName>
           <Type>Tom</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1343,7 +1343,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Clap (Dry)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Clap.Dry.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Clap.Dry.wav</AudioName>
           <Type>Percussion</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1380,7 +1380,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Cowbell</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Cowbell.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Cowbell.wav</AudioName>
           <Type>Percussion</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1417,7 +1417,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Cymbal (Bell)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Cymbal.Bell.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Cymbal.Bell.wav</AudioName>
           <Type>Cymbal</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1454,7 +1454,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Cymbal (Crash, jazz)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Cymbal.Crash.Jazz.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Cymbal.Crash.Jazz.wav</AudioName>
           <Type>Cymbal</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1491,7 +1491,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Cymbal (Crash, light)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Cymbal.Crash.Light.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Cymbal.Crash.Light.wav</AudioName>
           <Type>Cymbal</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1528,7 +1528,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Cymbal (Jazz)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Cymbal.Jazz.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Cymbal.Jazz.wav</AudioName>
           <Type>Cymbal</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1565,7 +1565,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>High Hat (Closed, dry)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.HighHat.Closed.Dry.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.HighHat.Closed.Dry.wav</AudioName>
           <Type>HighHat</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1602,7 +1602,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>High Hat (Closed, wet)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.HighHat.Closed.Wet.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.HighHat.Closed.Wet.wav</AudioName>
           <Type>HighHat</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1639,7 +1639,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>High Hat (Pedal, dry)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.HighHat.Pedal.Dry.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.HighHat.Pedal.Dry.wav</AudioName>
           <Type>HighHat</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1676,7 +1676,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Kick (Dry)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Kick.Dry.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Kick.Dry.wav</AudioName>
           <Type>Kick</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1713,7 +1713,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Snare (Jazz)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Snare.Jazz.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Snare.Jazz.wav</AudioName>
           <Type>Snare</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1750,7 +1750,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Snare (Side stick)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Snare.SideStick.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Snare.SideStick.wav</AudioName>
           <Type>Snare</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1792,7 +1792,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Snare (Wet)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Snare.Wet.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Snare.Wet.wav</AudioName>
           <Type>Snare</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1829,7 +1829,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Tom (High)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Tom.Rock.High.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Tom.Rock.High.wav</AudioName>
           <Type>Tom</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1866,7 +1866,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Tom (Low)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Tom.Rock.Low.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Tom.Rock.Low.wav</AudioName>
           <Type>Tom</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1903,7 +1903,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Tom (Mid)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Tom.Rock.Mid.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Tom.Rock.Mid.wav</AudioName>
           <Type>Tom</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1963,7 +1963,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Clap (Dry)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Clap.Dry.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Clap.Dry.wav</AudioName>
           <Type>Percussion</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -2000,7 +2000,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Cowbell</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Cowbell.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Cowbell.wav</AudioName>
           <Type>Percussion</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -2037,7 +2037,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Cymbal (Bell)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Cymbal.Bell.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Cymbal.Bell.wav</AudioName>
           <Type>Cymbal</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -2074,7 +2074,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Cymbal (Crash, jazz)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Cymbal.Crash.Jazz.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Cymbal.Crash.Jazz.wav</AudioName>
           <Type>Cymbal</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -2111,7 +2111,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Cymbal (Crash, light)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Cymbal.Crash.Light.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Cymbal.Crash.Light.wav</AudioName>
           <Type>Cymbal</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -2148,7 +2148,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Cymbal (Jazz)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Cymbal.Jazz.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Cymbal.Jazz.wav</AudioName>
           <Type>Cymbal</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -2185,7 +2185,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>High Hat (Closed, dry)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.HighHat.Closed.Dry.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.HighHat.Closed.Dry.wav</AudioName>
           <Type>HighHat</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -2222,7 +2222,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>High Hat (Closed, wet)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.HighHat.Closed.Wet.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.HighHat.Closed.Wet.wav</AudioName>
           <Type>HighHat</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -2259,7 +2259,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>High Hat (Pedal, dry)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.HighHat.Pedal.Dry.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.HighHat.Pedal.Dry.wav</AudioName>
           <Type>HighHat</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -2296,7 +2296,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Kick (Dry)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Kick.Dry.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Kick.Dry.wav</AudioName>
           <Type>Kick</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -2333,7 +2333,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Snare (Jazz)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Snare.Jazz.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Snare.Jazz.wav</AudioName>
           <Type>Snare</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -2370,7 +2370,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Snare (Side stick)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Snare.SideStick.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Snare.SideStick.wav</AudioName>
           <Type>Snare</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -2407,7 +2407,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Snare (Wet)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Snare.Wet.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Snare.Wet.wav</AudioName>
           <Type>Snare</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -2444,7 +2444,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Tom (High)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Tom.Rock.High.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Tom.Rock.High.wav</AudioName>
           <Type>Tom</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -2481,7 +2481,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Tom (Low)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Tom.Rock.Low.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Tom.Rock.Low.wav</AudioName>
           <Type>Tom</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -2518,7 +2518,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Tom (Mid)</DisplayName>
-          <AudioName>Restless.App.DrumMaster.Data.Resources.DrumKit.Default.Tom.Rock.Mid.wav</AudioName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Tom.Rock.Mid.wav</AudioName>
           <Type>Tom</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -2568,7 +2568,600 @@
       <Gain2>0</Gain2>
       <Gain3>0</Gain3>
     </EqualizerController>
-    <DrumPatternPresenter />
+    <DrumPatternPresenter>
+      <InstrumentController>
+        <DisplayName>Clap (Dry)</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>Clap (Dry)</DisplayName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Clap.Dry.wav</AudioName>
+          <Type>Percussion</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>Cowbell</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>Cowbell</DisplayName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Cowbell.wav</AudioName>
+          <Type>Percussion</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>Cymbal (Bell)</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>Cymbal (Bell)</DisplayName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Cymbal.Bell.wav</AudioName>
+          <Type>Cymbal</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>Cymbal (Crash, jazz)</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>Cymbal (Crash, jazz)</DisplayName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Cymbal.Crash.Jazz.wav</AudioName>
+          <Type>Cymbal</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>Cymbal (Crash, light)</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>Cymbal (Crash, light)</DisplayName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Cymbal.Crash.Light.wav</AudioName>
+          <Type>Cymbal</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>Cymbal (Jazz)</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>Cymbal (Jazz)</DisplayName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Cymbal.Jazz.wav</AudioName>
+          <Type>Cymbal</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>High Hat (Closed, dry)</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>High Hat (Closed, dry)</DisplayName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.HighHat.Closed.Dry.wav</AudioName>
+          <Type>HighHat</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>High Hat (Closed, wet)</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>High Hat (Closed, wet)</DisplayName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.HighHat.Closed.Wet.wav</AudioName>
+          <Type>HighHat</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>High Hat (Pedal, dry)</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>High Hat (Pedal, dry)</DisplayName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.HighHat.Pedal.Dry.wav</AudioName>
+          <Type>HighHat</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>Kick (Dry)</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>Kick (Dry)</DisplayName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Kick.Dry.wav</AudioName>
+          <Type>Kick</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>Snare (Jazz)</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>Snare (Jazz)</DisplayName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Snare.Jazz.wav</AudioName>
+          <Type>Snare</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>Snare (Side stick)</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>Snare (Side stick)</DisplayName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Snare.SideStick.wav</AudioName>
+          <Type>Snare</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>Snare (Wet)</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>Snare (Wet)</DisplayName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Snare.Wet.wav</AudioName>
+          <Type>Snare</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>Tom (High)</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>Tom (High)</DisplayName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Tom.Rock.High.wav</AudioName>
+          <Type>Tom</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>Tom (Low)</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>Tom (Low)</DisplayName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Tom.Rock.Low.wav</AudioName>
+          <Type>Tom</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>Tom (Mid)</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>Tom (Mid)</DisplayName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Tom.Rock.Mid.wav</AudioName>
+          <Type>Tom</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+    </DrumPatternPresenter>
   </DrumPattern>
   <DrumPattern>
     <DisplayName>Pattern 6</DisplayName>
@@ -2590,6 +3183,599 @@
       <Gain2>0</Gain2>
       <Gain3>0</Gain3>
     </EqualizerController>
-    <DrumPatternPresenter />
+    <DrumPatternPresenter>
+      <InstrumentController>
+        <DisplayName>Clap (Dry)</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>Clap (Dry)</DisplayName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Clap.Dry.wav</AudioName>
+          <Type>Percussion</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>Cowbell</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>Cowbell</DisplayName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Cowbell.wav</AudioName>
+          <Type>Percussion</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>Cymbal (Bell)</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>Cymbal (Bell)</DisplayName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Cymbal.Bell.wav</AudioName>
+          <Type>Cymbal</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>Cymbal (Crash, jazz)</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>Cymbal (Crash, jazz)</DisplayName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Cymbal.Crash.Jazz.wav</AudioName>
+          <Type>Cymbal</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>Cymbal (Crash, light)</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>Cymbal (Crash, light)</DisplayName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Cymbal.Crash.Light.wav</AudioName>
+          <Type>Cymbal</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>Cymbal (Jazz)</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>Cymbal (Jazz)</DisplayName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Cymbal.Jazz.wav</AudioName>
+          <Type>Cymbal</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>High Hat (Closed, dry)</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>High Hat (Closed, dry)</DisplayName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.HighHat.Closed.Dry.wav</AudioName>
+          <Type>HighHat</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>High Hat (Closed, wet)</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>High Hat (Closed, wet)</DisplayName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.HighHat.Closed.Wet.wav</AudioName>
+          <Type>HighHat</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>High Hat (Pedal, dry)</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>High Hat (Pedal, dry)</DisplayName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.HighHat.Pedal.Dry.wav</AudioName>
+          <Type>HighHat</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>Kick (Dry)</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>Kick (Dry)</DisplayName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Kick.Dry.wav</AudioName>
+          <Type>Kick</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>Snare (Jazz)</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>Snare (Jazz)</DisplayName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Snare.Jazz.wav</AudioName>
+          <Type>Snare</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>Snare (Side stick)</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>Snare (Side stick)</DisplayName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Snare.SideStick.wav</AudioName>
+          <Type>Snare</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>Snare (Wet)</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>Snare (Wet)</DisplayName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Snare.Wet.wav</AudioName>
+          <Type>Snare</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>Tom (High)</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>Tom (High)</DisplayName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Tom.Rock.High.wav</AudioName>
+          <Type>Tom</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>Tom (Low)</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>Tom (Low)</DisplayName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Tom.Rock.Low.wav</AudioName>
+          <Type>Tom</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>Tom (Mid)</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>Tom (Mid)</DisplayName>
+          <AudioName>Restless.App.Tambala.Data.Resources.DrumKit.Default.Tom.Rock.Mid.wav</AudioName>
+          <Type>Tom</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+    </DrumPatternPresenter>
   </DrumPattern>
 </ProjectContainer>
