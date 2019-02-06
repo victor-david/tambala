@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Restless.App.Tambala.Controls.DrumPattern">
+    <Position X="0.5" Y="0.5" Width="2.25" />
+    <Members>
+      <Field Name="ControllerProperty" Hidden="true" />
+      <Field Name="ControllerPropertyKey" Hidden="true" />
+      <Field Name="PresenterProperty" Hidden="true" />
+      <Field Name="PresenterPropertyKey" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>ACAAIEKAAQBAAQSEABAAAAgAgAAAAEAAIIAAAAAAAAA=</HashCode>
+      <FileName>Controls\Main\DrumPattern.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Presenter" />
+      <Property Name="Controller" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Restless.App.Tambala.Controls.DrumPatternPresenter">
+    <Position X="7" Y="0.5" Width="2.75" />
+    <Members>
+      <Field Name="quarterNoteCount" Hidden="true" />
+      <Field Name="scale" Hidden="true" />
+      <Field Name="ticksPerQuarterNote" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>EAAAAAKIAAAAAAiESIAAAAgaACAAAEAGgAAAQAABCAk=</HashCode>
+      <FileName>Controls\Main\DrumPatternPresenter.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Controllers" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Restless.App.Tambala.Controls.DrumPatternController">
+    <Position X="3.75" Y="1.75" Width="2.75" />
+    <Members>
+      <Field Name="QuarterNoteCountChangedEvent" Hidden="true" />
+      <Field Name="QuarterNoteCountProperty" Hidden="true" />
+      <Field Name="ScaleChangedEvent" Hidden="true" />
+      <Field Name="ScaleProperty" Hidden="true" />
+      <Field Name="TicksPerQuarterNoteChangedEvent" Hidden="true" />
+      <Field Name="TicksPerQuarterNoteProperty" Hidden="true" />
+      <Field Name="TickValueTextProperty" Hidden="true" />
+      <Field Name="TickValueTextPropertyKey" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>ACCIPAKACABGAAAECCIgCIgAQEEAAMABAACAAAACEAA=</HashCode>
+      <FileName>Controls\Main\DrumPatternController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Restless.App.Tambala.Controls.InstrumentController">
+    <Position X="11" Y="0.5" Width="2.75" />
+    <Members>
+      <Field Name="channelCount" Hidden="true" />
+      <Field Name="channelVolumes" Hidden="true" />
+      <Field Name="InstrumentProperty" Hidden="true" />
+      <Field Name="isAudioEnabled" Hidden="true" />
+      <Field Name="owner" Hidden="true" />
+      <Field Name="PanAdjust" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>gAAAAAIAhAAAgEAAAAAAGAgACIAAAFgAkAAAAIEAAIA=</HashCode>
+      <FileName>Controls\Main\InstrumentController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Quarters" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Restless.App.Tambala.Controls.DrumPatternQuarter">
+    <Position X="11" Y="5" Width="2.75" />
+    <Members>
+      <Field Name="FullTickMap" Hidden="true" />
+      <Field Name="pointSelectors" Hidden="true" />
+      <Field Name="QuarterNoteProperty" Hidden="true" />
+      <Field Name="QuarterTypeProperty" Hidden="true" />
+      <Field Name="TickColumns" Hidden="true" />
+      <Field Name="TotalTicksProperty" Hidden="true" />
+      <Field Name="VisualProperty" Hidden="true" />
+      <Field Name="VisualPropertyKey" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAgAAICAAAREAAIgAEAAThgECAAAEAAABUAAIBIAAA=</HashCode>
+      <FileName>Controls\Main\DrumPatternQuarter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

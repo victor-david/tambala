@@ -1,0 +1,138 @@
+﻿<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:con="clr-namespace:Restless.App.Tambala.Controls">
+
+    <!-- ############################### -->
+    <!-- ProjectContainer Template/Style -->
+    <!-- ############################### -->
+    <ControlTemplate x:Key="ProjectContainerControlTemplate" TargetType="con:ProjectContainer">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition 
+                    Height="{Binding SongContainerHeight, RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}"
+                    MinHeight="{Binding SongContainerMinHeight, RelativeSource={RelativeSource TemplatedParent},Mode=OneTime}"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="1.75*" MinHeight="132"/>
+            </Grid.RowDefinitions>            
+           
+            <Grid.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="Margin" Value="0"/>
+                    <Setter Property="Padding" Value="3"/>
+                </Style>
+            </Grid.Resources>
+
+            <!-- Top row. Song space and master output -->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" MinWidth="132"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="180" MinWidth="136" MaxWidth="260"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Column="0" Grid.Row="0" BorderBrush="{DynamicResource DefaultBorderBrush}" BorderThickness="0,0,0,1">
+                    <ContentPresenter Content="{TemplateBinding MasterPlay}"/>
+                </Border>
+
+                <Border Grid.Column="0" Grid.Row="1">
+                    <ContentPresenter Content="{Binding SongContainer, RelativeSource={RelativeSource TemplatedParent}}"/>
+                </Border>
+                
+                <GridSplitter Grid.Column="1" Grid.RowSpan="2" Style="{DynamicResource VerticalGridSplitter}"/>
+
+                <Border Grid.Column="2" Grid.RowSpan="2">
+                    <ContentPresenter Content="{TemplateBinding MasterOutput}"/>
+                </Border>
+            </Grid>
+
+            <GridSplitter Grid.Row="1" Style="{DynamicResource HorizontalGridSplitter}"/>
+
+            <!-- Bottom row. Pattern / Drum kit selector / Mixer -->
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5*" MinWidth="252"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition 
+                        Width="{Binding MixerContainerWidth, RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}"
+                        MaxWidth="360"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Active drum pattern -->
+                <Border Grid.Column="0">
+                    <ContentPresenter Content="{TemplateBinding ActiveDrumPattern}"/>
+                </Border>
+
+                <GridSplitter Grid.Column="1" Style="{DynamicResource VerticalGridSplitter}"/>
+
+                <!-- Drum kits and equalizer -->
+                <Grid Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Drum kits -->
+                    <Border Grid.Row="0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition x:Name="rKits"/>
+                            </Grid.RowDefinitions>
+                            <Border Style="{DynamicResource HeaderBorder}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Button
+                                    Style="{DynamicResource ButtonBaseFlat}"
+                                    Command="{TemplateBinding ToggleExpandedCommand}">
+                                        <Image Source="{TemplateBinding ActiveExpandedStateImageSource}"/>
+                                    </Button>
+                                    <TextBlock Text="Kits"/>
+                                </StackPanel>
+                            </Border>
+                            <ListBox
+                                Grid.Row="1"
+                                Style="{DynamicResource ListBoxDrumKit}"
+                                ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                                ItemsSource="{Binding DrumKits, RelativeSource={RelativeSource TemplatedParent}}"
+                                SelectedValuePath="Id"
+                                SelectedValue="{Binding ActiveDrumPattern.DrumKitId, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        </Grid>
+                    </Border>
+                    
+                    <!-- Equalizer -->
+                    <Border Grid.Row="2">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Border Style="{DynamicResource HeaderBorder}">
+                                <TextBlock Text="Equalizer"/>
+                            </Border>
+                            <ContentPresenter 
+                                Grid.Row="1"
+                                Height="202"
+                                VerticalAlignment="Top"
+                                Content="{Binding ActiveDrumPattern.EqualizerController, RelativeSource={RelativeSource TemplatedParent}}"/>
+
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Grid>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsExpanded" Value="False">
+                <Setter TargetName="rKits" Property="Height" Value="0"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style TargetType="con:ProjectContainer">
+        <Setter Property="Template" Value="{StaticResource ProjectContainerControlTemplate}"/>
+    </Style>
+
+</ResourceDictionary>

@@ -1,0 +1,22 @@
+﻿<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:con="clr-namespace:Restless.App.Tambala.Controls">
+
+    <!-- ###################### -->
+    <!-- RationalTextBox Styles -->
+    <!-- ###################### -->
+    <Style x:Key="RationalTextBoxPatternNameEdit" TargetType="con:RationalTextBox">
+        <Setter Property="Margin" Value="0,0,20,0"/>
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="Foreground" Value="DarkBlue"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="BorderThickness" Value="2,0,0,1"/>
+        <Setter Property="BorderBrush" Value="DarkGray"/>
+        <Setter Property="Background" Value="{DynamicResource TextBoxBrush}"/>
+        <Setter Property="MaxLength" Value="32"/>
+        <Setter Property="AllowZeroLength" Value="False"/>
+        <Setter Property="ZeroLengthText" Value="Pattern"/>
+    </Style>
+</ResourceDictionary>

@@ -1,0 +1,25 @@
+﻿<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:con="clr-namespace:Restless.App.Tambala.Controls">
+
+    <!-- ######################## -->
+    <!-- DrumPatternQuarter Style -->
+    <!-- ######################## -->
+    <Style TargetType="con:DrumPatternQuarter">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="con:DrumPatternQuarter">
+                    <Border Name="b1" BorderBrush="{DynamicResource DefaultBorderBrush}" BorderThickness="0,0,0,2">
+                        <ContentPresenter Content="{TemplateBinding Visual}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="QuarterType" Value="VelocitySelector">
+                            <Setter TargetName="b1" Property="BorderThickness" Value="0"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
