@@ -13,6 +13,7 @@ You can use it to create drum tracks for inclusion in other projects or to study
 * Adjust the pitch of each instrument up or down three octaves.
 * Pan each instrument left or right.
 * Adjust the overall volume of each instrument.
+* Mute an instrument.
 * Adjust the overall volume of each drum pattern.
 * Adjust EQ for each drum pattern.
 * Combine patterns into a song. You select at which point each pattern (or patterns) play.
@@ -20,8 +21,8 @@ You can use it to create drum tracks for inclusion in other projects or to study
 * **Make all adjustments** while the pattern or song is playing.
 
 ### Drum Kits
-Tambala has five built-in drum kits: Standard, Cuban, TR-808, Tribal, and Piano. As mentioned above, each pattern
-within a project can use a different drum kit if desired.
+Tambala has five built-in drum kits: Standard, Cuban, TR-808, Tribal, and Piano. As mentioned above, you can
+set each pattern within a project to use a different drum kit if you like.
 
 ### Screen Shots
 This screenshot shows the overall layout
