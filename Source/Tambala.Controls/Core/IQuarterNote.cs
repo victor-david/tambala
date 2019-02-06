@@ -1,4 +1,4 @@
-﻿namespace Restless.App.DrumMaster.Controls.Core
+﻿namespace Restless.App.Tambala.Controls.Core
 {
     /// <summary>
     /// Defines properties for classes that implement quarter note partitioning

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Restless.App.DrumMaster.Controls.Core
+namespace Restless.App.Tambala.Controls.Core
 {
     /// <summary>
     /// Defines properties for controls that implement volume bias

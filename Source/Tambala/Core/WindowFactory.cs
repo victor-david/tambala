@@ -1,9 +1,9 @@
-﻿using Restless.App.DrumMaster.Controls;
-using Restless.App.DrumMaster.View;
-using Restless.App.DrumMaster.ViewModel;
+﻿using Restless.App.Tambala.Controls;
+using Restless.App.Tambala.View;
+using Restless.App.Tambala.ViewModel;
 using System.Windows;
 
-namespace Restless.App.DrumMaster.Core
+namespace Restless.App.Tambala.Core
 {
     /// <summary>
     /// Provides static methods for creating application windows.

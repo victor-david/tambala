@@ -1,11 +1,11 @@
-﻿using Restless.App.DrumMaster.Controls.Core;
+﻿using Restless.App.Tambala.Controls.Core;
 using System;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml.Linq;
 
-namespace Restless.App.DrumMaster.Controls
+namespace Restless.App.Tambala.Controls
 {
     /// <summary>
     /// Represents a control that provides master play / stop services.
@@ -26,8 +26,8 @@ namespace Restless.App.DrumMaster.Controls
         internal MasterPlay(ProjectContainer owner)
         {
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));
-            StartImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Start.64.png", UriKind.Relative));
-            StopImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Stop.64.png", UriKind.Relative));
+            StartImageSource = new BitmapImage(new Uri("/Tambala.Controls;component/Resources/Images/Image.Start.64.png", UriKind.Relative));
+            StopImageSource = new BitmapImage(new Uri("/Tambala.Controls;component/Resources/Images/Image.Stop.64.png", UriKind.Relative));
             ActivePlayImageSource = StartImageSource;
             Commands.Add("Play", new RelayCommand(RunPlayCommand));
             AddHandler(OnOff.ActiveValueChangedEvent, new RoutedEventHandler(OnOffActiveValueChanged));

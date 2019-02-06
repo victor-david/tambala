@@ -1,8 +1,8 @@
-﻿using Restless.App.DrumMaster.Core;
+﻿using Restless.App.Tambala.Core;
 using System;
 using System.Windows;
 
-namespace Restless.App.DrumMaster.ViewModel
+namespace Restless.App.Tambala.ViewModel
 {
     /// <summary>
     /// Represents a view model used by a window. This class must be inherited.

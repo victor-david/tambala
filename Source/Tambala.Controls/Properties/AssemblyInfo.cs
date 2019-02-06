@@ -6,12 +6,12 @@ using System.Windows;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Drum Master Controls")]
-[assembly: AssemblyDescription("Provides custom controls for the Drum Master application")]
+[assembly: AssemblyTitle("Tambala Controls")]
+[assembly: AssemblyDescription("Provides custom controls for the Tambala application")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Restless Animal Development")]
-[assembly: AssemblyProduct("DrumMaster.Controls")]
-[assembly: AssemblyCopyright("Copyright © Restless Animal Development 2018")]
+[assembly: AssemblyProduct("Tambala.Controls")]
+[assembly: AssemblyCopyright("Copyright © Restless Animal Development 2019 - Licensed under MIT")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

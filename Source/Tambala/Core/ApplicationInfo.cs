@@ -2,7 +2,7 @@
 using System.IO;
 using System.Reflection;
 
-namespace Restless.App.DrumMaster.Core
+namespace Restless.App.Tambala.Core
 {
     /// <summary>
     /// A singleton class that provides information about the application.

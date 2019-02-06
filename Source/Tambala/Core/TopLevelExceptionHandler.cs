@@ -1,4 +1,4 @@
-﻿using Restless.App.DrumMaster.Resources;
+﻿using Restless.App.Tambala.Resources;
 using System;
 using System.IO;
 using System.Reflection;
@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Restless.App.DrumMaster.Core
+namespace Restless.App.Tambala.Core
 {
     /// <summary>
     /// Represents a top level exception handler.

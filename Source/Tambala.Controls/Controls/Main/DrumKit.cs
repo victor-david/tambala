@@ -1,10 +1,10 @@
-﻿using Restless.App.DrumMaster.Controls.Audio;
-using Restless.App.DrumMaster.Controls.Core;
+﻿using Restless.App.Tambala.Controls.Audio;
+using Restless.App.Tambala.Controls.Core;
 using System;
 using System.Reflection;
 using System.Xml.Linq;
 
-namespace Restless.App.DrumMaster.Controls
+namespace Restless.App.Tambala.Controls
 {
     /// <summary>
     /// Represents a drum kit, a collection of playable instuments

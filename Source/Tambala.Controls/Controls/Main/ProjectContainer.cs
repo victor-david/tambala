@@ -1,13 +1,13 @@
-﻿using Restless.App.DrumMaster.Controls.Audio;
-using Restless.App.DrumMaster.Controls.Core;
-using Restless.App.DrumMaster.Controls.Resources;
+﻿using Restless.App.Tambala.Controls.Audio;
+using Restless.App.Tambala.Controls.Core;
+using Restless.App.Tambala.Controls.Resources;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using System.Xml.Linq;
 
-namespace Restless.App.DrumMaster.Controls
+namespace Restless.App.Tambala.Controls
 {
     /// <summary>
     /// Represents the top most container for a project. A project includes song arrangement, drum kit patterns, master output controls, etc.

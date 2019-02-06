@@ -1,9 +1,9 @@
-﻿using Restless.App.DrumMaster.Controls.Audio;
-using Restless.App.DrumMaster.Core;
+﻿using Restless.App.Tambala.Controls.Audio;
+using Restless.App.Tambala.Core;
 using System;
 using System.Windows;
 
-namespace Restless.App.DrumMaster
+namespace Restless.App.Tambala
 {
     /// <summary>
     /// Interaction logic for App.xaml

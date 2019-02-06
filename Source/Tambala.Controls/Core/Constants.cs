@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace Restless.App.DrumMaster.Controls.Core
+namespace Restless.App.Tambala.Controls.Core
 {
     /// <summary>
     /// Provides static constant values that are used throughout the control library.

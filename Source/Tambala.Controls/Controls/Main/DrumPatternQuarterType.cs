@@ -1,4 +1,4 @@
-﻿namespace Restless.App.DrumMaster.Controls
+﻿namespace Restless.App.Tambala.Controls
 {
     /// <summary>
     /// Provides values for the <see cref="DrumPatternQuarter.QuarterType"/> property.

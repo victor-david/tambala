@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Restless.App.DrumMaster.Controls.ProjectContainer">
+  <Class Name="Restless.App.Tambala.Controls.ProjectContainer">
     <Position X="4.25" Y="0.5" Width="2.5" />
     <Members>
       <Field Name="ActiveDrumPatternProperty" Hidden="true" />
@@ -26,7 +26,7 @@
       <Property Name="SongContainer" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="Restless.App.DrumMaster.Controls.SongContainer">
+  <Class Name="Restless.App.Tambala.Controls.SongContainer">
     <Position X="8" Y="0.5" Width="2.25" />
     <Members>
       <Field Name="ChangeContainerHeightImageSourceProperty" Hidden="true" />
@@ -43,7 +43,7 @@
       <Property Name="Owner" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="Restless.App.DrumMaster.Controls.ControlObject">
+  <Class Name="Restless.App.Tambala.Controls.ControlObject">
     <Position X="0.5" Y="0.5" Width="3.25" />
     <Members>
       <Field Name="ActiveExpandedStateImageSourceProperty" Hidden="true" />
@@ -63,7 +63,7 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Restless.App.DrumMaster.Controls.DrumPatternController">
+  <Class Name="Restless.App.Tambala.Controls.DrumPatternController">
     <Position X="8" Y="3.5" Width="2.5" />
     <Members>
       <Field Name="QuarterNoteCountChangedEvent" Hidden="true" />
@@ -78,7 +78,7 @@
       <FileName>Controls\Main\DrumPatternController.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Restless.App.DrumMaster.Controls.AudioControlBase">
+  <Class Name="Restless.App.Tambala.Controls.AudioControlBase">
     <Position X="4.25" Y="6.5" Width="3.25" />
     <Members>
       <Field Name="ActiveMutedImageSourceProperty" Hidden="true" />
@@ -98,7 +98,7 @@
       <Field Name="VolumeProperty" Hidden="true" />
       <Field Name="VolumeTextProperty" Hidden="true" />
     </Members>
-    <InheritanceLine Type="Restless.App.DrumMaster.Controls.ControlObject" ManuallyRouted="true" FixedToPoint="true">
+    <InheritanceLine Type="Restless.App.Tambala.Controls.ControlObject" ManuallyRouted="true" FixedToPoint="true">
       <Path>
         <Point X="3.75" Y="6" />
         <Point X="4" Y="6" />
@@ -111,7 +111,7 @@
       <FileName>Controls\Main\AudioControlBase.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Restless.App.DrumMaster.Controls.SongPresenter">
+  <Class Name="Restless.App.Tambala.Controls.SongPresenter">
     <Position X="11.5" Y="0.5" Width="2.25" />
     <Members>
       <Field Name="isSelectedBrush" Hidden="true" />

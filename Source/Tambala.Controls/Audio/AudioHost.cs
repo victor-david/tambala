@@ -1,9 +1,9 @@
-﻿using Restless.App.DrumMaster.Controls.Core;
+﻿using Restless.App.Tambala.Controls.Core;
 using SharpDX.XAudio2;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Restless.App.DrumMaster.Controls.Audio
+namespace Restless.App.Tambala.Controls.Audio
 {
     /// <summary>
     /// Manages the XAudio2 device, the mastering voice, and the voice pools for the audio.

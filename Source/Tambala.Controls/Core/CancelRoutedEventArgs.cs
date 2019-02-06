@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Restless.App.DrumMaster.Controls.Core
+namespace Restless.App.Tambala.Controls.Core
 {
     /// <summary>
     /// Represents the arguments used for a routed event that can ve canceled.

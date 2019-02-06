@@ -1,7 +1,7 @@
-﻿using Restless.App.DrumMaster.Controls;
+﻿using Restless.App.Tambala.Controls;
 using System;
 
-namespace Restless.App.DrumMaster.Core
+namespace Restless.App.Tambala.Core
 {
     /// <summary>
     /// Provides properties that are common to all view models. This class must be inherited.

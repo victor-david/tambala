@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Restless.App.DrumMaster.Core
+namespace Restless.App.Tambala.Core
 {
     /// <summary>
     /// Provides static utility methods

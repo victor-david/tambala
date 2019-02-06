@@ -1,10 +1,10 @@
-﻿using Restless.App.DrumMaster.Controls.Core;
+﻿using Restless.App.Tambala.Controls.Core;
 using System;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
 
-namespace Restless.App.DrumMaster.Controls
+namespace Restless.App.Tambala.Controls
 {
     /// <summary>
     /// Extends Border to provide a tick mark for a <see cref="DrumPatternQuarter"/>

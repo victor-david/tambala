@@ -1,5 +1,5 @@
-﻿using Restless.App.DrumMaster.Controls.Core;
-using Restless.App.DrumMaster.Data.Core;
+﻿using Restless.App.Tambala.Controls.Core;
+using Restless.App.Tambala.Data.Core;
 using SharpDX.IO;
 using SharpDX.Multimedia;
 using SharpDX.XAudio2;
@@ -7,7 +7,7 @@ using System;
 using System.Reflection;
 using System.Xml.Linq;
 
-namespace Restless.App.DrumMaster.Controls.Audio
+namespace Restless.App.Tambala.Controls.Audio
 {
     /// <summary>
     /// Represents a single instument including its type and audio buffer.

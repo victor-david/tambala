@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
-namespace Restless.App.DrumMaster.Controls
+namespace Restless.App.Tambala.Controls
 {
     /// <summary>
     /// Provides a panel to hold <see cref="BoxRadioButton"/> objects

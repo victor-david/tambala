@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Windows;
 
-namespace Restless.App.DrumMaster.Controls.Core
+namespace Restless.App.Tambala.Controls.Core
 {
     /// <summary>
     /// Provides some simple diagnositics.

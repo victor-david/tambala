@@ -1,5 +1,5 @@
-﻿using Restless.App.DrumMaster.Controls.Audio;
-using Restless.App.DrumMaster.Controls.Core;
+﻿using Restless.App.Tambala.Controls.Audio;
+using Restless.App.Tambala.Controls.Core;
 using SharpDX.XAPO.Fx;
 using SharpDX.XAudio2;
 using System;
@@ -7,7 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Xml.Linq;
 
-namespace Restless.App.DrumMaster.Controls
+namespace Restless.App.Tambala.Controls
 {
     /// <summary>
     /// Represents a controller for a drum pattern.

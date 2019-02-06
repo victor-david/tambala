@@ -1,11 +1,11 @@
-﻿using Restless.App.DrumMaster.Controls.Core;
+﻿using Restless.App.Tambala.Controls.Core;
 using SharpDX.XAPO.Fx;
 using System;
 using System.Windows;
 using System.Windows.Input;
 using System.Xml.Linq;
 
-namespace Restless.App.DrumMaster.Controls
+namespace Restless.App.Tambala.Controls
 {
     /// <summary>
     /// Represents a 4 band equalizer controller.

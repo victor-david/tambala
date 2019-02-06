@@ -7,8 +7,8 @@
     <ProjectGuid>{D25459B2-B4EE-4606-934E-A0636C29BDBA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Restless.App.DrumMaster.Data</RootNamespace>
-    <AssemblyName>DrumMaster.Data</AssemblyName>
+    <RootNamespace>Restless.App.Tambala.Data</RootNamespace>
+    <AssemblyName>Tamabala.Data</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -28,7 +28,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\DrumMaster.Data.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\Tamabala.Data.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>

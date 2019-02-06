@@ -1,4 +1,4 @@
-﻿using Restless.App.DrumMaster.Controls.Core;
+﻿using Restless.App.Tambala.Controls.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Xml.Linq;
 
-namespace Restless.App.DrumMaster.Controls.Audio
+namespace Restless.App.Tambala.Controls.Audio
 {
     /// <summary>
     /// Provides parms for rendering audio.

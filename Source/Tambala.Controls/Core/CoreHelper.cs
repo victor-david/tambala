@@ -2,7 +2,7 @@
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
-namespace Restless.App.DrumMaster.Controls.Core
+namespace Restless.App.Tambala.Controls.Core
 {
     /// <summary>
     /// Provides static helper methods

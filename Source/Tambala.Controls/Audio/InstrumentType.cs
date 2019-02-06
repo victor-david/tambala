@@ -1,4 +1,4 @@
-﻿namespace Restless.App.DrumMaster.Controls.Audio
+﻿namespace Restless.App.Tambala.Controls.Audio
 {
     /// <summary>
     /// Provides an enumeration that is used to categorize the type of a drum piece.

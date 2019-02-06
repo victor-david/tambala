@@ -1,11 +1,11 @@
-﻿using Restless.App.DrumMaster.Controls.Core;
+﻿using Restless.App.Tambala.Controls.Core;
 using SharpDX.XAudio2;
 using System;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace Restless.App.DrumMaster.Controls
+namespace Restless.App.Tambala.Controls
 {
     /// <summary>
     /// Represents base class for controls that require volume, pitch, and panning. This class must be inherited.
@@ -32,8 +32,8 @@ namespace Restless.App.DrumMaster.Controls
         /// </summary>
         protected AudioControlBase()
         {
-            MutedImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Track.Muted.64.png", UriKind.Relative));
-            VoicedImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Track.Voiced.64.png", UriKind.Relative));
+            MutedImageSource = new BitmapImage(new Uri("/Tambala.Controls;component/Resources/Images/Image.Track.Muted.64.png", UriKind.Relative));
+            VoicedImageSource = new BitmapImage(new Uri("/Tambala.Controls;component/Resources/Images/Image.Track.Voiced.64.png", UriKind.Relative));
             ActiveMutedImageSource = VoicedImageSource;
 
             Commands.Add("ToggleMute", new RelayCommand((p) => IsMuted = !IsMuted));

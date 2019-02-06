@@ -1,4 +1,4 @@
-﻿namespace Restless.App.DrumMaster.Controls
+﻿namespace Restless.App.Tambala.Controls
 {
     /// <summary>
     /// Provides enumerated values for the type of drum kit.

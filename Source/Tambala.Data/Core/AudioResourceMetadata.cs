@@ -6,7 +6,7 @@ using System.Reflection;
 using SysProps = Microsoft.WindowsAPICodePack.Shell.PropertySystem.SystemProperties;
 
 
-namespace Restless.App.DrumMaster.Data.Core
+namespace Restless.App.Tambala.Data.Core
 {
     /// <summary>
     /// Represents the meta data taken from an application audio resource.

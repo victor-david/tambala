@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Restless.App.DrumMaster.Controls.Core
+namespace Restless.App.Tambala.Controls.Core
 {
     /// <summary>
     /// Defines characteristics of ticks and provides position mapping.

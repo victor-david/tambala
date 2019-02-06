@@ -5,7 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace Restless.App.DrumMaster.Controls
+namespace Restless.App.Tambala.Controls
 {
     /// <summary>
     /// Extends <see cref="ControlElement"/> to provide base functionality for controls. This class must be inherited.
@@ -28,11 +28,11 @@ namespace Restless.App.DrumMaster.Controls
         protected ControlObject()
         {
             Commands = new Dictionary<string, ICommand>();
-            ExpandedImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Caret.Up.White.32.png", UriKind.Relative));
-            CollapsedImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Caret.Down.White.32.png", UriKind.Relative));
-            StretchedImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Caret.Up.Down.White.32.png", UriKind.Relative));
-            SlideRightImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Caret.Right.White.32.png", UriKind.Relative));
-            SlideLeftImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Caret.Left.White.32.png", UriKind.Relative));
+            ExpandedImageSource = new BitmapImage(new Uri("/Tambala.Controls;component/Resources/Images/Image.Caret.Up.White.32.png", UriKind.Relative));
+            CollapsedImageSource = new BitmapImage(new Uri("/Tambala.Controls;component/Resources/Images/Image.Caret.Down.White.32.png", UriKind.Relative));
+            StretchedImageSource = new BitmapImage(new Uri("/Tambala.Controls;component/Resources/Images/Image.Caret.Up.Down.White.32.png", UriKind.Relative));
+            SlideRightImageSource = new BitmapImage(new Uri("/Tambala.Controls;component/Resources/Images/Image.Caret.Right.White.32.png", UriKind.Relative));
+            SlideLeftImageSource = new BitmapImage(new Uri("/Tambala.Controls;component/Resources/Images/Image.Caret.Left.White.32.png", UriKind.Relative));
             ActiveExpandedStateImageSource = ExpandedImageSource;
             ToggleExpandedCommand = new RelayCommand((p) => IsExpanded = !IsExpanded);
             ToggleStretchedCommand = new RelayCommand((p) => IsStretched = !IsStretched);

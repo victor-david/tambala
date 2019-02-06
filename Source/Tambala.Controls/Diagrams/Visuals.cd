@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Restless.App.DrumMaster.Controls.ControlObject">
+  <Class Name="Restless.App.Tambala.Controls.ControlObject">
     <Position X="0.5" Y="0.5" Width="3.25" />
     <Members>
       <Field Name="ActiveExpandedStateImageSourceProperty" Hidden="true" />
@@ -20,7 +20,7 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Restless.App.DrumMaster.Controls.ControlObjectVisual">
+  <Class Name="Restless.App.Tambala.Controls.ControlObjectVisual">
     <Position X="7.25" Y="0.5" Width="2" />
     <Members>
       <Field Name="VisualElementProperty" Hidden="true" />
@@ -31,7 +31,7 @@
       <FileName>Controls\Main\ControlObjectVisual.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Restless.App.DrumMaster.Controls.ControlObjectVisualGrid">
+  <Class Name="Restless.App.Tambala.Controls.ControlObjectVisualGrid">
     <Position X="9.75" Y="0.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAIgAAQAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
@@ -39,7 +39,7 @@
       <NewMemberFileName>Controls\Main\ControlObjectVisual.cs</NewMemberFileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Restless.App.DrumMaster.Controls.ControlObjectSelector">
+  <Class Name="Restless.App.Tambala.Controls.ControlObjectSelector">
     <Position X="4.25" Y="0.5" Width="2.75" />
     <Members>
       <Field Name="ActiveIsSelectedBrushProperty" Hidden="true" />
@@ -60,7 +60,7 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Restless.App.DrumMaster.Controls.PointSelector">
+  <Class Name="Restless.App.Tambala.Controls.PointSelector">
     <Position X="7.25" Y="4.25" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAEAABAAAgAAAAAAEAAICAAAAAAAAA=</HashCode>
@@ -68,9 +68,9 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Restless.App.DrumMaster.Controls.SongContainer">
+  <Class Name="Restless.App.Tambala.Controls.SongContainer">
     <Position X="4.5" Y="7.25" Width="2.5" />
-    <InheritanceLine Type="Restless.App.DrumMaster.Controls.ControlObjectSelector" ManuallyRouted="true" FixedToPoint="true">
+    <InheritanceLine Type="Restless.App.Tambala.Controls.ControlObjectSelector" ManuallyRouted="true" FixedToPoint="true">
       <Path>
         <Point X="5.625" Y="6.415" />
         <Point X="5.625" Y="6.875" />
@@ -83,14 +83,14 @@
       <FileName>Controls\Main\SongContainer.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Restless.App.DrumMaster.Controls.SongPresenter">
+  <Class Name="Restless.App.Tambala.Controls.SongPresenter">
     <Position X="12.5" Y="0.5" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AABAAACAAAAAAAEAAAAAAAmAAQAAAEAgAAAAAAAAAEA=</HashCode>
       <FileName>Controls\Main\SongPresenter.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Restless.App.DrumMaster.Controls.DrumPatternPresenter">
+  <Class Name="Restless.App.Tambala.Controls.DrumPatternPresenter">
     <Position X="9.75" Y="4.5" Width="2.75" />
     <TypeIdentifier>
       <HashCode>EAAAAACAAABAAAAECIICAAhCAAAIAEAEgAAAAAACAAE=</HashCode>

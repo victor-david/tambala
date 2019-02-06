@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Restless.App.DrumMaster.Controls
+namespace Restless.App.Tambala.Controls
 {
     /// <summary>
     /// Extends <see cref="ControlObjectSelector"/> for classes that require a visual

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Restless.App.DrumMaster.Controls.Audio
+namespace Restless.App.Tambala.Controls.Audio
 {
     /// <summary>
     /// Extends SharpDX.XAudio2.AudioBuffer to encapsulate other properties.

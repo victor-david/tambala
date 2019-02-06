@@ -1,8 +1,8 @@
-﻿using Restless.App.DrumMaster.Controls.Core;
+﻿using Restless.App.Tambala.Controls.Core;
 using SharpDX.XAudio2;
 using System;
 
-namespace Restless.App.DrumMaster.Controls.Audio
+namespace Restless.App.Tambala.Controls.Audio
 {
     /// <summary>
     /// Represents a pool of SourceVoice objects.

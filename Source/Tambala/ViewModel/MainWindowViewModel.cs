@@ -1,11 +1,11 @@
-﻿using Restless.App.DrumMaster.Core;
-using Restless.App.DrumMaster.Resources;
+﻿using Restless.App.Tambala.Core;
+using Restless.App.Tambala.Resources;
 using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace Restless.App.DrumMaster.ViewModel
+namespace Restless.App.Tambala.ViewModel
 {
     /// <summary>
     /// Represents the view model for the main window.

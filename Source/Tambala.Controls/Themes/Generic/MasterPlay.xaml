@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary 
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:con="clr-namespace:Restless.App.DrumMaster.Controls">
+    xmlns:con="clr-namespace:Restless.App.Tambala.Controls">
 
     <con:PlayMode x:Key="PlayModePattern">Pattern</con:PlayMode>
     <con:PlayMode x:Key="PlayModeSong">Song</con:PlayMode>

@@ -1,12 +1,12 @@
-﻿using Restless.App.DrumMaster.Controls.Core;
-using Restless.App.DrumMaster.Controls.Resources;
+﻿using Restless.App.Tambala.Controls.Core;
+using Restless.App.Tambala.Controls.Resources;
 using System;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml.Linq;
 
-namespace Restless.App.DrumMaster.Controls
+namespace Restless.App.Tambala.Controls
 {
     /// <summary>
     /// Represents a control that presents and manages a series of patterns to incorporate into a song.

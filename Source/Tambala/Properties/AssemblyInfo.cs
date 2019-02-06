@@ -7,11 +7,11 @@ using System.Windows;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Drum Master")]
-[assembly: AssemblyDescription("Drum Master is an advanced drum pattern and song generator. You can create various patterns using different drum kits and combine them in various ways.")]
+[assembly: AssemblyTitle("Tambala")]
+[assembly: AssemblyDescription("Tambala is an advanced drum pattern and song generator. You can create various patterns using different drum kits and combine them in various ways.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Restless Animal Development")]
-[assembly: AssemblyProduct("Drum Master")]
+[assembly: AssemblyProduct("Tambala")]
 [assembly: AssemblyCopyright("Copyright © Restless Animal Development 2019 - Licensed under MIT")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Restless.App.DrumMaster.View
+namespace Restless.App.Tambala.View
 {
     /// <summary>
     /// Interaction logic for MainNavigation.xaml

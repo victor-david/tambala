@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Drum Master Data")]
-[assembly: AssemblyDescription("Provides data retreival and storage services for Drum Master")]
+[assembly: AssemblyTitle("Tambala Data")]
+[assembly: AssemblyDescription("Provides data retreival and storage services for Tambala")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Restless Animal Development")]
-[assembly: AssemblyProduct("DrumMaster.Data")]
-[assembly: AssemblyCopyright("Copyright © Restless Animal Development 2018")]
+[assembly: AssemblyProduct("Tambala.Data")]
+[assembly: AssemblyCopyright("Copyright © Restless Animal Development 2019 - Licensed under MIT")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

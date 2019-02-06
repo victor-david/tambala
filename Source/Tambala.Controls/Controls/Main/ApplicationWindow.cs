@@ -4,7 +4,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace Restless.App.DrumMaster.Controls
+namespace Restless.App.Tambala.Controls
 {
     /// <summary>
     /// Represents a custom application window.
@@ -18,11 +18,11 @@ namespace Restless.App.DrumMaster.Controls
         public ApplicationWindow()
         {
             Background = Brushes.White;
-            IconImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Drum.White.32.png", UriKind.Relative));
-            MinimizeImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Window.Minimize.32.png", UriKind.Relative));
-            MaximizeImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Window.Maximize.32.png", UriKind.Relative));
-            RestoreImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Window.Restore.32.png", UriKind.Relative));
-            CloseImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Window.Close.32.png", UriKind.Relative));
+            IconImageSource = new BitmapImage(new Uri("/Tambala.Controls;component/Resources/Images/Image.Drum.White.32.png", UriKind.Relative));
+            MinimizeImageSource = new BitmapImage(new Uri("/Tambala.Controls;component/Resources/Images/Image.Window.Minimize.32.png", UriKind.Relative));
+            MaximizeImageSource = new BitmapImage(new Uri("/Tambala.Controls;component/Resources/Images/Image.Window.Maximize.32.png", UriKind.Relative));
+            RestoreImageSource = new BitmapImage(new Uri("/Tambala.Controls;component/Resources/Images/Image.Window.Restore.32.png", UriKind.Relative));
+            CloseImageSource = new BitmapImage(new Uri("/Tambala.Controls;component/Resources/Images/Image.Window.Close.32.png", UriKind.Relative));
 
             MinimizeCommand = new RelayCommand((p) => WindowState = WindowState.Minimized);
             MaximizeCommand = new RelayCommand((p) => WindowState = WindowState.Maximized);

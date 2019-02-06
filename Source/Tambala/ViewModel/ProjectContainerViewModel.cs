@@ -1,14 +1,14 @@
 ﻿using Microsoft.Win32;
-using Restless.App.DrumMaster.Controls;
-using Restless.App.DrumMaster.Core;
-using Restless.App.DrumMaster.Resources;
+using Restless.App.Tambala.Controls;
+using Restless.App.Tambala.Core;
+using Restless.App.Tambala.Resources;
 using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Restless.App.DrumMaster.ViewModel
+namespace Restless.App.Tambala.ViewModel
 {
     /// <summary>
     /// Provides interaction logic for the main drum track container.

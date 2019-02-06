@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Restless.App.DrumMaster.Controls.Core
+namespace Restless.App.Tambala.Controls.Core
 {
     /// <summary>
     /// Represents a collection of <see cref="PointSelector"/> objects that comprise a song.

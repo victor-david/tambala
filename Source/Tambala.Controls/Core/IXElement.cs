@@ -1,6 +1,6 @@
 ﻿using System.Xml.Linq;
 
-namespace Restless.App.DrumMaster.Controls.Core
+namespace Restless.App.Tambala.Controls.Core
 {
     /// <summary>
     /// Defines methods for controls that can save and restore their state using XElements.

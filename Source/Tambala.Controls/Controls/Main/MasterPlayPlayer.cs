@@ -1,12 +1,12 @@
 ﻿using NAudio.CoreAudioApi;
-using Restless.App.DrumMaster.Controls.Audio;
-using Restless.App.DrumMaster.Controls.Core;
+using Restless.App.Tambala.Controls.Audio;
+using Restless.App.Tambala.Controls.Core;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Windows.Threading;
 
-namespace Restless.App.DrumMaster.Controls
+namespace Restless.App.Tambala.Controls
 {
     /// <summary>
     /// Partial of master play to hold the thread stuff.

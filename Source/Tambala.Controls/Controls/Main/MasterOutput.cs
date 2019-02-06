@@ -1,11 +1,11 @@
-﻿using Restless.App.DrumMaster.Controls.Audio;
-using Restless.App.DrumMaster.Controls.Core;
+﻿using Restless.App.Tambala.Controls.Audio;
+using Restless.App.Tambala.Controls.Core;
 using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Xml.Linq;
 
-namespace Restless.App.DrumMaster.Controls
+namespace Restless.App.Tambala.Controls
 {
     /// <summary>
     /// Represents the master output control. Handles the final voice.

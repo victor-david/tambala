@@ -1,5 +1,5 @@
-﻿using Restless.App.DrumMaster.Controls.Audio;
-using Restless.App.DrumMaster.Controls.Core;
+﻿using Restless.App.Tambala.Controls.Audio;
+using Restless.App.Tambala.Controls.Core;
 using SharpDX.XAudio2;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Xml.Linq;
 
-namespace Restless.App.DrumMaster.Controls
+namespace Restless.App.Tambala.Controls
 {
     /// <summary>
     /// Represents a controller for a single instrument of a drum pattern.
@@ -44,8 +44,8 @@ namespace Restless.App.DrumMaster.Controls
             channelVolumes[1] = 1.0f;
 
             PatternQuarters = new Dictionary<int, DrumPatternQuarter>();
-            ExpandedImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Caret.Up.Blue.32.png", UriKind.Relative));
-            CollapsedImageSource = new BitmapImage(new Uri("/DrumMaster.Controls;component/Resources/Images/Image.Caret.Down.Blue.32.png", UriKind.Relative));
+            ExpandedImageSource = new BitmapImage(new Uri("/Tambala.Controls;component/Resources/Images/Image.Caret.Up.Blue.32.png", UriKind.Relative));
+            CollapsedImageSource = new BitmapImage(new Uri("/Tambala.Controls;component/Resources/Images/Image.Caret.Down.Blue.32.png", UriKind.Relative));
         }
 
         static InstrumentController()
