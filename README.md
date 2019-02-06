@@ -35,3 +35,4 @@ Many thanks to the following persons and projects. Without their work, this proj
 
 * [SharpDx](https://github.com/sharpdx/SharpDX)
 * [NAudio](https://github.com/naudio/NAudio)
+* [Egor Rumyantsev](https://www.behance.net/pio-5)
