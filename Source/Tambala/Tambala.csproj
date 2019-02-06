@@ -235,7 +235,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DrumMaster.Controls\DrumMaster.Controls.csproj">
+    <ProjectReference Include="..\Tambala.Controls\Tambala.Controls.csproj">
       <Project>{3ebc9768-d1cb-44a2-829e-b92752a10517}</Project>
       <Name>DrumMaster.Controls</Name>
     </ProjectReference>

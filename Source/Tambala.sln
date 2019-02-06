@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrumMaster", "DrumMaster\DrumMaster.csproj", "{4081706F-D84F-4471-9BA7-0FC697DAAF9C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tambala", "Tambala\Tambala.csproj", "{4081706F-D84F-4471-9BA7-0FC697DAAF9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrumMaster.Controls", "DrumMaster.Controls\DrumMaster.Controls.csproj", "{3EBC9768-D1CB-44A2-829E-B92752A10517}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tambala.Controls", "Tambala.Controls\Tambala.Controls.csproj", "{3EBC9768-D1CB-44A2-829E-B92752A10517}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrumMaster.Data", "DrumMaster.Data\DrumMaster.Data.csproj", "{D25459B2-B4EE-4606-934E-A0636C29BDBA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tambala.Data", "Tambala.Data\Tambala.Data.csproj", "{D25459B2-B4EE-4606-934E-A0636C29BDBA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

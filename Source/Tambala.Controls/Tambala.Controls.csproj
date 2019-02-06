@@ -319,7 +319,7 @@
     <Resource Include="Resources\Images\Image.Track.Add.64.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DrumMaster.Data\DrumMaster.Data.csproj">
+    <ProjectReference Include="..\Tambala.Data\Tambala.Data.csproj">
       <Project>{d25459b2-b4ee-4606-934e-a0636c29bdba}</Project>
       <Name>DrumMaster.Data</Name>
     </ProjectReference>

@@ -15,10 +15,10 @@
     <!-- SHFB properties -->
     <FrameworkVersion>.NET Framework 4.6.1</FrameworkVersion>
     <OutputPath>.\Help\</OutputPath>
-    <HtmlHelpName>DrumMaster.Reference</HtmlHelpName>
+    <HtmlHelpName>Tambala.Reference</HtmlHelpName>
     <Language>en-US</Language>
     <DocumentationSources>
-      <DocumentationSource sourceFile="Source\DrumMaster.sln" />
+      <DocumentationSource sourceFile="Source\Tambala.sln" />
     </DocumentationSources>
     <HelpFileVersion>1.0.0.0</HelpFileVersion>
     <MaximumGroupParts>2</MaximumGroupParts>
@@ -29,7 +29,7 @@
     <PresentationStyle>VS2013</PresentationStyle>
     <Preliminary>False</Preliminary>
     <NamingMethod>Guid</NamingMethod>
-    <HelpTitle>DrumMaster Reference</HelpTitle>
+    <HelpTitle>Tambala Reference</HelpTitle>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, TypeParameter, AutoDocumentDispose</MissingTags>
     <SaveComponentCacheCapacity>100</SaveComponentCacheCapacity>
@@ -42,12 +42,13 @@
     <VisibleItems>InheritedMembers, Internals, Protected, ProtectedInternalAsProtected</VisibleItems>
     <ApiFilter>
       <Filter entryType="Namespace" fullName="" isExposed="False" xmlns="" />
-<Filter entryType="Namespace" fullName="Restless.App.DrumMaster.View" isExposed="True" xmlns="">
-  <Filter entryType="Class" fullName="Restless.App.DrumMaster.View.MainWindow" filterName="MainWindow" isExposed="True">
-    <Filter entryType="Method" fullName="Restless.App.DrumMaster.View.MainWindow._CreateDelegate" filterName="_CreateDelegate" isExposed="False" />
-  </Filter>
-</Filter>
-<Filter entryType="Namespace" fullName="XamlGeneratedNamespace" isExposed="False" xmlns="" /></ApiFilter>
+      <Filter entryType="Namespace" fullName="Restless.App.DrumMaster.View" isExposed="True" xmlns="">
+        <Filter entryType="Class" fullName="Restless.App.DrumMaster.View.MainWindow" filterName="MainWindow" isExposed="True">
+          <Filter entryType="Method" fullName="Restless.App.DrumMaster.View.MainWindow._CreateDelegate" filterName="_CreateDelegate" isExposed="False" />
+        </Filter>
+      </Filter>
+      <Filter entryType="Namespace" fullName="XamlGeneratedNamespace" isExposed="False" xmlns="" />
+    </ApiFilter>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
 			 the build.  The others are optional common platform types that may appear. -->
