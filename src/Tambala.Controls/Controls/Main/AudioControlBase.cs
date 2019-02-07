@@ -42,7 +42,12 @@ namespace Restless.App.Tambala.Controls
             VoicedImageSource = new BitmapImage(new Uri("/Tambala.Controls;component/Resources/Images/Image.Track.Voiced.64.png", UriKind.Relative));
             ActiveMutedImageSource = VoicedImageSource;
 
+            SoloYesImageSource = new BitmapImage(new Uri("/Tambala.Controls;component/Resources/Images/Image.Track.Solo.Yes.64.png", UriKind.Relative));
+            SoloNoImageSource = new BitmapImage(new Uri("/Tambala.Controls;component/Resources/Images/Image.Track.Solo.No.64.png", UriKind.Relative));
+            ActiveSoloImageSource = SoloNoImageSource;
+
             Commands.Add("ToggleMute", new RelayCommand((p) => IsMuted = !IsMuted));
+            Commands.Add("ToggleSolo", new RelayCommand((p) => IsSolo = !IsSolo));
 
             /* 
              * The following are thread safe values used in real time from the play thread.
@@ -155,6 +160,26 @@ namespace Restless.App.Tambala.Controls
             );
 
         /// <summary>
+        /// Gets the minimum volume allowed. Used for binding in the control template.
+        /// </summary>
+        public float MinVolume
+        {
+            get => Constants.Volume.Main.Min;
+        }
+
+        /// <summary>
+        /// Gets the maximum volume allowed.Used for binding in the control template.
+        /// </summary>
+        public float MaxVolume
+        {
+            get => Constants.Volume.Main.Max;
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region Muted / Solo
+        /// <summary>
         /// Gets or sets a boolean value that determines if audio is muted.
         /// </summary>
         public bool IsMuted
@@ -175,27 +200,55 @@ namespace Restless.App.Tambala.Controls
         {
             if (d is AudioControlBase c)
             {
-                c.IsUserMuted = (bool)e.NewValue;
+                c.ThreadSafeIsMuted = (bool)e.NewValue;
                 c.OnIsMutedChanged();
                 c.SetIsChanged();
             }
         }
 
         /// <summary>
-        /// Gets the minimum volume allowed. Used for binding in the control template.
+        /// Gets or sets a boolean value that determines if audio is soloed.
         /// </summary>
-        public float MinVolume
+        public bool IsSolo
         {
-            get => Constants.Volume.Main.Min;
+            get => (bool)GetValue(IsSoloProperty);
+            set => SetValue(IsSoloProperty, value);
         }
 
         /// <summary>
-        /// Gets the maximum volume allowed.Used for binding in the control template.
+        /// Identifies the <see cref="IsSolo"/> dependency property.
         /// </summary>
-        public float MaxVolume
+        public static readonly DependencyProperty IsSoloProperty = DependencyProperty.Register
+            (
+                nameof(IsSolo), typeof(bool), typeof(AudioControlBase), new PropertyMetadata(false, OnIsSoloChanged)
+            );
+
+        private static void OnIsSoloChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            get => Constants.Volume.Main.Max;
+            if (d is AudioControlBase c)
+            {
+                c.RaiseEvent(new RoutedEventArgs(IsSoloChangedEvent));
+                c.OnIsSoloChanged();
+                c.SetIsChanged();
+            }
         }
+
+        /// <summary>
+        /// Provides notification when the <see cref="IsSolo"/> property changes.
+        /// </summary>
+        public event RoutedEventHandler IsSoloChanged
+        {
+            add => AddHandler(IsSoloChangedEvent, value);
+            remove => RemoveHandler(IsSoloChangedEvent, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="IsSoloChanged"/> routed event.
+        /// </summary>
+        public static readonly RoutedEvent IsSoloChangedEvent = EventManager.RegisterRoutedEvent
+            (
+                nameof(IsSoloChanged), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(AudioControlBase)
+            );
         #endregion
 
         /************************************************************************/
@@ -413,11 +466,77 @@ namespace Restless.App.Tambala.Controls
 
         /************************************************************************/
 
+        #region Images (Solo Yes, No [has state change])
+        /// <summary>
+        /// Gets or sets the image source to use for the solo button (when soloed).
+        /// </summary>
+        public ImageSource SoloYesImageSource
+        {
+            get => (ImageSource)GetValue(SoloYesImageSourceProperty);
+            set => SetValue(SoloYesImageSourceProperty, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="SoloYesImageSource"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SoloYesImageSourceProperty = DependencyProperty.Register
+            (
+                nameof(SoloYesImageSource), typeof(ImageSource), typeof(AudioControlBase), new PropertyMetadata(null, OnSoloImageSourceChanged)
+            );
+
+        /// <summary>
+        /// Gets or sets the image source to use for the solo button (when not soloed).
+        /// </summary>
+        public ImageSource SoloNoImageSource
+        {
+            get => (ImageSource)GetValue(SoloNoImageSourceProperty);
+            set => SetValue(SoloNoImageSourceProperty, value);
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="SoloNoImageSource"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SoloNoImageSourceProperty = DependencyProperty.Register
+            (
+                nameof(SoloNoImageSource), typeof(ImageSource), typeof(AudioControlBase), new PropertyMetadata(null, OnSoloImageSourceChanged)
+            );
+
+        private static void OnSoloImageSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is AudioControlBase c)
+            {
+                c.OnSoloImageSourceChanged();
+                c.OnIsSoloChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets the image source to use for the solo button.
+        /// </summary>
+        public ImageSource ActiveSoloImageSource
+        {
+            get => (ImageSource)GetValue(ActiveSoloImageSourceProperty);
+            private set => SetValue(ActiveSoloImageSourcePropertyKey, value);
+        }
+
+        private static readonly DependencyPropertyKey ActiveSoloImageSourcePropertyKey = DependencyProperty.RegisterReadOnly
+            (
+                nameof(ActiveSoloImageSource), typeof(ImageSource), typeof(AudioControlBase), new FrameworkPropertyMetadata(null)
+            );
+
+        /// <summary>
+        /// Identifies the <see cref="ActiveSoloImageSource"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ActiveSoloImageSourceProperty = ActiveSoloImageSourcePropertyKey.DependencyProperty;
+        #endregion
+
+        /************************************************************************/
+
         #region Protected / Internal properties
         /// <summary>
         /// Gets a thread safe boolean value that reflects the value of <see cref="IsMuted"/>.
         /// </summary>
-        protected bool IsUserMuted
+        protected bool ThreadSafeIsMuted
         {
             get;
             private set;
@@ -442,14 +561,14 @@ namespace Restless.App.Tambala.Controls
             private set;
         }
 
-        ///// <summary>
-        ///// Gets the thread safe raw value of <see cref="VolumeBias"/>. This value is expressed in dB.
-        ///// </summary>
-        //protected float ThreadSafeVolumeBiasRaw
-        //{
-        //    get;
-        //    private set;
-        //}
+        /// <summary>
+        /// Gets the thread safe value that indicates if audio has been muted because other track(s) are in solo mode.
+        /// </summary>
+        internal bool IsSoloMuted
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Gets the thread safe volume value. 
@@ -490,6 +609,7 @@ namespace Restless.App.Tambala.Controls
         {
             base.OnApplyTemplate();
             OnIsMutedChanged();
+            OnIsSoloChanged();
         }
         #endregion
 
@@ -529,17 +649,34 @@ namespace Restless.App.Tambala.Controls
         /// </summary>
         protected virtual void OnMutedImageSourceChanged()
         {
-
         }
 
         /// <summary>
         /// Called when the <see cref="IsMuted"/> property is changed. A derived class can override this method to perform updates as needed.
-        /// Before this method is called, all muted related properties such as <see cref="IsUserMuted"/> have been updated.
+        /// Before this method is called, all muted related properties such as <see cref="ThreadSafeIsMuted"/> have been updated.
         /// Always call the base method.
         /// </summary>
         protected virtual void OnIsMutedChanged()
         {
             ActiveMutedImageSource = IsMuted ? MutedImageSource : VoicedImageSource;
+        }
+
+        /// <summary>
+        /// Called when either <see cref="SoloYesImageSource"/> or <see cref="SoloNoImageSource"/> are changed.
+        /// A devired class can override this method to perform other updates.
+        /// The base method does nothing.
+        /// </summary>
+        protected virtual void OnSoloImageSourceChanged()
+        {
+        }
+
+        /// <summary>
+        /// Called when the <see cref="IsSolo"/> property is changed. A derived class can override this method to perform updates as needed.
+        /// Always call the base method.
+        /// </summary>
+        protected virtual void OnIsSoloChanged()
+        {
+            ActiveSoloImageSource = IsSolo ? SoloYesImageSource : SoloNoImageSource;
         }
         #endregion
 

@@ -224,6 +224,7 @@ namespace Restless.App.Tambala.Controls
             element.Add(new XElement(nameof(Panning), Panning));
             element.Add(new XElement(nameof(Pitch), Pitch));
             element.Add(new XElement(nameof(IsMuted), IsMuted));
+            element.Add(new XElement(nameof(IsSolo), IsSolo));
             element.Add(new XElement(nameof(InitialVoicePoolSize), InitialVoicePoolSize));
             element.Add(Instrument.GetXElement());
 
@@ -250,6 +251,7 @@ namespace Restless.App.Tambala.Controls
                 if (e.Name == nameof(Panning)) SetDependencyProperty(PanningProperty, e.Value);
                 if (e.Name == nameof(Pitch)) SetDependencyProperty(PitchProperty, e.Value);
                 if (e.Name == nameof(IsMuted)) SetDependencyProperty(IsMutedProperty, e.Value);
+                if (e.Name == nameof(IsSolo)) SetDependencyProperty(IsSoloProperty, e.Value);
                 if (e.Name == nameof(InitialVoicePoolSize))
                 {
                     if (int.TryParse(e.Value, out int result))
@@ -358,7 +360,7 @@ namespace Restless.App.Tambala.Controls
         {
             if (PatternQuarters.ContainsKey(quarterNote) &&
                 PatternQuarters[quarterNote].IsSelected(songUnit, position) &&
-                isAudioEnabled && !IsUserMuted && !IsAutoMuted && IsEnabledForPlay)
+                isAudioEnabled && !ThreadSafeIsMuted && !IsAutoMuted && !IsSoloMuted && IsEnabledForPlay)
             {
                 float dbVol = PatternQuarters[quarterNote].GetSelectorVolume(position);
                 voicePool.Play(dbVol, ThreadSafePitch, operationSet);

@@ -19,7 +19,8 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="32"/>
                     <ColumnDefinition/>
-                    <ColumnDefinition Width="32"/>
+                    <ColumnDefinition Width="26"/>
+                    <ColumnDefinition Width="26"/>
                 </Grid.ColumnDefinitions>
 
                 <!-- Expand / collapse track -->
@@ -46,10 +47,20 @@
                     Command="{Binding Commands[ToggleMute], RelativeSource={RelativeSource TemplatedParent}}">
                     <Image Source="{TemplateBinding ActiveMutedImageSource}"/>
                 </Button>
-                
+
+                <!-- Toggle solo for the track -->
+                <Button
+                    Grid.Column="3"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Style="{DynamicResource ButtonBaseFlat}" 
+                    Command="{Binding Commands[ToggleSolo], RelativeSource={RelativeSource TemplatedParent}}">
+                    <Image Source="{TemplateBinding ActiveSoloImageSource}"/>
+                </Button>
+
                 <!-- Row 1. Volume adjustment slider -->
                 <con:LevelSlider
-                    Grid.Row="1" Grid.ColumnSpan="3"
+                    Grid.Row="1" Grid.ColumnSpan="4"
                     BarWidth="140"
                     LabelSize="30"
                     ValueSize="46"
@@ -64,7 +75,7 @@
                 
                 <!-- Row 2. Pitch adjustment slider -->
                 <con:LevelSlider
-                    Grid.Row="2" Grid.ColumnSpan="3"
+                    Grid.Row="2" Grid.ColumnSpan="4"
                     BarWidth="140"
                     LabelSize="30"
                     ValueSize="46"
@@ -80,7 +91,7 @@
 
                 <!-- Row 3. Panning adjustment slider -->
                 <con:LevelSlider
-                    Grid.Row="3" Grid.ColumnSpan="3"
+                    Grid.Row="3" Grid.ColumnSpan="4"
                     BarWidth="140"
                     LabelSize="30"
                     ValueSize="46"

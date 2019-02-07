@@ -55,6 +55,7 @@ namespace Restless.App.Tambala.Controls
             Owner.AddHandler(DrumPatternController.ScaleChangedEvent, new RoutedEventHandler(ControllerScaleChanged));
             Owner.AddHandler(DrumPattern.DrumKitChangedEvent, new RoutedEventHandler(DrumPatternDrumKitChanged));
             Owner.AddHandler(InstrumentController.IsSelectedChangedEvent, new RoutedEventHandler(ControllerIsSelectedChanged));
+            AddHandler(AudioControlBase.IsSoloChangedEvent, new RoutedEventHandler(AudioBaseIsSoloChangedEventHandler));
         }
 
         static DrumPatternPresenter()
@@ -157,6 +158,7 @@ namespace Restless.App.Tambala.Controls
                     idx++;
                 }
             }
+            SetSolo();
             ResetIsChanged();
         }
         #endregion
@@ -516,6 +518,34 @@ namespace Restless.App.Tambala.Controls
                 
                 e.Handled = true;
             }
+        }
+
+        private void AudioBaseIsSoloChangedEventHandler(object sender, RoutedEventArgs e)
+        {
+            SetSolo();
+            e.Handled = true;
+        }
+
+        /// <summary>
+        /// Sets solo. Called when user clicks a solo button
+        /// and when the patterns are restored from file.
+        /// </summary>
+        /// <remarks>
+        /// If none of the instruments are soloed, the IsSoloMuted property
+        /// for all controllers is set to false. Otherwise, all instrument
+        /// controllers that do not have IsSolo set to true are muted.
+        /// </remarks>
+        private void SetSolo()
+        {
+            int soloCount = Controllers.Where((c) => c.IsSolo).Count();
+
+            Controllers.DoForAll((con) =>
+            {
+                if (soloCount > 0)
+                    con.IsSoloMuted = !con.IsSolo;
+                else
+                    con.IsSoloMuted = false;
+            });
         }
         #endregion
     }
