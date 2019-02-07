@@ -5,7 +5,6 @@
  * Tambala is distributed in the hope that it will be useful, but without warranty of any kind.
 */
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
 
@@ -17,7 +16,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Restless Animal Development")]
 [assembly: AssemblyProduct("Tambala.Controls")]
-[assembly: AssemblyCopyright("Copyright © Restless Animal Development 2019 - Licensed under MIT")]
+[assembly: AssemblyCopyright("Copyright © Restless Animal Development 2019 - Licensed under GNU General Public License v3.0")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -37,6 +36,5 @@ using System.Windows;
  *   (used if a resource is not found in the page, app, or any theme specific resource dictionaries)
  */
 [assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]
-
 [assembly: AssemblyVersion("2.5.0.0")]
 [assembly: AssemblyFileVersion("2.5.0.0")]
