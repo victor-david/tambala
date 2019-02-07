@@ -42,9 +42,9 @@
     <VisibleItems>InheritedMembers, Internals, Protected, ProtectedInternalAsProtected</VisibleItems>
     <ApiFilter>
       <Filter entryType="Namespace" fullName="" isExposed="False" />
-<Filter entryType="Namespace" fullName="Restless.App.DrumMaster.View" isExposed="True">
-  <Filter entryType="Class" fullName="Restless.App.DrumMaster.View.MainWindow" filterName="MainWindow" isExposed="True">
-    <Filter entryType="Method" fullName="Restless.App.DrumMaster.View.MainWindow._CreateDelegate" filterName="_CreateDelegate" isExposed="False" />
+<Filter entryType="Namespace" fullName="Restless.App.Tambala.View" isExposed="True">
+  <Filter entryType="Class" fullName="Restless.App.Tambala.View.MainWindow" filterName="MainWindow" isExposed="True">
+    <Filter entryType="Method" fullName="Restless.App.Tambala.View.MainWindow._CreateDelegate" filterName="_CreateDelegate" isExposed="False" />
   </Filter>
 </Filter>
 <Filter entryType="Namespace" fullName="XamlGeneratedNamespace" isExposed="False" /></ApiFilter>
