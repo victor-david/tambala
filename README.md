@@ -13,7 +13,7 @@ You can use it to create drum tracks for inclusion in other projects or to study
 * Adjust the pitch of each instrument up or down three octaves.
 * Pan each instrument left or right.
 * Adjust the overall volume of each instrument.
-* Mute an instrument.
+* Mute or solo instrument(s).
 * Adjust the overall volume of each drum pattern.
 * Adjust EQ for each drum pattern.
 * Combine patterns into a song. You select at which point each pattern (or patterns) play.
