@@ -28,7 +28,7 @@ namespace Restless.App.Tambala.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="OnOff"/> class.
         /// </summary>
-        internal OnOff()
+        public OnOff()
         {
         }
 

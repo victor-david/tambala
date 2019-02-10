@@ -27,7 +27,7 @@ namespace Restless.App.Tambala.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="LevelSlider"/> class.
         /// </summary>
-        internal LevelSlider()
+        public LevelSlider()
         {
         }
 
