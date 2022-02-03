@@ -6,6 +6,7 @@
 */
 using Restless.Tambala.Core;
 using Restless.Tambala.Resources;
+using Restless.Toolkit.Controls;
 using System;
 using System.ComponentModel;
 using System.Windows;
@@ -147,15 +148,13 @@ namespace Restless.Tambala.ViewModel
             bool isOkay = ProjectContainer == null || !ProjectContainer.IsChanged;
             if (!isOkay)
             {
-                var result = MessageBox.Show($"{Strings.MessageConfirmSave} {ProjectContainer.Container.DisplayName}?", Strings.ApplicationName, MessageBoxButton.YesNoCancel);
-                switch (result)
+                if (MessageWindow.ShowYesNo($"{Strings.MessageConfirmSave} {ProjectContainer.Container.DisplayName}?"))
                 {
-                    case MessageBoxResult.Yes:
-                        isOkay = ProjectContainer.Save();
-                        break;
-                    case MessageBoxResult.No:
-                        isOkay = true;
-                        break;
+                    isOkay = ProjectContainer.Save();
+                }
+                else
+                {
+                    isOkay = true;
                 }
             }
             return isOkay;
