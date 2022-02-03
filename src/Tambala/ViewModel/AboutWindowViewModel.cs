@@ -13,7 +13,7 @@ namespace Restless.Tambala.ViewModel
     /// <summary>
     /// Represents the view model for displaying the about window.
     /// </summary>
-    public class AboutWindowViewModel : WindowViewModel
+    public class AboutWindowViewModel : ApplicationViewModel
     {
         #region Private
         #endregion
@@ -36,11 +36,9 @@ namespace Restless.Tambala.ViewModel
         /// <summary>
         /// Initializes a new instance of the <see cref="AudioRenderWindowViewModel"/> class.
         /// </summary>
-        /// <param name="owner">The owner of this view model.</param>
-        public AboutWindowViewModel(Window owner) : base(owner)
+        public AboutWindowViewModel()
         {
             DisplayName = $"About {ApplicationInfo.Instance.Title} {ApplicationInfo.Instance.VersionMajor}";
-            Commands.Add("Close", (p)=>WindowOwner.Close());
             Commands.Add("ImageCredit", RunImageCreditCommand);
         }
         #endregion

@@ -16,7 +16,7 @@ namespace Restless.Tambala.ViewModel
     /// <summary>
     /// Represents the view model for the main window.
     /// </summary>
-    public class MainWindowViewModel : WindowViewModel
+    public class MainWindowViewModel : ApplicationViewModel
     {
         #region Private
         private bool isTopMost;
@@ -51,10 +51,8 @@ namespace Restless.Tambala.ViewModel
         /// <summary>
         /// Initializes a new instance of <see cref="MainWindowViewModel"/>.
         /// </summary>
-        /// <param name="owner">The owner of this view model.</param>
-        public MainWindowViewModel(Window owner) : base (owner)
+        public MainWindowViewModel()
         {
-            WindowOwner.Closing += MainWindowClosing;
             DisplayName = $"{ApplicationInfo.Instance.Title} {ApplicationInfo.Instance.VersionMajor}";
             Commands.Add("NewSong", RunNewSongCommand);
             Commands.Add("SaveSong", RunSaveSongCommand, CanRunSaveSongCommand);
@@ -63,7 +61,7 @@ namespace Restless.Tambala.ViewModel
             Commands.Add("EditSettings", RunEditSettingsCommand);
             Commands.Add("ViewAlwaysOnTop", (p)=> IsTopMost = !IsTopMost);
             Commands.Add("About", RunOpenAboutCommand);
-            Commands.Add("CloseApp", (p) => WindowOwner.Close());
+            Commands.Add("ExitApp", p => Application.Current.MainWindow.Close());
         }
         #endregion
 
@@ -166,7 +164,7 @@ namespace Restless.Tambala.ViewModel
         private void CreateSong()
         {
             ProjectContainer = null;
-            ProjectContainer = new ProjectContainerViewModel(this);
+            ProjectContainer = new ProjectContainerViewModel();
             Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
                 {
                     ProjectContainer.Activate();

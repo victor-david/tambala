@@ -19,7 +19,7 @@ namespace Restless.Tambala.ViewModel
     /// <summary>
     /// Provides interaction logic for the main drum track container.
     /// </summary>
-    public class ProjectContainerViewModel : WorkspaceViewModel
+    public class ProjectContainerViewModel : ApplicationViewModel
     {
         #region Private
         private ProjectContainer container;
@@ -56,8 +56,7 @@ namespace Restless.Tambala.ViewModel
         /// <summary>
         /// Initializes a new instance of the <see cref="ProjectContainerViewModel"/> class.
         /// </summary>
-        /// <param name="owner">The owner of this VM.</param>
-        public ProjectContainerViewModel(WorkspaceViewModel owner) : base(owner)
+        public ProjectContainerViewModel()
         {
             Container = new ProjectContainer()
             {

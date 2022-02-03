@@ -22,14 +22,13 @@
     <tk:AppWindow.Menu>
         <Menu>
             <MenuItem Header="{x:Static r:Strings.MenuItemFile}">
-
                 <MenuItem Header="{x:Static r:Strings.MenuItemNew}" Command="{Binding Commands[NewSong]}"/>
                 <MenuItem Header="{x:Static r:Strings.MenuItemOpen}" Command="{Binding Commands[OpenSong]}"/>
                 <Separator/>
                 <MenuItem Header="{x:Static r:Strings.MenuItemSave}" Command="{Binding Commands[SaveSong]}"/>
                 <MenuItem Header="{x:Static r:Strings.MenuItemClose}" Command="{Binding Commands[CloseSong]}"/>
                 <Separator/>
-                <MenuItem Header="{x:Static r:Strings.MenuItemExit}" Command="{Binding Commands[CloseApp]}"/>
+                <MenuItem Header="{x:Static r:Strings.MenuItemExit}" Command="{Binding Commands[ExitApp]}"/>
             </MenuItem>
             <MenuItem Header="{x:Static r:Strings.MenuItemView}">
                 <MenuItem Header="{x:Static r:Strings.MenuItemAlwaysOnTop}" Command="{Binding Commands[ViewAlwaysOnTop]}" IsChecked="{Binding IsTopMost,Mode=OneWay}"/>

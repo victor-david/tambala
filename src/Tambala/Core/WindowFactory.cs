@@ -28,10 +28,12 @@ namespace Restless.Tambala.Core
             /// <returns>The window</returns>
             public static MainWindow Create()
             {
-                var window = new MainWindow();
+                MainWindow window = new()
+                {
+                    DataContext = new MainWindowViewModel()
+                };
+
                 TextOptions.SetTextFormattingMode(window);
-                var viewModel = new MainWindowViewModel(window);
-                window.DataContext = viewModel;
                 return window;
             }
         }
@@ -48,13 +50,12 @@ namespace Restless.Tambala.Core
             /// <returns>The window</returns>
             public static AudioRenderWindow Create(ProjectContainer projectContainer)
             {
-                var window = new AudioRenderWindow
+                AudioRenderWindow window = new()
                 {
-                    Owner = Application.Current.MainWindow
+                    Owner = Application.Current.MainWindow,
+                    DataContext = new AudioRenderWindowViewModel(projectContainer)
                 };
                 TextOptions.SetTextFormattingMode(window);
-                var viewModel = new AudioRenderWindowViewModel(window, projectContainer);
-                window.DataContext = viewModel;
                 return window;
             }
         }
@@ -70,13 +71,12 @@ namespace Restless.Tambala.Core
             /// <returns>The window</returns>
             public static AboutWindow Create()
             {
-                var window = new AboutWindow
+                AboutWindow window = new()
                 {
-                    Owner = Application.Current.MainWindow
+                    Owner = Application.Current.MainWindow,
+                    DataContext = new AboutWindowViewModel()
                 };
                 TextOptions.SetTextFormattingMode(window);
-                var viewModel = new AboutWindowViewModel(window);
-                window.DataContext = viewModel;
                 return window;
             }
 

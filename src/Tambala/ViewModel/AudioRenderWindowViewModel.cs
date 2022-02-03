@@ -18,7 +18,7 @@ namespace Restless.Tambala.ViewModel
     /// <summary>
     /// Represents the view model for handling the audio render window.
     /// </summary>
-    public class AudioRenderWindowViewModel : WindowViewModel
+    public class AudioRenderWindowViewModel : ApplicationViewModel
     {
         #region Private
         private bool isRenderInProgress;
@@ -98,17 +98,16 @@ namespace Restless.Tambala.ViewModel
         /// <summary>
         /// Initializes a new instance of the <see cref="AudioRenderWindowViewModel"/> class.
         /// </summary>
-        /// <param name="owner">The owner of this view model.</param>
         /// <param name="projectContainer">The project container.</param>
-        public AudioRenderWindowViewModel(Window owner, ProjectContainer projectContainer) : base(owner)
+        public AudioRenderWindowViewModel(ProjectContainer projectContainer)
         {
             Container = projectContainer ?? throw new ArgumentNullException(nameof(projectContainer));
             // Container.RenderCompleted += ContainerRenderCompleted;
             Commands.Add("Output", RunChangeOutputCommand);
             Commands.Add("Render", RunRenderCommand);
             Commands.Add("Close", RunCloseCommand);
-            WindowOwner.Closing += WindowOwnerClosing;
-            WindowOwner.Closed += WindowOwnerClosed;
+            //WindowOwner.Closing += WindowOwnerClosing;
+            //WindowOwner.Closed += WindowOwnerClosed;
             CloseCaption = "Cancel";
         }
         #endregion
@@ -157,7 +156,7 @@ namespace Restless.Tambala.ViewModel
 
         private void RunCloseCommand(object parm)
         {
-            WindowOwner.Close();
+            //WindowOwner.Close();
         }
 
         private void WindowOwnerClosing(object sender, CancelEventArgs e)
