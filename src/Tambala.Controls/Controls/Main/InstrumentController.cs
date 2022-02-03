@@ -4,8 +4,8 @@
  * Tambala is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License v3.0
  * Tambala is distributed in the hope that it will be useful, but without warranty of any kind.
 */
-using Restless.App.Tambala.Controls.Audio;
-using Restless.App.Tambala.Controls.Core;
+using Restless.Tambala.Controls.Audio;
+using Restless.Tambala.Controls.Core;
 using SharpDX.XAudio2;
 using System;
 using System.Collections.Generic;
@@ -15,7 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Xml.Linq;
 
-namespace Restless.App.Tambala.Controls
+namespace Restless.Tambala.Controls
 {
     /// <summary>
     /// Represents a controller for a single instrument of a drum pattern.

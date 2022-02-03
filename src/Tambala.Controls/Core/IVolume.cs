@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Restless.App.Tambala.Controls.Core
+namespace Restless.Tambala.Controls.Core
 {
     /// <summary>
     /// Defines properties for controls that implement volume bias

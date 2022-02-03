@@ -1,8 +1,12 @@
-﻿<con:ApplicationWindow 
-    x:Class="Restless.App.Tambala.View.AboutWindow"
+﻿<tk:AppWindow
+    x:Class="Restless.Tambala.View.AboutWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:con="clr-namespace:Restless.App.Tambala.Controls;assembly=Tambala.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:tk="http://schemas.restless.toolkit.com/2021" 
+    xmlns:vm="clr-namespace:Restless.Tambala.ViewModel" d:DataContext="{d:DesignInstance Type=vm:AboutWindowViewModel}"
+    mc:Ignorable="d"     
     Background="{StaticResource WindowBackgroundBrush}"
     WindowStartupLocation="CenterOwner"
     Height="340"
@@ -14,7 +18,7 @@
             <Setter Property="Foreground" Value="DarkBlue"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
         </Style>
-        <Style TargetType="con:LinkedTextBlock">
+        <Style TargetType="tk:LinkedTextBlock">
             <Setter Property="Margin" Value="4,0"/>
             <Setter Property="Foreground" Value="Blue"/>
         </Style>
@@ -33,7 +37,7 @@
         <TextBlock
             Grid.Row="0"
             Text="{Binding AppInfo.Description, Mode=OneTime}"/>
-        
+
         <TextBlock
             Grid.Row="1"
             Text="{Binding AppInfo.Copyright, Mode=OneTime}"/>
@@ -62,17 +66,17 @@
             <Image 
                 Grid.RowSpan="2"
                 Source="pack://application:,,,/Tambala;component/Resources/Images/Image.Drum.Blue.128.png"/>
-            
+
             <TextBlock Grid.Column="2" Text="Image and icons from flaticon.com by:"/>
             <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal">
-                <con:LinkedTextBlock Text="Appzgear" Command="{Binding Commands[ImageCredit]}" CommandParameter="appzgear"/>
-                <con:LinkedTextBlock Text="Dave Gandy" Command="{Binding Commands[ImageCredit]}" CommandParameter="dave-gandy"/>
-                <con:LinkedTextBlock Text="Egor Rumyantsev" Command="{Binding Commands[ImageCredit]}" CommandParameter="egor-rumyantsev"/>
-                <con:LinkedTextBlock Text="Freepik" Command="{Binding Commands[ImageCredit]}" CommandParameter="freepik"/>
-                <con:LinkedTextBlock Text="Good Ware" Command="{Binding Commands[ImageCredit]}" CommandParameter="good-ware"/>
-                <con:LinkedTextBlock Text="Google" Command="{Binding Commands[ImageCredit]}" CommandParameter="google"/>
+                <tk:LinkedTextBlock Text="Appzgear" Command="{Binding Commands[ImageCredit]}" CommandParameter="appzgear"/>
+                <tk:LinkedTextBlock Text="Dave Gandy" Command="{Binding Commands[ImageCredit]}" CommandParameter="dave-gandy"/>
+                <tk:LinkedTextBlock Text="Egor Rumyantsev" Command="{Binding Commands[ImageCredit]}" CommandParameter="egor-rumyantsev"/>
+                <tk:LinkedTextBlock Text="Freepik" Command="{Binding Commands[ImageCredit]}" CommandParameter="freepik"/>
+                <tk:LinkedTextBlock Text="Good Ware" Command="{Binding Commands[ImageCredit]}" CommandParameter="good-ware"/>
+                <tk:LinkedTextBlock Text="Google" Command="{Binding Commands[ImageCredit]}" CommandParameter="google"/>
             </StackPanel>
 
         </Grid>
     </Grid>
-</con:ApplicationWindow>
+</tk:AppWindow>

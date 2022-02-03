@@ -6,7 +6,7 @@
 */
 using System.Windows;
 
-namespace Restless.App.Tambala.View
+namespace Restless.Tambala.View
 {
     /// <summary>
     /// Interaction logic for AudioRenderWindow.xaml

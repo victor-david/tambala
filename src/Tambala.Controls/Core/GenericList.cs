@@ -7,7 +7,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Restless.App.Tambala.Controls.Core
+namespace Restless.Tambala.Controls.Core
 {
     /// <summary>
     /// Extends List to provide additional functionality.

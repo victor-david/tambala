@@ -6,7 +6,7 @@
 */
 using System;
 
-namespace Restless.App.Tambala.Controls.Core
+namespace Restless.Tambala.Controls.Core
 {
     /// <summary>
     /// Represents a collection of <see cref="DrumPattern"/> objects.

@@ -4,12 +4,12 @@
  * Tambala is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License v3.0
  * Tambala is distributed in the hope that it will be useful, but without warranty of any kind.
 */
-using Restless.App.Tambala.Controls.Core;
+using Restless.Tambala.Controls.Core;
 using SharpDX.XAudio2;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Restless.App.Tambala.Controls.Audio
+namespace Restless.Tambala.Controls.Audio
 {
     /// <summary>
     /// Manages the XAudio2 device, the mastering voice, and the voice pools for the audio.

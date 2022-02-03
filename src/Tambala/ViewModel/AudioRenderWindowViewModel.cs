@@ -5,15 +5,15 @@
  * Tambala is distributed in the hope that it will be useful, but without warranty of any kind.
 */
 using Microsoft.Win32;
-using Restless.App.Tambala.Controls;
-using Restless.App.Tambala.Controls.Audio;
-using Restless.App.Tambala.Resources;
+using Restless.Tambala.Controls;
+using Restless.Tambala.Controls.Audio;
+using Restless.Tambala.Resources;
 using System;
 using System.ComponentModel;
 using System.IO;
 using System.Windows;
 
-namespace Restless.App.Tambala.ViewModel
+namespace Restless.Tambala.ViewModel
 {
     /// <summary>
     /// Represents the view model for handling the audio render window.

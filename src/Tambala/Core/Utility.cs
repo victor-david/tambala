@@ -6,7 +6,7 @@
 */
 using System;
 
-namespace Restless.App.Tambala.Core
+namespace Restless.Tambala.Core
 {
     /// <summary>
     /// Provides static utility methods

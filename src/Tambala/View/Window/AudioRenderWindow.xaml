@@ -1,8 +1,8 @@
 ﻿<Window 
-    x:Class="Restless.App.Tambala.View.AudioRenderWindow"
+    x:Class="Restless.Tambala.View.AudioRenderWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:con="clr-namespace:Restless.App.Tambala.Controls;assembly=Tambala.Controls"
+    xmlns:con="clr-namespace:Restless.Tambala.Controls;assembly=Tambala.Controls"
     Title="Render" 
     WindowStartupLocation="CenterOwner"
     ResizeMode="NoResize"

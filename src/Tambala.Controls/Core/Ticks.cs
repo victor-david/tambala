@@ -6,7 +6,7 @@
 */
 using System.Collections.Generic;
 
-namespace Restless.App.Tambala.Controls.Core
+namespace Restless.Tambala.Controls.Core
 {
     /// <summary>
     /// Defines characteristics of ticks and provides position mapping.

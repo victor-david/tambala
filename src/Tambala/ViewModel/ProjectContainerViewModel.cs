@@ -5,16 +5,16 @@
  * Tambala is distributed in the hope that it will be useful, but without warranty of any kind.
 */
 using Microsoft.Win32;
-using Restless.App.Tambala.Controls;
-using Restless.App.Tambala.Core;
-using Restless.App.Tambala.Resources;
+using Restless.Tambala.Controls;
+using Restless.Tambala.Core;
+using Restless.Tambala.Resources;
 using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Restless.App.Tambala.ViewModel
+namespace Restless.Tambala.ViewModel
 {
     /// <summary>
     /// Provides interaction logic for the main drum track container.

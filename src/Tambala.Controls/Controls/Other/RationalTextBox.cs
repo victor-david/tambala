@@ -7,7 +7,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Restless.App.Tambala.Controls
+namespace Restless.Tambala.Controls
 {
     /// <summary>
     /// Extends TextBox to provide extra functionality

@@ -7,7 +7,7 @@
 using System;
 using System.Windows;
 
-namespace Restless.App.Tambala.Controls.Core
+namespace Restless.Tambala.Controls.Core
 {
     /// <summary>
     /// Provides static constant values that are used throughout the control library.

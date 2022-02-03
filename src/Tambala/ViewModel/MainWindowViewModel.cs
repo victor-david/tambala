@@ -4,14 +4,14 @@
  * Tambala is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License v3.0
  * Tambala is distributed in the hope that it will be useful, but without warranty of any kind.
 */
-using Restless.App.Tambala.Core;
-using Restless.App.Tambala.Resources;
+using Restless.Tambala.Core;
+using Restless.Tambala.Resources;
 using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace Restless.App.Tambala.ViewModel
+namespace Restless.Tambala.ViewModel
 {
     /// <summary>
     /// Represents the view model for the main window.

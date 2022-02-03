@@ -8,7 +8,7 @@ using System;
 using System.Diagnostics;
 using System.Windows.Input;
 
-namespace Restless.App.Tambala.Controls
+namespace Restless.Tambala.Controls
 {
     /// <summary>
     /// Represents a command. This is the class from which all all application commands are created.

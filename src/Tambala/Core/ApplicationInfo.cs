@@ -8,7 +8,7 @@ using System;
 using System.IO;
 using System.Reflection;
 
-namespace Restless.App.Tambala.Core
+namespace Restless.Tambala.Core
 {
     /// <summary>
     /// A singleton class that provides information about the application.

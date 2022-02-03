@@ -6,7 +6,7 @@
 */
 using System.Xml.Linq;
 
-namespace Restless.App.Tambala.Controls.Core
+namespace Restless.Tambala.Controls.Core
 {
     /// <summary>
     /// Defines methods for controls that can save and restore their state using XElements.

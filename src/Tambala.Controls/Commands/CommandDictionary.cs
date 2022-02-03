@@ -7,7 +7,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Restless.App.Tambala.Controls
+namespace Restless.Tambala.Controls
 {
     /// <summary>
     /// Represents a dictionary of commands.

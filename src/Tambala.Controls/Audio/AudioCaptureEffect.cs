@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace Restless.App.Tambala.Controls.Audio
+namespace Restless.Tambala.Controls.Audio
 {
     /// <summary>
     /// Satisfies the implementation needed for <see cref="AudioCaptureEffect"/>

@@ -12,7 +12,7 @@ using System.Reflection;
 using SysProps = Microsoft.WindowsAPICodePack.Shell.PropertySystem.SystemProperties;
 
 
-namespace Restless.App.Tambala.Data.Core
+namespace Restless.Tambala.Data.Core
 {
     /// <summary>
     /// Represents the meta data taken from an application audio resource.

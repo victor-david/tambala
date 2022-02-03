@@ -5,14 +5,14 @@
  * Tambala is distributed in the hope that it will be useful, but without warranty of any kind.
 */
 using NAudio.CoreAudioApi;
-using Restless.App.Tambala.Controls.Audio;
-using Restless.App.Tambala.Controls.Core;
+using Restless.Tambala.Controls.Audio;
+using Restless.Tambala.Controls.Core;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Windows.Threading;
 
-namespace Restless.App.Tambala.Controls
+namespace Restless.Tambala.Controls
 {
     /// <summary>
     /// Partial of master play to hold the thread stuff.

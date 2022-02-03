@@ -6,7 +6,7 @@
 */
 using System.Windows;
 
-namespace Restless.App.Tambala.Controls
+namespace Restless.Tambala.Controls
 {
     /// <summary>
     /// Extends <see cref="ControlObjectSelector"/> for classes that require a visual

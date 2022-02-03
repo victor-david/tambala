@@ -7,7 +7,7 @@
 using System.Diagnostics;
 using System.Windows;
 
-namespace Restless.App.Tambala.Controls.Core
+namespace Restless.Tambala.Controls.Core
 {
     /// <summary>
     /// Provides some simple diagnositics.

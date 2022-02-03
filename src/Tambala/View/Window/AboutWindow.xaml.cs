@@ -4,18 +4,18 @@
  * Tambala is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License v3.0
  * Tambala is distributed in the hope that it will be useful, but without warranty of any kind.
 */
-using Restless.App.Tambala.Controls;
+using Restless.Toolkit.Controls;
 using System;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace Restless.App.Tambala.View
+namespace Restless.Tambala.View
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class AboutWindow : ApplicationWindow
+    public partial class AboutWindow : AppWindow
     {
         #region Private
         private readonly ImageSource StandardIcon;
