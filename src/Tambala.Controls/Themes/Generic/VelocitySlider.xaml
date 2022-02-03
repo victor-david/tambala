@@ -51,7 +51,6 @@
 
     <Style TargetType="con:VelocitySlider">
         <Setter Property="SnapsToDevicePixels" Value="True"/>
-        <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="IsSnapToTickEnabled" Value="False"/>
         <Setter Property="TickPlacement" Value="None"/>
         <Setter Property="Orientation" Value="Vertical"/>

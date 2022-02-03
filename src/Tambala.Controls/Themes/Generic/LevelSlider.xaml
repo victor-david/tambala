@@ -137,7 +137,6 @@
 
     <Style TargetType="con:LevelSlider">
         <Setter Property="SnapsToDevicePixels" Value="True"/>
-        <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="IsSnapToTickEnabled" Value="False"/>
         <Setter Property="TickFrequency" Value="10"/>
         <Setter Property="TickPlacement" Value="None"/>        
