@@ -15,13 +15,21 @@
     <Version>4.0.0</Version>
     <ApplicationIcon>App.Icon.128.ico</ApplicationIcon>    
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Restless.Toolkit" Version="2.5.11" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Tambala.Controls\Tambala.Controls.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\Image.Add.Layout.64.png" />
+    <Resource Include="Resources\Images\Image.Drum.Blue.128.png" />
+    <Resource Include="Resources\Images\Image.Drum.Red.128.png" />
+    <Resource Include="Resources\Images\Image.DrumSet.128.png" />
+    <Resource Include="Resources\Images\Image.Open.Layout.64.png" />
+    <Resource Include="Resources\Images\Image.Save.Layout.64.png" />
   </ItemGroup>
 
   <ItemGroup>

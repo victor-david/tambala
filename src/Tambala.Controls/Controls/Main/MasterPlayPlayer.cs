@@ -50,8 +50,10 @@ namespace Restless.Tambala.Controls
             playMode = PlayMode.Pattern;
             patternSleepTime = 100;
 
-            metronome = new Metronome();
-            metronome.Instrument = Owner.DrumKits[DrumKitCollection.DrumKitCubanId].Instruments[6];
+            metronome = new Metronome
+            {
+                Instrument = Owner.DrumKits[DrumKitCollection.DrumKitCubanId].Instruments[6]
+            };
 
             songPlaySignaler = new AutoResetEvent(false);
             songPlayThread = new Thread(SongPlayThreadHandler)

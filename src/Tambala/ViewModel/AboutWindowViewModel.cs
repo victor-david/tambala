@@ -24,7 +24,7 @@ namespace Restless.Tambala.ViewModel
         /// <summary>
         /// Gets the application info object.
         /// </summary>
-        public ApplicationInfo AppInfo
+        public static ApplicationInfo AppInfo
         {
             get => ApplicationInfo.Instance;
         }

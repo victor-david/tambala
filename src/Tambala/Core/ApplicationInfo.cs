@@ -46,7 +46,7 @@ namespace Restless.Tambala.Core
                         return titleAttribute.Title;
                     }
                 }
-                return System.IO.Path.GetFileNameWithoutExtension(Assembly.CodeBase);
+                return System.IO.Path.GetFileNameWithoutExtension(Assembly.Location);
             }
         }
 

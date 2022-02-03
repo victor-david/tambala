@@ -36,7 +36,7 @@ namespace Restless.App.Tambala
 
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Fatal", MessageBoxButton.OK, MessageBoxImage.Error);
+                Toolkit.Controls.MessageWindow.ShowError(ex.Message, null, false);
                 Environment.Exit(0);
             }
 #else
