@@ -7,7 +7,7 @@
     xmlns:tk="http://schemas.restless.toolkit.com/2021" 
     xmlns:vm="clr-namespace:Restless.Tambala.ViewModel" d:DataContext="{d:DesignInstance Type=vm:AboutWindowViewModel}"
     mc:Ignorable="d"     
-    Background="{StaticResource WindowBackgroundBrush}"
+    Style="{StaticResource DefaultAppWindowStyle}"
     WindowStartupLocation="CenterOwner"
     Height="340"
     Width="520"

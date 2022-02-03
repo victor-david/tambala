@@ -1,9 +1,20 @@
 ﻿<ResourceDictionary 
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:tk="http://schemas.restless.toolkit.com/2021">
 
+    <Style x:Key="DefaultImageButtonStyle" TargetType="tk:ImageButton">
+        <Setter Property="Margin" Value="4"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+
+    <Style TargetType="tk:ImageButton" BasedOn="{StaticResource DefaultImageButtonStyle}"/>
+    
+    
     <!-- Style used for a Button's border -->
     <Style TargetType="Border" x:Key="ButtonBorder">
+        <Setter Property="Margin" Value="2"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CornerRadius" Value="4"/>
         <Setter Property="Background" Value="{StaticResource NormalBrush}"/>

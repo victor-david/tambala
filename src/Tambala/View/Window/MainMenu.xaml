@@ -9,13 +9,13 @@
     d:DesignHeight="30" d:DesignWidth="500">
     
     <UserControl.Resources>
-        <Style TargetType="Menu">
+        <!--<Style TargetType="Menu">
             <Setter Property="Padding" Value="4"/>
             <Setter Property="Background" Value="{StaticResource HeaderBrush}"/>
             <Setter Property="BorderBrush" Value="{StaticResource LightColorBrush}"/>
             <Setter Property="BorderThickness" Value="0,0,0,1"/>
             <Setter Property="KeyboardNavigation.TabNavigation" Value="Cycle"/>
-        </Style>
+        </Style>-->
 
         <Style x:Key="L0" TargetType="MenuItem">
             <Setter Property="Foreground" Value="White"/>
