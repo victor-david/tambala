@@ -46,7 +46,7 @@
             <tk:ImageButton ImageSource="{StaticResource ImageSaveLayout}" Content="Save" Command="{Binding Commands[SaveSong]}"/>
             <tk:ImageButton Grid.Column="1" ImageSource="{StaticResource ImageAddLayout}" Content="New" Command="{Binding Commands[NewSong]}" HorizontalAlignment="Stretch"/>
             <tk:ImageButton Grid.Column="2" ImageSource="{StaticResource ImageOpenLayout}" Content="Open" Command="{Binding Commands[OpenSong]}"/>
-            <TextBlock Grid.Column="3" Text="{Binding ProjectContainer.DisplayName}"/>
+            <TextBlock Grid.Column="3" Style="{StaticResource TextBlockFileName}" Text="{Binding ProjectContainer.DisplayName}"/>
         </Grid>
 
         <Separator Grid.Row="1"/>

@@ -12,55 +12,7 @@
     <Style TargetType="tk:ImageButton" BasedOn="{StaticResource DefaultImageButtonStyle}"/>
     
     
-    <!-- Style used for a Button's border -->
-    <Style TargetType="Border" x:Key="ButtonBorder">
-        <Setter Property="Margin" Value="2"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="CornerRadius" Value="4"/>
-        <Setter Property="Background" Value="{StaticResource NormalBrush}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource NormalBorderBrush}"/>
-    </Style>
 
-    <!-- Default style for Button -->
-    <Style TargetType="Button" BasedOn="{StaticResource BaseControl}">
-        <Setter Property="SnapsToDevicePixels" Value="true"/>
-        <Setter Property="OverridesDefaultStyle" Value="true"/>
-        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-        <Setter Property="Cursor" Value="Hand" />
-        <Setter Property="FontSize" Value="11" />
-        <Setter Property="Foreground" Value="MidnightBlue" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border x:Name="Border" Style="{StaticResource ButtonBorder}">
-                        <ContentPresenter Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True" />
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsKeyboardFocused" Value="True">
-                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource DefaultedBorderBrush}" />
-                        </Trigger>
-                        <Trigger Property="IsDefaulted" Value="True">
-                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource DefaultedBorderBrush}" />
-                        </Trigger>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="{StaticResource DarkBrush}" />
-                            <Setter Property="Foreground" Value="Red" />
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="{StaticResource PressedBrush}" />
-                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource PressedBorderBrush}" />
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="Border" Property="Background" Value="{StaticResource DisabledBackgroundBrush}" />
-                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource DisabledBorderBrush}" />
-                            <Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    
     <ControlTemplate TargetType="Button" x:Key="FlatButtonTemplate">
         <Border 
             Width="{TemplateBinding Width}"

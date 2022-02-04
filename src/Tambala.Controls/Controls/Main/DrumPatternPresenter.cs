@@ -284,8 +284,7 @@ namespace Restless.Tambala.Controls
             Grid.Children.Clear();
             AddColumnDefinition(Constants.DrumPattern.FirstColumnWidth);
             // TextBox to edit the pattern name
-            var name = new RationalTextBox();
-            name.SetResourceReference(StyleProperty, "RationalTextBoxPatternNameEdit");
+            RationalTextBox name = new RationalTextBox();
 
             Border border = new Border()
             {
