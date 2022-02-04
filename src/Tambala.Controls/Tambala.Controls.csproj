@@ -29,5 +29,42 @@
   <ItemGroup>
     <ProjectReference Include="..\Tambala.Data\Tambala.Data.csproj" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <Resource Include="Resources\Images\Image.Caret.Down.Blue.32.png" />
+    <Resource Include="Resources\Images\Image.Caret.Down.White.32.png" />
+    <Resource Include="Resources\Images\Image.Caret.Left.White.32.png" />
+    <Resource Include="Resources\Images\Image.Caret.Right.White.32.png" />
+    <Resource Include="Resources\Images\Image.Caret.Up.Blue.32.png" />
+    <Resource Include="Resources\Images\Image.Caret.Up.Down.Blue.32.png" />
+    <Resource Include="Resources\Images\Image.Caret.Up.Down.White.32.png" />
+    <Resource Include="Resources\Images\Image.Caret.Up.White.32.png" />
+    <Resource Include="Resources\Images\Image.Chevron.Down.Blue.32.png" />
+    <Resource Include="Resources\Images\Image.Chevron.Down.White.32.png" />
+    <Resource Include="Resources\Images\Image.Chevron.Up.Blue.32.png" />
+    <Resource Include="Resources\Images\Image.Chevron.Up.White.32.png" />
+    <Resource Include="Resources\Images\Image.Close.64.png" />
+    <Resource Include="Resources\Images\Image.Drum.Black.32.png" />
+    <Resource Include="Resources\Images\Image.Drum.Red.32.png" />
+    <Resource Include="Resources\Images\Image.Drum.White.32.png" />
+    <Resource Include="Resources\Images\Image.Maximize.Blue.64.png" />
+    <Resource Include="Resources\Images\Image.Metronome.64.png" />
+    <Resource Include="Resources\Images\Image.Minimize.64.png" />
+    <Resource Include="Resources\Images\Image.Minimize.Blue.64.png" />
+    <Resource Include="Resources\Images\Image.Remove.64.png" />
+    <Resource Include="Resources\Images\Image.Render.64.png" />
+    <Resource Include="Resources\Images\Image.Render.Active.64.png" />
+    <Resource Include="Resources\Images\Image.Shift.Left.64.png" />
+    <Resource Include="Resources\Images\Image.Shift.Right.64.png" />
+    <Resource Include="Resources\Images\Image.Slash.64.png" />
+    <Resource Include="Resources\Images\Image.Start.64.png" />
+    <Resource Include="Resources\Images\Image.Step.48.png" />
+    <Resource Include="Resources\Images\Image.Stop.64.png" />
+    <Resource Include="Resources\Images\Image.Track.Add.64.png" />
+    <Resource Include="Resources\Images\Image.Track.Muted.64.png" />
+    <Resource Include="Resources\Images\Image.Track.Solo.No.64.png" />
+    <Resource Include="Resources\Images\Image.Track.Solo.Yes.64.png" />
+    <Resource Include="Resources\Images\Image.Track.Voiced.64.png" />
+  </ItemGroup>
 
 </Project>
