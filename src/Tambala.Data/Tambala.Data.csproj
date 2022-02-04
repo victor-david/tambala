@@ -55,60 +55,59 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Resources\DrumKit\Piano\01.piano-g.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\Piano\02.piano-f#.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\Piano\03.piano-f.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\Piano\04.piano-e.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\Piano\05.piano-eb.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\Piano\06.piano-d.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\Piano\07.piano-c#.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\Piano\08.piano-c.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\Piano\09.piano-b.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\Piano\10.piano-bb.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\Piano\11.piano-a.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\Piano\12.piano-g#.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\Piano\01.piano-g.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\Piano\02.piano-f#.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\Piano\03.piano-f.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\Piano\04.piano-e.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\Piano\05.piano-eb.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\Piano\06.piano-d.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\Piano\07.piano-c#.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\Piano\08.piano-c.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\Piano\09.piano-b.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\Piano\10.piano-bb.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\Piano\11.piano-a.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\Piano\12.piano-g#.wav"/>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Resources\DrumKit\TR808\Clap.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\TR808\Clave.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\TR808\Conga.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\TR808\Cowbell.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\TR808\Cymbal.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\TR808\High.Hat.Closed.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\TR808\High.Hat.Open.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\TR808\High.Hat.Pedal.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\TR808\Kick.Long.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\TR808\Kick.Short.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\TR808\Shaker.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\TR808\Snare.1.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\TR808\Snare.2.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\TR808\Tom.High.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\TR808\Tom.Low.wav" />
+    <EmbeddedResource Include="Resources\DrumKit\TR808\Clap.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\TR808\Clave.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\TR808\Conga.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\TR808\Cowbell.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\TR808\Cymbal.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\TR808\High.Hat.Closed.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\TR808\High.Hat.Open.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\TR808\High.Hat.Pedal.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\TR808\Kick.Long.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\TR808\Kick.Short.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\TR808\Shaker.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\TR808\Snare.1.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\TR808\Snare.2.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\TR808\Tom.High.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\TR808\Tom.Low.wav"/>
   </ItemGroup>
   
   <ItemGroup>
-    <EmbeddedResource Include="Resources\DrumKit\Tribal\Kick.Dry.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\Tribal\HighHat.Closed.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\Tribal\Cymbal.Crash.Light.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\Tribal\Cymbal.Ride.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\Tribal\Cymbal.Crash.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\Tribal\Cymbal.Bell.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\Tribal\Tom.Low.Flam.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\Tribal\Tom.Mid.Flam.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\Tribal\Tom.Low.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\Tribal\Tom.Mid.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\Tribal\HighHat.Open.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\Tribal\HighHat.Semi.Open.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\Tribal\Snare.SideStick.1.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\Tribal\Snare.SideStick.2.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\Tribal\Snare.1.wav" />
-    <EmbeddedResource Include="Resources\DrumKit\Tribal\Snare.2.wav" />
-  </ItemGroup>  
-
+    <EmbeddedResource Include="Resources\DrumKit\Tribal\Kick.Dry.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\Tribal\HighHat.Closed.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\Tribal\Cymbal.Crash.Light.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\Tribal\Cymbal.Ride.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\Tribal\Cymbal.Crash.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\Tribal\Cymbal.Bell.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\Tribal\Tom.Low.Flam.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\Tribal\Tom.Mid.Flam.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\Tribal\Tom.Low.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\Tribal\Tom.Mid.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\Tribal\HighHat.Open.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\Tribal\HighHat.Semi.Open.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\Tribal\Snare.SideStick.1.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\Tribal\Snare.SideStick.2.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\Tribal\Snare.1.wav"/>
+    <EmbeddedResource Include="Resources\DrumKit\Tribal\Snare.2.wav"/>
+  </ItemGroup>
+  
   <ItemGroup>
-    <PackageReference Include="Microsoft.WindowsAPICodePack-Core" Version="1.1.0.2" />
-    <PackageReference Include="Microsoft.WindowsAPICodePack-Shell" Version="1.1.0" />
+    <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.4"/>
   </ItemGroup>
   
 </Project>
