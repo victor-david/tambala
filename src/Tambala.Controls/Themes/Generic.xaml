@@ -3,13 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/Tambala.Controls;component/Themes/Generic/Brushes.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/Tambala.Controls;component/Themes/Generic/Button.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/Tambala.Controls;component/Themes/Generic/Border.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/Tambala.Controls;component/Themes/Generic/TextBlock.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Tambala.Controls;component/Themes/Generic/RationalTextBox.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/Tambala.Controls;component/Themes/Generic/Grid.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/Tambala.Controls;component/Themes/Generic/ListBox.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Tambala.Controls;component/Themes/Generic/LevelSlider.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Tambala.Controls;component/Themes/Generic/VelocitySlider.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Tambala.Controls;component/Themes/Generic/VolumeMeter.xaml"/>

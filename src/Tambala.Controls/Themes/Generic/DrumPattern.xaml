@@ -2,7 +2,11 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:con="clr-namespace:Restless.Tambala.Controls">
-
+    
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Styles.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    
     <!-- ########################## -->
     <!-- DrumPattern Template/Style -->
     <!-- ########################## -->
@@ -15,16 +19,16 @@
             </Grid.RowDefinitions>
 
             <!-- Header. Show name of drum pattern -->
-            <Border Style="{DynamicResource HeaderBorder}">
+            <Border Style="{StaticResource HeaderBorder}">
                 <DockPanel LastChildFill="False" >
                     <Button
-                        Style="{DynamicResource ButtonBaseFlat}"
+                        Style="{StaticResource FlatButtonStyle}"
                         Command="{TemplateBinding ToggleStretchedCommand}"
                         ToolTip="Hide or show all instruments except the selected one">
                         <Image Source="{TemplateBinding StretchedImageSource}"/>
                     </Button>
                     <Button
-                        Style="{DynamicResource ButtonBaseFlat}"
+                        Style="{StaticResource FlatButtonStyle}"
                         Command="{TemplateBinding ToggleExpandedCommand}"
                         ToolTip="Hide or show the drum pattern controls">
                         <Image Source="{TemplateBinding ActiveExpandedStateImageSource}"/>
@@ -37,7 +41,7 @@
                     </TextBlock>
                     <Button
                         DockPanel.Dock="Right"
-                        Style="{DynamicResource ButtonBaseFlat}"
+                        Style="{StaticResource FlatButtonStyle}"
                         Command="{TemplateBinding ToggleSlideCommand}">
                         <Image Source="{TemplateBinding ActiveSlideStateImageSource}"/>
                     </Button>
