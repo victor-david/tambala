@@ -42,7 +42,7 @@ namespace Restless.Tambala.Controls
         internal DrumPatternPresenter(DrumPattern owner)
         {
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));
-            Controllers = new GenericList<InstrumentController>();
+            Controllers = new List<InstrumentController>();
             quarterNoteCount = Constants.DrumPattern.QuarterNoteCount.Default;
             ticksPerQuarterNote = Constants.DrumPattern.TicksPerQuarterNote.Default;
             scale = Constants.DrumPattern.Scale.Default;
@@ -78,7 +78,7 @@ namespace Restless.Tambala.Controls
         /// <summary>
         /// Gets the list of instrument controllers.
         /// </summary>
-        private GenericList<InstrumentController> Controllers
+        private List<InstrumentController> Controllers
         {
             get;
         }
@@ -132,7 +132,8 @@ namespace Restless.Tambala.Controls
         public override XElement GetXElement()
         {
             var element = new XElement(nameof(DrumPatternPresenter));
-            Controllers.DoForAll((controller) =>
+            
+            Controllers.ForEach((controller) =>
             {
                 element.Add(controller.GetXElement());
             });
@@ -265,7 +266,7 @@ namespace Restless.Tambala.Controls
                 Controllers[0].IsSelected = true;
             }
 
-            Controllers.DoForAll((con) =>
+            Controllers.ForEach((con) =>
             {
                 con.SetIsVisible(allVisible || con == selectedController, quarterNoteCount);
             });
@@ -406,7 +407,7 @@ namespace Restless.Tambala.Controls
             {
                 item.Value.SetVisibility(quarterNoteCount);
             }
-            Controllers.DoForAll((con) =>
+            Controllers.ForEach((con) =>
             {
                 foreach (var item in con.PatternQuarters)
                 {
@@ -503,7 +504,7 @@ namespace Restless.Tambala.Controls
                 // and a stack overflow.
                 if (controller.IsSelected)
                 {
-                    Controllers.DoForAll((con) =>
+                    Controllers.ForEach((con) =>
                     {
                         con.IsSelected = con == controller;
                     });
@@ -538,7 +539,7 @@ namespace Restless.Tambala.Controls
         {
             int soloCount = Controllers.Where((c) => c.IsSolo).Count();
 
-            Controllers.DoForAll((con) =>
+            Controllers.ForEach((con) =>
             {
                 if (soloCount > 0)
                     con.IsSoloMuted = !con.IsSolo;

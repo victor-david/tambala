@@ -6,6 +6,7 @@
 */
 using Restless.Tambala.Controls.Core;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace Restless.Tambala.Controls.Audio
@@ -13,7 +14,7 @@ namespace Restless.Tambala.Controls.Audio
     /// <summary>
     /// Represents a collection of <see cref="Instrument"/> objects.
     /// </summary>
-    public class InstrumentCollection : GenericList<Instrument>
+    public class InstrumentCollection : List<Instrument>
     {
         #region Internal methods
         /// <summary>

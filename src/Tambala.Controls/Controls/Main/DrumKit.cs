@@ -62,7 +62,7 @@ namespace Restless.Tambala.Controls
         }
 
         /// <summary>
-        /// Gets the unique id for this drum kit.
+        /// Gets or (from this assembly) sets the unique id for this drum kit.
         /// </summary>
         public string Id
         {
@@ -71,7 +71,7 @@ namespace Restless.Tambala.Controls
         }
 
         /// <summary>
-        /// Gets or (from this assembly) sets the id of this drum kit
+        /// Gets or (from this assembly) sets the resource path of this drum kit
         /// </summary>
         public string ResourcePath
         {

@@ -302,7 +302,7 @@ namespace Restless.Tambala.Controls
             element.Add(MasterPlay.GetXElement());
             element.Add(SongContainer.GetXElement());
              
-            DrumPatterns.DoForAll((pattern) =>
+            DrumPatterns.ForEach((pattern) =>
             {
                 element.Add(pattern.GetXElement());
              });

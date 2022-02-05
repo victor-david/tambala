@@ -15,7 +15,7 @@ namespace Restless.Tambala.Controls.Core
     /// <summary>
     /// Represents a collection of <see cref="DrumKit"/> objects.
     /// </summary>
-    public class DrumKitCollection : GenericList<DrumKit>
+    public class DrumKitCollection : List<DrumKit>
     {
         #region Public fields
         /// <summary>
@@ -117,7 +117,6 @@ namespace Restless.Tambala.Controls.Core
                 Name = "Cuban",
                 ResourcePath = "Resources.DrumKit.Cuban",
                 Id = DrumKitCubanId
-
             });
             Add(new DrumKit()
             {
@@ -138,7 +137,7 @@ namespace Restless.Tambala.Controls.Core
                 Id = DrumKitPianoId
             });
 
-            DoForAll((kit) =>
+            ForEach((kit) =>
             {
                 kit.LoadBuiltInInstruments();
             });
