@@ -39,14 +39,6 @@ namespace Restless.Tambala.Controls.Audio
         }
 
         /// <summary>
-        /// Gets the audio pieces
-        /// </summary>
-        public InstrumentCollection AudioPieces
-        {
-            get;
-        }
-
-        /// <summary>
         /// Gets the mastering voice
         /// </summary>
         internal MasteringVoice MasterVoice
@@ -85,8 +77,6 @@ namespace Restless.Tambala.Controls.Audio
         {
             AudioDevice = new XAudio2();
             masterVoice = new MasteringVoice(AudioDevice);
-
-            AudioPieces = new InstrumentCollection();
             voicePools = new List<VoicePool>();
 
             //reverb = new Reverb(AudioDevice);
@@ -142,40 +132,6 @@ namespace Restless.Tambala.Controls.Audio
         /************************************************************************/
 
         #region Internal methods
-        /// <summary>
-        /// Gets an audio piece of the specified type.
-        /// </summary>
-        /// <param name="type">The type</param>
-        /// <returns>The default piece for the type, or the first piece of the type if none are marked default, or null.</returns>
-        internal Instrument GetAudioPiece(InstrumentType type)
-        {
-            foreach (var piece in AudioPieces.Where((p)=>p.Type == type))
-            {
-                if (piece.IsDefault)
-                {
-                    return piece;
-                }
-            }
-            return AudioPieces.Find((p) => p.Type == type);
-        }
-
-        /// <summary>
-        /// Gets an audio piece by its audio name.
-        /// </summary>
-        /// <param name="audioName">The audio name</param>
-        /// <returns>The specified piece, or null if not found.</returns>
-        internal Instrument GetAudioPiece(string audioName)
-        {
-            foreach (var piece in AudioPieces)
-            {
-                if (piece.AudioName == audioName)
-                {
-                    return piece;
-                }
-            }
-            return null;
-        }
-
         /// <summary>
         /// Creates a voice pool.
         /// </summary>
