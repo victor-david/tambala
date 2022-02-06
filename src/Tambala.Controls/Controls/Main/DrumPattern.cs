@@ -15,7 +15,7 @@ namespace Restless.Tambala.Controls
     /// Represents a single drum pattern that is comprised of instruments, and the ability
     /// to select which ones play on the timeline.
     /// </summary>
-    public sealed class DrumPattern : AudioControlBase
+    public sealed class DrumPattern : AudioControlBase, IShutdown
     {
         #region Private
         #endregion
@@ -284,6 +284,20 @@ namespace Restless.Tambala.Controls
                 }
             }
             SelectedEventCount = Presenter.GetSelectedCount();
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region IShutdown
+        /// <summary>
+        /// Shuts down the <see cref="DrumPatternPresenter"/> and the <see cref="DrumPatternController"/>
+        /// that belong to this instance.
+        /// </summary>
+        public void Shutdown()
+        {
+            Presenter.Shutdown();
+            Controller.Shutdown();
         }
         #endregion
 

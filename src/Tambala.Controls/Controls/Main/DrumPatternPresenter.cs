@@ -20,7 +20,7 @@ namespace Restless.Tambala.Controls
     /// <summary>
     /// Extends <see cref="ControlObjectVisualGrid"/> to provide a visual display panel for <see cref="DrumPattern"/>
     /// </summary>
-    internal class DrumPatternPresenter : ControlObjectVisualGrid
+    internal class DrumPatternPresenter : ControlObjectVisualGrid, IShutdown
     {
         #region Private
         private int quarterNoteCount;
@@ -165,6 +165,16 @@ namespace Restless.Tambala.Controls
         #endregion
 
         /************************************************************************/
+
+        #region IShutdown
+        /// <summary>
+        /// Shuts down the <see cref="InstrumentController"/> objects used by this instance.
+        /// </summary>
+        public void Shutdown()
+        {
+            Controllers.ForEach(c => c.Shutdown());
+        }
+        #endregion
 
         #region Protected methods
         /// <summary>

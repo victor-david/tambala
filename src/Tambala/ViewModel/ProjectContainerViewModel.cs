@@ -153,7 +153,7 @@ namespace Restless.Tambala.ViewModel
         /// </summary>
         protected override void OnDeactivated()
         {
-            container.Dispose();
+            container.Shutdown();
         }
         #endregion
 

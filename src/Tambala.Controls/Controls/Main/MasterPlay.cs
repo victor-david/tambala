@@ -16,7 +16,7 @@ namespace Restless.Tambala.Controls
     /// <summary>
     /// Represents a control that provides master play / stop services.
     /// </summary>
-    internal sealed partial class MasterPlay : AudioControlBase, IDisposable
+    internal sealed partial class MasterPlay : AudioControlBase, IShutdown
     {
         #region Private
         // All thread related fields and methods are in the partial.

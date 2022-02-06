@@ -9,7 +9,6 @@ using Restless.Tambala.Controls.Core;
 using SharpDX.XAudio2;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -20,7 +19,7 @@ namespace Restless.Tambala.Controls
     /// <summary>
     /// Represents a controller for a single instrument of a drum pattern.
     /// </summary>
-    public sealed class InstrumentController : AudioControlBase, ISelectable, IDisposable
+    public sealed class InstrumentController : AudioControlBase, ISelectable, IShutdown
     {
         #region Private
         private bool isAudioEnabled;
@@ -277,30 +276,13 @@ namespace Restless.Tambala.Controls
 
         /************************************************************************/
 
-        #region IDisposable
+        #region IShutdown
         /// <summary>
-        /// Disposes resources.
+        /// Shuts down the voice pool used by this instance.
         /// </summary>
-        public void Dispose()
+        public void Shutdown()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Disposes resources
-        /// </summary>
-        /// <param name="disposing">true if disposing</param>
-        [SuppressMessage("Microsoft.Usage", "CA2213: Disposable fields should be disposed", Justification = "Disposal happens via SharpDx.Utilities")]
-        private void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (submixVoice != null)
-                {
-                    SharpDX.Utilities.Dispose(ref submixVoice);
-                }
-            }
+            VoicePools.Instance.Shutdown(voicePool);
         }
         #endregion
 
@@ -404,8 +386,8 @@ namespace Restless.Tambala.Controls
             isAudioEnabled = Instrument != null && Instrument.IsAudioInitialized;
             if (isAudioEnabled)
             {
-                AudioHost.Instance.DestroyVoicePool(voicePool);
-                voicePool = AudioHost.Instance.CreateVoicePool(Instrument.DisplayName, Instrument.Audio, submixVoice, InitialVoicePoolSize);
+                VoicePools.Instance.Destroy(voicePool);
+                voicePool = VoicePools.Instance.Create(Instrument.DisplayName, Instrument.Audio, submixVoice, InitialVoicePoolSize);
             }
         }
 

@@ -15,7 +15,7 @@ namespace Restless.Tambala.Controls.Audio
     /// <summary>
     /// Provides a metronome
     /// </summary>
-    internal sealed class Metronome : IDisposable
+    internal sealed class Metronome : IShutdown
     {
         #region Private
         // TODO: Make instrument configurable.
@@ -104,30 +104,13 @@ namespace Restless.Tambala.Controls.Audio
 
         /************************************************************************/
 
-        #region IDisposable
+        #region IShutdown
         /// <summary>
-        /// Disposes resources.
+        /// Shuts down the metronome
         /// </summary>
-        public void Dispose()
+        public void Shutdown()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Disposes resources
-        /// </summary>
-        /// <param name="disposing">true if disposing</param>
-        [SuppressMessage("Microsoft.Usage", "CA2213: Disposable fields should be disposed", Justification="Disposal happens via SharpDx.Utilities")]
-        private void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (submixVoice != null)
-                {
-                    SharpDX.Utilities.Dispose(ref submixVoice);
-                }
-            }
+            VoicePools.Instance.Shutdown(voicePool);
         }
         #endregion
 
@@ -161,8 +144,8 @@ namespace Restless.Tambala.Controls.Audio
             isAudioEnabled = (Instrument != null && Instrument.IsAudioInitialized);
             if (isAudioEnabled)
             {
-                AudioHost.Instance.DestroyVoicePool(voicePool);
-                voicePool = AudioHost.Instance.CreateVoicePool("Metronome", Instrument.Audio, submixVoice, Constants.InitialVoicePool.Normal);
+                VoicePools.Instance.Destroy(voicePool);
+                voicePool = VoicePools.Instance.Create("Metronome", Instrument.Audio, submixVoice, Constants.InitialVoicePool.Normal);
             }
         }
         #endregion

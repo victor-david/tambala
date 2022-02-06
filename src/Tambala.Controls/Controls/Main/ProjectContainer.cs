@@ -23,7 +23,7 @@ namespace Restless.Tambala.Controls
     /// the controls for the master output (volume, tempo), the controls to create a song from multiple drum
     /// patterns, and the drum patterns.
     /// </remarks>
-    public sealed class ProjectContainer : ControlObject, IDisposable
+    public sealed class ProjectContainer : ControlObject, IShutdown
     {
         #region Private
         private bool isSongContainerChangeInProgress = false;
@@ -338,15 +338,15 @@ namespace Restless.Tambala.Controls
 
         /************************************************************************/
 
-        #region IDisposable
+        #region IShutdown
         /// <summary>
-        /// Disposes resources.
+        /// Shuts down the container and all child objects
         /// </summary>
-        public void Dispose()
+        public void Shutdown()
         {
-            MasterPlay.Dispose();
+            MasterPlay.Shutdown();
+            DrumPatterns.ForEach(p => p.Shutdown());
             Dispatcher.ShutdownStarted -= DispatcherShutdownStarted;
-            GC.SuppressFinalize(this);
         }
         #endregion
 
@@ -499,13 +499,20 @@ namespace Restless.Tambala.Controls
             }
         }
 
+        /// <summary>
+        /// This method runs when the project container is open at the time the main window is closed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <remarks>
+        /// If the container is open when the user closes the main window, this event handler
+        /// runs to shutdown the container. When the user closes the container before closing
+        /// the main window, this handler is not needed as long as the <see cref="Shutdown"/>
+        /// method is called explicitly.
+        /// </remarks>
         private void DispatcherShutdownStarted(object sender, EventArgs e)
         {
-            // This event handler may not be needed. The important thing is to shutdown
-            // the threads in MasterPlay and this is handled by the Shutdown() method
-            // above. As long as the consumer of ProjectContainer calls Shutdown()
-            // the threads will finish and this handler will be removed.
-            MasterPlay.Dispose();
+            Shutdown();
         }
         #endregion
     }

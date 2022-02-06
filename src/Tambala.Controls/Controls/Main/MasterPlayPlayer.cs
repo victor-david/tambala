@@ -288,36 +288,11 @@ namespace Restless.Tambala.Controls
 
         /************************************************************************/
 
-        #region IDisposable
+        #region IShutdown
         /// <summary>
-        /// Disposes resources.
+        /// Shuts down the master player threads and the metronome.
         /// </summary>
-        [SuppressMessage("Microsoft.Usage", "CA2213: Disposable fields should be disposed", Justification="Disposal happens via Shutdown() method")]
-        public void Dispose()
-        {
-            Shutdown();
-            GC.SuppressFinalize(this);
-        }
-        #endregion
-
-        /************************************************************************/
-
-        #region Internal methods
-        /// <summary>
-        /// Adjusts the thread sleep time according to the specified tempo.
-        /// </summary>
-        /// <param name="tempo">The tempo.</param>
-        internal void SetTempo(double tempo)
-        {
-            int tempoInt = (int)tempo;
-            patternSleepTime = MilliSecondsPerMinute / tempoInt / Ticks.LowestCommon;
-        }
-        #endregion
-
-        /************************************************************************/
-
-        #region Private method
-        private void Shutdown()
+        public void Shutdown()
         {
             IsStarted = false;
             isControlClosing = true;
@@ -340,9 +315,22 @@ namespace Restless.Tambala.Controls
                 audioMonitorSignaler.Dispose();
             }
 
-            metronome.Dispose();
+            metronome.Shutdown();
         }
         #endregion
 
+        /************************************************************************/
+
+        #region Internal methods
+        /// <summary>
+        /// Adjusts the thread sleep time according to the specified tempo.
+        /// </summary>
+        /// <param name="tempo">The tempo.</param>
+        internal void SetTempo(double tempo)
+        {
+            int tempoInt = (int)tempo;
+            patternSleepTime = MilliSecondsPerMinute / tempoInt / Ticks.LowestCommon;
+        }
+        #endregion
     }
 }

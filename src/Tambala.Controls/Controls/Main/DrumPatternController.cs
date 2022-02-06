@@ -18,7 +18,7 @@ namespace Restless.Tambala.Controls
     /// <summary>
     /// Represents a controller for a drum pattern.
     /// </summary>
-    public sealed class DrumPatternController : AudioControlBase, IQuarterNote, IDisposable
+    public sealed class DrumPatternController : AudioControlBase, IQuarterNote, IShutdown
     {
         #region Private
         private SubmixVoice submixVoice;
@@ -365,30 +365,14 @@ namespace Restless.Tambala.Controls
 
         /************************************************************************/
 
-        #region IDisposable
+        #region IShutdown
         /// <summary>
-        /// Disposes resources.
+        /// Shuts down the controller.
         /// </summary>
-        public void Dispose()
+        public void Shutdown()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Disposes resources
-        /// </summary>
-        /// <param name="disposing">true if disposing</param>
-        [SuppressMessage("Microsoft.Usage", "CA2213: Disposable fields should be disposed", Justification = "Disposal happens via SharpDx.Utilities")]
-        private void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (submixVoice != null)
-                {
-                    SharpDX.Utilities.Dispose(ref submixVoice);
-                }
-            }
+            submixVoice?.DestroyVoice();
+            SharpDX.Utilities.Dispose(ref submixVoice);
         }
         #endregion
 

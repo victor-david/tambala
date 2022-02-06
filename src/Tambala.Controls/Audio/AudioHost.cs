@@ -6,8 +6,6 @@
 */
 using Restless.Tambala.Controls.Core;
 using SharpDX.XAudio2;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Restless.Tambala.Controls.Audio
 {
@@ -18,7 +16,6 @@ namespace Restless.Tambala.Controls.Audio
     {
         #region Private
         private MasteringVoice masterVoice;
-        private List<VoicePool> voicePools;
         private XAudio2 audioDevice;
         //private Reverb reverb;
         //private readonly EffectDescriptor reverbEffectDescriptor;
@@ -77,8 +74,6 @@ namespace Restless.Tambala.Controls.Audio
         {
             AudioDevice = new XAudio2();
             masterVoice = new MasteringVoice(AudioDevice);
-            voicePools = new List<VoicePool>();
-
             //reverb = new Reverb(AudioDevice);
             //reverbEffectDescriptor = new EffectDescriptor(reverb);
 
@@ -106,7 +101,7 @@ namespace Restless.Tambala.Controls.Audio
         /// </summary>
         public void Initialize()
         {
-            // Not doing anything right now, but reserved for future expansion. 
+            VoicePools.Instance.Initialize();
         }
 
         /// <summary>
@@ -115,49 +110,14 @@ namespace Restless.Tambala.Controls.Audio
         /// </summary>
         public void Shutdown()
         {
-            foreach (VoicePool pool in voicePools)
-            {
-                pool.Destroy();
-            }
-
+            VoicePools.Instance.ShutdownAll();
             AudioDevice.StopEngine();
+            masterVoice.DestroyVoice();
             SharpDX.Utilities.Dispose(ref masterVoice);
             SharpDX.Utilities.Dispose(ref audioDevice);
             // SharpDX.Utilities.Dispose(ref reverb);
             // Note. This will throw in SharpDx.CallbackBase if AudioCapture has not been inserted into the effect chain.
             //SharpDX.Utilities.Dispose(ref audioCapture);
-        }
-        #endregion
-
-        /************************************************************************/
-
-        #region Internal methods
-        /// <summary>
-        /// Creates a voice pool.
-        /// </summary>
-        /// <param name="name">The voice pool name. Used in diagnositics, usually the instrument name.</param>
-        /// <param name="audio">The audio buffer.</param>
-        /// <param name="outputVoice">The output voice for the new voice pool.</param>
-        /// <param name="initialSize">The initial size of the voice pool.</param>
-        /// <returns>The newly created voice pool.</returns>
-        internal VoicePool CreateVoicePool(string name, AudioBuffer audio, Voice outputVoice, int initialSize)
-        {
-            var pool = new VoicePool(name, audio, outputVoice, initialSize);
-            voicePools.Add(pool);
-            return pool;
-        }
-
-        /// <summary>
-        /// Destroys the specified <see cref="VoicePool"/> and removes it from the list.
-        /// </summary>
-        /// <param name="pool">The pool. If null, this method does nothing.</param>
-        internal void DestroyVoicePool(VoicePool pool)
-        {
-            if (pool != null && voicePools.Contains(pool))
-            {
-                pool.Destroy();
-                voicePools.Remove(pool);
-            }
         }
         #endregion
     }

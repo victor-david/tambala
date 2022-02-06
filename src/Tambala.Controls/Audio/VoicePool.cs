@@ -13,13 +13,24 @@ namespace Restless.Tambala.Controls.Audio
     /// <summary>
     /// Represents a pool of SourceVoice objects.
     /// </summary>
+    /// <remarks>
+    /// A voice pool holds a series of SourceVoice objects that route to a specified submix voice.
+    /// Each instrument uses a voice pool to play its sound. An instrument may be playing the sound
+    /// from a previous spot on the timeline when it needs to play the sound again; the sounds may overlap,
+    /// such as with cymbals that delay. The instrument plays via its voice pool <see cref="Play(float, float, int)"/>
+    /// method which grabs an idle voice from the pool to submit to the audio engine. If no idle voices are available,
+    /// the pool increases in size.
+    /// 
+    /// Instruments must obtain their voice pool via <see cref="VoicePools.Create(string, AudioBuffer, SubmixVoice, int)"/>
+    /// instead of creating one directly. VoicePools keeps track of allocated voice pools for proper shutdown.
+    /// </remarks>
     internal class VoicePool
     {
         #region Private
         private AudioBuffer audio;
-        private readonly Voice outputVoice;
         private VoiceSendDescriptor voiceSendDescriptor;
         private SourceVoice[] voices;
+        private SubmixVoice outputVoice;
         #endregion
 
         /************************************************************************/
@@ -71,7 +82,7 @@ namespace Restless.Tambala.Controls.Audio
         /// <param name="audio">The auido source for the voice pool</param>
         /// <param name="outputVoice">The output voice.</param>
         /// <param name="initialSize">The intial size. Clamped to 16-48</param>
-        internal VoicePool(string name, AudioBuffer audio, Voice outputVoice, int initialSize)
+        internal VoicePool(string name, AudioBuffer audio, SubmixVoice outputVoice, int initialSize)
         {
             this.audio = audio ?? throw new ArgumentNullException(nameof(audio));
             this.outputVoice = outputVoice ?? throw new ArgumentNullException(nameof(outputVoice));
@@ -107,7 +118,7 @@ namespace Restless.Tambala.Controls.Audio
         /// <param name="operationSet">The operation set.</param>
         internal void Play(float volume, float pitch, int operationSet)
         {
-            var voice = GetAvailableVoice();
+            SourceVoice voice = GetAvailableVoice();
             if (voice != null)
             {
                 voice.SubmitSourceBuffer(audio, audio.DecodedPacketsInfo);
@@ -119,24 +130,35 @@ namespace Restless.Tambala.Controls.Audio
 
         /// <summary>
         /// Destroys all voices in the pool.
+        /// Only <see cref="VoicePools"/> calls this method.
+        /// Consumers must always call <see cref="VoicePools.Destroy(VoicePool)"/>,
+        /// not this method directly.
         /// </summary>
-        internal void Destroy()
+        internal void DestroyVoices()
         {
             for (int k = 0; k < Size; k++)
             {
-                if (voices[k] != null)
-                {
-                    voices[k].DestroyVoice();
-                    SharpDX.Utilities.Dispose(ref voices[k]);
-                }
+                voices[k]?.DestroyVoice();
+                SharpDX.Utilities.Dispose(ref voices[k]);
             }
+        }
+
+        /// <summary>
+        /// Destroys the output voice associated with this pool.
+        /// Only <see cref="VoicePools"/> calls this method.
+        /// Consumers must always call <see cref="VoicePools.Shutdown(VoicePool)"/>,
+        /// not this method directly.
+        /// </summary>
+        internal void DestroyOutputVoice()
+        {
+            outputVoice?.DestroyVoice();
+            SharpDX.Utilities.Dispose(ref outputVoice);
         }
         #endregion
 
         /************************************************************************/
 
         #region Private methods
-
         private void InitializeVoices(int initialSize)
         {
             voices = new SourceVoice[initialSize];
