@@ -28,7 +28,7 @@ namespace Restless.Tambala.Controls.Audio
         private readonly float pitchNormal;
         private readonly float pitchAccent;
         private int frequency;
-        private readonly List<int> supportedFrequency;
+        private readonly HashSet<int> supportedFrequency;
         #endregion
 
         /************************************************************************/
@@ -40,11 +40,10 @@ namespace Restless.Tambala.Controls.Audio
         internal Metronome()
         {
             submixVoice = new SubmixVoice(AudioHost.Instance.AudioDevice);
-            //submixVoice.SetOutputVoices(new VoiceSendDescriptor(this.owner.SubmixVoice));
             volume = XAudio2.DecibelsToAmplitudeRatio(0f);
             pitchNormal = XAudio2.SemitonesToFrequencyRatio(Constants.Pitch.Default);
             pitchAccent = XAudio2.SemitonesToFrequencyRatio(1.5f);
-            supportedFrequency = new List<int>()
+            supportedFrequency = new HashSet<int>()
             {
                 Constants.Metronome.Frequency.Quarter,
                 Constants.Metronome.Frequency.Eighth,
