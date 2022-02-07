@@ -4,7 +4,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
-    <Description>Tambala is a drum patteren and song generator</Description>
+    <Description>Tambala is an advanced drum patteren and song generator.</Description>
     <Company>Restless Animal Development</Company>
     <Product>Tambala</Product>
     <Copyright>2022 Restless Animal Development</Copyright>
@@ -12,7 +12,7 @@
     <PackageProjectUrl>https://github.com/victor-david/tambala</PackageProjectUrl>
     <RepositoryUrl>https://github.com/victor-david/tanbala</RepositoryUrl>    
     <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
-    <Version>4.0.0</Version>
+    <Version>5.0.0</Version>
     <ApplicationIcon>App.Icon.128.ico</ApplicationIcon>    
   </PropertyGroup>
 
