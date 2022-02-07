@@ -63,6 +63,7 @@ namespace Restless.Tambala.ViewModel
             Commands.Add("ViewAlwaysOnTop", (p)=> IsTopMost = !IsTopMost);
             Commands.Add("About", RunOpenAboutCommand);
             Commands.Add("ExitApp", p => Application.Current.MainWindow.Close());
+            Application.Current.MainWindow.Closing += MainWindowClosing;
         }
         #endregion
 
