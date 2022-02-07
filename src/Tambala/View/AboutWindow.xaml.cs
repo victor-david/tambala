@@ -24,9 +24,6 @@ namespace Restless.Tambala.View
         public AboutWindow()
         {
             InitializeComponent();
-            ResizeMode = ResizeMode.NoResize;
-            Height = 340;
-            Width = 520;
         }
         #endregion
     }

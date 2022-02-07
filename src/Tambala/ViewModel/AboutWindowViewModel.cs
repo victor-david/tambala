@@ -15,11 +15,6 @@ namespace Restless.Tambala.ViewModel
     /// </summary>
     public class AboutWindowViewModel : ApplicationViewModel
     {
-        #region Private
-        #endregion
-
-        /************************************************************************/
-
         #region Public properties
         /// <summary>
         /// Gets the application info object.
@@ -39,20 +34,6 @@ namespace Restless.Tambala.ViewModel
         public AboutWindowViewModel()
         {
             DisplayName = $"About {ApplicationInfo.Instance.Title} {ApplicationInfo.Instance.VersionMajor}";
-            Commands.Add("ImageCredit", RunImageCreditCommand);
-        }
-        #endregion
-
-        /************************************************************************/
-
-        #region Private methods
-        private void RunImageCreditCommand(object parm)
-        {
-            if (parm is string user)
-            {
-                string url = $"https://www.flaticon.com/authors/{user}";
-                Process.Start(url);
-            }
         }
         #endregion
     }

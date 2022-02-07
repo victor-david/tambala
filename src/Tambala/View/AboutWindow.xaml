@@ -9,74 +9,37 @@
     mc:Ignorable="d"     
     Style="{StaticResource DefaultAppWindowStyle}"
     WindowStartupLocation="CenterOwner"
-    Height="340"
-    Width="520"
+    ResizeMode="NoResize"
+    Height="380"
+    Width="492"
     Title="{Binding DisplayName}">
     <Window.Resources>
         <Style TargetType="TextBlock">
-            <Setter Property="Margin" Value="2,10"/>
+            <Setter Property="Margin" Value="0,5"/>
             <Setter Property="Foreground" Value="DarkBlue"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
         </Style>
-        <Style TargetType="tk:LinkedTextBlock">
-            <Setter Property="Margin" Value="4,0"/>
-            <Setter Property="Foreground" Value="Blue"/>
-        </Style>
     </Window.Resources>
 
-    <Grid Margin="10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="32"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
+    <StackPanel Margin="10">
+        <Image Width="64" Margin="0,5" Source="pack://application:,,,/Tambala;component/Resources/Images/Image.Drum.Blue.128.png"/>
+        <TextBlock Text="{Binding AppInfo.Description, Mode=OneTime}"/>
 
-        <TextBlock
-            Grid.Row="0"
-            Text="{Binding AppInfo.Description, Mode=OneTime}"/>
+        <TextBlock Text="{Binding AppInfo.Copyright, Mode=OneTime}"/>
 
-        <TextBlock
-            Grid.Row="1"
-            Text="{Binding AppInfo.Copyright, Mode=OneTime}"/>
-
-        <TextBlock Grid.Row="2">
-            <Run Text="Build Date:"/>
-            <Run Text="{Binding AppInfo.BuildDate, StringFormat=r, Mode=OneTime}"/>
+        <TextBlock>
+            <Run Text="Version:"/>
+            <Run Text="{Binding AppInfo.Version, Mode=OneTime}"/>
         </TextBlock>
 
-        <TextBlock Grid.Row="3">
-            <Run Text="64 Bit:"/>
-            <Run Text="{Binding AppInfo.Is64Bit, Mode=OneTime}"/>
-        </TextBlock>
-
-        <Grid Grid.Row="5">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="64"/>
-                <ColumnDefinition Width="8"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
-            <Image 
-                Grid.RowSpan="2"
-                Source="pack://application:,,,/Tambala;component/Resources/Images/Image.Drum.Blue.128.png"/>
-
-            <TextBlock Grid.Column="2" Text="Image and icons from flaticon.com by:"/>
-            <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal">
-                <tk:LinkedTextBlock Text="Appzgear" Command="{Binding Commands[ImageCredit]}" CommandParameter="appzgear"/>
-                <tk:LinkedTextBlock Text="Dave Gandy" Command="{Binding Commands[ImageCredit]}" CommandParameter="dave-gandy"/>
-                <tk:LinkedTextBlock Text="Egor Rumyantsev" Command="{Binding Commands[ImageCredit]}" CommandParameter="egor-rumyantsev"/>
-                <tk:LinkedTextBlock Text="Freepik" Command="{Binding Commands[ImageCredit]}" CommandParameter="freepik"/>
-                <tk:LinkedTextBlock Text="Good Ware" Command="{Binding Commands[ImageCredit]}" CommandParameter="good-ware"/>
-                <tk:LinkedTextBlock Text="Google" Command="{Binding Commands[ImageCredit]}" CommandParameter="google"/>
-            </StackPanel>
-
-        </Grid>
-    </Grid>
+        <TextBlock Text="Image and icons from flaticon.com by:"/>
+        <StackPanel Margin="10,4">
+            <TextBlock Text="Appzgear"/>
+            <TextBlock Text="Dave Gandy"/>
+            <TextBlock Text="Egor Rumyantsev"/>
+            <TextBlock Text="Freepik"/>
+            <TextBlock Text="Good Ware"/>
+            <TextBlock Text="Google"/>
+        </StackPanel>
+    </StackPanel>
 </tk:AppWindow>
