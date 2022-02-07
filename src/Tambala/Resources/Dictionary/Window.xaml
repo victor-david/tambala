@@ -18,4 +18,15 @@
 
     <Style TargetType="tk:AppWindow" BasedOn="{StaticResource DefaultAppWindowStyle}"/>
 
+    <Style x:Key="DefaultMessageWindowStyle" TargetType="tk:MessageWindow" BasedOn="{StaticResource DefaultAppWindowStyle}">
+        <Style.Triggers>
+            <Trigger Property="MessageWindowType" Value="Error">
+                <Setter Property="TitleBarBackground" Value="{StaticResource TitleBarErrorBackgroundBrush}"/>
+                <Setter Property="TitleBarForeground" Value="{StaticResource TitleBarErrorForegroundBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="tk:MessageWindow" BasedOn="{StaticResource DefaultMessageWindowStyle}"/>
+
 </ResourceDictionary>
