@@ -9,37 +9,39 @@
     mc:Ignorable="d"     
     Style="{StaticResource DefaultAppWindowStyle}"
     WindowStartupLocation="CenterOwner"
-    ResizeMode="NoResize"
-    Height="380"
+    Height="300"
     Width="492"
-    Title="{Binding DisplayName}">
+    ResizeMode="NoResize"
+    Title="{Binding DisplayName, Mode=OneTime}">
     <Window.Resources>
         <Style TargetType="TextBlock">
-            <Setter Property="Margin" Value="0,5"/>
-            <Setter Property="Foreground" Value="DarkBlue"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+        <Style TargetType="tk:LineItem">
+            <Setter Property="Margin" Value="0,5"/>
+            <Setter Property="ItemFontSize" Value="12"/>
+            <Setter Property="ItemForeground" Value="DarkRed"/>
+            <Setter Property="ItemDisplayWidth" Value="86"/>
+            <Setter Property="ItemVerticalAlignment" Value="Top"/>
+            <Setter Property="ValueFontSize" Value="12"/>
+            <Setter Property="ValueForeground" Value="Gray"/>
+            <Setter Property="ValueVerticalAlignment" Value="Top"/>
+        </Style>
+        <Style TargetType="tk:LinkedTextBlock">
+            <Setter Property="RolloverBrush" Value="DodgerBlue"/>
         </Style>
     </Window.Resources>
 
     <StackPanel Margin="10">
-        <Image Width="64" Margin="0,5" Source="pack://application:,,,/Tambala;component/Resources/Images/Image.Drum.Blue.128.png"/>
-        <TextBlock Text="{Binding AppInfo.Description, Mode=OneTime}"/>
-
-        <TextBlock Text="{Binding AppInfo.Copyright, Mode=OneTime}"/>
-
-        <TextBlock>
-            <Run Text="Version:"/>
-            <Run Text="{Binding AppInfo.Version, Mode=OneTime}"/>
-        </TextBlock>
-
-        <TextBlock Text="Image and icons from flaticon.com by:"/>
-        <StackPanel Margin="10,4">
-            <TextBlock Text="Appzgear"/>
-            <TextBlock Text="Dave Gandy"/>
-            <TextBlock Text="Egor Rumyantsev"/>
-            <TextBlock Text="Freepik"/>
-            <TextBlock Text="Good Ware"/>
-            <TextBlock Text="Google"/>
-        </StackPanel>
+        <Image Width="64" Margin="0,5,0,16" Source="pack://application:,,,/Tambala;component/Resources/Images/Image.Drum.Blue.128.png"/>
+        <tk:LineItem Item="Description" Value="{Binding AppInfo.Description, Mode=OneTime}"/>
+        <tk:LineItem Item="Copyright" Value="{Binding AppInfo.Copyright, Mode=OneTime}"/>
+        <tk:LineItem Item="Version" Value="{Binding AppInfo.Version, Mode=OneTime}"/>
+        <tk:LineItem Item="Framework" Value="{Binding AppInfo.FrameworkVersion, Mode=OneTime}"/>
+        <tk:LineItem Item="Repository" >
+            <tk:LineItem.Value>
+                <tk:LinkedTextBlock Text="{Binding AppInfo.RepositoryUrl}" Command="{Binding Commands[Repository]}"/>
+            </tk:LineItem.Value>
+        </tk:LineItem>
     </StackPanel>
 </tk:AppWindow>
