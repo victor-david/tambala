@@ -198,20 +198,4 @@
         <Setter Property="Margin" Value="4,0"/>
     </Style>
 
-
-    <!-- RationalTextBox Styles -->
-    <!--<Style TargetType="con:RationalTextBox">
-        <Setter Property="Margin" Value="0,0,20,0"/>
-        <Setter Property="FontSize" Value="11"/>
-        <Setter Property="Foreground" Value="DarkBlue"/>
-        <Setter Property="HorizontalAlignment" Value="Stretch"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="BorderThickness" Value="2,0,0,1"/>
-        <Setter Property="BorderBrush" Value="DarkGray"/>
-        <Setter Property="Background" Value="Blue"/>
-        <Setter Property="MaxLength" Value="32"/>
-        <Setter Property="AllowZeroLength" Value="False"/>
-        <Setter Property="ZeroLengthText" Value="Pattern"/>
-    </Style>-->
-
 </ResourceDictionary>
