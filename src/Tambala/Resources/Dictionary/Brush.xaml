@@ -8,7 +8,6 @@
 
     <SolidColorBrush x:Key="DefaultBackgroundBrush" Color="White"/>
     <SolidColorBrush x:Key="DefaultHeaderBackgroundBrush" Color="Goldenrod"/>
-
     <SolidColorBrush x:Key="DefaultForegroundBrush" Color="DarkBlue"/>
     <SolidColorBrush x:Key="DarkForegroundBrush" Color="Gray"/>
     <SolidColorBrush x:Key="LightForegroundBrush" Color="#AB000000"/>
@@ -23,6 +22,9 @@
     <SolidColorBrush x:Key="TitleBarBorderBrush" Color="LightGray"/>
     <SolidColorBrush x:Key="TitleBarButtonBrush" Color="DarkGreen"/>
 
+    <SolidColorBrush x:Key="ScrollBarBackgroundBrush" Color="FloralWhite"/>
+    <SolidColorBrush x:Key="ScrollBarBorderBrush" Color="CadetBlue"/>
+    <SolidColorBrush x:Key="ScrollBarThumbBrush" Color="PowderBlue"/>
     <SolidColorBrush x:Key="StandardIconBrush" Color="#606060"/>
     <SolidColorBrush x:Key="HeaderBrush" Color="DarkGray"/>
 
