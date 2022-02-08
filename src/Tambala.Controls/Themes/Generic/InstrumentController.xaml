@@ -84,7 +84,7 @@
                     LabelSize="30"
                     ValueSize="46"
                     ValueHorizontalAlignment="Center"
-                    Style="{DynamicResource HorizontalIntSlider}"
+                    Style="{StaticResource HorizontalIntSlider}"
                     LabelText="Pitch"
                     ValueText="{Binding Pitch, RelativeSource={RelativeSource TemplatedParent},Mode=OneWay,StringFormat=N1}"
                     LabelTextBrush="{DynamicResource SliderLabelTextBrush}"

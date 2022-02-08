@@ -198,4 +198,11 @@
         <Setter Property="Margin" Value="4,0"/>
     </Style>
 
+    <!-- Slider styles -->
+    <Style x:Key="HorizontalIntSlider" TargetType="con:LevelSlider">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="IsSnapToTickEnabled" Value="True"/>
+        <Setter Property="TickFrequency" Value="1"/>
+    </Style>
+
 </ResourceDictionary>

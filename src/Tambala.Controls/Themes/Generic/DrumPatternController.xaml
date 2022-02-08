@@ -40,7 +40,7 @@
                     Minimum="{Binding MinQuarterNoteCount, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
                     Maximum="{Binding MaxQuarterNoteCount, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
                     Value="{Binding QuarterNoteCount, RelativeSource={RelativeSource TemplatedParent}}"
-                    Style="{DynamicResource HorizontalIntSlider}"/>
+                    Style="{StaticResource HorizontalIntSlider}"/>
 
                 <!-- Ticks per quarter note -->
                 <con:BoxRadioButtonPanel Grid.Column="2" SelectedValue="{Binding TicksPerQuarterNote, RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}">
@@ -70,7 +70,7 @@
                     Minimum="{Binding MinScale, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
                     Maximum="{Binding MaxScale, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
                     Value="{Binding Scale, RelativeSource={RelativeSource TemplatedParent}}"
-                    Style="{DynamicResource HorizontalIntSlider}"/>
+                    Style="{StaticResource HorizontalIntSlider}"/>
 
                 <!-- Volume -->
                 <con:LevelSlider
@@ -84,8 +84,6 @@
                     Minimum="{Binding MinVolume, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}" 
                     Maximum="{Binding MaxVolume, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
                     Value="{Binding Volume, RelativeSource={RelativeSource TemplatedParent}}" />
-
-                <!--<TextBox Grid.Column="3" Text="{Binding DisplayName, RelativeSource={RelativeSource TemplatedParent},UpdateSourceTrigger=PropertyChanged}"/>-->
             </Grid>
         </Grid>
     </ControlTemplate>

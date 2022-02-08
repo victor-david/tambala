@@ -63,7 +63,7 @@
                     Minimum="{Binding MinSelectorSize, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
                     Maximum="{Binding MaxSelectorSize, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
                     Value="{Binding SelectorSize, RelativeSource={RelativeSource TemplatedParent}}"
-                    Style="{DynamicResource HorizontalIntSlider}"/>
+                    Style="{StaticResource HorizontalIntSlider}"/>
 
                 <con:LevelSlider
                     Grid.Column="2"
@@ -77,7 +77,7 @@
                     Minimum="{Binding MinDivisionCount, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
                     Maximum="{Binding MaxDivisionCount, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
                     Value="{Binding DivisionCount, RelativeSource={RelativeSource TemplatedParent}}"
-                    Style="{DynamicResource HorizontalIntSlider}"/>
+                    Style="{StaticResource HorizontalIntSlider}"/>
             </Grid>
 
             <!-- Rows of the song patterns-->
