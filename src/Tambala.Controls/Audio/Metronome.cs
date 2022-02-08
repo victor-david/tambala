@@ -6,9 +6,7 @@
 */
 using Restless.Tambala.Controls.Core;
 using SharpDX.XAudio2;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Restless.Tambala.Controls.Audio
 {
@@ -24,7 +22,7 @@ namespace Restless.Tambala.Controls.Audio
         private SubmixVoice submixVoice;
         private VoicePool voicePool;
         // TODO Make volume adjustable.
-        private readonly float volume;
+        private float volume;
         private readonly float pitchNormal;
         private readonly float pitchAccent;
         private int frequency;
@@ -50,7 +48,7 @@ namespace Restless.Tambala.Controls.Audio
                 Constants.Metronome.Frequency.EighthTriplet,
                 Constants.Metronome.Frequency.Sixteenth
             };
-            Frequency = Constants.Metronome.Frequency.Default;
+            frequency = Constants.Metronome.Frequency.Default;
         }
         #endregion
 
@@ -67,28 +65,6 @@ namespace Restless.Tambala.Controls.Audio
             {
                 instrument = value;
                 OnInstrumentChanged();
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the frequency (how often the metronome sounds)
-        /// </summary>
-        /// <remarks>
-        /// This value comes from <see cref="Constants.Metronome.Frequency"/>
-        /// and is expressed as divisions (or ticks) within a quarter note.
-        /// For example, 1 (every quarter note), 2 (eighth notes), 4 (sixteenth notes).
-        /// The metronome always plays on the quarter note.
-        /// </remarks>
-        internal int Frequency
-        {
-            get => frequency;
-            set
-            {
-                if (!supportedFrequency.Contains(value))
-                {
-                    value = Constants.Metronome.Frequency.Default;
-                }
-                frequency = value;
             }
         }
 
@@ -118,7 +94,34 @@ namespace Restless.Tambala.Controls.Audio
 
         #region Internal methods
         /// <summary>
-        /// 
+        /// Sets the frequency (how often the metronome sounds)
+        /// </summary>
+        /// <param name="value">The frequency value</param>
+        /// <remarks>
+        /// This value comes from <see cref="Constants.Metronome.Frequency"/>
+        /// and is expressed as divisions (or ticks) within a quarter note.
+        /// For example, 1 (every quarter note), 2 (eighth notes), 4 (sixteenth notes).
+        /// The metronome always plays on the quarter note.
+        /// </remarks>
+        internal void SetFrequency(int value)
+        {
+            if (!supportedFrequency.Contains(value))
+            {
+                value = Constants.Metronome.Frequency.Default;
+            }
+            frequency = value;
+        }
+
+        /// <summary>
+        /// Sets the volume of the metronome.
+        /// </summary>
+        /// <param name="value">The volume value</param>
+        internal void SetVolume(float value)
+        {
+            volume = value;
+        }
+
+        /// <summary>
         /// Plays the metronome for the specified position of the quarter note.
         /// </summary>
         /// <param name="position">The position.</param>
@@ -129,7 +132,7 @@ namespace Restless.Tambala.Controls.Audio
             {
                 if (position == 0 || (frequency > Constants.Metronome.Frequency.Quarter && Ticks.FullTickPositionMap[frequency].Contains(position)))
                 {
-                    float pitch = (position == 0) ? pitchAccent : pitchNormal;
+                    float pitch = position == 0 ? pitchAccent : pitchNormal;
                     voicePool.Play(volume, pitch, operationSet);
                 }
             }

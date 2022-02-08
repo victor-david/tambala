@@ -112,7 +112,10 @@ namespace Restless.Tambala.Controls
         
         private static readonly DependencyPropertyKey CounterTextPropertyKey = DependencyProperty.RegisterReadOnly
             (
-                nameof(CounterText), typeof(string), typeof(MasterPlay), new PropertyMetadata(null)
+                nameof(CounterText), typeof(string), typeof(MasterPlay), new PropertyMetadata()
+                {
+                    DefaultValue = null
+                }
             );
 
         /// <summary>
@@ -170,10 +173,12 @@ namespace Restless.Tambala.Controls
         /// </summary>
         public static readonly DependencyProperty MetronomeFrequencyProperty = DependencyProperty.Register
             (
-                nameof(MetronomeFrequency), typeof(int), typeof(MasterPlay), new PropertyMetadata
-                    (
-                        Constants.Metronome.Frequency.Default, OnMetronomeFrequencyChanged, OnMetronomeFrequencyCoerce
-                    )
+                nameof(MetronomeFrequency), typeof(int), typeof(MasterPlay), new PropertyMetadata()
+                {
+                    DefaultValue =  Constants.Metronome.Frequency.Default, 
+                    PropertyChangedCallback = OnMetronomeFrequencyChanged, 
+                    CoerceValueCallback = OnMetronomeFrequencyCoerce
+                }
             );
 
         private static object OnMetronomeFrequencyCoerce(DependencyObject d, object baseValue)
@@ -187,7 +192,7 @@ namespace Restless.Tambala.Controls
             if (d is MasterPlay c)
             {
                 c.SetIsChanged();
-                c.metronome.Frequency = c.MetronomeFrequency;
+                c.metronome.SetFrequency (c.MetronomeFrequency);
             }
         }
         #endregion
@@ -318,6 +323,14 @@ namespace Restless.Tambala.Controls
             {
                 playModeControl.IsChecked = PlayMode == PlayMode.Song;
             }
+        }
+
+        /// <summary>
+        /// Called when the volume is changed.
+        /// </summary>
+        protected override void OnVolumeChanged()
+        {
+            metronome.SetVolume(ThreadSafeVolume);
         }
         #endregion
 
