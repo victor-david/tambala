@@ -28,8 +28,8 @@
             </Grid.ColumnDefinitions>
 
             <con:OnOff
+                x:Name="PART_PlayMode"
                 Margin="6,0"
-                Id="PatternSong"
                 OffText="Pattern"
                 OffValue="{StaticResource PlayModePattern}"
                 OffTextBrush="{DynamicResource SliderLabelTextBrush}"

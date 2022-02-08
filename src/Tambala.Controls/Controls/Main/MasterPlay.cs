@@ -16,10 +16,13 @@ namespace Restless.Tambala.Controls
     /// <summary>
     /// Represents a control that provides master play / stop services.
     /// </summary>
+    [TemplatePart(Name = PartPlayMode, Type = typeof(OnOff))]
     internal sealed partial class MasterPlay : AudioControlBase, IShutdown
     {
         #region Private
         // All thread related fields and methods are in the partial.
+        private const string PartPlayMode = "PART_PlayMode";
+        private OnOff playModeControl;
         #endregion
 
         /************************************************************************/
@@ -73,7 +76,11 @@ namespace Restless.Tambala.Controls
 
         private static readonly DependencyPropertyKey PlayModePropertyKey = DependencyProperty.RegisterReadOnly
             (
-                nameof(PlayMode), typeof(PlayMode), typeof(MasterPlay), new PropertyMetadata(PlayMode.Pattern, OnPlayModeChanged)
+                nameof(PlayMode), typeof(PlayMode), typeof(MasterPlay), new FrameworkPropertyMetadata()
+                {
+                    DefaultValue = PlayMode.Pattern,
+                    PropertyChangedCallback = OnPlayModeChanged
+                }
             );
 
         /// <summary>
@@ -86,6 +93,7 @@ namespace Restless.Tambala.Controls
             if (d is MasterPlay c)
             {
                 c.OnPlayModeChanged();
+                c.SetIsChanged();
             }
         }
         #endregion
@@ -272,8 +280,43 @@ namespace Restless.Tambala.Controls
         {
             foreach (XElement e in ChildElementList(element))
             {
-                if (e.Name == nameof(MetronomeFrequency)) SetDependencyProperty(MetronomeFrequencyProperty, e.Value);
-                // TODO: Restore PlayMode? It's saved above.
+                if (e.Name == nameof(MetronomeFrequency))
+                {
+                    SetDependencyProperty(MetronomeFrequencyProperty, e.Value);
+                }
+
+                if (e.Name == nameof(PlayMode))
+                {
+                    if (Enum.Parse(typeof(PlayMode), e.Value) is PlayMode playMode)
+                    {
+                        PlayMode = playMode;
+                    }
+                }
+            }
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region Public methods
+        /// <summary>
+        /// Called when the template is applied.
+        /// </summary>
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            playModeControl = GetTemplateChild(PartPlayMode) as OnOff;
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region Protected methods
+        protected override void OnLoaded()
+        {
+            if (playModeControl != null)
+            {
+                playModeControl.IsChecked = PlayMode == PlayMode.Song;
             }
         }
         #endregion

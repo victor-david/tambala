@@ -8,7 +8,6 @@ using NAudio.CoreAudioApi;
 using Restless.Tambala.Controls.Audio;
 using Restless.Tambala.Controls.Core;
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Windows.Threading;
 
@@ -37,7 +36,6 @@ namespace Restless.Tambala.Controls
         private int patternSleepTime;
         private int patternOperationSet;
         private bool isControlClosing;
-        private PlayMode playMode;
         private Metronome metronome;
         #endregion
             
@@ -47,8 +45,8 @@ namespace Restless.Tambala.Controls
         private void InitializeThreads()
         {
             CounterText = DefaultCounterText;
-            playMode = PlayMode.Pattern;
-            patternSleepTime = 100;
+            /* Sets patternSleepTime according to the tempo */
+            SetTempo(Constants.Tempo.Default);
 
             metronome = new Metronome
             {
@@ -248,7 +246,6 @@ namespace Restless.Tambala.Controls
         private void OnPlayModeChanged()
         {
             IsStarted = false;
-            playMode = PlayMode;
         }
 
         private void OnIsStartedChanged()
