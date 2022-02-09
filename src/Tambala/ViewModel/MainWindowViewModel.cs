@@ -55,13 +55,14 @@ namespace Restless.Tambala.ViewModel
         public MainWindowViewModel()
         {
             DisplayName = $"{ApplicationInfo.Instance.Title} {ApplicationInfo.Instance.VersionMajor}";
-            Commands.Add("NewSong", RunNewSongCommand);
-            Commands.Add("SaveSong", RunSaveSongCommand, CanRunSaveSongCommand);
-            Commands.Add("OpenSong", RunOpenSongCommand);
-            Commands.Add("CloseSong", RunCloseSongCommand, CanRunCloseSongCommand);
+            Commands.Add("NewProject", RunNewProjectCommand);
+            Commands.Add("SaveProject", RunSaveProjectCommand, CanRunSaveProjectCommand);
+            Commands.Add("OpenProject", RunOpenProjectCommand);
+            Commands.Add("CloseProject", RunCloseProjectCommand, HaveProjectContainer);
             Commands.Add("EditSettings", RunEditSettingsCommand);
             Commands.Add("ViewAlwaysOnTop", (p)=> IsTopMost = !IsTopMost);
-            Commands.Add("About", RunOpenAboutCommand);
+            Commands.Add("OpenAbout", RunOpenAboutCommand);
+            Commands.Add("OpenRender", RunOpenRenderCommand, HaveProjectContainer);
             Commands.Add("ExitApp", p => Application.Current.MainWindow.Close());
             Application.Current.MainWindow.Closing += MainWindowClosing;
         }
@@ -75,52 +76,52 @@ namespace Restless.Tambala.ViewModel
         /************************************************************************/
 
         #region Private methods
-        private void RunSaveSongCommand(object parm)
+        private void RunSaveProjectCommand(object parm)
         {
             ProjectContainer.Save();
         }
 
-        private bool CanRunSaveSongCommand(object parm)
+        private bool CanRunSaveProjectCommand(object parm)
         {
             return ProjectContainer != null && ProjectContainer.IsChanged;
         }
 
-        private void RunNewSongCommand(object parm)
+        private void RunNewProjectCommand(object parm)
         {
             if (IsOkayToClose())
             {
-                CloseSongContainer();
-                CreateSong();
+                CloseProjectContainer();
+                CreateProject();
                 ProjectContainer.Show();
             }
         }
 
-        private async void RunOpenSongCommand(object parm)
+        private async void RunOpenProjectCommand(object parm)
         {
             if (IsOkayToClose())
             {
-                CloseSongContainer();
-                CreateSong();
+                CloseProjectContainer();
+                CreateProject();
                 if (await ProjectContainer.Open())
                 {
                     ProjectContainer.Show();
                 }
                 else
                 {
-                    CloseSongContainer();
+                    CloseProjectContainer();
                 }
             }
         }
 
-        private void RunCloseSongCommand(object parm)
+        private void RunCloseProjectCommand(object parm)
         {
             if (IsOkayToClose())
             {
-                CloseSongContainer();
+                CloseProjectContainer();
             }
         }
 
-        private bool CanRunCloseSongCommand(object parm)
+        private bool HaveProjectContainer(object parm)
         {
             return ProjectContainer != null;
         }
@@ -130,7 +131,7 @@ namespace Restless.Tambala.ViewModel
             // TODO
         }
 
-        private void CloseSongContainer()
+        private void CloseProjectContainer()
         {
             if (ProjectContainer != null)
             {
@@ -142,6 +143,14 @@ namespace Restless.Tambala.ViewModel
         private void RunOpenAboutCommand(object parm)
         {
             WindowFactory.About.Create().ShowDialog();
+        }
+
+        private void RunOpenRenderCommand(object parm)
+        {
+            if (ProjectContainer != null)
+            {
+                WindowFactory.AudioRender.Create(ProjectContainer.Container).ShowDialog();
+            }
         }
 
         private bool IsOkayToClose()
@@ -161,7 +170,7 @@ namespace Restless.Tambala.ViewModel
             return isOkay;
         }
 
-        private void CreateSong()
+        private void CreateProject()
         {
             ProjectContainer = null;
             ProjectContainer = new ProjectContainerViewModel();
@@ -175,7 +184,7 @@ namespace Restless.Tambala.ViewModel
         {
             if (IsOkayToClose())
             {
-                CloseSongContainer();
+                CloseProjectContainer();
             }
             else
             {

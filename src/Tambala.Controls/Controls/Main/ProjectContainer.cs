@@ -59,6 +59,8 @@ namespace Restless.Tambala.Controls
                 });
             }
 
+            RenderParms = new AudioRenderParameters();
+
             // IsExpanded is used in the template to expand / contract the drum kit list.
             // Drum kits are assigned per pattern.
             // IsExpanded = false;
@@ -132,6 +134,10 @@ namespace Restless.Tambala.Controls
         internal static readonly DependencyProperty MasterPlayProperty = MasterPlayPropertyKey.DependencyProperty;
         #endregion
 
+        public AudioRenderParameters RenderParms
+        {
+            get;
+        }
         /************************************************************************/
 
         #region SongContainer (CLR)

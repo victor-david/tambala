@@ -17,10 +17,7 @@ namespace Restless.Tambala.Controls.Audio
         #region Private
         private MasteringVoice masterVoice;
         private XAudio2 audioDevice;
-        //private Reverb reverb;
-        //private readonly EffectDescriptor reverbEffectDescriptor;
-        //private AudioCaptureEffect audioCapture;
-        //private readonly EffectDescriptor audioCaptureEffectDescriptor;
+        private AudioCaptureEffect audioCapture;
         #endregion
 
         /************************************************************************/
@@ -46,10 +43,9 @@ namespace Restless.Tambala.Controls.Audio
         ///// <summary>
         ///// From this assembly, gets the audio capture effect.
         ///// </summary>
-        //public AudioCaptureEffect AudioCapture
+        //internal AudioCaptureEffect AudioCapture
         //{
-        //    get;
-        //    private set;
+        //    get => audioCapture;
         //}
 
         /// <summary>
@@ -74,13 +70,11 @@ namespace Restless.Tambala.Controls.Audio
         {
             AudioDevice = new XAudio2();
             masterVoice = new MasteringVoice(AudioDevice);
-            //reverb = new Reverb(AudioDevice);
-            //reverbEffectDescriptor = new EffectDescriptor(reverb);
 
-            //audioCapture = new AudioCaptureEffect();
-            //audioCaptureEffectDescriptor = new EffectDescriptor(audioCapture);
-            
-            //masterVoice.SetEffectChain(reverbEffectDescriptor);
+
+            audioCapture = new AudioCaptureEffect();
+            masterVoice.SetEffectChain(new EffectDescriptor(audioCapture));
+            masterVoice.DisableEffect(0);
 
             AudioDevice.StartEngine();
 
@@ -115,10 +109,33 @@ namespace Restless.Tambala.Controls.Audio
             masterVoice.DestroyVoice();
             SharpDX.Utilities.Dispose(ref masterVoice);
             SharpDX.Utilities.Dispose(ref audioDevice);
-            // SharpDX.Utilities.Dispose(ref reverb);
             // Note. This will throw in SharpDx.CallbackBase if AudioCapture has not been inserted into the effect chain.
-            //SharpDX.Utilities.Dispose(ref audioCapture);
+            SharpDX.Utilities.Dispose(ref audioCapture);
         }
         #endregion
+
+
+        ///// <summary>
+        ///// Sets the rendering parameters.
+        ///// </summary>
+        ///// <param name="parms">The rendering parms</param>
+        //internal void SetRenderingParameters(AudioRenderParameters parms)
+        //{
+        //    if (parms == null) throw new ArgumentNullException(nameof(parms));
+        //    parms.Validate();
+        //    //audioCapture.RenderParms = parms;
+        //}
+
+        //internal void StartCapture()
+        //{
+        //    masterVoice.EnableEffect(0);
+        //    AudioCapture.StartCapture();
+        //}
+
+        //internal void EndCapture()
+        //{
+        //    masterVoice.DisableEffect(0);
+        //    AudioCapture.StopCapture();
+        //}
     }
 }

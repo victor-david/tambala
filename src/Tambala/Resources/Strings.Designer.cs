@@ -187,6 +187,15 @@ namespace Restless.Tambala.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Render.
+        /// </summary>
+        public static string MenuItemRender {
+            get {
+                return ResourceManager.GetString("MenuItemRender", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string MenuItemSave {
