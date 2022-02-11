@@ -19,7 +19,6 @@ namespace Restless.Tambala.Controls
     internal sealed partial class MasterPlay
     {
         #region Private
-        private const int MilliSecondsPerMinute = 60000;
         private const string DefaultCounterText = "00:00:00";
 
         private bool isSongStarted;
@@ -35,6 +34,7 @@ namespace Restless.Tambala.Controls
 
         private int patternSleepTime;
         private int patternOperationSet;
+        private bool isRendering;
         private bool isControlClosing;
         private Metronome metronome;
         #endregion
@@ -142,10 +142,26 @@ namespace Restless.Tambala.Controls
                 int pass = 0;
                 if (!isControlClosing)
                 {
+                    if (isRendering)
+                    {
+                        AudioHost.Instance.StartCapture(Owner.AudioRenderParameters);
+                    }
+
                     while (isPatternStarted)
                     {
                         pass++;
                         PlayPattern(PointSelectorSongUnit.None, pass, Owner.ThreadSafeActiveDrumPattern);
+                        if (isRendering && pass == Owner.AudioRenderParameters.PassCount)
+                        {
+                            Dispatcher.BeginInvoke(DispatcherPriority.Send, new Action(() =>
+                            {
+                                IsStarted = false;
+                            }));
+
+                            //AudioHost.Instance.StopAudioCapture();
+                            isRendering = false;
+                            isPatternStarted = false;
+                        }
                     }
                 }
             }
@@ -326,7 +342,7 @@ namespace Restless.Tambala.Controls
         internal void SetTempo(double tempo)
         {
             int tempoInt = (int)tempo;
-            patternSleepTime = MilliSecondsPerMinute / tempoInt / Ticks.LowestCommon;
+            patternSleepTime = Constants.Timing.MilliSecondsPerMinute / tempoInt / Ticks.LowestCommon;
         }
         #endregion
     }

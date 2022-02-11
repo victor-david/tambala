@@ -22,8 +22,6 @@ namespace Restless.Tambala.ViewModel
     {
         #region Private
         private bool isRenderInProgress;
-        private bool isRenderComplete;
-        private string closeCaption;
         
         private const string FileExtension = "wav";
         private const string DottedFileExtension = ".wav";
@@ -38,49 +36,7 @@ namespace Restless.Tambala.ViewModel
         public bool IsRenderInProgress
         {
             get => isRenderInProgress;
-            private set
-            {
-                SetProperty(ref isRenderInProgress, value);
-                OnPropertyChanged(nameof(AreControlsEnabled));
-                OnPropertyChanged(nameof(IsCloseEnabled));
-            }
-        }
-
-        /// <summary>
-        /// Gets a boolean value that indicates if rendering is complete.
-        /// </summary>
-        public bool IsRenderComplete
-        {
-            get => isRenderComplete;
-            private set
-            {
-                SetProperty(ref isRenderComplete, value);
-                OnPropertyChanged(nameof(IsCloseEnabled));
-            }
-        }
-
-        /// <summary>
-        /// Gets the caption text for the close button
-        /// </summary>
-        public string CloseCaption
-        {
-            get => closeCaption;
-            private set => SetProperty(ref closeCaption, value);
-        }
-        /// <summary>
-        /// Gets a boolean value that indicates if controls are enabled.
-        /// </summary>
-        public bool AreControlsEnabled
-        {
-            get => !IsRenderInProgress && !IsRenderComplete;
-        }
-
-        /// <summary>
-        /// Gets a boolean value that indicates if the window may be closed.
-        /// </summary>
-        public bool IsCloseEnabled
-        {
-            get => !IsRenderInProgress || IsRenderComplete;
+            private set => SetProperty(ref isRenderInProgress, value);
         }
 
         /// <summary>
@@ -103,12 +59,11 @@ namespace Restless.Tambala.ViewModel
         {
             Container = projectContainer ?? throw new ArgumentNullException(nameof(projectContainer));
             // Container.RenderCompleted += ContainerRenderCompleted;
-            Commands.Add("Output", RunChangeOutputCommand);
-            Commands.Add("Render", RunRenderCommand);
+            Commands.Add("ChangeOutput", RunChangeOutputCommand);
+            Commands.Add("PerformRender", RunRenderCommand);
             Commands.Add("Close", RunCloseCommand);
             //WindowOwner.Closing += WindowOwnerClosing;
             //WindowOwner.Closed += WindowOwnerClosed;
-            CloseCaption = "Cancel";
         }
         #endregion
 
@@ -137,21 +92,33 @@ namespace Restless.Tambala.ViewModel
                     fileName = Path.ChangeExtension(fileName, FileExtension);
                 }
 
-                //Container.RenderParms.FileName = fileName;
+                Container.AudioRenderParameters.FileName = fileName;
             }
         }
 
         private void RunRenderCommand(object parm)
         {
-            IsRenderInProgress = true;
-            //Container.StartRender();
+            try
+            {
+                IsRenderInProgress = true;
+                Container.StartRender(() =>
+                {
+                    IsRenderInProgress = false;
+                });
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                IsRenderInProgress = false;
+            }
         }
 
         private void ContainerRenderCompleted(object sender, AudioRenderEventArgs e)
         {
             IsRenderInProgress = false;
-            IsRenderComplete = true;
-            CloseCaption = "Close";
         }
 
         private void RunCloseCommand(object parm)

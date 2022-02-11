@@ -15,6 +15,10 @@
     <SolidColorBrush x:Key="AlertForegroundBrush" Color="Red"/>
     <SolidColorBrush x:Key="DarkAlertForegroundBrush" Color="#C00000"/>
 
+    <SolidColorBrush x:Key="ActionButtonBackgroundBrush" Color="SkyBlue"/>
+    <SolidColorBrush x:Key="ActionButtonForegroundBrush" Color="White"/>
+    <SolidColorBrush x:Key="ActionButtonRolloverBrush" Color="CadetBlue"/>
+    
     <SolidColorBrush x:Key="TitleBarBackgroundBrush" Color="SkyBlue"/>
     <SolidColorBrush x:Key="TitleBarForegroundBrush" Color="#404040"/>
     <SolidColorBrush x:Key="TitleBarErrorBackgroundBrush" Color="Coral"/>
@@ -22,6 +26,7 @@
     <SolidColorBrush x:Key="TitleBarBorderBrush" Color="LightGray"/>
     <SolidColorBrush x:Key="TitleBarButtonBrush" Color="DarkGreen"/>
 
+    
     <SolidColorBrush x:Key="ScrollBarBackgroundBrush" Color="FloralWhite"/>
     <SolidColorBrush x:Key="ScrollBarBorderBrush" Color="CadetBlue"/>
     <SolidColorBrush x:Key="ScrollBarThumbBrush" Color="PowderBlue"/>

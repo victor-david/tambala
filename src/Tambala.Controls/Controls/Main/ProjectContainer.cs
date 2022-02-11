@@ -8,6 +8,7 @@ using Restless.Tambala.Controls.Audio;
 using Restless.Tambala.Controls.Core;
 using Restless.Tambala.Controls.Resources;
 using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
@@ -59,7 +60,8 @@ namespace Restless.Tambala.Controls
                 });
             }
 
-            RenderParms = new AudioRenderParameters();
+            AudioRenderParameters = AudioRenderParameters.CreateDefault();
+            AudioRenderParameters.Changed += AudioRenderParametersChanged;
 
             // IsExpanded is used in the template to expand / contract the drum kit list.
             // Drum kits are assigned per pattern.
@@ -134,10 +136,18 @@ namespace Restless.Tambala.Controls
         internal static readonly DependencyProperty MasterPlayProperty = MasterPlayPropertyKey.DependencyProperty;
         #endregion
 
-        public AudioRenderParameters RenderParms
+        /************************************************************************/
+
+        #region AudioRenderParameters
+        /// <summary>
+        /// Gets the audio render parameters for this container
+        /// </summary>
+        public AudioRenderParameters AudioRenderParameters
         {
             get;
         }
+        #endregion
+
         /************************************************************************/
 
         #region SongContainer (CLR)
@@ -307,6 +317,7 @@ namespace Restless.Tambala.Controls
             element.Add(MasterOutput.GetXElement());
             element.Add(MasterPlay.GetXElement());
             element.Add(SongContainer.GetXElement());
+            element.Add(AudioRenderParameters.GetXElement());
              
             DrumPatterns.ForEach((pattern) =>
             {
@@ -325,9 +336,10 @@ namespace Restless.Tambala.Controls
             foreach (XElement e in ChildElementList(element))
             {
                 if (e.Name == nameof(DisplayName)) SetDependencyProperty(DisplayNameProperty, e.Value);
-                if (e.Name == nameof(MasterOutput)) MasterOutput.RestoreFromXElement(e);
-                if (e.Name == nameof(MasterPlay)) MasterPlay.RestoreFromXElement(e);
-                if (e.Name == nameof(SongContainer)) SongContainer.RestoreFromXElement(e);
+                if (e.Name == nameof(Controls.MasterOutput)) MasterOutput.RestoreFromXElement(e);
+                if (e.Name == nameof(Controls.MasterPlay)) MasterPlay.RestoreFromXElement(e);
+                if (e.Name == nameof(Controls.SongContainer)) SongContainer.RestoreFromXElement(e);
+                if (e.Name == nameof(Audio.AudioRenderParameters)) AudioRenderParameters.RestoreFromXElement(e);
 
                 if (e.Name == nameof(DrumPattern))
                 {
@@ -414,6 +426,41 @@ namespace Restless.Tambala.Controls
             }
             return null;
         }
+
+        /// <summary>
+        /// Stops playing
+        /// </summary>
+        public void StopPlay()
+        {
+            MasterPlay.Stop();
+        }
+
+        /// <summary>
+        /// Starts rendering
+        /// </summary>
+        /// <param name="completed">The action to call when rendering is complete</param>
+        public void StartRender(Action completed)
+        {
+            MasterPlay.Stop();
+            if (completed == null)
+            {
+                throw new ArgumentNullException(nameof(completed));
+            }
+
+            AudioRenderParameters.Validate();
+
+
+            int quarterNoteCount = ActiveDrumPattern.Controller.QuarterNoteCount;
+            if (MasterPlay.PlayMode == PlayMode.Song)
+            {
+                // TODO - calculate quarter note count when playing a song
+            }
+
+            AudioRenderParameters.CalculateFramesToCapture(MasterOutput.Tempo, quarterNoteCount);
+
+            MasterPlay.StartRender();
+            completed();
+        }
         #endregion
 
         /************************************************************************/
@@ -489,6 +536,14 @@ namespace Restless.Tambala.Controls
         /************************************************************************/
 
         #region Private methods
+        private void AudioRenderParametersChanged(object sender, bool e)
+        {
+            if (e)
+            {
+                SetIsChanged();
+            }
+        }
+
         private void IsChangedSetEventHandler(object sender, RoutedEventArgs e)
         {
             if (e.OriginalSource != this)

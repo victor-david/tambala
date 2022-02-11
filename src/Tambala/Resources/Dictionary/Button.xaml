@@ -10,70 +10,25 @@
     </Style>
 
     <Style TargetType="tk:ImageButton" BasedOn="{StaticResource DefaultImageButtonStyle}"/>
-    
-    
 
-    <ControlTemplate TargetType="Button" x:Key="FlatButtonTemplate">
-        <Border 
-            Width="{TemplateBinding Width}"
-            Height="{TemplateBinding Height}"
-            Background="{TemplateBinding Background}"
-            BorderBrush="{TemplateBinding BorderBrush}"
-            Padding="{TemplateBinding Padding}"
-            CornerRadius="2"
-            BorderThickness="{TemplateBinding BorderThickness}">
-            <ContentPresenter
-                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                TextElement.Foreground="{TemplateBinding Foreground}"
-                TextElement.FontFamily="{TemplateBinding FontFamily}"
-                TextElement.FontSize="{TemplateBinding FontSize}"
-                TextElement.FontStretch="{TemplateBinding FontStretch}"
-                TextElement.FontWeight="{TemplateBinding FontWeight}"/>
-        </Border>
-    </ControlTemplate>
-    
-    <SolidColorBrush x:Key="ButtonBrushOver" Color="#90B9DFFF"/>
-    <SolidColorBrush x:Key="ButtonBrushPressed" Color="#FFB9DFFF"/>
-    <SolidColorBrush x:Key="ButtonBrushBorder" Color="#FF9ADFFF"/>
-    
-    <Style TargetType="Button" x:Key="FlatButtonStyle">
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="BorderBrush" Value="{x:Null}" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Cursor" Value="Hand" />
-        <Setter Property="Padding" Value="3"/>
-        <Setter Property="Template" Value="{StaticResource FlatButtonTemplate}" />
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource ButtonBrushOver}"/>
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="{StaticResource ButtonBrushPressed}"/>
-                <Setter Property="Padding" Value="4,4,2,2"/>
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Opacity" Value="0.65"/>
-            </Trigger>
-
-        </Style.Triggers>
+    <Style x:Key="DefaultIconButtonStyle" TargetType="tk:IconButton">
+        <Setter Property="Height" Value="32"/>
+        <Setter Property="Padding" Value="8,4"/>
+        <Setter Property="IconPadding" Value="4"/>
+        <Setter Property="VerticalIconAlignment" Value="Center"/>
+        <Setter Property="HorizontalIconAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Right"/>
+        <Setter Property="HorizontalPressedMovement" Value="2.0"/>
+        <Setter Property="VerticalPressedMovement" Value="0"/>
+        <Setter Property="CornerRadius" Value="2"/>
+        <Setter Property="Background" Value="{StaticResource ActionButtonBackgroundBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource ActionButtonForegroundBrush}"/>
+        <Setter Property="RolloverBrush" Value="{StaticResource ActionButtonRolloverBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource DefaultBorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
     </Style>
 
-    <Style x:Key="FlatButtonStyleRed" TargetType="Button" BasedOn="{StaticResource FlatButtonStyle}">
-        <Setter Property="Background" Value="#FFCC0000"/>
-        <Setter Property="Foreground" Value="White"/>
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#CCCC0000"/>
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="#EECC0000"/>
-                <Setter Property="Padding" Value="4,4,2,2"/>
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Opacity" Value="0.5"/>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
+    <Style TargetType="tk:IconButton" BasedOn="{StaticResource DefaultIconButtonStyle}"/>
 
 </ResourceDictionary>

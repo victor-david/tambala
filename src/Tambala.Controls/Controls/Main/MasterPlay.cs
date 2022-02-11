@@ -336,6 +336,27 @@ namespace Restless.Tambala.Controls
 
         /************************************************************************/
 
+        #region Internal methods
+        /// <summary>
+        /// From this assembly, stops playing
+        /// </summary>
+        internal void Stop()
+        {
+            IsStarted = false;
+        }
+
+        internal void StartRender()
+        {
+            if (PlayMode == PlayMode.Pattern)
+            {
+                isRendering = true;
+                IsStarted = true;
+            }
+        }
+        #endregion
+
+        /************************************************************************/
+
         #region Private methods
         private void OnPlayImageSourceChanged()
         {

@@ -31,6 +31,7 @@ namespace Restless.Tambala.Controls.Audio
         private List<float> captureSamples;
         private Stopwatch captureTimer;
         private int fadeSampleCount;
+        private int frameCaptureCount;
 
         private enum CaptureState
         {
@@ -77,12 +78,22 @@ namespace Restless.Tambala.Controls.Audio
             captureState = CaptureState.Off;
             captureSamples = new List<float>();
             captureTimer = new Stopwatch();
+            frameCaptureCount = 0;
         }
         #endregion
 
         /************************************************************************/
 
         #region Public methods
+        /*
+         * Processing the Audio Data - Charles Petzold
+         * https://msdn.microsoft.com/en-us/magazine/dn201755.aspx
+         * 
+         * The LockForProcess method can spend whatever time it needs for initialization, but the Process method runs on the audio-processing thread,
+         * and it must not dawdle.You’ll discover that for a sampling rate of 44,100 Hz, the ValidFrameCount field of the buffer parameters equals 441,
+         * indicating that Process is called 100 times per second, each time with 10 ms of audio data.
+         * For two-channel stereo, the buffer contains 882 float values with the channels interleaved: left channel followed by right channel.
+        */
         /// <summary>
         /// Processes the incoming buffer, capturing the values for later save.
         /// </summary>
@@ -124,6 +135,12 @@ namespace Restless.Tambala.Controls.Audio
                             break;
                         }
                     }
+                    frameCaptureCount++;
+
+                    if (frameCaptureCount == RenderParms.FramesToCapture)
+                    {
+                        captureState = RenderParms.FadeSamples > 0 ? CaptureState.Fade : CaptureState.Save;
+                    }
                 }
             }
 
@@ -144,19 +161,21 @@ namespace Restless.Tambala.Controls.Audio
         internal void StartCapture()
         {
             captureSamples.Clear();
+            frameCaptureCount = 0;
+            fadeSampleCount = 0;
             captureState = CaptureState.On;
             captureTimer.Restart();
         }
 
-        /// <summary>
-        /// Fades out the capture, then saves the .wav file.
-        /// </summary>
-        internal void FadeAndStopCapture()
-        {
-            captureState = (RenderParms.FadeSamples > 0) ? CaptureState.Fade : CaptureState.Save;
-            captureTimer.Stop();
-            fadeSampleCount = 0;
-        }
+        ///// <summary>
+        ///// Fades out the capture, then saves the .wav file.
+        ///// </summary>
+        //internal void FadeAndStopCapture()
+        //{
+        //    captureState = (RenderParms.FadeSamples > 0) ? CaptureState.Fade : CaptureState.Save;
+        //    captureTimer.Stop();
+        //    fadeSampleCount = 0;
+        //}
 
         private void PerformFinalRendering()
         {

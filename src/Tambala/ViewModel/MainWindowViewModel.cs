@@ -149,6 +149,7 @@ namespace Restless.Tambala.ViewModel
         {
             if (ProjectContainer != null)
             {
+                ProjectContainer.Container.StopPlay();
                 WindowFactory.AudioRender.Create(ProjectContainer.Container).ShowDialog();
             }
         }

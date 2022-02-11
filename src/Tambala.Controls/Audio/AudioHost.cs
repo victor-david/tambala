@@ -6,6 +6,7 @@
 */
 using Restless.Tambala.Controls.Core;
 using SharpDX.XAudio2;
+using System;
 
 namespace Restless.Tambala.Controls.Audio
 {
@@ -123,19 +124,20 @@ namespace Restless.Tambala.Controls.Audio
         //{
         //    if (parms == null) throw new ArgumentNullException(nameof(parms));
         //    parms.Validate();
-        //    //audioCapture.RenderParms = parms;
+        //    audioCapture.RenderParms = parms;
         //}
 
-        //internal void StartCapture()
-        //{
-        //    masterVoice.EnableEffect(0);
-        //    AudioCapture.StartCapture();
-        //}
+        internal void StartCapture(AudioRenderParameters parms)
+        {
+            audioCapture.RenderParms = parms;
+            masterVoice.EnableEffect(0);
+            audioCapture.StartCapture();
+        }
 
         //internal void EndCapture()
         //{
         //    masterVoice.DisableEffect(0);
-        //    AudioCapture.StopCapture();
+        //    audioCapture.StopCapture();
         //}
     }
 }
