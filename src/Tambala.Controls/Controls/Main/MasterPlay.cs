@@ -23,6 +23,12 @@ namespace Restless.Tambala.Controls
         // All thread related fields and methods are in the partial.
         private const string PartPlayMode = "PART_PlayMode";
         private OnOff playModeControl;
+        private AudioRenderParms renderParms;
+        private class AudioRenderParms
+        {
+            public bool IsRendering;
+            public Action RenderComplete;
+        }
         #endregion
 
         /************************************************************************/
@@ -41,6 +47,7 @@ namespace Restless.Tambala.Controls
             Commands.Add("Play", new RelayCommand(RunPlayCommand));
             AddHandler(OnOff.ActiveValueChangedEvent, new RoutedEventHandler(OnOffActiveValueChanged));
             Owner.AddHandler(MasterOutput.TempoChangedEvent, new RoutedEventHandler(MasterOutputTempoChanged));
+            renderParms = new AudioRenderParms();
             InitializeThreads();
         }
 
@@ -345,11 +352,12 @@ namespace Restless.Tambala.Controls
             IsStarted = false;
         }
 
-        internal void StartRender()
+        internal void StartRender(Action renderComplete)
         {
             if (PlayMode == PlayMode.Pattern)
             {
-                isRendering = true;
+                renderParms.RenderComplete = renderComplete;
+                renderParms.IsRendering = true;
                 IsStarted = true;
             }
         }

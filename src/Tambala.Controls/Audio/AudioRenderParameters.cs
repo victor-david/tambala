@@ -449,7 +449,6 @@ namespace Restless.Tambala.Controls.Audio
             int delay = Ticks.GetTickDelayFromTempo(tempo);
             int msTotal = delay * Ticks.LowestCommon * quarterNoteCount;
             FramesToCapture = (int)(SampleRate * (msTotal / 1000d) * PassCount);
-            // Debug.WriteLine($"Tempo:{tempo} Q:{quarterNoteCount} Ms (total):{msTotal} Frames:{FramesToCapture}");
         }
         #endregion
 

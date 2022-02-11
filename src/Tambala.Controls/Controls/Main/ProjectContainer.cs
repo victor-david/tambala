@@ -457,9 +457,7 @@ namespace Restless.Tambala.Controls
             }
 
             AudioRenderParameters.CalculateFramesToCapture(MasterOutput.Tempo, quarterNoteCount);
-
-            MasterPlay.StartRender();
-            completed();
+            MasterPlay.StartRender(completed);
         }
         #endregion
 

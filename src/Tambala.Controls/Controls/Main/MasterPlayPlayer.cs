@@ -34,7 +34,6 @@ namespace Restless.Tambala.Controls
 
         private int patternSleepTime;
         private int patternOperationSet;
-        private bool isRendering;
         private bool isControlClosing;
         private Metronome metronome;
         #endregion
@@ -142,7 +141,7 @@ namespace Restless.Tambala.Controls
                 int pass = 0;
                 if (!isControlClosing)
                 {
-                    if (isRendering)
+                    if (renderParms.IsRendering)
                     {
                         AudioHost.Instance.StartCapture(Owner.AudioRenderParameters);
                     }
@@ -151,15 +150,15 @@ namespace Restless.Tambala.Controls
                     {
                         pass++;
                         PlayPattern(PointSelectorSongUnit.None, pass, Owner.ThreadSafeActiveDrumPattern);
-                        if (isRendering && pass == Owner.AudioRenderParameters.PassCount)
+                        if (renderParms.IsRendering && pass == Owner.AudioRenderParameters.PassCount)
                         {
                             Dispatcher.BeginInvoke(DispatcherPriority.Send, new Action(() =>
                             {
                                 IsStarted = false;
+                                renderParms.RenderComplete();
                             }));
 
-                            //AudioHost.Instance.StopAudioCapture();
-                            isRendering = false;
+                            renderParms.IsRendering = false;
                             isPatternStarted = false;
                         }
                     }
@@ -334,7 +333,7 @@ namespace Restless.Tambala.Controls
 
         /************************************************************************/
 
-        #region Internal methods
+        #region Internal methods / events
         /// <summary>
         /// Adjusts the thread sleep time according to the specified tempo.
         /// </summary>

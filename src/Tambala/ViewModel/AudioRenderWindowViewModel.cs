@@ -108,10 +108,6 @@ namespace Restless.Tambala.ViewModel
             }
             catch (Exception ex)
             {
-
-            }
-            finally
-            {
                 IsRenderInProgress = false;
             }
         }
