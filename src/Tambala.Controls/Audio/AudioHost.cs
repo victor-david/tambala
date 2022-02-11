@@ -6,7 +6,6 @@
 */
 using Restless.Tambala.Controls.Core;
 using SharpDX.XAudio2;
-using System;
 
 namespace Restless.Tambala.Controls.Audio
 {
@@ -41,14 +40,6 @@ namespace Restless.Tambala.Controls.Audio
             get => masterVoice;
         }
 
-        ///// <summary>
-        ///// From this assembly, gets the audio capture effect.
-        ///// </summary>
-        //internal AudioCaptureEffect AudioCapture
-        //{
-        //    get => audioCapture;
-        //}
-
         /// <summary>
         /// Gets the collection of drum kits.
         /// </summary>
@@ -71,7 +62,6 @@ namespace Restless.Tambala.Controls.Audio
         {
             AudioDevice = new XAudio2();
             masterVoice = new MasteringVoice(AudioDevice);
-
 
             audioCapture = new AudioCaptureEffect();
             masterVoice.SetEffectChain(new EffectDescriptor(audioCapture));
@@ -115,29 +105,15 @@ namespace Restless.Tambala.Controls.Audio
         }
         #endregion
 
+        /************************************************************************/
 
-        ///// <summary>
-        ///// Sets the rendering parameters.
-        ///// </summary>
-        ///// <param name="parms">The rendering parms</param>
-        //internal void SetRenderingParameters(AudioRenderParameters parms)
-        //{
-        //    if (parms == null) throw new ArgumentNullException(nameof(parms));
-        //    parms.Validate();
-        //    audioCapture.RenderParms = parms;
-        //}
-
+        #region Internal methods
         internal void StartCapture(AudioRenderParameters parms)
         {
             audioCapture.RenderParms = parms;
             masterVoice.EnableEffect(0);
             audioCapture.StartCapture();
         }
-
-        //internal void EndCapture()
-        //{
-        //    masterVoice.DisableEffect(0);
-        //    audioCapture.StopCapture();
-        //}
+        #endregion
     }
 }

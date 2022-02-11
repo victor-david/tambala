@@ -341,8 +341,7 @@ namespace Restless.Tambala.Controls
         /// <param name="tempo">The tempo.</param>
         internal void SetTempo(double tempo)
         {
-            int tempoInt = (int)tempo;
-            patternSleepTime = Constants.Timing.MilliSecondsPerMinute / tempoInt / Ticks.LowestCommon;
+            patternSleepTime = Ticks.GetTickDelayFromTempo(tempo);
         }
         #endregion
     }

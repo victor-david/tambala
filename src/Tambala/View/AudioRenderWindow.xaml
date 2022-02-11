@@ -60,7 +60,8 @@
             tk:Property.ColumnWidths="Auto,Auto"
             SelectedValue="{Binding Container.AudioRenderParameters.SampleRate, Mode=TwoWay}">
             <con:BoxRadioButton Grid.Column="0" Content="44100" Value="{x:Static audio:AudioRenderParameters+Values+SampleRate.Rate44100}"/>
-            <con:BoxRadioButton Grid.Column="1" Content="48000" Value="{x:Static audio:AudioRenderParameters+Values+SampleRate.Rate48000}"/>
+            <!-- For now, not available -->
+            <!--<con:BoxRadioButton Grid.Column="1" Content="48000" Value="{x:Static audio:AudioRenderParameters+Values+SampleRate.Rate48000}"/>-->
         </con:BoxRadioButtonPanel>        
         
         <TextBlock Text="Bit Depth"/>

@@ -8,7 +8,6 @@ using Restless.Tambala.Controls.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -447,10 +446,10 @@ namespace Restless.Tambala.Controls.Audio
 
         internal void CalculateFramesToCapture(double tempo, int quarterNoteCount)
         {
-            double msPerQuarter = Constants.Timing.MilliSecondsPerMinute / tempo;
-            int msTotal = (int)Math.Round(msPerQuarter * quarterNoteCount);
+            int delay = Ticks.GetTickDelayFromTempo(tempo);
+            int msTotal = delay * Ticks.LowestCommon * quarterNoteCount;
             FramesToCapture = (int)(SampleRate * (msTotal / 1000d) * PassCount);
-            Debug.WriteLine($"Tempo:{tempo} Q:{quarterNoteCount} Ms (quarter): {msPerQuarter} Ms (total):{msTotal} Frames:{FramesToCapture}");
+            // Debug.WriteLine($"Tempo:{tempo} Q:{quarterNoteCount} Ms (total):{msTotal} Frames:{FramesToCapture}");
         }
         #endregion
 

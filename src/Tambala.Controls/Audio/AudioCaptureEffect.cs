@@ -8,7 +8,6 @@ using NAudio.Wave;
 using SharpDX;
 using SharpDX.XAPO;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace Restless.Tambala.Controls.Audio
@@ -29,7 +28,6 @@ namespace Restless.Tambala.Controls.Audio
         #region Private
         private CaptureState captureState;
         private List<float> captureSamples;
-        private Stopwatch captureTimer;
         private int fadeSampleCount;
         private int frameCaptureCount;
 
@@ -77,7 +75,6 @@ namespace Restless.Tambala.Controls.Audio
 
             captureState = CaptureState.Off;
             captureSamples = new List<float>();
-            captureTimer = new Stopwatch();
             frameCaptureCount = 0;
         }
         #endregion
@@ -164,18 +161,7 @@ namespace Restless.Tambala.Controls.Audio
             frameCaptureCount = 0;
             fadeSampleCount = 0;
             captureState = CaptureState.On;
-            captureTimer.Restart();
         }
-
-        ///// <summary>
-        ///// Fades out the capture, then saves the .wav file.
-        ///// </summary>
-        //internal void FadeAndStopCapture()
-        //{
-        //    captureState = (RenderParms.FadeSamples > 0) ? CaptureState.Fade : CaptureState.Save;
-        //    captureTimer.Stop();
-        //    fadeSampleCount = 0;
-        //}
 
         private void PerformFinalRendering()
         {
@@ -194,8 +180,6 @@ namespace Restless.Tambala.Controls.Audio
             {
                 format = new WaveFormat(RenderParms.SampleRate, RenderParms.BitDepth, RenderParms.Channels);
             }
-
-            Debug.WriteLine($"Channels: {RenderParms.Channels}  Samples: {samples.Length} Fade samples: {RenderParms.FadeSamples} Milliseconds: {captureTimer.ElapsedMilliseconds}");
 
             using (var writer = new WaveFileWriter(RenderParms.RenderFileName, format))
             {
