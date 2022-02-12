@@ -440,7 +440,7 @@ namespace Restless.Tambala.Controls
         /// <param name="stateChange">
         /// The action to call when the rendering states changes
         /// </param>
-        public void StartRender(Action<AudioRenderState> stateChange)
+        public void StartRender(Action<AudioRenderState, Exception> stateChange)
         {
             MasterPlay.Stop();
             if (stateChange == null)

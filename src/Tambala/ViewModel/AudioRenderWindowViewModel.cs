@@ -119,12 +119,12 @@ namespace Restless.Tambala.ViewModel
             }
         }
 
-        private void RenderStateChange(AudioRenderState state)
+        private void RenderStateChange(AudioRenderState state, Exception exception)
         {
             if (state == AudioRenderState.Complete)
             {
                 IsRenderInProgress = false;
-                RenderMessage = Strings.TextRenderComplete;
+                RenderMessage = exception == null ? Strings.TextRenderComplete : exception.Message;
             }
         }
 

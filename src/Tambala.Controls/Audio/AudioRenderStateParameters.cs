@@ -14,7 +14,7 @@ namespace Restless.Tambala.Controls.Audio
     internal class AudioRenderStateParameters
     {
         private AudioRenderState state;
-        private Action<AudioRenderState> stateChange;
+        private Action<AudioRenderState, Exception> stateChange;
 
         /// <summary>
         /// From this assembly, gets or sets a value that determines if rendering is in progress
@@ -25,7 +25,7 @@ namespace Restless.Tambala.Controls.Audio
         /// From this assembly, gets or sets the state change callback.
         /// </summary>
         /// <exception cref="ArgumentNullException">Attempt to set to null</exception>
-        internal Action<AudioRenderState> StateChange
+        internal Action<AudioRenderState, Exception> StateChange
         {
             get => stateChange;
             set => stateChange = value ?? throw new ArgumentNullException(nameof(StateChange));
@@ -38,6 +38,15 @@ namespace Restless.Tambala.Controls.Audio
         {
             get => state;
             set => SetState(value);
+        }
+
+        /// <summary>
+        /// From this assembly, gets or sets an exception.
+        /// </summary>
+        internal Exception Exception
+        {
+            get;
+            set;
         }
 
         /// <summary>
@@ -61,7 +70,7 @@ namespace Restless.Tambala.Controls.Audio
             if (this.state != state)
             {
                 this.state = state;
-                StateChange?.Invoke(state);
+                StateChange?.Invoke(state, Exception);
             }
         }
     }

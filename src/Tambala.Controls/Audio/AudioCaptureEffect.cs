@@ -148,25 +148,37 @@ namespace Restless.Tambala.Controls.Audio
 
         private void PerformFinalRendering()
         {
-            float[] samples = captureSamples.ToArray();
-            if (renderParms.FadeSamples > 0)
+            try
             {
-                MixLoopFadeSamples(samples);
+                float[] samples = captureSamples.ToArray();
+                if (renderParms.FadeSamples > 0)
+                {
+                    MixLoopFadeSamples(samples);
+                }
+
+                WaveFormat format;
+                if (renderParms.BitDepth == 32)
+                {
+                    format = WaveFormat.CreateIeeeFloatWaveFormat(renderParms.SampleRate, renderParms.Channels);
+                }
+                else
+                {
+                    format = new WaveFormat(renderParms.SampleRate, renderParms.BitDepth, renderParms.Channels);
+                }
+
+                using (var writer = new WaveFileWriter(renderParms.RenderFileName, format))
+                {
+                    writer.WriteSamples(samples, 0, samples.Length - renderParms.FadeSamples);
+                }
             }
 
-            WaveFormat format;
-            if (renderParms.BitDepth == 32)
+            catch (System.IO.IOException)
             {
-                format = WaveFormat.CreateIeeeFloatWaveFormat(renderParms.SampleRate, renderParms.Channels);
+                renderState.Exception = new Exception("IO error");
             }
-            else
+            catch (Exception ex)
             {
-                format = new WaveFormat(renderParms.SampleRate, renderParms.BitDepth, renderParms.Channels);
-            }
-
-            using (var writer = new WaveFileWriter(renderParms.RenderFileName, format))
-            {
-                writer.WriteSamples(samples, 0, samples.Length - renderParms.FadeSamples);
+                renderState.Exception = ex;
             }
         }
 

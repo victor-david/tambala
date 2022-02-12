@@ -353,7 +353,7 @@ namespace Restless.Tambala.Controls
         /// </summary>
         /// <param name="stateChange">The render state changed action</param>
         /// <exception cref="ArgumentNullException"><paramref name="stateChange"/> is null</exception>
-        internal void StartRender(Action<AudioRenderState> stateChange)
+        internal void StartRender(Action<AudioRenderState, Exception> stateChange)
         {
             renderState.StateChange = stateChange;
             renderState.IsRendering = true;
