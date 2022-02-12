@@ -103,27 +103,46 @@ namespace Restless.Tambala.Controls
             {
                 songPlaySignaler.WaitOne();
                 SongPresenter song = Owner.SongContainer.Presenter;
+                int pass = 0;
 
                 if (!isControlClosing)
                 {
                     isPatternStarted = true;
 
+                    if (renderParms.IsRendering)
+                    {
+                        AudioHost.Instance.StartCapture(Owner.AudioRenderParameters);
+                    }
+
                     while (isSongStarted)
                     {
                         int pos = 1;
                         int maxPos = song.SongSelectors.GetMaxSelectedPosition();
+                        pass++;
                         while (pos <= maxPos && isSongStarted)
                         {
                             song.InvokeHighlightSongHeader(pos, true);
 
                             int[] selected = song.SongSelectors.GetRowsAtPosition(pos);
-                            var patterns = Owner.DrumPatterns.CreateFromIndices(selected);
+                            DrumPatternCollection patterns = Owner.DrumPatterns.CreateFromIndices(selected);
 
                             PlaySongPatterns(PointSelectorSongUnit.None, pos, patterns);
 
                             song.InvokeHighlightSongHeader(pos, false);
                             pos++;
                             maxPos = song.SongSelectors.GetMaxSelectedPosition();
+                        }
+
+                        if (renderParms.IsRendering && pass == Owner.AudioRenderParameters.PassCount)
+                        {
+                            Dispatcher.BeginInvoke(DispatcherPriority.Send, new Action(() =>
+                            {
+                                IsStarted = false;
+                                renderParms.RenderComplete();
+                            }));
+
+                            renderParms.IsRendering = false;
+                            isSongStarted = false;
                         }
                     }
 

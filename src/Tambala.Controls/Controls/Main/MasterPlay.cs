@@ -352,14 +352,18 @@ namespace Restless.Tambala.Controls
             IsStarted = false;
         }
 
+        /// <summary>
+        /// From this assembly, starts the rendering process.
+        /// </summary>
+        /// <param name="renderComplete">
+        /// The render complete action. Must not be null.
+        /// Enforced in public entry point <see cref="ProjectContainer.StartRender(Action)"/>
+        /// </param>
         internal void StartRender(Action renderComplete)
         {
-            if (PlayMode == PlayMode.Pattern)
-            {
-                renderParms.RenderComplete = renderComplete;
-                renderParms.IsRendering = true;
-                IsStarted = true;
-            }
+            renderParms.RenderComplete = renderComplete;
+            renderParms.IsRendering = true;
+            IsStarted = true;
         }
         #endregion
 

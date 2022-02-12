@@ -8,7 +8,6 @@ using Restless.Tambala.Controls.Audio;
 using Restless.Tambala.Controls.Core;
 using Restless.Tambala.Controls.Resources;
 using System;
-using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
@@ -448,15 +447,12 @@ namespace Restless.Tambala.Controls
             }
 
             AudioRenderParameters.Validate();
-
-
-            int quarterNoteCount = ActiveDrumPattern.Controller.QuarterNoteCount;
-            if (MasterPlay.PlayMode == PlayMode.Song)
+            AudioRenderParameters.CalculateFramesToCapture(MasterOutput.Tempo, GetQuarterNoteCount());
+            /* FramesToCapture will be zero if GetQuarterNoteCount() returns zero (song mode only)  */
+            if (AudioRenderParameters.FramesToCapture == 0)
             {
-                // TODO - calculate quarter note count when playing a song
+                throw new InvalidOperationException("No frames to capture");
             }
-
-            AudioRenderParameters.CalculateFramesToCapture(MasterOutput.Tempo, quarterNoteCount);
             MasterPlay.StartRender(completed);
         }
         #endregion
@@ -556,6 +552,34 @@ namespace Restless.Tambala.Controls
             {
                 ResetIsChanged();
             }
+        }
+
+        /// <summary>
+        /// Gets the number of quarter notes needed for a rendering operation
+        /// </summary>
+        /// <returns>Number of quarter notes.</returns>
+        /// <remarks>
+        /// In pattern mode, returns the number of quarter notes for the active pattern, always greater than zero.
+        /// In song mode, calculates the total number of quarter notes. May be zero, if no song positions selected.
+        /// </remarks>
+        private int GetQuarterNoteCount()
+        {
+            if (MasterPlay.PlayMode == PlayMode.Pattern)
+            {
+                return ActiveDrumPattern.Controller.QuarterNoteCount;
+            }
+
+            int quarterNoteCount = 0;
+            int maxSongPos = SongContainer.Presenter.SongSelectors.GetMaxSelectedPosition();
+
+            for (int pos = 1; pos <= maxSongPos; pos++)
+            {
+                int[] selected = SongContainer.Presenter.SongSelectors.GetRowsAtPosition(pos);
+                DrumPatternCollection patterns = DrumPatterns.CreateFromIndices(selected);
+                quarterNoteCount += patterns.GetMaxQuarterNoteCount();
+            }
+
+            return quarterNoteCount;
         }
 
         /// <summary>

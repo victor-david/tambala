@@ -268,6 +268,24 @@ namespace Restless.Tambala.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Render complete.
+        /// </summary>
+        public static string TextRenderComplete {
+            get {
+                return ResourceManager.GetString("TextRenderComplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Render in progress....
+        /// </summary>
+        public static string TextRenderInProgress {
+            get {
+                return ResourceManager.GetString("TextRenderInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unhandled Exception.
         /// </summary>
         public static string UnhandledExceptionCaption {

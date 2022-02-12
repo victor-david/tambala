@@ -190,6 +190,12 @@
     <value>The file could not be saved.</value>
     <comment>Message when unable to save</comment>
   </data>
+  <data name="TextRenderComplete" xml:space="preserve">
+    <value>Render complete</value>
+  </data>
+  <data name="TextRenderInProgress" xml:space="preserve">
+    <value>Render in progress...</value>
+  </data>
   <data name="UnhandledExceptionCaption" xml:space="preserve">
     <value>Unhandled Exception</value>
   </data>

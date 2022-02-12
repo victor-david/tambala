@@ -22,7 +22,7 @@ namespace Restless.Tambala.ViewModel
     {
         #region Private
         private bool isRenderInProgress;
-        
+        private string renderMessage;
         private const string FileExtension = "wav";
         private const string DottedFileExtension = ".wav";
         #endregion
@@ -45,6 +45,15 @@ namespace Restless.Tambala.ViewModel
         public ProjectContainer Container
         {
             get;
+        }
+
+        /// <summary>
+        /// Gets a message for the interface, Render complete, or exception if one occurs
+        /// </summary>
+        public string RenderMessage
+        {
+            get => renderMessage;
+            private set => SetProperty(ref renderMessage, value);
         }
         #endregion
 
@@ -101,14 +110,17 @@ namespace Restless.Tambala.ViewModel
             try
             {
                 IsRenderInProgress = true;
+                RenderMessage = Strings.TextRenderInProgress;
                 Container.StartRender(() =>
                 {
                     IsRenderInProgress = false;
+                    RenderMessage = Strings.TextRenderComplete;
                 });
             }
             catch (Exception ex)
             {
                 IsRenderInProgress = false;
+                RenderMessage = ex.Message;
             }
         }
 

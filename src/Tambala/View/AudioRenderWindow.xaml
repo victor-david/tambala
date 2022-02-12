@@ -51,6 +51,7 @@
                 Icon="{StaticResource ArrowRightIconKey}"
                 Content="Render"
                 Command="{Binding Commands[PerformRender]}"/>
+            <TextBlock Grid.Column="2" HorizontalAlignment="Right" Margin="0,0,16,0" Text="{Binding RenderMessage}"/>
         </Grid>
         
         <Separator Margin="0,4"/>
