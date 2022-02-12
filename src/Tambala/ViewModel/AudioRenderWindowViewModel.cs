@@ -7,10 +7,13 @@
 using Microsoft.Win32;
 using Restless.Tambala.Controls;
 using Restless.Tambala.Controls.Audio;
+using Restless.Tambala.Core;
 using Restless.Tambala.Resources;
+using Restless.Tambala.View;
 using System;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Windows;
 
 namespace Restless.Tambala.ViewModel
@@ -25,6 +28,7 @@ namespace Restless.Tambala.ViewModel
         private string renderMessage;
         private const string FileExtension = "wav";
         private const string DottedFileExtension = ".wav";
+        private Window window;
         #endregion
 
         /************************************************************************/
@@ -64,15 +68,13 @@ namespace Restless.Tambala.ViewModel
         /// Initializes a new instance of the <see cref="AudioRenderWindowViewModel"/> class.
         /// </summary>
         /// <param name="projectContainer">The project container.</param>
-        public AudioRenderWindowViewModel(ProjectContainer projectContainer)
+        public AudioRenderWindowViewModel(Window window, ProjectContainer projectContainer)
         {
+            this.window = window ?? throw new ArgumentNullException(nameof(window));
             Container = projectContainer ?? throw new ArgumentNullException(nameof(projectContainer));
-            // Container.RenderCompleted += ContainerRenderCompleted;
             Commands.Add("ChangeOutput", RunChangeOutputCommand);
             Commands.Add("PerformRender", RunRenderCommand);
-            Commands.Add("Close", RunCloseCommand);
-            //WindowOwner.Closing += WindowOwnerClosing;
-            //WindowOwner.Closed += WindowOwnerClosed;
+            window.Closing += WindowOwnerClosing;
         }
         #endregion
 
@@ -88,7 +90,7 @@ namespace Restless.Tambala.ViewModel
                 DefaultExt = DottedFileExtension,
                 Filter = $"{Strings.CaptionWaveFile} | *{DottedFileExtension}",
                 OverwritePrompt = true,
-                //InitialDirectory = Path.GetDirectoryName(Container.RenderParms.FileName)
+                InitialDirectory = Path.GetDirectoryName(Container.AudioRenderParameters.FileName)
             };
 
             if (dialog.ShowDialog() == true)
@@ -129,19 +131,13 @@ namespace Restless.Tambala.ViewModel
             IsRenderInProgress = false;
         }
 
-        private void RunCloseCommand(object parm)
-        {
-            //WindowOwner.Close();
-        }
-
         private void WindowOwnerClosing(object sender, CancelEventArgs e)
         {
             e.Cancel = IsRenderInProgress;
-        }
-
-        private void WindowOwnerClosed(object sender, EventArgs e)
-        {
-            //Container.RenderCompleted -= ContainerRenderCompleted;
+            if (!e.Cancel)
+            {
+                window.Closing -= WindowOwnerClosing;
+            }
         }
         #endregion
     }
