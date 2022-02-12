@@ -70,7 +70,7 @@ namespace Restless.Tambala.Controls.Audio
             {
                 public const double Minimum = 1;
                 public const double Maximum = 4;
-                public const int Default = 2;
+                public const int Default = 1;
             }
 
             public static class ParmsInFileName
