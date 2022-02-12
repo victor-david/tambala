@@ -7,6 +7,7 @@
 using NAudio.Wave;
 using SharpDX;
 using SharpDX.XAPO;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
@@ -190,19 +191,20 @@ namespace Restless.Tambala.Controls.Audio
         private void MixLoopFadeSamples(float[] samples)
         {
             int fadeSamples = RenderParms.FadeSamples;
-            if (samples.Length > fadeSamples * 2)
+
+            if (samples.Length <= fadeSamples * 2)
             {
-                int len = samples.Length;
-                for (int k=0; k < fadeSamples; k++)
-                {
-                    float front = samples[k];
-                    float back = samples[len - fadeSamples + k];
-                    float mixed = front + back;
-                    mixed *= 0.95f;
-                    if (mixed > 1.0f) mixed = 1.0f;
-                    if (mixed < -1.0f) mixed = -1.0f;
-                    samples[k] = mixed;
-                }
+                fadeSamples = Math.Max((samples.Length / 2) - 2, 0);
+            }
+
+            int len = samples.Length;
+            for (int k = 0; k < fadeSamples; k++)
+            {
+                float front = samples[k];
+                float back = samples[len - fadeSamples + k];
+                float mixed = front + back;
+                /* prevent clipping */
+                samples[k] = Math.Clamp(mixed * 0.975f, -1.0f, 1.0f);
             }
         }
         #endregion
