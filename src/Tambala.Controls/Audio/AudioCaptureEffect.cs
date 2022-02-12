@@ -27,31 +27,11 @@ namespace Restless.Tambala.Controls.Audio
     internal class AudioCaptureEffect : AudioProcessorBase<AudioCaptureParameters>
     {
         #region Private
-        private CaptureState captureState;
+        private AudioRenderParameters renderParms;
+        private AudioRenderStateParameters renderState;
         private List<float> captureSamples;
         private int fadeSampleCount;
         private int frameCaptureCount;
-
-        private enum CaptureState
-        {
-            Off,
-            On,
-            Fade,
-            Save,
-        }
-        #endregion
-
-        /************************************************************************/
-
-        #region Properties
-        /// <summary>
-        /// From this assembly, gets or sets the audio render parameters
-        /// </summary>
-        internal AudioRenderParameters RenderParms
-        {
-            get;
-            set;
-        }
         #endregion
 
         /************************************************************************/
@@ -74,7 +54,7 @@ namespace Restless.Tambala.Controls.Audio
                 Flags = PropertyFlags.Default
             };
 
-            captureState = CaptureState.Off;
+            renderState = new AudioRenderStateParameters();
             captureSamples = new List<float>();
             frameCaptureCount = 0;
         }
@@ -100,7 +80,7 @@ namespace Restless.Tambala.Controls.Audio
         /// <param name="isEnabled">Whether the effect is enabled. Not used.</param>
         public override void Process(BufferParameters[] inputProcessParameters, BufferParameters[] outputProcessParameters, bool isEnabled)
         {
-            if (captureState == CaptureState.On || captureState == CaptureState.Fade)
+            if (renderState.IsInCaptureState)
             {
                 int frameCount = inputProcessParameters[0].ValidFrameCount;
 
@@ -111,7 +91,7 @@ namespace Restless.Tambala.Controls.Audio
                 {
                     float left = input.Read<float>();
                     float right = input.Read<float>();
-                    if (RenderParms.Channels == 2)
+                    if (renderParms.Channels == 2)
                     {
                         captureSamples.Add(left);
                         captureSamples.Add(right);
@@ -122,30 +102,30 @@ namespace Restless.Tambala.Controls.Audio
                         captureSamples.Add(sum / 2);
                     }
 
-                    if (captureState == CaptureState.Fade)
+                    if (renderState.State == AudioRenderState.Fade)
                     {
-                        fadeSampleCount += RenderParms.Channels;
+                        fadeSampleCount += renderParms.Channels;
                         // Note: FadeSamples must always be an even number.
                         // This is handled in the AudioRenderParameters class.
-                        if (fadeSampleCount == RenderParms.FadeSamples)
+                        if (fadeSampleCount == renderParms.FadeSamples)
                         {
-                            captureState = CaptureState.Save;
+                            renderState.State = AudioRenderState.Save;
                             break;
                         }
                     }
                     frameCaptureCount++;
 
-                    if (frameCaptureCount == RenderParms.FramesToCapture)
+                    if (frameCaptureCount == renderParms.FramesToCapture)
                     {
-                        captureState = RenderParms.FadeSamples > 0 ? CaptureState.Fade : CaptureState.Save;
+                        renderState.State = renderParms.FadeSamples > 0 ? AudioRenderState.Fade : AudioRenderState.Save;
                     }
                 }
             }
 
-            if (captureState == CaptureState.Save)
+            if (renderState.State == AudioRenderState.Save)
             {
-                captureState = CaptureState.Off;
                 PerformFinalRendering();
+                renderState.State = AudioRenderState.Complete;
             }
         }
         #endregion
@@ -156,41 +136,43 @@ namespace Restless.Tambala.Controls.Audio
         /// <summary>
         /// Starts the capturing process
         /// </summary>
-        internal void StartCapture()
+        internal void StartCapture(AudioRenderParameters renderParms, AudioRenderStateParameters processParms)
         {
             captureSamples.Clear();
             frameCaptureCount = 0;
             fadeSampleCount = 0;
-            captureState = CaptureState.On;
+            this.renderParms = renderParms;
+            this.renderState.StateChange = processParms.StateChange;
+            this.renderState.State = AudioRenderState.Render;
         }
 
         private void PerformFinalRendering()
         {
             float[] samples = captureSamples.ToArray();
-            if (RenderParms.FadeSamples > 0)
+            if (renderParms.FadeSamples > 0)
             {
                 MixLoopFadeSamples(samples);
             }
 
             WaveFormat format;
-            if (RenderParms.BitDepth == 32)
+            if (renderParms.BitDepth == 32)
             {
-                format = WaveFormat.CreateIeeeFloatWaveFormat(RenderParms.SampleRate, RenderParms.Channels);
+                format = WaveFormat.CreateIeeeFloatWaveFormat(renderParms.SampleRate, renderParms.Channels);
             }
             else
             {
-                format = new WaveFormat(RenderParms.SampleRate, RenderParms.BitDepth, RenderParms.Channels);
+                format = new WaveFormat(renderParms.SampleRate, renderParms.BitDepth, renderParms.Channels);
             }
 
-            using (var writer = new WaveFileWriter(RenderParms.RenderFileName, format))
+            using (var writer = new WaveFileWriter(renderParms.RenderFileName, format))
             {
-                writer.WriteSamples(samples, 0, samples.Length - RenderParms.FadeSamples);
+                writer.WriteSamples(samples, 0, samples.Length - renderParms.FadeSamples);
             }
         }
 
         private void MixLoopFadeSamples(float[] samples)
         {
-            int fadeSamples = RenderParms.FadeSamples;
+            int fadeSamples = renderParms.FadeSamples;
 
             if (samples.Length <= fadeSamples * 2)
             {

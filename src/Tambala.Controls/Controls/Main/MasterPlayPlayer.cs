@@ -109,9 +109,9 @@ namespace Restless.Tambala.Controls
                 {
                     isPatternStarted = true;
 
-                    if (renderParms.IsRendering)
+                    if (renderState.IsRendering)
                     {
-                        AudioHost.Instance.StartCapture(Owner.AudioRenderParameters);
+                        AudioHost.Instance.StartCapture(Owner.AudioRenderParameters, renderState);
                     }
 
                     while (isSongStarted)
@@ -133,15 +133,14 @@ namespace Restless.Tambala.Controls
                             maxPos = song.SongSelectors.GetMaxSelectedPosition();
                         }
 
-                        if (renderParms.IsRendering && pass == Owner.AudioRenderParameters.PassCount)
+                        if (renderState.IsRendering && pass == Owner.AudioRenderParameters.PassCount)
                         {
                             Dispatcher.BeginInvoke(DispatcherPriority.Send, new Action(() =>
                             {
                                 IsStarted = false;
-                                renderParms.RenderComplete();
                             }));
 
-                            renderParms.IsRendering = false;
+                            renderState.IsRendering = false;
                             isSongStarted = false;
                         }
                     }
@@ -160,24 +159,23 @@ namespace Restless.Tambala.Controls
                 int pass = 0;
                 if (!isControlClosing)
                 {
-                    if (renderParms.IsRendering)
+                    if (renderState.IsRendering)
                     {
-                        AudioHost.Instance.StartCapture(Owner.AudioRenderParameters);
+                        AudioHost.Instance.StartCapture(Owner.AudioRenderParameters, renderState);
                     }
 
                     while (isPatternStarted)
                     {
                         pass++;
                         PlayPattern(PointSelectorSongUnit.None, pass, Owner.ThreadSafeActiveDrumPattern);
-                        if (renderParms.IsRendering && pass == Owner.AudioRenderParameters.PassCount)
+                        if (renderState.IsRendering && pass == Owner.AudioRenderParameters.PassCount)
                         {
                             Dispatcher.BeginInvoke(DispatcherPriority.Send, new Action(() =>
                             {
                                 IsStarted = false;
-                                renderParms.RenderComplete();
                             }));
 
-                            renderParms.IsRendering = false;
+                            renderState.IsRendering = false;
                             isPatternStarted = false;
                         }
                     }

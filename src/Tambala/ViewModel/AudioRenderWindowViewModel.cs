@@ -7,13 +7,10 @@
 using Microsoft.Win32;
 using Restless.Tambala.Controls;
 using Restless.Tambala.Controls.Audio;
-using Restless.Tambala.Core;
 using Restless.Tambala.Resources;
-using Restless.Tambala.View;
 using System;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Windows;
 
 namespace Restless.Tambala.ViewModel
@@ -113,16 +110,21 @@ namespace Restless.Tambala.ViewModel
             {
                 IsRenderInProgress = true;
                 RenderMessage = Strings.TextRenderInProgress;
-                Container.StartRender(() =>
-                {
-                    IsRenderInProgress = false;
-                    RenderMessage = Strings.TextRenderComplete;
-                });
+                Container.StartRender(RenderStateChange);
             }
             catch (Exception ex)
             {
                 IsRenderInProgress = false;
                 RenderMessage = ex.Message;
+            }
+        }
+
+        private void RenderStateChange(AudioRenderState state)
+        {
+            if (state == AudioRenderState.Complete)
+            {
+                IsRenderInProgress = false;
+                RenderMessage = Strings.TextRenderComplete;
             }
         }
 

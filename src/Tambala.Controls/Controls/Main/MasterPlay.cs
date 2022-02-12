@@ -4,6 +4,7 @@
  * Tambala is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License v3.0
  * Tambala is distributed in the hope that it will be useful, but without warranty of any kind.
 */
+using Restless.Tambala.Controls.Audio;
 using Restless.Tambala.Controls.Core;
 using System;
 using System.Windows;
@@ -23,12 +24,7 @@ namespace Restless.Tambala.Controls
         // All thread related fields and methods are in the partial.
         private const string PartPlayMode = "PART_PlayMode";
         private OnOff playModeControl;
-        private AudioRenderParms renderParms;
-        private class AudioRenderParms
-        {
-            public bool IsRendering;
-            public Action RenderComplete;
-        }
+        private AudioRenderStateParameters renderState;
         #endregion
 
         /************************************************************************/
@@ -47,7 +43,7 @@ namespace Restless.Tambala.Controls
             Commands.Add("Play", new RelayCommand(RunPlayCommand));
             AddHandler(OnOff.ActiveValueChangedEvent, new RoutedEventHandler(OnOffActiveValueChanged));
             Owner.AddHandler(MasterOutput.TempoChangedEvent, new RoutedEventHandler(MasterOutputTempoChanged));
-            renderParms = new AudioRenderParms();
+            renderState = new AudioRenderStateParameters();
             InitializeThreads();
         }
 
@@ -355,14 +351,12 @@ namespace Restless.Tambala.Controls
         /// <summary>
         /// From this assembly, starts the rendering process.
         /// </summary>
-        /// <param name="renderComplete">
-        /// The render complete action. Must not be null.
-        /// Enforced in public entry point <see cref="ProjectContainer.StartRender(Action)"/>
-        /// </param>
-        internal void StartRender(Action renderComplete)
+        /// <param name="stateChange">The render state changed action</param>
+        /// <exception cref="ArgumentNullException"><paramref name="stateChange"/> is null</exception>
+        internal void StartRender(Action<AudioRenderState> stateChange)
         {
-            renderParms.RenderComplete = renderComplete;
-            renderParms.IsRendering = true;
+            renderState.StateChange = stateChange;
+            renderState.IsRendering = true;
             IsStarted = true;
         }
         #endregion

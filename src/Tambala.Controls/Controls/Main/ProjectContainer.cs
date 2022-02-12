@@ -437,13 +437,15 @@ namespace Restless.Tambala.Controls
         /// <summary>
         /// Starts rendering
         /// </summary>
-        /// <param name="completed">The action to call when rendering is complete</param>
-        public void StartRender(Action completed)
+        /// <param name="stateChange">
+        /// The action to call when the rendering states changes
+        /// </param>
+        public void StartRender(Action<AudioRenderState> stateChange)
         {
             MasterPlay.Stop();
-            if (completed == null)
+            if (stateChange == null)
             {
-                throw new ArgumentNullException(nameof(completed));
+                throw new ArgumentNullException(nameof(stateChange));
             }
 
             AudioRenderParameters.Validate();
@@ -453,7 +455,7 @@ namespace Restless.Tambala.Controls
             {
                 throw new InvalidOperationException("No frames to capture");
             }
-            MasterPlay.StartRender(completed);
+            MasterPlay.StartRender(stateChange);
         }
         #endregion
 

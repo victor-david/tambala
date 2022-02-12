@@ -108,11 +108,9 @@ namespace Restless.Tambala.Controls.Audio
         /************************************************************************/
 
         #region Internal methods
-        internal void StartCapture(AudioRenderParameters parms)
+        internal void StartCapture(AudioRenderParameters renderParms, AudioRenderStateParameters processParms)
         {
-            audioCapture.RenderParms = parms;
-            masterVoice.EnableEffect(0);
-            audioCapture.StartCapture();
+            audioCapture.StartCapture(renderParms, processParms);
         }
         #endregion
     }
