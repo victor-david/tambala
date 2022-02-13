@@ -128,11 +128,6 @@ namespace Restless.Tambala.ViewModel
             }
         }
 
-        private void ContainerRenderCompleted(object sender, AudioRenderEventArgs e)
-        {
-            IsRenderInProgress = false;
-        }
-
         private void WindowOwnerClosing(object sender, CancelEventArgs e)
         {
             e.Cancel = IsRenderInProgress;
