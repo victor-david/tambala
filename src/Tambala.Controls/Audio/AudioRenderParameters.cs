@@ -278,7 +278,7 @@ namespace Restless.Tambala.Controls.Audio
             SupportedSampleRate = new List<int>()
             {
                 Values.SampleRate.Rate44100,
-                Values.SampleRate.Rate48000
+                //Values.SampleRate.Rate48000
             };
 
             SupportedBitDepth = new List<int>()
