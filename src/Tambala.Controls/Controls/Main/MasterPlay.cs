@@ -4,6 +4,7 @@
  * Tambala is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License v3.0
  * Tambala is distributed in the hope that it will be useful, but without warranty of any kind.
 */
+using Restless.Tambala.Controls.Audio;
 using Restless.Tambala.Controls.Core;
 using System;
 using System.Windows;
@@ -23,6 +24,7 @@ namespace Restless.Tambala.Controls
         // All thread related fields and methods are in the partial.
         private const string PartPlayMode = "PART_PlayMode";
         private OnOff playModeControl;
+        private AudioRenderStateParameters renderState;
         #endregion
 
         /************************************************************************/
@@ -41,6 +43,7 @@ namespace Restless.Tambala.Controls
             Commands.Add("Play", new RelayCommand(RunPlayCommand));
             AddHandler(OnOff.ActiveValueChangedEvent, new RoutedEventHandler(OnOffActiveValueChanged));
             Owner.AddHandler(MasterOutput.TempoChangedEvent, new RoutedEventHandler(MasterOutputTempoChanged));
+            renderState = new AudioRenderStateParameters();
             InitializeThreads();
         }
 
@@ -331,6 +334,30 @@ namespace Restless.Tambala.Controls
         protected override void OnVolumeChanged()
         {
             metronome.SetVolume(ThreadSafeVolume);
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region Internal methods
+        /// <summary>
+        /// From this assembly, stops playing
+        /// </summary>
+        internal void Stop()
+        {
+            IsStarted = false;
+        }
+
+        /// <summary>
+        /// From this assembly, starts the rendering process.
+        /// </summary>
+        /// <param name="stateChange">The render state changed action</param>
+        /// <exception cref="ArgumentNullException"><paramref name="stateChange"/> is null</exception>
+        internal void StartRender(Action<AudioRenderState, Exception> stateChange)
+        {
+            renderState.StateChange = stateChange;
+            renderState.IsRendering = true;
+            IsStarted = true;
         }
         #endregion
 

@@ -27,38 +27,57 @@ namespace Restless.Tambala.Controls.Audio
         private int channels;
         private int fadeTime;
         private int fadeSamples;
+        private int passCount;
         private string fileName;
         private bool parmsInFileName;
         #endregion
 
         /************************************************************************/
 
-        #region Defaults
-        /// <summary>
-        /// Provides static default values
-        /// </summary>
-        public static class Default
+        #region Values
+        public static class Values
         {
-            /// <summary>
-            /// The default value for sample rate
-            /// </summary>
-            public const int SampleRate = 44100;
-            /// <summary>
-            /// The default value for bit depth.
-            /// </summary>
-            public const int BitDepth = 16;
-            /// <summary>
-            /// The default value for number of channels
-            /// </summary>
-            public const int Channels = 2;
-            /// <summary>
-            /// The default for fade time
-            /// </summary>
-            public const int FadeTime = 0;
-            /// <summary>
-            /// The default value for parms in file name.
-            /// </summary>
-            public const bool ParmsInFileName = false;
+            public static class SampleRate
+            {
+                public const int Rate44100 = 44100;
+                public const int Rate48000 = 48000;
+                public const int Default = Rate44100;
+            }
+
+            public static class BitDepth
+            {
+                public const int Depth16 = 16;
+                public const int Depth24 = 24;
+                public const int Depth32 = 32;
+                public const int Default = Depth16;
+            }
+
+            public static class Channel
+            {
+                public const int Channel1 = 1;
+                public const int Channel2 = 2;
+                public const int Default = Channel2;
+            }
+
+            public static class FadeTime
+            {
+                public const double Minimum = 0;
+                public const double Maximum = 2000;
+                public const int Default = 0;
+            }
+
+            public static class PassCount
+            {
+                public const double Minimum = 1;
+                public const double Maximum = 4;
+                public const int Default = 1;
+            }
+
+            public static class ParmsInFileName
+            {
+                public const bool Default = false;
+            }
+
         }
         #endregion
 
@@ -122,7 +141,7 @@ namespace Restless.Tambala.Controls.Audio
         public int FadeTime
         {
             get => fadeTime;
-            set => SetProperty(ref fadeTime, Math.Min(Math.Max(value, 0), 2000));
+            set => SetProperty(ref fadeTime, Math.Min(Math.Max(value, (int)Values.FadeTime.Minimum), (int)Values.FadeTime.Maximum));
         }
 
         /// <summary>
@@ -131,7 +150,34 @@ namespace Restless.Tambala.Controls.Audio
         public int FadeSamples
         {
             get => fadeSamples;
-            private set => SetProperty(ref fadeSamples, value);
+            private set
+            {
+                SetProperty(ref fadeSamples, value);
+                OnPropertyChanged(nameof(FadeText));
+            }
+        }
+
+        public string FadeText
+        {
+            get => $"{FadeTime} / {FadeSamples}";
+        }
+
+        /// <summary>
+        /// Gets or sets the number of passes for rendering.
+        /// </summary>
+        public int PassCount
+        {
+            get => passCount;
+            set => SetProperty(ref passCount, Math.Min(Math.Max(value, (int)Values.PassCount.Minimum), (int)Values.PassCount.Maximum));
+        }
+
+        /// <summary>
+        /// Gets the number of frames to capture
+        /// </summary>
+        public int FramesToCapture
+        {
+            get;
+            private set;
         }
 
         /// <summary>
@@ -180,8 +226,17 @@ namespace Restless.Tambala.Controls.Audio
         public bool IsChanged
         {
             get;
-            internal set;
+            private set;
         }
+        #endregion
+
+        /************************************************************************/
+
+        #region Changed event (internal)
+        /// <summary>
+        /// Occurs when any parameter is changed.
+        /// </summary>
+        internal event EventHandler<bool> Changed;
         #endregion
 
         /************************************************************************/
@@ -199,17 +254,15 @@ namespace Restless.Tambala.Controls.Audio
             OnPropertyChanged(propertyName);
             SetRenderFileName();
             OnPropertyChanged(nameof(RenderFileName));
-            SetFadeSamples();
+            if (propertyName == nameof(FadeTime))
+            {
+                SetFadeSamples();
+            }
             IsChanged = true;
+            Changed?.Invoke(this, IsChanged);
             return true;
         }
 
-        /// <summary>
-        /// Notifies listeners that a property value has changed.
-        /// </summary>
-        /// <param name="propertyName">Name of the property used to notify listeners.  This
-        /// value is optional and can be provided automatically when invoked from compilers
-        /// that support <see cref="CallerMemberNameAttribute"/>.</param>
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -224,20 +277,31 @@ namespace Restless.Tambala.Controls.Audio
         /// </summary>
         public AudioRenderParameters()
         {
-            SupportedSampleRate = new List<int>();
-            SupportedBitDepth = new List<int>();
-            SupportedChannels = new List<int>();
-            SupportedSampleRate.Add(44100);
-            //SupportedSampleRate.Add(48000);
-            SupportedBitDepth.Add(16);
-            SupportedBitDepth.Add(24);
-            SupportedBitDepth.Add(32);
-            SupportedChannels.Add(1);
-            SupportedChannels.Add(2);
-            SampleRate = Default.SampleRate;
-            BitDepth = Default.BitDepth;
-            Channels = Default.Channels;
-            FadeTime = Default.FadeTime;
+            SupportedSampleRate = new List<int>()
+            {
+                Values.SampleRate.Rate44100,
+                Values.SampleRate.Rate48000
+            };
+
+            SupportedBitDepth = new List<int>()
+            {
+                Values.BitDepth.Depth16,
+                Values.BitDepth.Depth24,
+                Values.BitDepth.Depth32,
+            };
+
+            SupportedChannels = new List<int>()
+            {
+                Values.Channel.Channel1,
+                Values.Channel.Channel2
+            };
+
+            SampleRate = Values.SampleRate.Default;
+            BitDepth = Values.BitDepth.Default;
+            Channels = Values.Channel.Default;
+            FadeTime = Values.FadeTime.Default;
+            PassCount = Values.PassCount.Default;
+            ParmsInFileName = Values.ParmsInFileName.Default;
             IsChanged = false;
         }
         #endregion
@@ -328,6 +392,7 @@ namespace Restless.Tambala.Controls.Audio
             element.Add(new XElement(nameof(BitDepth), BitDepth));
             element.Add(new XElement(nameof(Channels), Channels));
             element.Add(new XElement(nameof(FadeTime), FadeTime));
+            element.Add(new XElement(nameof(PassCount), PassCount));
             element.Add(new XElement(nameof(FileName), FileName));
             element.Add(new XElement(nameof(ParmsInFileName), ParmsInFileName));
             return element;
@@ -343,12 +408,13 @@ namespace Restless.Tambala.Controls.Audio
 
             foreach (XElement e in childList)
             {
-                if (e.Name == nameof(SampleRate)) SampleRate = GetIntValue(e.Value, Default.SampleRate);
-                if (e.Name == nameof(BitDepth)) BitDepth = GetIntValue(e.Value, Default.BitDepth);
-                if (e.Name == nameof(Channels)) Channels = GetIntValue(e.Value, Default.Channels);
-                if (e.Name == nameof(FadeTime)) FadeTime = GetIntValue(e.Value, Default.FadeTime);
+                if (e.Name == nameof(SampleRate)) SampleRate = GetIntValue(e.Value, Values.SampleRate.Default);
+                if (e.Name == nameof(BitDepth)) BitDepth = GetIntValue(e.Value, Values.BitDepth.Default);
+                if (e.Name == nameof(Channels)) Channels = GetIntValue(e.Value, Values.Channel.Default);
+                if (e.Name == nameof(FadeTime)) FadeTime = GetIntValue(e.Value, Values.FadeTime.Default);
+                if (e.Name == nameof(PassCount)) PassCount = GetIntValue(e.Value, Values.PassCount.Default);
                 if (e.Name == nameof(FileName)) FileName = e.Value;
-                if (e.Name == nameof(ParmsInFileName)) ParmsInFileName = GetBoolValue(e.Value, Default.ParmsInFileName);
+                if (e.Name == nameof(ParmsInFileName)) ParmsInFileName = GetBoolValue(e.Value, Values.ParmsInFileName.Default);
             }
             IsChanged = false;
         }
@@ -376,6 +442,13 @@ namespace Restless.Tambala.Controls.Audio
             {
                 ThrowInvalidParm("Channels", SupportedChannels);
             }
+        }
+
+        internal void CalculateFramesToCapture(double tempo, int quarterNoteCount)
+        {
+            int delay = Ticks.GetTickDelayFromTempo(tempo);
+            int msTotal = delay * Ticks.LowestCommon * quarterNoteCount;
+            FramesToCapture = (int)(SampleRate * (msTotal / 1000d) * PassCount);
         }
         #endregion
 

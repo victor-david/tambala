@@ -22,11 +22,10 @@ namespace Restless.Tambala.ViewModel
     {
         #region Private
         private bool isRenderInProgress;
-        private bool isRenderComplete;
-        private string closeCaption;
-        
+        private string renderMessage;
         private const string FileExtension = "wav";
         private const string DottedFileExtension = ".wav";
+        private Window window;
         #endregion
 
         /************************************************************************/
@@ -38,49 +37,7 @@ namespace Restless.Tambala.ViewModel
         public bool IsRenderInProgress
         {
             get => isRenderInProgress;
-            private set
-            {
-                SetProperty(ref isRenderInProgress, value);
-                OnPropertyChanged(nameof(AreControlsEnabled));
-                OnPropertyChanged(nameof(IsCloseEnabled));
-            }
-        }
-
-        /// <summary>
-        /// Gets a boolean value that indicates if rendering is complete.
-        /// </summary>
-        public bool IsRenderComplete
-        {
-            get => isRenderComplete;
-            private set
-            {
-                SetProperty(ref isRenderComplete, value);
-                OnPropertyChanged(nameof(IsCloseEnabled));
-            }
-        }
-
-        /// <summary>
-        /// Gets the caption text for the close button
-        /// </summary>
-        public string CloseCaption
-        {
-            get => closeCaption;
-            private set => SetProperty(ref closeCaption, value);
-        }
-        /// <summary>
-        /// Gets a boolean value that indicates if controls are enabled.
-        /// </summary>
-        public bool AreControlsEnabled
-        {
-            get => !IsRenderInProgress && !IsRenderComplete;
-        }
-
-        /// <summary>
-        /// Gets a boolean value that indicates if the window may be closed.
-        /// </summary>
-        public bool IsCloseEnabled
-        {
-            get => !IsRenderInProgress || IsRenderComplete;
+            private set => SetProperty(ref isRenderInProgress, value);
         }
 
         /// <summary>
@@ -89,6 +46,15 @@ namespace Restless.Tambala.ViewModel
         public ProjectContainer Container
         {
             get;
+        }
+
+        /// <summary>
+        /// Gets a message for the interface, Render complete, or exception if one occurs
+        /// </summary>
+        public string RenderMessage
+        {
+            get => renderMessage;
+            private set => SetProperty(ref renderMessage, value);
         }
         #endregion
 
@@ -99,16 +65,13 @@ namespace Restless.Tambala.ViewModel
         /// Initializes a new instance of the <see cref="AudioRenderWindowViewModel"/> class.
         /// </summary>
         /// <param name="projectContainer">The project container.</param>
-        public AudioRenderWindowViewModel(ProjectContainer projectContainer)
+        public AudioRenderWindowViewModel(Window window, ProjectContainer projectContainer)
         {
+            this.window = window ?? throw new ArgumentNullException(nameof(window));
             Container = projectContainer ?? throw new ArgumentNullException(nameof(projectContainer));
-            // Container.RenderCompleted += ContainerRenderCompleted;
-            Commands.Add("Output", RunChangeOutputCommand);
-            Commands.Add("Render", RunRenderCommand);
-            Commands.Add("Close", RunCloseCommand);
-            //WindowOwner.Closing += WindowOwnerClosing;
-            //WindowOwner.Closed += WindowOwnerClosed;
-            CloseCaption = "Cancel";
+            Commands.Add("ChangeOutput", RunChangeOutputCommand);
+            Commands.Add("PerformRender", RunRenderCommand);
+            window.Closing += WindowOwnerClosing;
         }
         #endregion
 
@@ -124,7 +87,7 @@ namespace Restless.Tambala.ViewModel
                 DefaultExt = DottedFileExtension,
                 Filter = $"{Strings.CaptionWaveFile} | *{DottedFileExtension}",
                 OverwritePrompt = true,
-                //InitialDirectory = Path.GetDirectoryName(Container.RenderParms.FileName)
+                InitialDirectory = Path.GetDirectoryName(Container.AudioRenderParameters.FileName)
             };
 
             if (dialog.ShowDialog() == true)
@@ -137,36 +100,46 @@ namespace Restless.Tambala.ViewModel
                     fileName = Path.ChangeExtension(fileName, FileExtension);
                 }
 
-                //Container.RenderParms.FileName = fileName;
+                Container.AudioRenderParameters.FileName = fileName;
             }
         }
 
         private void RunRenderCommand(object parm)
         {
-            IsRenderInProgress = true;
-            //Container.StartRender();
+            try
+            {
+                IsRenderInProgress = true;
+                RenderMessage = Strings.TextRenderInProgress;
+                Container.StartRender(RenderStateChange);
+            }
+            catch (Exception ex)
+            {
+                IsRenderInProgress = false;
+                RenderMessage = ex.Message;
+            }
+        }
+
+        private void RenderStateChange(AudioRenderState state, Exception exception)
+        {
+            if (state == AudioRenderState.Complete)
+            {
+                IsRenderInProgress = false;
+                RenderMessage = exception == null ? Strings.TextRenderComplete : exception.Message;
+            }
         }
 
         private void ContainerRenderCompleted(object sender, AudioRenderEventArgs e)
         {
             IsRenderInProgress = false;
-            IsRenderComplete = true;
-            CloseCaption = "Close";
-        }
-
-        private void RunCloseCommand(object parm)
-        {
-            //WindowOwner.Close();
         }
 
         private void WindowOwnerClosing(object sender, CancelEventArgs e)
         {
             e.Cancel = IsRenderInProgress;
-        }
-
-        private void WindowOwnerClosed(object sender, EventArgs e)
-        {
-            //Container.RenderCompleted -= ContainerRenderCompleted;
+            if (!e.Cancel)
+            {
+                window.Closing -= WindowOwnerClosing;
+            }
         }
         #endregion
     }

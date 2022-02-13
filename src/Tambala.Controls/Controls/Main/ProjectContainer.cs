@@ -59,6 +59,9 @@ namespace Restless.Tambala.Controls
                 });
             }
 
+            AudioRenderParameters = AudioRenderParameters.CreateDefault();
+            AudioRenderParameters.Changed += AudioRenderParametersChanged;
+
             // IsExpanded is used in the template to expand / contract the drum kit list.
             // Drum kits are assigned per pattern.
             // IsExpanded = false;
@@ -130,6 +133,18 @@ namespace Restless.Tambala.Controls
         /// Identifies the <see cref="MasterPlay"/> dependency property.
         /// </summary>
         internal static readonly DependencyProperty MasterPlayProperty = MasterPlayPropertyKey.DependencyProperty;
+        #endregion
+
+        /************************************************************************/
+
+        #region AudioRenderParameters
+        /// <summary>
+        /// Gets the audio render parameters for this container
+        /// </summary>
+        public AudioRenderParameters AudioRenderParameters
+        {
+            get;
+        }
         #endregion
 
         /************************************************************************/
@@ -301,6 +316,7 @@ namespace Restless.Tambala.Controls
             element.Add(MasterOutput.GetXElement());
             element.Add(MasterPlay.GetXElement());
             element.Add(SongContainer.GetXElement());
+            element.Add(AudioRenderParameters.GetXElement());
              
             DrumPatterns.ForEach((pattern) =>
             {
@@ -319,9 +335,10 @@ namespace Restless.Tambala.Controls
             foreach (XElement e in ChildElementList(element))
             {
                 if (e.Name == nameof(DisplayName)) SetDependencyProperty(DisplayNameProperty, e.Value);
-                if (e.Name == nameof(MasterOutput)) MasterOutput.RestoreFromXElement(e);
-                if (e.Name == nameof(MasterPlay)) MasterPlay.RestoreFromXElement(e);
-                if (e.Name == nameof(SongContainer)) SongContainer.RestoreFromXElement(e);
+                if (e.Name == nameof(Controls.MasterOutput)) MasterOutput.RestoreFromXElement(e);
+                if (e.Name == nameof(Controls.MasterPlay)) MasterPlay.RestoreFromXElement(e);
+                if (e.Name == nameof(Controls.SongContainer)) SongContainer.RestoreFromXElement(e);
+                if (e.Name == nameof(Audio.AudioRenderParameters)) AudioRenderParameters.RestoreFromXElement(e);
 
                 if (e.Name == nameof(DrumPattern))
                 {
@@ -408,6 +425,38 @@ namespace Restless.Tambala.Controls
             }
             return null;
         }
+
+        /// <summary>
+        /// Stops playing
+        /// </summary>
+        public void StopPlay()
+        {
+            MasterPlay.Stop();
+        }
+
+        /// <summary>
+        /// Starts rendering
+        /// </summary>
+        /// <param name="stateChange">
+        /// The action to call when the rendering states changes
+        /// </param>
+        public void StartRender(Action<AudioRenderState, Exception> stateChange)
+        {
+            MasterPlay.Stop();
+            if (stateChange == null)
+            {
+                throw new ArgumentNullException(nameof(stateChange));
+            }
+
+            AudioRenderParameters.Validate();
+            AudioRenderParameters.CalculateFramesToCapture(MasterOutput.Tempo, GetQuarterNoteCount());
+            /* FramesToCapture will be zero if GetQuarterNoteCount() returns zero (song mode only)  */
+            if (AudioRenderParameters.FramesToCapture == 0)
+            {
+                throw new InvalidOperationException("No frames to capture");
+            }
+            MasterPlay.StartRender(stateChange);
+        }
         #endregion
 
         /************************************************************************/
@@ -483,6 +532,14 @@ namespace Restless.Tambala.Controls
         /************************************************************************/
 
         #region Private methods
+        private void AudioRenderParametersChanged(object sender, bool e)
+        {
+            if (e)
+            {
+                SetIsChanged();
+            }
+        }
+
         private void IsChangedSetEventHandler(object sender, RoutedEventArgs e)
         {
             if (e.OriginalSource != this)
@@ -497,6 +554,34 @@ namespace Restless.Tambala.Controls
             {
                 ResetIsChanged();
             }
+        }
+
+        /// <summary>
+        /// Gets the number of quarter notes needed for a rendering operation
+        /// </summary>
+        /// <returns>Number of quarter notes.</returns>
+        /// <remarks>
+        /// In pattern mode, returns the number of quarter notes for the active pattern, always greater than zero.
+        /// In song mode, calculates the total number of quarter notes. May be zero, if no song positions selected.
+        /// </remarks>
+        private int GetQuarterNoteCount()
+        {
+            if (MasterPlay.PlayMode == PlayMode.Pattern)
+            {
+                return ActiveDrumPattern.Controller.QuarterNoteCount;
+            }
+
+            int quarterNoteCount = 0;
+            int maxSongPos = SongContainer.Presenter.SongSelectors.GetMaxSelectedPosition();
+
+            for (int pos = 1; pos <= maxSongPos; pos++)
+            {
+                int[] selected = SongContainer.Presenter.SongSelectors.GetRowsAtPosition(pos);
+                DrumPatternCollection patterns = DrumPatterns.CreateFromIndices(selected);
+                quarterNoteCount += patterns.GetMaxQuarterNoteCount();
+            }
+
+            return quarterNoteCount;
         }
 
         /// <summary>

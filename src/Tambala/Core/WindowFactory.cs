@@ -53,8 +53,9 @@ namespace Restless.Tambala.Core
                 AudioRenderWindow window = new()
                 {
                     Owner = Application.Current.MainWindow,
-                    DataContext = new AudioRenderWindowViewModel(projectContainer)
                 };
+
+                window.DataContext = new AudioRenderWindowViewModel(window, projectContainer);
                 TextOptions.SetTextFormattingMode(window);
                 return window;
             }
@@ -79,7 +80,6 @@ namespace Restless.Tambala.Core
                 TextOptions.SetTextFormattingMode(window);
                 return window;
             }
-
         }
         #endregion
 

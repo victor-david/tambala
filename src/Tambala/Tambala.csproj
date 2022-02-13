@@ -20,7 +20,7 @@
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Restless.Toolkit" Version="2.5.11" />
+    <PackageReference Include="Restless.Toolkit" Version="2.5.12" />
   </ItemGroup>
 
   <ItemGroup>

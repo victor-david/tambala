@@ -187,6 +187,15 @@ namespace Restless.Tambala.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Render.
+        /// </summary>
+        public static string MenuItemRender {
+            get {
+                return ResourceManager.GetString("MenuItemRender", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string MenuItemSave {
@@ -255,6 +264,24 @@ namespace Restless.Tambala.Resources {
         public static string MessageSaveFailure {
             get {
                 return ResourceManager.GetString("MessageSaveFailure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Render complete.
+        /// </summary>
+        public static string TextRenderComplete {
+            get {
+                return ResourceManager.GetString("TextRenderComplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Render in progress....
+        /// </summary>
+        public static string TextRenderInProgress {
+            get {
+                return ResourceManager.GetString("TextRenderInProgress", resourceCulture);
             }
         }
         

@@ -1,101 +1,105 @@
-﻿<Window 
+﻿<tk:AppWindow 
     x:Class="Restless.Tambala.View.AudioRenderWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:tk="http://schemas.restless.toolkit.com/2021"
     xmlns:con="clr-namespace:Restless.Tambala.Controls;assembly=Tambala.Controls"
+    xmlns:audio="clr-namespace:Restless.Tambala.Controls.Audio;assembly=Tambala.Controls"
+    xmlns:r="clr-namespace:Restless.Tambala.Resources"
+    xmlns:vm="clr-namespace:Restless.Tambala.ViewModel" d:DataContext="{d:DesignInstance Type=vm:AudioRenderWindowViewModel}"
+    mc:Ignorable="d"
+    Style="{StaticResource DefaultAppWindowStyle}"
     Title="Render" 
     WindowStartupLocation="CenterOwner"
     ResizeMode="NoResize"
-    Height="323" Width="574">
+    Height="424" Width="608">
+
+    <Window.Resources>
+        <Style TargetType="tk:IconButton" BasedOn="{StaticResource DefaultIconButtonStyle}">
+            <Setter Property="Margin" Value="4,2"/>
+            <Setter Property="Width" Value="84"/>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="0,8,0,0"/>
+            <Setter Property="Foreground" Value="{StaticResource DefaultForegroundBrush}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="CheckBox" BasedOn="{StaticResource DefaultCheckBoxStyle}">
+            <Setter Property="Margin" Value="0,8,0,0"/>
+        </Style>
+        <Style TargetType="con:BoxRadioButton">
+            <Setter Property="Margin" Value="1"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+        <Style TargetType="con:LevelSlider">
+            <Setter Property="BarWidth" Value="450"/>
+            <Setter Property="LabelSize" Value="0"/>
+            <Setter Property="ValueTextBrush" Value="{StaticResource DefaultForegroundBrush}"/>
+        </Style>
+    </Window.Resources>
     
-    <Grid Margin="4">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
-            <RowDefinition Height="32"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="120"/>
-            <ColumnDefinition Width="120"/>
-            <ColumnDefinition Width="120"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Grid.Resources>
-            <Style TargetType="Button" BasedOn="{StaticResource FlatButtonStyleRed}">
-                <Setter Property="Width" Value="102"/>
-                <Setter Property="Margin" Value="4"/>
-            </Style>
-            <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockLabel}">
-            </Style>
-        </Grid.Resources>
-        <StackPanel>
-            <TextBlock Text="Sample Rate"/>
-            <ComboBox
-                IsEnabled="{Binding AreControlsEnabled}"
-                ItemsSource="{Binding Container.RenderParms.SupportedSampleRate}"
-                SelectedItem="{Binding Container.RenderParms.SampleRate}"
-                />
-        </StackPanel>
-        <StackPanel Grid.Column="1">
-            <TextBlock Text="Bit Depth"/>
-            <ComboBox 
-                IsEnabled="{Binding AreControlsEnabled}"
-                ItemsSource="{Binding Container.RenderParms.SupportedBitDepth}"
-                SelectedItem="{Binding Container.RenderParms.BitDepth}"
-                />
-        </StackPanel>
-        <StackPanel Grid.Column="2">
-            <TextBlock Text="Channels"/>
-            <ComboBox
-                IsEnabled="{Binding AreControlsEnabled}"
-                ItemsSource="{Binding Container.RenderParms.SupportedChannels}"
-                SelectedItem="{Binding Container.RenderParms.Channels}"
-                />
-        </StackPanel>
-        <StackPanel Grid.Column="3">
-            <TextBlock>
-                <Run Text="Fade Time"/>
-                <Run Text="{Binding Container.RenderParms.FadeTime, FallbackValue=0}"/>
-                <Run Text="-"/>
-                <Run Text="{Binding Container.RenderParms.FadeSamples, Mode=OneWay, FallbackValue=0}"/>
-                <Run Text="samples"/>
-            </TextBlock>
-            <Slider Style="{StaticResource MainSliderStyle}" Minimum="0" Maximum="2000" Value="{Binding Container.RenderParms.FadeTime}"/>
-        </StackPanel>
-        <StackPanel Grid.Row="1" Grid.ColumnSpan="5">
-            <TextBlock Text="Output File"/>
-            <TextBlock Foreground="DarkRed" Text="{Binding Container.RenderParms.RenderFileName}"/>
-        </StackPanel>
-
-        <con:BoxCheckBox
-            Grid.Row="2" Grid.ColumnSpan="5"
-            Margin="4"
-            BoxSize="22"
-            FontSize="11.5"
-            Foreground="{StaticResource TextBlockLabelBrush}"
-            IsEnabled="{Binding AreControlsEnabled}"
-            IsChecked="{Binding Container.RenderParms.ParmsInFileName}" Content="Use parms in file name"/>
-
-        <StackPanel Grid.Row="4" Grid.ColumnSpan="5" Orientation="Horizontal">
-            <Button
-                Content="Change Output"
-                Margin="4,4,16,4"
-                Command="{Binding Commands[Output]}"
-                IsEnabled="{Binding AreControlsEnabled}"/>
-
-            <Button
+    <StackPanel Margin="12,6" tk:Property.IsInverseEnabled="{Binding IsRenderInProgress}">
+        <Grid tk:Property.ColumnWidths="Auto,Auto,*">
+            <tk:IconButton
+                Icon="{StaticResource SaveIconKey}"
+                Content="Output"
+                Command="{Binding Commands[ChangeOutput]}"/>
+            <tk:IconButton
+                Grid.Column="1"
+                Icon="{StaticResource ArrowRightIconKey}"
                 Content="Render"
-                Command="{Binding Commands[Render]}"
-                IsEnabled="{Binding AreControlsEnabled}"/>
-
-            <Button
-                Content="{Binding CloseCaption,FallbackValue=Cancel}"
-                Command="{Binding Commands[Close]}"
-                IsEnabled="{Binding IsCloseEnabled}"/>
-
-        </StackPanel>
+                Command="{Binding Commands[PerformRender]}"/>
+            <TextBlock Grid.Column="2" HorizontalAlignment="Right" Margin="0,0,16,0" Text="{Binding RenderMessage}"/>
+        </Grid>
         
-    </Grid>
-</Window>
+        <Separator Margin="0,4"/>
+
+        <TextBlock Margin="0" Text="Sample Rate"/>
+        <con:BoxRadioButtonPanel
+            tk:Property.ColumnWidths="Auto,Auto"
+            SelectedValue="{Binding Container.AudioRenderParameters.SampleRate, Mode=TwoWay}">
+            <con:BoxRadioButton Grid.Column="0" Content="44100" Value="{x:Static audio:AudioRenderParameters+Values+SampleRate.Rate44100}"/>
+            <!-- For now, not available -->
+            <!--<con:BoxRadioButton Grid.Column="1" Content="48000" Value="{x:Static audio:AudioRenderParameters+Values+SampleRate.Rate48000}"/>-->
+        </con:BoxRadioButtonPanel>        
+        
+        <TextBlock Text="Bit Depth"/>
+        <con:BoxRadioButtonPanel
+            tk:Property.ColumnWidths="Auto,Auto,Auto"
+            SelectedValue="{Binding Container.AudioRenderParameters.BitDepth, Mode=TwoWay}">
+            <con:BoxRadioButton Grid.Column="0" Content="16" Value="{x:Static audio:AudioRenderParameters+Values+BitDepth.Depth16}"/>
+            <con:BoxRadioButton Grid.Column="1" Content="24" Value="{x:Static audio:AudioRenderParameters+Values+BitDepth.Depth24}"/>
+            <con:BoxRadioButton Grid.Column="2" Content="32" Value="{x:Static audio:AudioRenderParameters+Values+BitDepth.Depth32}"/>
+        </con:BoxRadioButtonPanel>
+
+        <TextBlock Text="Channels"/>
+        <con:BoxRadioButtonPanel
+            tk:Property.ColumnWidths="Auto,Auto"
+            SelectedValue="{Binding Container.AudioRenderParameters.Channels, Mode=TwoWay}">
+            <con:BoxRadioButton Grid.Column="0" Content="1" Value="{x:Static audio:AudioRenderParameters+Values+Channel.Channel1}"/>
+            <con:BoxRadioButton Grid.Column="1" Content="2" Value="{x:Static audio:AudioRenderParameters+Values+Channel.Channel2}"/>
+        </con:BoxRadioButtonPanel>
+
+        <TextBlock Text="Fade time / samples"/>
+        <con:LevelSlider
+            Minimum="{x:Static audio:AudioRenderParameters+Values+FadeTime.Minimum}"
+            Maximum="{x:Static audio:AudioRenderParameters+Values+FadeTime.Maximum}"
+            ValueText="{Binding Container.AudioRenderParameters.FadeText}"
+            Value="{Binding Container.AudioRenderParameters.FadeTime}"/>
+
+        <TextBlock Text="Number of passes"/>
+        <con:LevelSlider
+            Minimum="{x:Static audio:AudioRenderParameters+Values+PassCount.Minimum}"
+            Maximum="{x:Static audio:AudioRenderParameters+Values+PassCount.Maximum}"
+            ValueText="{Binding Container.AudioRenderParameters.PassCount}"
+            Value="{Binding Container.AudioRenderParameters.PassCount}"/>        
+        
+        <CheckBox
+            IsChecked="{Binding Container.AudioRenderParameters.ParmsInFileName}" Content="Use parms in file name"/>
+
+        <TextBlock Text="{Binding Container.AudioRenderParameters.RenderFileName}"/>
+
+    </StackPanel>
+</tk:AppWindow>

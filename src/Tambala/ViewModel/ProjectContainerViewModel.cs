@@ -63,7 +63,6 @@ namespace Restless.Tambala.ViewModel
                 Visibility = Visibility.Collapsed,
             };
 
-            //Container.RequestRenderCommand = new RelayCommand(RunRequestRenderCommand);
             Container.IsChangedSet += ContainerIsChangedSet;
             Container.IsChangedReset += ContainerIsChangedReset;
         }

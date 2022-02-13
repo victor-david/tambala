@@ -22,11 +22,12 @@
     <tk:AppWindow.Menu>
         <Menu>
             <MenuItem Header="{x:Static r:Strings.MenuItemFile}">
-                <MenuItem Header="{x:Static r:Strings.MenuItemNew}" Command="{Binding Commands[NewSong]}"/>
-                <MenuItem Header="{x:Static r:Strings.MenuItemOpen}" Command="{Binding Commands[OpenSong]}"/>
+                <MenuItem Header="{x:Static r:Strings.MenuItemNew}" Command="{Binding Commands[NewProject]}"/>
+                <MenuItem Header="{x:Static r:Strings.MenuItemOpen}" Command="{Binding Commands[OpenProject]}"/>
+                <MenuItem Header="{x:Static r:Strings.MenuItemRender}" Command="{Binding Commands[OpenRender]}"/>
                 <Separator/>
-                <MenuItem Header="{x:Static r:Strings.MenuItemSave}" Command="{Binding Commands[SaveSong]}"/>
-                <MenuItem Header="{x:Static r:Strings.MenuItemClose}" Command="{Binding Commands[CloseSong]}"/>
+                <MenuItem Header="{x:Static r:Strings.MenuItemSave}" Command="{Binding Commands[SaveProject]}"/>
+                <MenuItem Header="{x:Static r:Strings.MenuItemClose}" Command="{Binding Commands[CloseProject]}"/>
                 <Separator/>
                 <MenuItem Header="{x:Static r:Strings.MenuItemExit}" Command="{Binding Commands[ExitApp]}"/>
             </MenuItem>
@@ -34,7 +35,7 @@
                 <MenuItem Header="{x:Static r:Strings.MenuItemAlwaysOnTop}" Command="{Binding Commands[ViewAlwaysOnTop]}" IsChecked="{Binding IsTopMost,Mode=OneWay}"/>
             </MenuItem>
             <MenuItem Header="{x:Static r:Strings.MenuItemHelp}">
-                <MenuItem Header="{x:Static r:Strings.MenuItemAbout}" Command="{Binding Commands[About]}"/>
+                <MenuItem Header="{x:Static r:Strings.MenuItemAbout}" Command="{Binding Commands[OpenAbout]}"/>
             </MenuItem>
         </Menu>
     </tk:AppWindow.Menu>
@@ -43,9 +44,9 @@
 
         <!-- Main buttons (Save, New, Open) -->
         <Grid tk:Property.ColumnWidths="90,90,90,*">
-            <tk:ImageButton ImageSource="{StaticResource ImageSaveLayout}" Content="Save" Command="{Binding Commands[SaveSong]}"/>
-            <tk:ImageButton Grid.Column="1" ImageSource="{StaticResource ImageAddLayout}" Content="New" Command="{Binding Commands[NewSong]}" HorizontalAlignment="Stretch"/>
-            <tk:ImageButton Grid.Column="2" ImageSource="{StaticResource ImageOpenLayout}" Content="Open" Command="{Binding Commands[OpenSong]}"/>
+            <tk:ImageButton ImageSource="{StaticResource ImageSaveLayout}" Content="Save" Command="{Binding Commands[SaveProject]}"/>
+            <tk:ImageButton Grid.Column="1" ImageSource="{StaticResource ImageAddLayout}" Content="New" Command="{Binding Commands[NewProject]}"/>
+            <tk:ImageButton Grid.Column="2" ImageSource="{StaticResource ImageOpenLayout}" Content="Open" Command="{Binding Commands[OpenProject]}"/>
             <TextBlock Grid.Column="3" Style="{StaticResource TextBlockFileName}" Text="{Binding ProjectContainer.DisplayName}"/>
         </Grid>
 

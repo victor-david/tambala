@@ -37,6 +37,18 @@ namespace Restless.Tambala.Controls.Core
 
         /************************************************************************/
 
+        #region Timing
+        /// <summary>
+        /// Provides static values for timing.
+        /// </summary>
+        public static class Timing
+        {
+            public const int MilliSecondsPerMinute = 60000;
+        }
+        #endregion
+
+        /************************************************************************/
+
         #region SongSelector
         /// <summary>
         /// Provides static values that define characteristics of the song presenter

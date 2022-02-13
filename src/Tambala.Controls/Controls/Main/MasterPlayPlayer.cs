@@ -19,7 +19,6 @@ namespace Restless.Tambala.Controls
     internal sealed partial class MasterPlay
     {
         #region Private
-        private const int MilliSecondsPerMinute = 60000;
         private const string DefaultCounterText = "00:00:00";
 
         private bool isSongStarted;
@@ -104,27 +103,45 @@ namespace Restless.Tambala.Controls
             {
                 songPlaySignaler.WaitOne();
                 SongPresenter song = Owner.SongContainer.Presenter;
+                int pass = 0;
 
                 if (!isControlClosing)
                 {
                     isPatternStarted = true;
 
+                    if (renderState.IsRendering)
+                    {
+                        AudioHost.Instance.StartCapture(Owner.AudioRenderParameters, renderState);
+                    }
+
                     while (isSongStarted)
                     {
                         int pos = 1;
                         int maxPos = song.SongSelectors.GetMaxSelectedPosition();
+                        pass++;
                         while (pos <= maxPos && isSongStarted)
                         {
                             song.InvokeHighlightSongHeader(pos, true);
 
                             int[] selected = song.SongSelectors.GetRowsAtPosition(pos);
-                            var patterns = Owner.DrumPatterns.CreateFromIndices(selected);
+                            DrumPatternCollection patterns = Owner.DrumPatterns.CreateFromIndices(selected);
 
                             PlaySongPatterns(PointSelectorSongUnit.None, pos, patterns);
 
                             song.InvokeHighlightSongHeader(pos, false);
                             pos++;
                             maxPos = song.SongSelectors.GetMaxSelectedPosition();
+                        }
+
+                        if (renderState.IsRendering && pass == Owner.AudioRenderParameters.PassCount)
+                        {
+                            Dispatcher.BeginInvoke(DispatcherPriority.Send, new Action(() =>
+                            {
+                                IsStarted = false;
+                            }));
+
+                            renderState.IsRendering = false;
+                            isSongStarted = false;
                         }
                     }
 
@@ -142,10 +159,25 @@ namespace Restless.Tambala.Controls
                 int pass = 0;
                 if (!isControlClosing)
                 {
+                    if (renderState.IsRendering)
+                    {
+                        AudioHost.Instance.StartCapture(Owner.AudioRenderParameters, renderState);
+                    }
+
                     while (isPatternStarted)
                     {
                         pass++;
                         PlayPattern(PointSelectorSongUnit.None, pass, Owner.ThreadSafeActiveDrumPattern);
+                        if (renderState.IsRendering && pass == Owner.AudioRenderParameters.PassCount)
+                        {
+                            Dispatcher.BeginInvoke(DispatcherPriority.Send, new Action(() =>
+                            {
+                                IsStarted = false;
+                            }));
+
+                            renderState.IsRendering = false;
+                            isPatternStarted = false;
+                        }
                     }
                 }
             }
@@ -318,15 +350,14 @@ namespace Restless.Tambala.Controls
 
         /************************************************************************/
 
-        #region Internal methods
+        #region Internal methods / events
         /// <summary>
         /// Adjusts the thread sleep time according to the specified tempo.
         /// </summary>
         /// <param name="tempo">The tempo.</param>
         internal void SetTempo(double tempo)
         {
-            int tempoInt = (int)tempo;
-            patternSleepTime = MilliSecondsPerMinute / tempoInt / Ticks.LowestCommon;
+            patternSleepTime = Ticks.GetTickDelayFromTempo(tempo);
         }
         #endregion
     }
