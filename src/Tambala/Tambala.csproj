@@ -28,12 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\Images\Image.Add.Layout.64.png" />
     <Resource Include="Resources\Images\Image.Drum.Blue.128.png" />
-    <Resource Include="Resources\Images\Image.Drum.Red.128.png" />
-    <Resource Include="Resources\Images\Image.DrumSet.128.png" />
-    <Resource Include="Resources\Images\Image.Open.Layout.64.png" />
-    <Resource Include="Resources\Images\Image.Save.Layout.64.png" />
   </ItemGroup>
 
   <ItemGroup>
