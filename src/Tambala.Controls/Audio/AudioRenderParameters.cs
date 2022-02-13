@@ -254,10 +254,8 @@ namespace Restless.Tambala.Controls.Audio
             OnPropertyChanged(propertyName);
             SetRenderFileName();
             OnPropertyChanged(nameof(RenderFileName));
-            if (propertyName == nameof(FadeTime))
-            {
-                SetFadeSamples();
-            }
+            /* fade samples is affected by sample rate, channels, and fade time */
+            SetFadeSamples();
             IsChanged = true;
             Changed?.Invoke(this, IsChanged);
             return true;
