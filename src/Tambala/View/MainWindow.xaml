@@ -43,14 +43,20 @@
     <Grid tk:Property.RowHeights="Auto,Auto,*">
 
         <!-- Main buttons (Save, New, Open) -->
-        <Grid tk:Property.ColumnWidths="90,90,90,*">
-            <tk:ImageButton ImageSource="{StaticResource ImageSaveLayout}" Content="Save" Command="{Binding Commands[SaveProject]}"/>
-            <tk:ImageButton Grid.Column="1" ImageSource="{StaticResource ImageAddLayout}" Content="New" Command="{Binding Commands[NewProject]}"/>
-            <tk:ImageButton Grid.Column="2" ImageSource="{StaticResource ImageOpenLayout}" Content="Open" Command="{Binding Commands[OpenProject]}"/>
+        <Grid tk:Property.ColumnWidths="80,80,80,*">
+            <Grid.Resources>
+                <Style TargetType="tk:IconButton" BasedOn="{StaticResource DefaultIconButtonStyle}">
+                    <Setter Property="Height" Value="28"/>
+                    <Setter Property="Margin" Value="4,6"/>
+                </Style>
+            </Grid.Resources>
+            <tk:IconButton Icon="{StaticResource SaveIconKey}" Content="Save" Command="{Binding Commands[SaveProject]}"/>
+            <tk:IconButton Grid.Column="1" Icon="{StaticResource PlusIconKey}" Content="New" Command="{Binding Commands[NewProject]}"/>
+            <tk:IconButton Grid.Column="2" Icon="{StaticResource FileIconKey}" Content="Open" Command="{Binding Commands[OpenProject]}"/>
             <TextBlock Grid.Column="3" Style="{StaticResource TextBlockFileName}" Text="{Binding ProjectContainer.DisplayName}"/>
         </Grid>
 
-        <Separator Grid.Row="1"/>
+        <Separator Grid.Row="1" Margin="0"/>
         <ContentControl 
             Grid.Row="2" 
             Content="{Binding ProjectContainer}"
