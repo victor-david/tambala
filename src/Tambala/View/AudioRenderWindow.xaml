@@ -12,9 +12,10 @@
     mc:Ignorable="d"
     Style="{StaticResource DefaultAppWindowStyle}"
     Title="Render" 
-    WindowStartupLocation="CenterOwner"
     ResizeMode="NoResize"
-    Height="424" Width="608">
+    WindowStartupLocation="CenterOwner"
+    Height="560" 
+    Width="780">
 
     <Window.Resources>
         <Style TargetType="tk:IconButton" BasedOn="{StaticResource DefaultIconButtonStyle}">
@@ -94,12 +95,24 @@
             Minimum="{x:Static audio:AudioRenderParameters+Values+PassCount.Minimum}"
             Maximum="{x:Static audio:AudioRenderParameters+Values+PassCount.Maximum}"
             ValueText="{Binding Container.AudioRenderParameters.PassCount}"
-            Value="{Binding Container.AudioRenderParameters.PassCount}"/>        
-        
-        <CheckBox
-            IsChecked="{Binding Container.AudioRenderParameters.ParmsInFileName}" Content="Use parms in file name"/>
+            Value="{Binding Container.AudioRenderParameters.PassCount}"/>
 
+        <CheckBox IsChecked="{Binding Container.AudioRenderParameters.ParmsInFileName}" Content="Use parms in file name"/>
         <TextBlock Text="{Binding Container.AudioRenderParameters.RenderFileName}"/>
+
+        <tk:IconButton
+            Margin="2,8"
+            Height="26"
+            Width="64"
+            Padding="4,2"
+            IconPadding="2"
+            HorizontalAlignment="Left"
+            IsEnabled="{Binding HaveRenderedFile}"
+            Icon="{StaticResource ArrowRightIconKey}"
+            Content="{Binding PlayButtonText}"
+            Command="{Binding Commands[PlayFile]}"/>
+        
+        <Image Source="{Binding FileVisual}"/>
 
     </StackPanel>
 </tk:AppWindow>
