@@ -4,8 +4,8 @@
  * Tambala is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License v3.0
  * Tambala is distributed in the hope that it will be useful, but without warranty of any kind.
 */
-using Restless.App.Tambala.Controls.Audio;
-using Restless.App.Tambala.Core;
+using Restless.Tambala.Controls.Audio;
+using Restless.Tambala.Core;
 using System;
 using System.Windows;
 
@@ -36,22 +36,12 @@ namespace Restless.App.Tambala
 
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Fatal", MessageBoxButton.OK, MessageBoxImage.Error);
+                Toolkit.Controls.MessageWindow.ShowError(ex.Message, null, false);
                 Environment.Exit(0);
             }
 #else
             RunApplication(e);
 #endif
-        }
-
-        /// <summary>
-        /// Called when the application is exiting.
-        /// </summary>
-        /// <param name="e">The exit event args</param>
-        protected override void OnExit(ExitEventArgs e)
-        {
-            base.OnExit(e);
-            AudioHost.Instance.Shutdown();
         }
         #endregion
 
@@ -71,6 +61,7 @@ namespace Restless.App.Tambala
 #endif
             // Validations.ThrowIfNotWindows7();
             ShutdownMode = ShutdownMode.OnMainWindowClose;
+            Dispatcher.ShutdownFinished += DispatcherShutdownFinished;
             AudioHost.Instance.Initialize();
             Window main = WindowFactory.Main.Create();
             main.MinWidth = 960;
@@ -82,6 +73,28 @@ namespace Restless.App.Tambala
             main.WindowState = WindowState.Maximized;
 #endif
             main.Show();
+        }
+
+        /// <summary>
+        /// Called when the dispatcher has completed its shutdown.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <remarks>
+        /// This event runs after the dispatcher has finished shutting down in order 
+        /// to shutdown the audio host. Cannot shutdown audio host in the OnExit() method 
+        /// because that runs before the dispatcher shuts down. 
+        /// 
+        /// In that case, if a project container is open, it attempts to shutdown AFTER
+        /// the audio host, which throws exceptions when destroying audio voices and the voice pools.
+        /// 
+        /// Project container runs a shutdown when it is explictly closed. If the main window is closed
+        /// while a project container is still open, it handles Dispatcher.ShutdownStarted to perform
+        /// the shutdown cleanup. Then, this method is called to finalize the shutdown of the audio host.
+        /// </remarks>
+        private void DispatcherShutdownFinished(object sender, EventArgs e)
+        {
+            AudioHost.Instance.Shutdown();
         }
         #endregion
     }

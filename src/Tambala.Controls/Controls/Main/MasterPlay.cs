@@ -4,22 +4,27 @@
  * Tambala is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License v3.0
  * Tambala is distributed in the hope that it will be useful, but without warranty of any kind.
 */
-using Restless.App.Tambala.Controls.Core;
+using Restless.Tambala.Controls.Audio;
+using Restless.Tambala.Controls.Core;
 using System;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml.Linq;
 
-namespace Restless.App.Tambala.Controls
+namespace Restless.Tambala.Controls
 {
     /// <summary>
     /// Represents a control that provides master play / stop services.
     /// </summary>
-    internal sealed partial class MasterPlay : AudioControlBase, IDisposable
+    [TemplatePart(Name = PartPlayMode, Type = typeof(OnOff))]
+    internal sealed partial class MasterPlay : AudioControlBase, IShutdown
     {
         #region Private
         // All thread related fields and methods are in the partial.
+        private const string PartPlayMode = "PART_PlayMode";
+        private OnOff playModeControl;
+        private AudioRenderStateParameters renderState;
         #endregion
 
         /************************************************************************/
@@ -38,6 +43,7 @@ namespace Restless.App.Tambala.Controls
             Commands.Add("Play", new RelayCommand(RunPlayCommand));
             AddHandler(OnOff.ActiveValueChangedEvent, new RoutedEventHandler(OnOffActiveValueChanged));
             Owner.AddHandler(MasterOutput.TempoChangedEvent, new RoutedEventHandler(MasterOutputTempoChanged));
+            renderState = new AudioRenderStateParameters();
             InitializeThreads();
         }
 
@@ -73,7 +79,11 @@ namespace Restless.App.Tambala.Controls
 
         private static readonly DependencyPropertyKey PlayModePropertyKey = DependencyProperty.RegisterReadOnly
             (
-                nameof(PlayMode), typeof(PlayMode), typeof(MasterPlay), new PropertyMetadata(PlayMode.Pattern, OnPlayModeChanged)
+                nameof(PlayMode), typeof(PlayMode), typeof(MasterPlay), new FrameworkPropertyMetadata()
+                {
+                    DefaultValue = PlayMode.Pattern,
+                    PropertyChangedCallback = OnPlayModeChanged
+                }
             );
 
         /// <summary>
@@ -86,6 +96,7 @@ namespace Restless.App.Tambala.Controls
             if (d is MasterPlay c)
             {
                 c.OnPlayModeChanged();
+                c.SetIsChanged();
             }
         }
         #endregion
@@ -104,7 +115,10 @@ namespace Restless.App.Tambala.Controls
         
         private static readonly DependencyPropertyKey CounterTextPropertyKey = DependencyProperty.RegisterReadOnly
             (
-                nameof(CounterText), typeof(string), typeof(MasterPlay), new PropertyMetadata(null)
+                nameof(CounterText), typeof(string), typeof(MasterPlay), new PropertyMetadata()
+                {
+                    DefaultValue = null
+                }
             );
 
         /// <summary>
@@ -162,10 +176,12 @@ namespace Restless.App.Tambala.Controls
         /// </summary>
         public static readonly DependencyProperty MetronomeFrequencyProperty = DependencyProperty.Register
             (
-                nameof(MetronomeFrequency), typeof(int), typeof(MasterPlay), new PropertyMetadata
-                    (
-                        Constants.Metronome.Frequency.Default, OnMetronomeFrequencyChanged, OnMetronomeFrequencyCoerce
-                    )
+                nameof(MetronomeFrequency), typeof(int), typeof(MasterPlay), new PropertyMetadata()
+                {
+                    DefaultValue =  Constants.Metronome.Frequency.Default, 
+                    PropertyChangedCallback = OnMetronomeFrequencyChanged, 
+                    CoerceValueCallback = OnMetronomeFrequencyCoerce
+                }
             );
 
         private static object OnMetronomeFrequencyCoerce(DependencyObject d, object baseValue)
@@ -179,7 +195,7 @@ namespace Restless.App.Tambala.Controls
             if (d is MasterPlay c)
             {
                 c.SetIsChanged();
-                c.metronome.Frequency = c.MetronomeFrequency;
+                c.metronome.SetFrequency (c.MetronomeFrequency);
             }
         }
         #endregion
@@ -272,9 +288,76 @@ namespace Restless.App.Tambala.Controls
         {
             foreach (XElement e in ChildElementList(element))
             {
-                if (e.Name == nameof(MetronomeFrequency)) SetDependencyProperty(MetronomeFrequencyProperty, e.Value);
-                // TODO: Restore PlayMode? It's saved above.
+                if (e.Name == nameof(MetronomeFrequency))
+                {
+                    SetDependencyProperty(MetronomeFrequencyProperty, e.Value);
+                }
+
+                if (e.Name == nameof(PlayMode))
+                {
+                    if (Enum.Parse(typeof(PlayMode), e.Value) is PlayMode playMode)
+                    {
+                        PlayMode = playMode;
+                    }
+                }
             }
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region Public methods
+        /// <summary>
+        /// Called when the template is applied.
+        /// </summary>
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            playModeControl = GetTemplateChild(PartPlayMode) as OnOff;
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region Protected methods
+        protected override void OnLoaded()
+        {
+            if (playModeControl != null)
+            {
+                playModeControl.IsChecked = PlayMode == PlayMode.Song;
+            }
+        }
+
+        /// <summary>
+        /// Called when the volume is changed.
+        /// </summary>
+        protected override void OnVolumeChanged()
+        {
+            metronome.SetVolume(ThreadSafeVolume);
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region Internal methods
+        /// <summary>
+        /// From this assembly, stops playing
+        /// </summary>
+        internal void Stop()
+        {
+            IsStarted = false;
+        }
+
+        /// <summary>
+        /// From this assembly, starts the rendering process.
+        /// </summary>
+        /// <param name="stateChange">The render state changed action</param>
+        /// <exception cref="ArgumentNullException"><paramref name="stateChange"/> is null</exception>
+        internal void StartRender(Action<AudioRenderState, Exception> stateChange)
+        {
+            renderState.StateChange = stateChange;
+            renderState.IsRendering = true;
+            IsStarted = true;
         }
         #endregion
 

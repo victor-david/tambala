@@ -5,28 +5,48 @@
  * Tambala is distributed in the hope that it will be useful, but without warranty of any kind.
 */
 using Microsoft.Win32;
-using Restless.App.Tambala.Controls;
-using Restless.App.Tambala.Controls.Audio;
-using Restless.App.Tambala.Resources;
+using NAudio.Wave;
+using NAudio.WaveFormRenderer;
+using Restless.Tambala.Controls;
+using Restless.Tambala.Controls.Audio;
+using Restless.Tambala.Core;
+using Restless.Tambala.Resources;
+using Restless.Toolkit.Controls;
 using System;
 using System.ComponentModel;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using Color = System.Drawing.Color;
+using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
-namespace Restless.App.Tambala.ViewModel
+namespace Restless.Tambala.ViewModel
 {
     /// <summary>
     /// Represents the view model for handling the audio render window.
     /// </summary>
-    public class AudioRenderWindowViewModel : WindowViewModel
+    public class AudioRenderWindowViewModel : ApplicationViewModel
     {
         #region Private
         private bool isRenderInProgress;
-        private bool isRenderComplete;
-        private string closeCaption;
-        
+        private string renderMessage;
         private const string FileExtension = "wav";
         private const string DottedFileExtension = ".wav";
+        private bool haveRenderedFile;
+        private readonly WaveFormRenderer waveFormRenderer;
+        private readonly IPeakProvider peakProvider;
+        private readonly WaveFormRendererSettings waveSettings;
+        private ImageSource fileVisual;
+        private WaveOutEvent outputDevice;
+        private AudioFileReader audioFile;
+        private string playButtonText;
+        private long fileLength;
+        private long filePosition;
+        private Window window;
         #endregion
 
         /************************************************************************/
@@ -38,49 +58,7 @@ namespace Restless.App.Tambala.ViewModel
         public bool IsRenderInProgress
         {
             get => isRenderInProgress;
-            private set
-            {
-                SetProperty(ref isRenderInProgress, value);
-                OnPropertyChanged(nameof(AreControlsEnabled));
-                OnPropertyChanged(nameof(IsCloseEnabled));
-            }
-        }
-
-        /// <summary>
-        /// Gets a boolean value that indicates if rendering is complete.
-        /// </summary>
-        public bool IsRenderComplete
-        {
-            get => isRenderComplete;
-            private set
-            {
-                SetProperty(ref isRenderComplete, value);
-                OnPropertyChanged(nameof(IsCloseEnabled));
-            }
-        }
-
-        /// <summary>
-        /// Gets the caption text for the close button
-        /// </summary>
-        public string CloseCaption
-        {
-            get => closeCaption;
-            private set => SetProperty(ref closeCaption, value);
-        }
-        /// <summary>
-        /// Gets a boolean value that indicates if controls are enabled.
-        /// </summary>
-        public bool AreControlsEnabled
-        {
-            get => !IsRenderInProgress && !IsRenderComplete;
-        }
-
-        /// <summary>
-        /// Gets a boolean value that indicates if the window may be closed.
-        /// </summary>
-        public bool IsCloseEnabled
-        {
-            get => !IsRenderInProgress || IsRenderComplete;
+            private set => SetProperty(ref isRenderInProgress, value);
         }
 
         /// <summary>
@@ -90,6 +68,60 @@ namespace Restless.App.Tambala.ViewModel
         {
             get;
         }
+
+        /// <summary>
+        /// Gets a message for the interface, Render complete, or exception if one occurs
+        /// </summary>
+        public string RenderMessage
+        {
+            get => renderMessage;
+            private set => SetProperty(ref renderMessage, value);
+        }
+
+        /// <summary>
+        /// Gets a boolean value that indicates if a rendered file is present.
+        /// </summary>
+        public bool HaveRenderedFile
+        {
+            get => haveRenderedFile;
+            private set => SetProperty(ref haveRenderedFile, value);
+        }
+
+        /// <summary>
+        /// Gets the length of the audio file
+        /// </summary>
+        public long FileLength
+        {
+            get => fileLength;
+            private set => SetProperty(ref fileLength, value);
+        }
+
+        /// <summary>
+        /// Gets the current playing position of the audio file
+        /// </summary>
+        public long FilePosition
+        {
+            get => filePosition;
+            private set => SetProperty(ref filePosition, value);
+        }
+
+        /// <summary>
+        /// Gets the image source for the visual representation of the rendered file.
+        /// </summary>
+        public ImageSource FileVisual
+        {
+            get => fileVisual;
+            private set => SetProperty(ref fileVisual, value);
+        }
+
+        /// <summary>
+        /// Gets the text for the play button, i.e. Play or Stop
+        /// </summary>
+        public string PlayButtonText
+        {
+            get => playButtonText;
+            private set => SetProperty(ref playButtonText, value);
+        }
         #endregion
 
         /************************************************************************/
@@ -98,18 +130,27 @@ namespace Restless.App.Tambala.ViewModel
         /// <summary>
         /// Initializes a new instance of the <see cref="AudioRenderWindowViewModel"/> class.
         /// </summary>
-        /// <param name="owner">The owner of this view model.</param>
         /// <param name="projectContainer">The project container.</param>
-        public AudioRenderWindowViewModel(Window owner, ProjectContainer projectContainer) : base(owner)
+        public AudioRenderWindowViewModel(Window window, ProjectContainer projectContainer)
         {
+            this.window = window ?? throw new ArgumentNullException(nameof(window));
             Container = projectContainer ?? throw new ArgumentNullException(nameof(projectContainer));
-            // Container.RenderCompleted += ContainerRenderCompleted;
-            Commands.Add("Output", RunChangeOutputCommand);
-            Commands.Add("Render", RunRenderCommand);
-            Commands.Add("Close", RunCloseCommand);
-            WindowOwner.Closing += WindowOwnerClosing;
-            WindowOwner.Closed += WindowOwnerClosed;
-            CloseCaption = "Cancel";
+            Commands.Add("ChangeOutput", RunChangeOutputCommand);
+            Commands.Add("PerformRender", RunRenderCommand);
+            Commands.Add("PlayFile", RunPlayFileCommand);
+            Commands.Add("CloseWindow", p => window.Close());
+            PlayButtonText = "Play";
+            projectContainer.AudioRenderParameters.PropertyChanged += AudioRenderParametersPropertyChanged;
+            window.Closing += WindowOwnerClosing;
+            waveFormRenderer = new WaveFormRenderer();
+            peakProvider = new MaxPeakProvider();
+            waveSettings = GetRendererSettings();
+            outputDevice = new WaveOutEvent();
+            outputDevice.PlaybackStopped += OutputDevicePlaybackStopped;
+            FileLength = 1000;
+            FilePosition = 0;
+            SetHaveRenderedFile();
+            CreateVisualization();
         }
         #endregion
 
@@ -125,7 +166,7 @@ namespace Restless.App.Tambala.ViewModel
                 DefaultExt = DottedFileExtension,
                 Filter = $"{Strings.CaptionWaveFile} | *{DottedFileExtension}",
                 OverwritePrompt = true,
-                //InitialDirectory = Path.GetDirectoryName(Container.RenderParms.FileName)
+                InitialDirectory = Container.AudioRenderParameters.FileDirectory
             };
 
             if (dialog.ShowDialog() == true)
@@ -138,36 +179,224 @@ namespace Restless.App.Tambala.ViewModel
                     fileName = Path.ChangeExtension(fileName, FileExtension);
                 }
 
-                //Container.RenderParms.FileName = fileName;
+                Container.AudioRenderParameters.SetOutputFileName(fileName);
+                SetHaveRenderedFile();
+                CreateVisualization();
             }
         }
 
         private void RunRenderCommand(object parm)
         {
-            IsRenderInProgress = true;
-            //Container.StartRender();
+            try
+            {
+                StopPlayback();
+                DestroyAudioFileReader();
+                IsRenderInProgress = true;
+                RenderMessage = Strings.TextRenderInProgress;
+                Container.StartRender(RenderStateChange);
+            }
+            catch (Exception ex)
+            {
+                IsRenderInProgress = false;
+                RenderMessage = ex.Message;
+            }
         }
 
-        private void ContainerRenderCompleted(object sender, AudioRenderEventArgs e)
+        private void RenderStateChange(AudioRenderState state, Exception exception)
         {
-            IsRenderInProgress = false;
-            IsRenderComplete = true;
-            CloseCaption = "Close";
+            if (state == AudioRenderState.Complete)
+            {
+                SetHaveRenderedFile();
+                CreateVisualization();
+                IsRenderInProgress = false;
+                RenderMessage = exception == null ? Strings.TextRenderComplete : exception.Message;
+            }
         }
 
-        private void RunCloseCommand(object parm)
+        private void CreateVisualization()
         {
-            WindowOwner.Close();
+            if (HaveRenderedFile)
+            {
+                Task.Factory.StartNew(() => CreateVisualization(peakProvider, waveSettings));
+            }
+        }
+
+        private WaveFormRendererSettings GetRendererSettings()
+        {
+            return new SoundCloudBlockWaveFormSettings(Color.DarkBlue, Color.Transparent, Color.CadetBlue,Color.Transparent)
+            {
+                TopHeight = 68,
+                BottomHeight = 68,
+                Width = 756,
+                DecibelScale = true,
+                BackgroundColor = Color.Transparent
+            };
+        }
+
+        private void CreateVisualization(IPeakProvider peakProvider, WaveFormRendererSettings settings)
+        {
+            Image image = null;
+            try
+            {
+                using (var waveStream = new AudioFileReader(Container.AudioRenderParameters.RenderFileName))
+                {
+                    image = waveFormRenderer.Render(waveStream, peakProvider, settings);
+                }
+                Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Send, new Action(() => 
+                {
+                    FileVisual = CreateBitmapSourceFromGdiBitmap((Bitmap)image);
+                    SetHaveRenderedFile();
+                }));
+
+            }
+            catch (Exception ex)
+            {
+                MessageWindow.ShowError(ex.Message);
+            }
+        }
+
+        private BitmapSource CreateBitmapSourceFromGdiBitmap(Bitmap bitmap)
+        {
+            if (bitmap == null)
+            {
+                throw new ArgumentNullException(nameof(bitmap));
+            }
+
+            Rectangle rect = new (0, 0, bitmap.Width, bitmap.Height);
+            BitmapData bitmapData = bitmap.LockBits(rect, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+
+            try
+            {
+                int size = (rect.Width * rect.Height) * 4;
+
+                return BitmapSource.Create(
+                    bitmap.Width,
+                    bitmap.Height,
+                    bitmap.HorizontalResolution,
+                    bitmap.VerticalResolution,
+                    PixelFormats.Bgra32,
+                    null,
+                    bitmapData.Scan0,
+                    size,
+                    bitmapData.Stride);
+            }
+            finally
+            {
+                bitmap.UnlockBits(bitmapData);
+            }
+        }
+
+        private void SetHaveRenderedFile()
+        {
+            HaveRenderedFile = File.Exists(Container.AudioRenderParameters.RenderFileName);
+        }
+
+        private void RunPlayFileCommand(object parm)
+        {
+            if (HaveRenderedFile)
+            {
+                CreateAudioFileReader();
+                TogglePlayback();
+            }
+        }
+
+        private void TogglePlayback()
+        {
+            if (outputDevice.PlaybackState == PlaybackState.Stopped)
+            {
+                StartPlayback();
+            }
+            else
+            {
+                StopPlayback();
+            }
+        }
+
+        private void StartPlayback()
+        {
+            if (outputDevice.PlaybackState == PlaybackState.Stopped)
+            {
+                outputDevice.Play();
+                PlayButtonText = "Stop";
+            }
+        }
+
+        private void StopPlayback()
+        {
+            if (outputDevice.PlaybackState == PlaybackState.Playing)
+            {
+                outputDevice.Stop();
+                PlayButtonText = "Play";
+            }
+        }
+
+        private void OutputDevicePlaybackStopped(object sender, StoppedEventArgs e)
+        {
+            if (audioFile != null)
+            {
+                audioFile.Position = 0;
+            }
+            if (!HaveRenderedFile)
+            {
+                DestroyAudioFileReader();
+            }
+        }
+
+        /// <summary>
+        /// Creates the audio file reader if it's not already created.
+        /// </summary>
+        private void CreateAudioFileReader()
+        {
+            if (audioFile == null)
+            {
+                audioFile = new AudioFileReader(Container.AudioRenderParameters.RenderFileName);
+                FileLength = audioFile.Length;
+                FilePosition = 0;
+                LoopStream loop = new LoopStream(audioFile);
+                loop.PositionChanged += PlaybackPositionChanged;
+                outputDevice.Init(loop);
+            }
+        }
+
+        private void PlaybackPositionChanged(object sender, long position)
+        {
+            FilePosition = position;
+        }
+
+        /// <summary>
+        /// Destroys <see cref="audioFile"/> if it isn't null.
+        /// </summary>
+        /// <remarks>
+        /// The audio file reader must be destroyed before a render so that it's
+        /// not holding the file open.Also used when window is closed.
+        /// </remarks>
+        private void DestroyAudioFileReader()
+        {
+            if (audioFile != null)
+            {
+                audioFile.Dispose();
+            }
+            audioFile = null;
+        }
+
+        private void AudioRenderParametersPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            StopPlayback();
+            SetHaveRenderedFile();
         }
 
         private void WindowOwnerClosing(object sender, CancelEventArgs e)
         {
             e.Cancel = IsRenderInProgress;
-        }
-
-        private void WindowOwnerClosed(object sender, EventArgs e)
-        {
-            //Container.RenderCompleted -= ContainerRenderCompleted;
+            if (!e.Cancel)
+            {
+                Container.AudioRenderParameters.PropertyChanged -= AudioRenderParametersPropertyChanged;
+                window.Closing -= WindowOwnerClosing;
+                outputDevice.PlaybackStopped -= OutputDevicePlaybackStopped;
+                outputDevice.Dispose();
+                DestroyAudioFileReader();
+                outputDevice = null;
+            }
         }
         #endregion
     }

@@ -1,0 +1,32 @@
+﻿<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:tk="http://schemas.restless.toolkit.com/2021">
+
+    <Style x:Key="DefaultAppWindowStyle" TargetType="tk:AppWindow">
+        <Setter Property="Background" Value="{StaticResource DefaultBackgroundBrush}"/>
+        <Setter Property="TitleBarBackground" Value="{StaticResource TitleBarBackgroundBrush}"/>
+        <Setter Property="TitleBarForeground" Value="{StaticResource TitleBarForegroundBrush}"/>
+        <Setter Property="TitleBarBorderBrush" Value="{StaticResource TitleBarBorderBrush}"/>
+        <Setter Property="TitleBarButtonBrush" Value="{StaticResource TitleBarButtonBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource DarkBorderBrush}"/>
+        <Setter Property="MenuBorderBrush" Value="{StaticResource DefaultBorderBrush}"/>
+        <Setter Property="PathIcon" Value="{StaticResource AppPathIconKey}"/>
+        <Setter Property="ResizeMode" Value="CanResizeWithGrip"/>
+        <Setter Property="FontFamily" Value="Segoe UI"/>
+    </Style>
+
+    <Style TargetType="tk:AppWindow" BasedOn="{StaticResource DefaultAppWindowStyle}"/>
+
+    <Style x:Key="DefaultMessageWindowStyle" TargetType="tk:MessageWindow" BasedOn="{StaticResource DefaultAppWindowStyle}">
+        <Style.Triggers>
+            <Trigger Property="MessageWindowType" Value="Error">
+                <Setter Property="TitleBarBackground" Value="{StaticResource TitleBarErrorBackgroundBrush}"/>
+                <Setter Property="TitleBarForeground" Value="{StaticResource TitleBarErrorForegroundBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="tk:MessageWindow" BasedOn="{StaticResource DefaultMessageWindowStyle}"/>
+
+</ResourceDictionary>

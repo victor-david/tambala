@@ -5,13 +5,14 @@
  * Tambala is distributed in the hope that it will be useful, but without warranty of any kind.
 */
 using System;
+using System.Collections.Generic;
 
-namespace Restless.App.Tambala.Controls.Core
+namespace Restless.Tambala.Controls.Core
 {
     /// <summary>
     /// Represents a collection of <see cref="DrumPattern"/> objects.
     /// </summary>
-    public class DrumPatternCollection : GenericList<DrumPattern>
+    public class DrumPatternCollection : List<DrumPattern>
     {
         #region Constructor
         /// <summary>

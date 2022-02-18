@@ -1,0 +1,65 @@
+﻿<tk:AppWindow 
+    x:Class="Restless.Tambala.View.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:tk="http://schemas.restless.toolkit.com/2021"
+    xmlns:r="clr-namespace:Restless.Tambala.Resources"
+    xmlns:vw="clr-namespace:Restless.Tambala.View"
+    xmlns:vm="clr-namespace:Restless.Tambala.ViewModel" d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel}"
+    mc:Ignorable="d"
+    Style="{StaticResource DefaultAppWindowStyle}"
+    Topmost="{Binding IsTopMost}"
+    Title="{Binding DisplayName}">
+    <Window.Resources>
+        <!-- All other resources come via App.xaml -->
+        <DataTemplate DataType="{x:Type vm:ProjectContainerViewModel}">
+            <vw:ProjectContainerView />
+        </DataTemplate>
+    </Window.Resources>
+
+    <tk:AppWindow.Menu>
+        <Menu>
+            <MenuItem Header="{x:Static r:Strings.MenuItemFile}">
+                <MenuItem Header="{x:Static r:Strings.MenuItemNew}" Command="{Binding Commands[NewProject]}"/>
+                <MenuItem Header="{x:Static r:Strings.MenuItemOpen}" Command="{Binding Commands[OpenProject]}"/>
+                <MenuItem Header="{x:Static r:Strings.MenuItemRender}" Command="{Binding Commands[OpenRender]}"/>
+                <Separator/>
+                <MenuItem Header="{x:Static r:Strings.MenuItemSave}" Command="{Binding Commands[SaveProject]}"/>
+                <MenuItem Header="{x:Static r:Strings.MenuItemClose}" Command="{Binding Commands[CloseProject]}"/>
+                <Separator/>
+                <MenuItem Header="{x:Static r:Strings.MenuItemExit}" Command="{Binding Commands[ExitApp]}"/>
+            </MenuItem>
+            <MenuItem Header="{x:Static r:Strings.MenuItemView}">
+                <MenuItem Header="{x:Static r:Strings.MenuItemAlwaysOnTop}" Command="{Binding Commands[ViewAlwaysOnTop]}" IsChecked="{Binding IsTopMost,Mode=OneWay}"/>
+            </MenuItem>
+            <MenuItem Header="{x:Static r:Strings.MenuItemHelp}">
+                <MenuItem Header="{x:Static r:Strings.MenuItemAbout}" Command="{Binding Commands[OpenAbout]}"/>
+            </MenuItem>
+        </Menu>
+    </tk:AppWindow.Menu>
+
+    <Grid tk:Property.RowHeights="Auto,Auto,*">
+
+        <!-- Main buttons (Save, New, Open) -->
+        <Grid tk:Property.ColumnWidths="80,80,80,*">
+            <Grid.Resources>
+                <Style TargetType="tk:IconButton" BasedOn="{StaticResource DefaultIconButtonStyle}">
+                    <Setter Property="Height" Value="28"/>
+                    <Setter Property="Margin" Value="4,6"/>
+                </Style>
+            </Grid.Resources>
+            <tk:IconButton Icon="{StaticResource SaveIconKey}" Content="Save" Command="{Binding Commands[SaveProject]}"/>
+            <tk:IconButton Grid.Column="1" Icon="{StaticResource PlusIconKey}" Content="New" Command="{Binding Commands[NewProject]}"/>
+            <tk:IconButton Grid.Column="2" Icon="{StaticResource FileIconKey}" Content="Open" Command="{Binding Commands[OpenProject]}"/>
+            <TextBlock Grid.Column="3" Style="{StaticResource TextBlockFileName}" Text="{Binding ProjectContainer.DisplayName}"/>
+        </Grid>
+
+        <Separator Grid.Row="1" Margin="0"/>
+        <ContentControl 
+            Grid.Row="2" 
+            Content="{Binding ProjectContainer}"
+            Margin="6,0,6,6"/>
+    </Grid>
+</tk:AppWindow>

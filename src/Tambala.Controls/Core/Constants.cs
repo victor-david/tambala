@@ -7,7 +7,7 @@
 using System;
 using System.Windows;
 
-namespace Restless.App.Tambala.Controls.Core
+namespace Restless.Tambala.Controls.Core
 {
     /// <summary>
     /// Provides static constant values that are used throughout the control library.
@@ -32,6 +32,18 @@ namespace Restless.App.Tambala.Controls.Core
             /// High voice pool initial size.
             /// </summary>
             public const int High = 48;
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region Timing
+        /// <summary>
+        /// Provides static values for timing.
+        /// </summary>
+        public static class Timing
+        {
+            public const int MilliSecondsPerMinute = 60000;
         }
         #endregion
 

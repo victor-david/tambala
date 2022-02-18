@@ -5,14 +5,15 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/Dictionary/Values.xaml"/>
-                <ResourceDictionary Source="Resources/Dictionary/Brushes.xaml"/>
-                <ResourceDictionary Source="Resources/Dictionary/Images.xaml"/>
-                <ResourceDictionary Source="Resources/Dictionary/ControlDefault.xaml"/>
+                <ResourceDictionary Source="Resources/Dictionary/Brush.xaml"/>
+                <ResourceDictionary Source="Resources/Dictionary/Path.xaml"/>
                 <ResourceDictionary Source="Resources/Dictionary/Button.xaml"/>
+                <ResourceDictionary Source="Resources/Dictionary/CheckBox.xaml"/>
                 <ResourceDictionary Source="Resources/Dictionary/TextBlock.xaml"/>
-                <ResourceDictionary Source="Resources/Dictionary/ItemsControl.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/Tambala.Controls;component/Themes/Generic.xaml"/>
+                <ResourceDictionary Source="Resources/Dictionary/TextBox.xaml"/>
+                <ResourceDictionary Source="Resources/Dictionary/ProgressBar.xaml"/>
+                <ResourceDictionary Source="Resources/Dictionary/ScrollBar.xaml"/>
+                <ResourceDictionary Source="Resources/Dictionary/Window.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

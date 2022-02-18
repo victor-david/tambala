@@ -5,14 +5,13 @@
  * Tambala is distributed in the hope that it will be useful, but without warranty of any kind.
 */
 using NAudio.CoreAudioApi;
-using Restless.App.Tambala.Controls.Audio;
-using Restless.App.Tambala.Controls.Core;
+using Restless.Tambala.Controls.Audio;
+using Restless.Tambala.Controls.Core;
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Windows.Threading;
 
-namespace Restless.App.Tambala.Controls
+namespace Restless.Tambala.Controls
 {
     /// <summary>
     /// Partial of master play to hold the thread stuff.
@@ -20,7 +19,6 @@ namespace Restless.App.Tambala.Controls
     internal sealed partial class MasterPlay
     {
         #region Private
-        private const int MilliSecondsPerMinute = 60000;
         private const string DefaultCounterText = "00:00:00";
 
         private bool isSongStarted;
@@ -37,7 +35,6 @@ namespace Restless.App.Tambala.Controls
         private int patternSleepTime;
         private int patternOperationSet;
         private bool isControlClosing;
-        private PlayMode playMode;
         private Metronome metronome;
         #endregion
             
@@ -47,11 +44,13 @@ namespace Restless.App.Tambala.Controls
         private void InitializeThreads()
         {
             CounterText = DefaultCounterText;
-            playMode = PlayMode.Pattern;
-            patternSleepTime = 100;
+            /* Sets patternSleepTime according to the tempo */
+            SetTempo(Constants.Tempo.Default);
 
-            metronome = new Metronome();
-            metronome.Instrument = Owner.DrumKits[DrumKitCollection.DrumKitCubanId].Instruments[6];
+            metronome = new Metronome
+            {
+                Instrument = Owner.DrumKits[DrumKitCollection.DrumKitCubanId].Instruments[6]
+            };
 
             songPlaySignaler = new AutoResetEvent(false);
             songPlayThread = new Thread(SongPlayThreadHandler)
@@ -104,27 +103,45 @@ namespace Restless.App.Tambala.Controls
             {
                 songPlaySignaler.WaitOne();
                 SongPresenter song = Owner.SongContainer.Presenter;
+                int pass = 0;
 
                 if (!isControlClosing)
                 {
                     isPatternStarted = true;
 
+                    if (renderState.IsRendering)
+                    {
+                        AudioHost.Instance.StartCapture(Owner.AudioRenderParameters, renderState);
+                    }
+
                     while (isSongStarted)
                     {
                         int pos = 1;
                         int maxPos = song.SongSelectors.GetMaxSelectedPosition();
+                        pass++;
                         while (pos <= maxPos && isSongStarted)
                         {
                             song.InvokeHighlightSongHeader(pos, true);
 
                             int[] selected = song.SongSelectors.GetRowsAtPosition(pos);
-                            var patterns = Owner.DrumPatterns.CreateFromIndices(selected);
+                            DrumPatternCollection patterns = Owner.DrumPatterns.CreateFromIndices(selected);
 
                             PlaySongPatterns(PointSelectorSongUnit.None, pos, patterns);
 
                             song.InvokeHighlightSongHeader(pos, false);
                             pos++;
                             maxPos = song.SongSelectors.GetMaxSelectedPosition();
+                        }
+
+                        if (renderState.IsRendering && pass == Owner.AudioRenderParameters.PassCount)
+                        {
+                            Dispatcher.BeginInvoke(DispatcherPriority.Send, new Action(() =>
+                            {
+                                IsStarted = false;
+                            }));
+
+                            renderState.IsRendering = false;
+                            isSongStarted = false;
                         }
                     }
 
@@ -142,10 +159,25 @@ namespace Restless.App.Tambala.Controls
                 int pass = 0;
                 if (!isControlClosing)
                 {
+                    if (renderState.IsRendering)
+                    {
+                        AudioHost.Instance.StartCapture(Owner.AudioRenderParameters, renderState);
+                    }
+
                     while (isPatternStarted)
                     {
                         pass++;
                         PlayPattern(PointSelectorSongUnit.None, pass, Owner.ThreadSafeActiveDrumPattern);
+                        if (renderState.IsRendering && pass == Owner.AudioRenderParameters.PassCount)
+                        {
+                            Dispatcher.BeginInvoke(DispatcherPriority.Send, new Action(() =>
+                            {
+                                IsStarted = false;
+                            }));
+
+                            renderState.IsRendering = false;
+                            isPatternStarted = false;
+                        }
                     }
                 }
             }
@@ -246,7 +278,6 @@ namespace Restless.App.Tambala.Controls
         private void OnPlayModeChanged()
         {
             IsStarted = false;
-            playMode = PlayMode;
         }
 
         private void OnIsStartedChanged()
@@ -286,36 +317,11 @@ namespace Restless.App.Tambala.Controls
 
         /************************************************************************/
 
-        #region IDisposable
+        #region IShutdown
         /// <summary>
-        /// Disposes resources.
+        /// Shuts down the master player threads and the metronome.
         /// </summary>
-        [SuppressMessage("Microsoft.Usage", "CA2213: Disposable fields should be disposed", Justification="Disposal happens via Shutdown() method")]
-        public void Dispose()
-        {
-            Shutdown();
-            GC.SuppressFinalize(this);
-        }
-        #endregion
-
-        /************************************************************************/
-
-        #region Internal methods
-        /// <summary>
-        /// Adjusts the thread sleep time according to the specified tempo.
-        /// </summary>
-        /// <param name="tempo">The tempo.</param>
-        internal void SetTempo(double tempo)
-        {
-            int tempoInt = (int)tempo;
-            patternSleepTime = MilliSecondsPerMinute / tempoInt / Ticks.LowestCommon;
-        }
-        #endregion
-
-        /************************************************************************/
-
-        #region Private method
-        private void Shutdown()
+        public void Shutdown()
         {
             IsStarted = false;
             isControlClosing = true;
@@ -338,9 +344,21 @@ namespace Restless.App.Tambala.Controls
                 audioMonitorSignaler.Dispose();
             }
 
-            metronome.Dispose();
+            metronome.Shutdown();
         }
         #endregion
 
+        /************************************************************************/
+
+        #region Internal methods / events
+        /// <summary>
+        /// Adjusts the thread sleep time according to the specified tempo.
+        /// </summary>
+        /// <param name="tempo">The tempo.</param>
+        internal void SetTempo(double tempo)
+        {
+            patternSleepTime = Ticks.GetTickDelayFromTempo(tempo);
+        }
+        #endregion
     }
 }

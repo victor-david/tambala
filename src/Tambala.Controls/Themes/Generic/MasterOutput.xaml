@@ -1,8 +1,12 @@
 ﻿<ResourceDictionary 
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:con="clr-namespace:Restless.App.Tambala.Controls">
-
+    xmlns:con="clr-namespace:Restless.Tambala.Controls">
+    
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Styles.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    
     <!-- ############################ -->
     <!-- MasterOutput Template/Style  -->
     <!-- ############################ -->
@@ -21,7 +25,7 @@
             </Grid.ColumnDefinitions>
 
             <!-- Header -->
-            <Border Grid.ColumnSpan="5" Style="{DynamicResource HeaderBorder}">
+            <Border Grid.ColumnSpan="5" Style="{StaticResource HeaderBorder}">
                 <TextBlock Text="{TemplateBinding DisplayName}"/>
             </Border>
 
@@ -31,8 +35,8 @@
                 Orientation="Vertical"
                 LabelText="{TemplateBinding TempoText}"
                 ValueText="{Binding Tempo, RelativeSource={RelativeSource TemplatedParent},Mode=OneWay,StringFormat=N0}"
-                LabelTextBrush="{DynamicResource SliderLabelTextBrush}"
-                ValueTextBrush="{DynamicResource SliderValueTextBrush}"
+                LabelTextBrush="{StaticResource SliderLabelTextBrush}"
+                ValueTextBrush="{StaticResource SliderValueTextBrush}"
                 Minimum="{Binding MinTempo, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
                 Maximum="{Binding MaxTempo, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
                 Value="{Binding Tempo, RelativeSource={RelativeSource TemplatedParent}}" />
@@ -43,8 +47,8 @@
                 Orientation="Vertical"
                 LabelText="{TemplateBinding VolumeText}"
                 ValueText="{Binding VolumeDecibelText, RelativeSource={RelativeSource TemplatedParent},Mode=OneWay}"
-                LabelTextBrush="{DynamicResource SliderLabelTextBrush}"
-                ValueTextBrush="{DynamicResource SliderValueTextBrush}"
+                LabelTextBrush="{StaticResource SliderLabelTextBrush}"
+                ValueTextBrush="{StaticResource SliderValueTextBrush}"
                 Minimum="{Binding MinVolume, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}" 
                 Maximum="{Binding MaxVolume, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
                 Value="{Binding Volume, RelativeSource={RelativeSource TemplatedParent}}" />

@@ -6,7 +6,7 @@
 */
 using System.Windows;
 
-namespace Restless.App.Tambala.Controls.Core
+namespace Restless.Tambala.Controls.Core
 {
     /// <summary>
     /// Represents the arguments used for a routed event that can ve canceled.

@@ -4,34 +4,24 @@
  * Tambala is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License v3.0
  * Tambala is distributed in the hope that it will be useful, but without warranty of any kind.
 */
-using Microsoft.Win32;
-using Restless.App.Tambala.Controls;
-using Restless.App.Tambala.Controls.Audio;
-using Restless.App.Tambala.Core;
-using Restless.App.Tambala.Resources;
+using Restless.Tambala.Core;
+using Restless.Toolkit.Controls;
 using System;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
 using System.Windows;
 
-namespace Restless.App.Tambala.ViewModel
+namespace Restless.Tambala.ViewModel
 {
     /// <summary>
     /// Represents the view model for displaying the about window.
     /// </summary>
-    public class AboutWindowViewModel : WindowViewModel
+    public class AboutWindowViewModel : ApplicationViewModel
     {
-        #region Private
-        #endregion
-
-        /************************************************************************/
-
         #region Public properties
         /// <summary>
         /// Gets the application info object.
         /// </summary>
-        public ApplicationInfo AppInfo
+        public static ApplicationInfo AppInfo
         {
             get => ApplicationInfo.Instance;
         }
@@ -43,24 +33,30 @@ namespace Restless.App.Tambala.ViewModel
         /// <summary>
         /// Initializes a new instance of the <see cref="AudioRenderWindowViewModel"/> class.
         /// </summary>
-        /// <param name="owner">The owner of this view model.</param>
-        public AboutWindowViewModel(Window owner) : base(owner)
+        public AboutWindowViewModel()
         {
             DisplayName = $"About {ApplicationInfo.Instance.Title} {ApplicationInfo.Instance.VersionMajor}";
-            Commands.Add("Close", (p)=>WindowOwner.Close());
-            Commands.Add("ImageCredit", RunImageCreditCommand);
+            Commands.Add("Repository", RunRepositoryCommand);
         }
         #endregion
 
         /************************************************************************/
 
         #region Private methods
-        private void RunImageCreditCommand(object parm)
+        private void RunRepositoryCommand(object parm)
         {
-            if (parm is string user)
+            try
             {
-                string url = $"https://www.flaticon.com/authors/{user}";
-                Process.Start(url);
+                ProcessStartInfo psi = new ProcessStartInfo
+                {
+                    FileName = AppInfo.RepositoryUrl,
+                    UseShellExecute = true
+                };
+                Process.Start(psi);
+            }
+            catch (Exception ex)
+            {
+                MessageWindow.ShowError(ex.Message);
             }
         }
         #endregion

@@ -9,7 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace Restless.App.Tambala.Controls
+namespace Restless.Tambala.Controls
 {
     /// <summary>
     /// Extends Slider to provide additional labeling properties

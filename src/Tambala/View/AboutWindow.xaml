@@ -1,0 +1,47 @@
+﻿<tk:AppWindow
+    x:Class="Restless.Tambala.View.AboutWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:tk="http://schemas.restless.toolkit.com/2021" 
+    xmlns:vm="clr-namespace:Restless.Tambala.ViewModel" d:DataContext="{d:DesignInstance Type=vm:AboutWindowViewModel}"
+    mc:Ignorable="d"     
+    Style="{StaticResource DefaultAppWindowStyle}"
+    WindowStartupLocation="CenterOwner"
+    Height="300"
+    Width="492"
+    ResizeMode="NoResize"
+    Title="{Binding DisplayName, Mode=OneTime}">
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+        <Style TargetType="tk:LineItem">
+            <Setter Property="Margin" Value="0,5"/>
+            <Setter Property="ItemFontSize" Value="12"/>
+            <Setter Property="ItemForeground" Value="DarkRed"/>
+            <Setter Property="ItemDisplayWidth" Value="86"/>
+            <Setter Property="ItemVerticalAlignment" Value="Top"/>
+            <Setter Property="ValueFontSize" Value="12"/>
+            <Setter Property="ValueForeground" Value="Gray"/>
+            <Setter Property="ValueVerticalAlignment" Value="Top"/>
+        </Style>
+        <Style TargetType="tk:LinkedTextBlock">
+            <Setter Property="RolloverBrush" Value="DodgerBlue"/>
+        </Style>
+    </Window.Resources>
+
+    <StackPanel Margin="10">
+        <Image Width="64" Margin="0,5,0,16" Source="pack://application:,,,/Tambala;component/Resources/Images/Image.Drum.Blue.128.png"/>
+        <tk:LineItem Item="Description" Value="{Binding AppInfo.Description, Mode=OneTime}"/>
+        <tk:LineItem Item="Copyright" Value="{Binding AppInfo.Copyright, Mode=OneTime}"/>
+        <tk:LineItem Item="Version" Value="{Binding AppInfo.Version, Mode=OneTime}"/>
+        <tk:LineItem Item="Framework" Value="{Binding AppInfo.FrameworkVersion, Mode=OneTime}"/>
+        <tk:LineItem Item="Repository" >
+            <tk:LineItem.Value>
+                <tk:LinkedTextBlock Text="{Binding AppInfo.RepositoryUrl}" Command="{Binding Commands[Repository]}"/>
+            </tk:LineItem.Value>
+        </tk:LineItem>
+    </StackPanel>
+</tk:AppWindow>

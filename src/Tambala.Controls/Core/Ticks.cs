@@ -6,7 +6,7 @@
 */
 using System.Collections.Generic;
 
-namespace Restless.App.Tambala.Controls.Core
+namespace Restless.Tambala.Controls.Core
 {
     /// <summary>
     /// Defines characteristics of ticks and provides position mapping.
@@ -89,5 +89,16 @@ namespace Restless.App.Tambala.Controls.Core
         {
             0, 3, 6, 8, 9, 12, 15, 16, 18, 21
         };
+
+        /// <summary>
+        /// Gets the delay needed between each tick for the specified tempo.
+        /// </summary>
+        /// <param name="tempo">The tempo</param>
+        /// <returns>The delay in milliseconds required for each of the <see cref="LowestCommon"/> number of ticks.</returns>
+        internal static int GetTickDelayFromTempo(double tempo)
+        {
+            int tempoInt = (int)tempo;
+            return Constants.Timing.MilliSecondsPerMinute / tempoInt / LowestCommon;
+        }
     }
 }

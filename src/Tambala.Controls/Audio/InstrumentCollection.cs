@@ -4,16 +4,17 @@
  * Tambala is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License v3.0
  * Tambala is distributed in the hope that it will be useful, but without warranty of any kind.
 */
-using Restless.App.Tambala.Controls.Core;
+using Restless.Tambala.Controls.Core;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 
-namespace Restless.App.Tambala.Controls.Audio
+namespace Restless.Tambala.Controls.Audio
 {
     /// <summary>
     /// Represents a collection of <see cref="Instrument"/> objects.
     /// </summary>
-    public class InstrumentCollection : GenericList<Instrument>
+    public class InstrumentCollection : List<Instrument>
     {
         #region Internal methods
         /// <summary>

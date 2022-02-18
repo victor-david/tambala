@@ -1,16 +1,16 @@
 ﻿<ResourceDictionary 
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:con="clr-namespace:Restless.App.Tambala.Controls">
+    xmlns:con="clr-namespace:Restless.Tambala.Controls">
 
-    <!-- ############################ -->
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Styles.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
     <!-- PointSelector Template/Style -->
-    <!-- ############################ -->
-    <ControlTemplate x:Key="PointSelectorNoneControlTemplate" TargetType="con:PointSelector">
-        
-    </ControlTemplate>
-    
-     <ControlTemplate x:Key="PointSelectorSongHeaderControlTemplate" TargetType="con:PointSelector">
+    <ControlTemplate x:Key="PointSelectorNoneControlTemplate" TargetType="con:PointSelector"/>
+
+    <ControlTemplate x:Key="PointSelectorSongHeaderControlTemplate" TargetType="con:PointSelector">
         <Border
             Height="{TemplateBinding SelectorSize}"
             Width="{TemplateBinding SelectorSize}"
@@ -26,23 +26,23 @@
         </Border>
         <ControlTemplate.Triggers>
             <Trigger Property="IsSelected" Value="True">
-                <Setter TargetName="HLabel" Property="Foreground" Value="Black"/>
+                <Setter TargetName="HLabel" Property="Foreground" Value="Red"/>
             </Trigger>
         </ControlTemplate.Triggers>
-    </ControlTemplate>   
-    
+    </ControlTemplate>
+
     <ControlTemplate x:Key="PointSelectorSongRowControlTemplate" TargetType="con:PointSelector">
         <Button
             Height="{TemplateBinding SelectorSize}"
             Width="{TemplateBinding SelectorSize}"
-            Style="{DynamicResource SongPointSelectorButton}"
+            Style="{StaticResource SongPointSelectorButton}"
             Background="{TemplateBinding ActiveIsSelectedBrush}"
             Command="{TemplateBinding SelectCommand}"/>
     </ControlTemplate>
     
     <ControlTemplate x:Key="PointSelectorPatternRowControlTemplate" TargetType="con:PointSelector">
         <Button
-            Style="{DynamicResource PatternPointSelectorButton}"
+            Style="{StaticResource PatternPointSelectorButton}"
             Background="{TemplateBinding ActiveIsSelectedBrush}"
             Command="{TemplateBinding SelectCommand}"/>
 
@@ -54,20 +54,20 @@
         <Style.Triggers>
             <Trigger Property="SelectorType" Value="SongHeader">
                 <Setter Property="Template" Value="{StaticResource PointSelectorSongHeaderControlTemplate}"/>
-                <Setter Property="IsSelectedBrush" Value="{DynamicResource PointSelectorSongHeaderSelected}"/>
-                <Setter Property="IsDeselectedBrush" Value="{DynamicResource PointSelectorSongHeaderDeselected}"/>
+                <Setter Property="IsSelectedBrush" Value="{StaticResource PointSelectorSongHeaderSelected}"/>
+                <Setter Property="IsDeselectedBrush" Value="{StaticResource PointSelectorSongHeaderDeselected}"/>
             </Trigger>
 
             <Trigger Property="SelectorType" Value="SongRow">
                 <Setter Property="Template" Value="{StaticResource PointSelectorSongRowControlTemplate}"/>
-                <Setter Property="IsSelectedBrush" Value="{DynamicResource PointSelectorSongRowSelected}"/>
-                <Setter Property="IsDeselectedBrush" Value="{DynamicResource PointSelectorSongRowDeselected}"/>
+                <Setter Property="IsSelectedBrush" Value="{StaticResource PointSelectorSongRowSelected}"/>
+                <Setter Property="IsDeselectedBrush" Value="{StaticResource PointSelectorSongRowDeselected}"/>
             </Trigger>
 
             <Trigger Property="SelectorType" Value="PatternRow">
                 <Setter Property="Template" Value="{StaticResource PointSelectorPatternRowControlTemplate}"/>
-                <Setter Property="IsSelectedBrush" Value="{DynamicResource PointSelectorPatternRowSelected}"/>
-                <Setter Property="IsDeselectedBrush" Value="{DynamicResource PointSelectorPatternRowDeselected}"/>
+                <Setter Property="IsSelectedBrush" Value="{StaticResource PointSelectorPatternRowSelected}"/>
+                <Setter Property="IsDeselectedBrush" Value="{StaticResource PointSelectorPatternRowDeselected}"/>
             </Trigger>
 
             <Trigger Property="IsEnabled" Value="False">

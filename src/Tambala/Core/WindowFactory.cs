@@ -4,12 +4,12 @@
  * Tambala is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License v3.0
  * Tambala is distributed in the hope that it will be useful, but without warranty of any kind.
 */
-using Restless.App.Tambala.Controls;
-using Restless.App.Tambala.View;
-using Restless.App.Tambala.ViewModel;
+using Restless.Tambala.Controls;
+using Restless.Tambala.View;
+using Restless.Tambala.ViewModel;
 using System.Windows;
 
-namespace Restless.App.Tambala.Core
+namespace Restless.Tambala.Core
 {
     /// <summary>
     /// Provides static methods for creating application windows.
@@ -28,10 +28,12 @@ namespace Restless.App.Tambala.Core
             /// <returns>The window</returns>
             public static MainWindow Create()
             {
-                var window = new MainWindow();
+                MainWindow window = new()
+                {
+                    DataContext = new MainWindowViewModel()
+                };
+
                 TextOptions.SetTextFormattingMode(window);
-                var viewModel = new MainWindowViewModel(window);
-                window.DataContext = viewModel;
                 return window;
             }
         }
@@ -48,13 +50,13 @@ namespace Restless.App.Tambala.Core
             /// <returns>The window</returns>
             public static AudioRenderWindow Create(ProjectContainer projectContainer)
             {
-                var window = new AudioRenderWindow
+                AudioRenderWindow window = new()
                 {
-                    Owner = Application.Current.MainWindow
+                    Owner = Application.Current.MainWindow,
                 };
+
+                window.DataContext = new AudioRenderWindowViewModel(window, projectContainer);
                 TextOptions.SetTextFormattingMode(window);
-                var viewModel = new AudioRenderWindowViewModel(window, projectContainer);
-                window.DataContext = viewModel;
                 return window;
             }
         }
@@ -70,16 +72,14 @@ namespace Restless.App.Tambala.Core
             /// <returns>The window</returns>
             public static AboutWindow Create()
             {
-                var window = new AboutWindow
+                AboutWindow window = new()
                 {
-                    Owner = Application.Current.MainWindow
+                    Owner = Application.Current.MainWindow,
+                    DataContext = new AboutWindowViewModel()
                 };
                 TextOptions.SetTextFormattingMode(window);
-                var viewModel = new AboutWindowViewModel(window);
-                window.DataContext = viewModel;
                 return window;
             }
-
         }
         #endregion
 

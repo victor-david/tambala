@@ -7,7 +7,7 @@
 using System.Windows;
 using System.Windows.Media;
 
-namespace Restless.App.Tambala.Controls
+namespace Restless.Tambala.Controls
 {
     /// <summary>
     /// Extends Border to provide a divider for a <see cref="SongPresenter"/>

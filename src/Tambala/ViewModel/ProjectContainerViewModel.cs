@@ -5,21 +5,21 @@
  * Tambala is distributed in the hope that it will be useful, but without warranty of any kind.
 */
 using Microsoft.Win32;
-using Restless.App.Tambala.Controls;
-using Restless.App.Tambala.Core;
-using Restless.App.Tambala.Resources;
+using Restless.Tambala.Controls;
+using Restless.Tambala.Core;
+using Restless.Tambala.Resources;
 using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Restless.App.Tambala.ViewModel
+namespace Restless.Tambala.ViewModel
 {
     /// <summary>
     /// Provides interaction logic for the main drum track container.
     /// </summary>
-    public class ProjectContainerViewModel : WorkspaceViewModel
+    public class ProjectContainerViewModel : ApplicationViewModel
     {
         #region Private
         private ProjectContainer container;
@@ -56,15 +56,13 @@ namespace Restless.App.Tambala.ViewModel
         /// <summary>
         /// Initializes a new instance of the <see cref="ProjectContainerViewModel"/> class.
         /// </summary>
-        /// <param name="owner">The owner of this VM.</param>
-        public ProjectContainerViewModel(WorkspaceViewModel owner) : base(owner)
+        public ProjectContainerViewModel()
         {
             Container = new ProjectContainer()
             {
                 Visibility = Visibility.Collapsed,
             };
 
-            //Container.RequestRenderCommand = new RelayCommand(RunRequestRenderCommand);
             Container.IsChangedSet += ContainerIsChangedSet;
             Container.IsChangedReset += ContainerIsChangedReset;
         }
@@ -93,10 +91,7 @@ namespace Restless.App.Tambala.ViewModel
                 {
                     Title = Strings.DialogTitleOpenFile,
                     DefaultExt = DottedFileExtension,
-                    Filter = $"{Strings.CaptionXmlFile} | *{DottedFileExtension}",
-#if DEBUG
-                    InitialDirectory = @"D:\vds\Music\Drum Patterns\Xml",
-#endif
+                    Filter = $"{Strings.CaptionXmlFile} | *{DottedFileExtension}"
                 };
 
                 if (dialog.ShowDialog() == true)
@@ -154,7 +149,7 @@ namespace Restless.App.Tambala.ViewModel
         /// </summary>
         protected override void OnDeactivated()
         {
-            container.Dispose();
+            container.Shutdown();
         }
         #endregion
 

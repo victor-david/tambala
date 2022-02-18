@@ -4,8 +4,8 @@
  * Tambala is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License v3.0
  * Tambala is distributed in the hope that it will be useful, but without warranty of any kind.
 */
-using Restless.App.Tambala.Controls.Audio;
-using Restless.App.Tambala.Controls.Core;
+using Restless.Tambala.Controls.Audio;
+using Restless.Tambala.Controls.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +15,12 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Xml.Linq;
 
-namespace Restless.App.Tambala.Controls
+namespace Restless.Tambala.Controls
 {
     /// <summary>
     /// Extends <see cref="ControlObjectVisualGrid"/> to provide a visual display panel for <see cref="DrumPattern"/>
     /// </summary>
-    internal class DrumPatternPresenter : ControlObjectVisualGrid
+    internal class DrumPatternPresenter : ControlObjectVisualGrid, IShutdown
     {
         #region Private
         private int quarterNoteCount;
@@ -42,7 +42,7 @@ namespace Restless.App.Tambala.Controls
         internal DrumPatternPresenter(DrumPattern owner)
         {
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));
-            Controllers = new GenericList<InstrumentController>();
+            Controllers = new List<InstrumentController>();
             quarterNoteCount = Constants.DrumPattern.QuarterNoteCount.Default;
             ticksPerQuarterNote = Constants.DrumPattern.TicksPerQuarterNote.Default;
             scale = Constants.DrumPattern.Scale.Default;
@@ -78,7 +78,7 @@ namespace Restless.App.Tambala.Controls
         /// <summary>
         /// Gets the list of instrument controllers.
         /// </summary>
-        private GenericList<InstrumentController> Controllers
+        private List<InstrumentController> Controllers
         {
             get;
         }
@@ -132,7 +132,8 @@ namespace Restless.App.Tambala.Controls
         public override XElement GetXElement()
         {
             var element = new XElement(nameof(DrumPatternPresenter));
-            Controllers.DoForAll((controller) =>
+            
+            Controllers.ForEach((controller) =>
             {
                 element.Add(controller.GetXElement());
             });
@@ -164,6 +165,16 @@ namespace Restless.App.Tambala.Controls
         #endregion
 
         /************************************************************************/
+
+        #region IShutdown
+        /// <summary>
+        /// Shuts down the <see cref="InstrumentController"/> objects used by this instance.
+        /// </summary>
+        public void Shutdown()
+        {
+            Controllers.ForEach(c => c.Shutdown());
+        }
+        #endregion
 
         #region Protected methods
         /// <summary>
@@ -265,7 +276,7 @@ namespace Restless.App.Tambala.Controls
                 Controllers[0].IsSelected = true;
             }
 
-            Controllers.DoForAll((con) =>
+            Controllers.ForEach((con) =>
             {
                 con.SetIsVisible(allVisible || con == selectedController, quarterNoteCount);
             });
@@ -284,8 +295,7 @@ namespace Restless.App.Tambala.Controls
             Grid.Children.Clear();
             AddColumnDefinition(Constants.DrumPattern.FirstColumnWidth);
             // TextBox to edit the pattern name
-            var name = new RationalTextBox();
-            name.SetResourceReference(StyleProperty, "RationalTextBoxPatternNameEdit");
+            RationalTextBox name = new RationalTextBox();
 
             Border border = new Border()
             {
@@ -407,7 +417,7 @@ namespace Restless.App.Tambala.Controls
             {
                 item.Value.SetVisibility(quarterNoteCount);
             }
-            Controllers.DoForAll((con) =>
+            Controllers.ForEach((con) =>
             {
                 foreach (var item in con.PatternQuarters)
                 {
@@ -504,7 +514,7 @@ namespace Restless.App.Tambala.Controls
                 // and a stack overflow.
                 if (controller.IsSelected)
                 {
-                    Controllers.DoForAll((con) =>
+                    Controllers.ForEach((con) =>
                     {
                         con.IsSelected = con == controller;
                     });
@@ -539,7 +549,7 @@ namespace Restless.App.Tambala.Controls
         {
             int soloCount = Controllers.Where((c) => c.IsSolo).Count();
 
-            Controllers.DoForAll((con) =>
+            Controllers.ForEach((con) =>
             {
                 if (soloCount > 0)
                     con.IsSoloMuted = !con.IsSolo;

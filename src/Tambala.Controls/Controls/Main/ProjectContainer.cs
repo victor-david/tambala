@@ -4,16 +4,16 @@
  * Tambala is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License v3.0
  * Tambala is distributed in the hope that it will be useful, but without warranty of any kind.
 */
-using Restless.App.Tambala.Controls.Audio;
-using Restless.App.Tambala.Controls.Core;
-using Restless.App.Tambala.Controls.Resources;
+using Restless.Tambala.Controls.Audio;
+using Restless.Tambala.Controls.Core;
+using Restless.Tambala.Controls.Resources;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using System.Xml.Linq;
 
-namespace Restless.App.Tambala.Controls
+namespace Restless.Tambala.Controls
 {
     /// <summary>
     /// Represents the top most container for a project. A project includes song arrangement, drum kit patterns, master output controls, etc.
@@ -23,7 +23,7 @@ namespace Restless.App.Tambala.Controls
     /// the controls for the master output (volume, tempo), the controls to create a song from multiple drum
     /// patterns, and the drum patterns.
     /// </remarks>
-    public sealed class ProjectContainer : ControlObject, IDisposable
+    public sealed class ProjectContainer : ControlObject, IShutdown
     {
         #region Private
         private bool isSongContainerChangeInProgress = false;
@@ -58,6 +58,9 @@ namespace Restless.App.Tambala.Controls
                     DisplayName = $"Pattern {k}",
                 });
             }
+
+            AudioRenderParameters = new AudioRenderParameters();
+            AudioRenderParameters.Changed += AudioRenderParametersChanged;
 
             // IsExpanded is used in the template to expand / contract the drum kit list.
             // Drum kits are assigned per pattern.
@@ -130,6 +133,18 @@ namespace Restless.App.Tambala.Controls
         /// Identifies the <see cref="MasterPlay"/> dependency property.
         /// </summary>
         internal static readonly DependencyProperty MasterPlayProperty = MasterPlayPropertyKey.DependencyProperty;
+        #endregion
+
+        /************************************************************************/
+
+        #region AudioRenderParameters
+        /// <summary>
+        /// Gets the audio render parameters for this container
+        /// </summary>
+        public AudioRenderParameters AudioRenderParameters
+        {
+            get;
+        }
         #endregion
 
         /************************************************************************/
@@ -301,8 +316,9 @@ namespace Restless.App.Tambala.Controls
             element.Add(MasterOutput.GetXElement());
             element.Add(MasterPlay.GetXElement());
             element.Add(SongContainer.GetXElement());
+            element.Add(AudioRenderParameters.GetXElement());
              
-            DrumPatterns.DoForAll((pattern) =>
+            DrumPatterns.ForEach((pattern) =>
             {
                 element.Add(pattern.GetXElement());
              });
@@ -319,9 +335,10 @@ namespace Restless.App.Tambala.Controls
             foreach (XElement e in ChildElementList(element))
             {
                 if (e.Name == nameof(DisplayName)) SetDependencyProperty(DisplayNameProperty, e.Value);
-                if (e.Name == nameof(MasterOutput)) MasterOutput.RestoreFromXElement(e);
-                if (e.Name == nameof(MasterPlay)) MasterPlay.RestoreFromXElement(e);
-                if (e.Name == nameof(SongContainer)) SongContainer.RestoreFromXElement(e);
+                if (e.Name == nameof(Controls.MasterOutput)) MasterOutput.RestoreFromXElement(e);
+                if (e.Name == nameof(Controls.MasterPlay)) MasterPlay.RestoreFromXElement(e);
+                if (e.Name == nameof(Controls.SongContainer)) SongContainer.RestoreFromXElement(e);
+                if (e.Name == nameof(Audio.AudioRenderParameters)) AudioRenderParameters.RestoreFromXElement(e);
 
                 if (e.Name == nameof(DrumPattern))
                 {
@@ -338,15 +355,15 @@ namespace Restless.App.Tambala.Controls
 
         /************************************************************************/
 
-        #region IDisposable
+        #region IShutdown
         /// <summary>
-        /// Disposes resources.
+        /// Shuts down the container and all child objects
         /// </summary>
-        public void Dispose()
+        public void Shutdown()
         {
-            MasterPlay.Dispose();
+            MasterPlay.Shutdown();
+            DrumPatterns.ForEach(p => p.Shutdown());
             Dispatcher.ShutdownStarted -= DispatcherShutdownStarted;
-            GC.SuppressFinalize(this);
         }
         #endregion
 
@@ -407,6 +424,38 @@ namespace Restless.App.Tambala.Controls
                 return new System.IO.IOException($"Dispatcher Unable to load {fileName}", ex);
             }
             return null;
+        }
+
+        /// <summary>
+        /// Stops playing
+        /// </summary>
+        public void StopPlay()
+        {
+            MasterPlay.Stop();
+        }
+
+        /// <summary>
+        /// Starts rendering
+        /// </summary>
+        /// <param name="stateChange">
+        /// The action to call when the rendering states changes
+        /// </param>
+        public void StartRender(Action<AudioRenderState, Exception> stateChange)
+        {
+            MasterPlay.Stop();
+            if (stateChange == null)
+            {
+                throw new ArgumentNullException(nameof(stateChange));
+            }
+
+            AudioRenderParameters.Validate();
+            AudioRenderParameters.CalculateFramesToCapture(MasterOutput.Tempo, GetQuarterNoteCount());
+            /* FramesToCapture will be zero if GetQuarterNoteCount() returns zero (song mode only)  */
+            if (AudioRenderParameters.FramesToCapture == 0)
+            {
+                throw new InvalidOperationException("No frames to capture");
+            }
+            MasterPlay.StartRender(stateChange);
         }
         #endregion
 
@@ -483,6 +532,14 @@ namespace Restless.App.Tambala.Controls
         /************************************************************************/
 
         #region Private methods
+        private void AudioRenderParametersChanged(object sender, bool e)
+        {
+            if (e)
+            {
+                SetIsChanged();
+            }
+        }
+
         private void IsChangedSetEventHandler(object sender, RoutedEventArgs e)
         {
             if (e.OriginalSource != this)
@@ -499,13 +556,48 @@ namespace Restless.App.Tambala.Controls
             }
         }
 
+        /// <summary>
+        /// Gets the number of quarter notes needed for a rendering operation
+        /// </summary>
+        /// <returns>Number of quarter notes.</returns>
+        /// <remarks>
+        /// In pattern mode, returns the number of quarter notes for the active pattern, always greater than zero.
+        /// In song mode, calculates the total number of quarter notes. May be zero, if no song positions selected.
+        /// </remarks>
+        private int GetQuarterNoteCount()
+        {
+            if (MasterPlay.PlayMode == PlayMode.Pattern)
+            {
+                return ActiveDrumPattern.Controller.QuarterNoteCount;
+            }
+
+            int quarterNoteCount = 0;
+            int maxSongPos = SongContainer.Presenter.SongSelectors.GetMaxSelectedPosition();
+
+            for (int pos = 1; pos <= maxSongPos; pos++)
+            {
+                int[] selected = SongContainer.Presenter.SongSelectors.GetRowsAtPosition(pos);
+                DrumPatternCollection patterns = DrumPatterns.CreateFromIndices(selected);
+                quarterNoteCount += patterns.GetMaxQuarterNoteCount();
+            }
+
+            return quarterNoteCount;
+        }
+
+        /// <summary>
+        /// This method runs when the project container is open at the time the main window is closed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <remarks>
+        /// If the container is open when the user closes the main window, this event handler
+        /// runs to shutdown the container. When the user closes the container before closing
+        /// the main window, this handler is not needed as long as the <see cref="Shutdown"/>
+        /// method is called explicitly.
+        /// </remarks>
         private void DispatcherShutdownStarted(object sender, EventArgs e)
         {
-            // This event handler may not be needed. The important thing is to shutdown
-            // the threads in MasterPlay and this is handled by the Shutdown() method
-            // above. As long as the consumer of ProjectContainer calls Shutdown()
-            // the threads will finish and this handler will be removed.
-            MasterPlay.Dispose();
+            Shutdown();
         }
         #endregion
     }

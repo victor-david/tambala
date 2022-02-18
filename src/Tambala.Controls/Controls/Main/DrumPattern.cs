@@ -4,18 +4,18 @@
  * Tambala is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License v3.0
  * Tambala is distributed in the hope that it will be useful, but without warranty of any kind.
 */
-using Restless.App.Tambala.Controls.Core;
+using Restless.Tambala.Controls.Core;
 using System;
 using System.Windows;
 using System.Xml.Linq;
 
-namespace Restless.App.Tambala.Controls
+namespace Restless.Tambala.Controls
 {
     /// <summary>
     /// Represents a single drum pattern that is comprised of instruments, and the ability
     /// to select which ones play on the timeline.
     /// </summary>
-    public sealed class DrumPattern : AudioControlBase
+    public sealed class DrumPattern : AudioControlBase, IShutdown
     {
         #region Private
         #endregion
@@ -284,6 +284,20 @@ namespace Restless.App.Tambala.Controls
                 }
             }
             SelectedEventCount = Presenter.GetSelectedCount();
+        }
+        #endregion
+
+        /************************************************************************/
+
+        #region IShutdown
+        /// <summary>
+        /// Shuts down the <see cref="DrumPatternPresenter"/> and the <see cref="DrumPatternController"/>
+        /// that belong to this instance.
+        /// </summary>
+        public void Shutdown()
+        {
+            Presenter.Shutdown();
+            Controller.Shutdown();
         }
         #endregion
 

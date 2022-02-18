@@ -6,7 +6,7 @@
 */
 using System.Windows.Controls;
 
-namespace Restless.App.Tambala.View
+namespace Restless.Tambala.View
 {
     /// <summary>
     /// Interaction logic for ProjectContainerView.xaml

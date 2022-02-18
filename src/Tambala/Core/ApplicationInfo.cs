@@ -5,10 +5,9 @@
  * Tambala is distributed in the hope that it will be useful, but without warranty of any kind.
 */
 using System;
-using System.IO;
 using System.Reflection;
 
-namespace Restless.App.Tambala.Core
+namespace Restless.Tambala.Core
 {
     /// <summary>
     /// A singleton class that provides information about the application.
@@ -35,19 +34,7 @@ namespace Restless.App.Tambala.Core
         /// </summary>
         public string Title
         {
-            get
-            {
-                object[] attributes = Assembly.GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
-                if (attributes.Length > 0)
-                {
-                    AssemblyTitleAttribute titleAttribute = (AssemblyTitleAttribute)attributes[0];
-                    if (titleAttribute.Title != "")
-                    {
-                        return titleAttribute.Title;
-                    }
-                }
-                return System.IO.Path.GetFileNameWithoutExtension(Assembly.CodeBase);
-            }
+            get => GetAssemblyAttribute<AssemblyTitleAttribute>()?.Title;
         }
 
         /// <summary>
@@ -74,7 +61,7 @@ namespace Restless.App.Tambala.Core
             get
             {
                 var version = Assembly.GetName().Version;
-                return string.Format("{0}.{1}", version.Major, version.Minor);
+                return $"{version.Major}.{version.Minor}";
             }
         }
 
@@ -83,7 +70,7 @@ namespace Restless.App.Tambala.Core
         /// </summary>
         public string FrameworkVersion
         {
-            get => Assembly.ImageRuntimeVersion;
+            get => GetAssemblyAttribute<System.Runtime.Versioning.TargetFrameworkAttribute>()?.FrameworkName;
         }
 
         /// <summary>
@@ -91,15 +78,7 @@ namespace Restless.App.Tambala.Core
         /// </summary>
         public string Description
         {
-            get
-            {
-                object[] attributes = Assembly.GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false);
-                if (attributes.Length == 0)
-                {
-                    return string.Empty;
-                }
-                return ((AssemblyDescriptionAttribute)attributes[0]).Description;
-            }
+            get => GetAssemblyAttribute<AssemblyDescriptionAttribute>()?.Description;
         }
 
         /// <summary>
@@ -107,15 +86,7 @@ namespace Restless.App.Tambala.Core
         /// </summary>
         public string Product
         {
-            get
-            {
-                object[] attributes = Assembly.GetCustomAttributes(typeof(AssemblyProductAttribute), false);
-                if (attributes.Length == 0)
-                {
-                    return string.Empty;
-                }
-                return ((AssemblyProductAttribute)attributes[0]).Product;
-            }
+            get => GetAssemblyAttribute<AssemblyProductAttribute>()?.Product;
         }
 
         /// <summary>
@@ -123,15 +94,7 @@ namespace Restless.App.Tambala.Core
         /// </summary>
         public string Copyright
         {
-            get
-            {
-                object[] attributes = Assembly.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
-                if (attributes.Length == 0)
-                {
-                    return string.Empty;
-                }
-                return ((AssemblyCopyrightAttribute)attributes[0]).Copyright;
-            }
+            get => GetAssemblyAttribute<AssemblyCopyrightAttribute>()?.Copyright;
         }
 
         /// <summary>
@@ -139,53 +102,23 @@ namespace Restless.App.Tambala.Core
         /// </summary>
         public string Company
         {
+            get => GetAssemblyAttribute<AssemblyCompanyAttribute>()?.Company;
+        }
+
+        /// <summary>
+        /// Gets the repository url.
+        /// </summary>
+        public string RepositoryUrl
+        {
             get
             {
-                object[] attributes = Assembly.GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
-                if (attributes.Length == 0)
+                var attrib = GetAssemblyAttribute<AssemblyMetadataAttribute>();
+                if (attrib != null && attrib.Key == nameof(RepositoryUrl))
                 {
-                    return string.Empty;
+                    return attrib.Value;
                 }
-                return ((AssemblyCompanyAttribute)attributes[0]).Company;
+                return null;
             }
-        }
-
-        /// <summary>
-        /// Gets the build date for the assembly.
-        /// </summary>
-        public DateTime BuildDate
-        {
-            get
-            {
-                var version = VersionRaw;
-                DateTime buildDate = new DateTime(2000, 1, 1).AddDays(version.Build).AddSeconds(version.Revision * 2);
-                return buildDate;
-            }
-        }
-
-        /// <summary>
-        /// Gets the root folder for the application.
-        /// </summary>
-        public string RootFolder
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// Gets the name of the reference help file.
-        /// </summary>
-        public string ReferenceFileName
-        {
-            get => Path.Combine(RootFolder, "DrumMaster.Reference.chm");
-        }
-
-        /// <summary>
-        /// Gets a boolean value that indicates if the current process is a 64 bit process.
-        /// </summary>
-        public bool Is64Bit
-        {
-            get => Environment.Is64BitProcess;
         }
         #endregion
 
@@ -200,11 +133,20 @@ namespace Restless.App.Tambala.Core
         private ApplicationInfo()
         {
             Assembly = Assembly.GetEntryAssembly();
-            RootFolder = Path.GetDirectoryName(Assembly.Location);
         }
+        #endregion
 
-        static ApplicationInfo()
+        /************************************************************************/
+
+        #region Private methods
+        private T GetAssemblyAttribute<T>() where T: Attribute
         {
+            object[] attributes = Assembly.GetCustomAttributes(typeof(T), false);
+            if (attributes.Length > 0)
+            {
+                return attributes[0] as T;
+            }
+            return null;
         }
         #endregion
     }

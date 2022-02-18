@@ -4,7 +4,7 @@
  * Tambala is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License v3.0
  * Tambala is distributed in the hope that it will be useful, but without warranty of any kind.
 */
-using Restless.App.Tambala.Controls.Core;
+using Restless.Tambala.Controls.Core;
 using SharpDX.XAudio2;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Xml.Linq;
 
-namespace Restless.App.Tambala.Controls
+namespace Restless.Tambala.Controls
 {
     /// <summary>
     /// Represents a single quarter note and its associated ticks for a drum pattern.

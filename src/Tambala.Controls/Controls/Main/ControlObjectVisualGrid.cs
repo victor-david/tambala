@@ -8,7 +8,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Restless.App.Tambala.Controls
+namespace Restless.Tambala.Controls
 {
     /// <summary>
     /// Extends <see cref="ControlObjectVisual"/> for classes that require a visual Grid

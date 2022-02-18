@@ -1,0 +1,42 @@
+﻿<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <SolidColorBrush x:Key="DefaultBorderBrush" Color="LightGray"/>
+    <SolidColorBrush x:Key="LightBorderBrush" Color="Gainsboro"/>
+    <SolidColorBrush x:Key="DarkBorderBrush" Color="Gray"/>
+
+    <SolidColorBrush x:Key="DefaultBackgroundBrush" Color="White"/>
+    <SolidColorBrush x:Key="DefaultHeaderBackgroundBrush" Color="Goldenrod"/>
+    <SolidColorBrush x:Key="DefaultForegroundBrush" Color="DarkBlue"/>
+    <SolidColorBrush x:Key="DarkForegroundBrush" Color="Gray"/>
+    <SolidColorBrush x:Key="LightForegroundBrush" Color="#AB000000"/>
+    <SolidColorBrush x:Key="DisabledForegroundBrush" Color="Gainsboro"/>
+    <SolidColorBrush x:Key="AlertForegroundBrush" Color="Red"/>
+    <SolidColorBrush x:Key="DarkAlertForegroundBrush" Color="#C00000"/>
+
+    <SolidColorBrush x:Key="ActionButtonBackgroundBrush" Color="SkyBlue"/>
+    <SolidColorBrush x:Key="ActionButtonForegroundBrush" Color="White"/>
+    <SolidColorBrush x:Key="ActionButtonRolloverBrush" Color="CadetBlue"/>
+    
+    <SolidColorBrush x:Key="TitleBarBackgroundBrush" Color="SkyBlue"/>
+    <SolidColorBrush x:Key="TitleBarForegroundBrush" Color="#404040"/>
+    <SolidColorBrush x:Key="TitleBarErrorBackgroundBrush" Color="Coral"/>
+    <SolidColorBrush x:Key="TitleBarErrorForegroundBrush" Color="GhostWhite"/>
+    <SolidColorBrush x:Key="TitleBarBorderBrush" Color="LightGray"/>
+    <SolidColorBrush x:Key="TitleBarButtonBrush" Color="DarkGreen"/>
+
+    
+    <SolidColorBrush x:Key="ScrollBarBackgroundBrush" Color="FloralWhite"/>
+    <SolidColorBrush x:Key="ScrollBarBorderBrush" Color="CadetBlue"/>
+    <SolidColorBrush x:Key="ScrollBarThumbBrush" Color="PowderBlue"/>
+    <SolidColorBrush x:Key="StandardIconBrush" Color="#606060"/>
+    <SolidColorBrush x:Key="HeaderBrush" Color="DarkGray"/>
+
+    <!-- Defines the color used to highlight grid rows and list box items -->
+    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF84C7D6"/>
+    <!-- Enables the selected row to retain a highlight when the data grid / list box loses focus. -->
+    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="LightBlue"/>
+
+    <SolidColorBrush x:Key="DataGridAlternationBrush" Color="#E6E6E6" />
+</ResourceDictionary>

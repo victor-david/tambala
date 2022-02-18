@@ -4,13 +4,13 @@
  * Tambala is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License v3.0
  * Tambala is distributed in the hope that it will be useful, but without warranty of any kind.
 */
-using Restless.App.Tambala.Controls.Audio;
-using Restless.App.Tambala.Controls.Core;
+using Restless.Tambala.Controls.Audio;
+using Restless.Tambala.Controls.Core;
 using System;
 using System.Reflection;
 using System.Xml.Linq;
 
-namespace Restless.App.Tambala.Controls
+namespace Restless.Tambala.Controls
 {
     /// <summary>
     /// Represents a drum kit, a collection of playable instuments
@@ -62,7 +62,7 @@ namespace Restless.App.Tambala.Controls
         }
 
         /// <summary>
-        /// Gets the unique id for this drum kit.
+        /// Gets or (from this assembly) sets the unique id for this drum kit.
         /// </summary>
         public string Id
         {
@@ -71,7 +71,7 @@ namespace Restless.App.Tambala.Controls
         }
 
         /// <summary>
-        /// Gets or (from this assembly) sets the id of this drum kit
+        /// Gets or (from this assembly) sets the resource path of this drum kit
         /// </summary>
         public string ResourcePath
         {

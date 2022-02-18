@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary 
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:con="clr-namespace:Restless.App.Tambala.Controls">
+    xmlns:con="clr-namespace:Restless.Tambala.Controls">
     
     <!-- ############################ -->
     <!-- LevelSlider Templates/Styles -->
@@ -137,7 +137,6 @@
 
     <Style TargetType="con:LevelSlider">
         <Setter Property="SnapsToDevicePixels" Value="True"/>
-        <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="IsSnapToTickEnabled" Value="False"/>
         <Setter Property="TickFrequency" Value="10"/>
         <Setter Property="TickPlacement" Value="None"/>        
@@ -156,11 +155,5 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-
-    <Style x:Key="HorizontalIntSlider" TargetType="con:LevelSlider" BasedOn="{StaticResource {x:Type con:LevelSlider}}">
-        <Setter Property="Orientation" Value="Horizontal"/>
-        <Setter Property="IsSnapToTickEnabled" Value="True"/>
-        <Setter Property="TickFrequency" Value="1"/>
-    </Style>
-
+    
 </ResourceDictionary>

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Restless.App.Tambala.Resources {
+namespace Restless.Tambala.Resources {
     using System;
     
     
@@ -19,7 +19,7 @@ namespace Restless.App.Tambala.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Strings {
@@ -39,7 +39,7 @@ namespace Restless.App.Tambala.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Restless.App.Tambala.Resources.Strings", typeof(Strings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Restless.Tambala.Resources.Strings", typeof(Strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -106,6 +106,15 @@ namespace Restless.App.Tambala.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Render.
+        /// </summary>
+        public static string DisplayNameRender {
+            get {
+                return ResourceManager.GetString("DisplayNameRender", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to About.
         /// </summary>
         public static string MenuItemAbout {
@@ -120,6 +129,15 @@ namespace Restless.App.Tambala.Resources {
         public static string MenuItemAlwaysOnTop {
             get {
                 return ResourceManager.GetString("MenuItemAlwaysOnTop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change output file.
+        /// </summary>
+        public static string MenuItemChangeOutput {
+            get {
+                return ResourceManager.GetString("MenuItemChangeOutput", resourceCulture);
             }
         }
         
@@ -187,6 +205,15 @@ namespace Restless.App.Tambala.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Render.
+        /// </summary>
+        public static string MenuItemRender {
+            get {
+                return ResourceManager.GetString("MenuItemRender", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string MenuItemSave {
@@ -201,6 +228,15 @@ namespace Restless.App.Tambala.Resources {
         public static string MenuItemSettings {
             get {
                 return ResourceManager.GetString("MenuItemSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
+        public static string MenuItemStartRender {
+            get {
+                return ResourceManager.GetString("MenuItemStartRender", resourceCulture);
             }
         }
         
@@ -255,6 +291,69 @@ namespace Restless.App.Tambala.Resources {
         public static string MessageSaveFailure {
             get {
                 return ResourceManager.GetString("MessageSaveFailure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bit depth.
+        /// </summary>
+        public static string TextBitDepth {
+            get {
+                return ResourceManager.GetString("TextBitDepth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Channels.
+        /// </summary>
+        public static string TextChannels {
+            get {
+                return ResourceManager.GetString("TextChannels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fade time / samples.
+        /// </summary>
+        public static string TextFadeTimeSamples {
+            get {
+                return ResourceManager.GetString("TextFadeTimeSamples", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of passes.
+        /// </summary>
+        public static string TextPasses {
+            get {
+                return ResourceManager.GetString("TextPasses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Render complete.
+        /// </summary>
+        public static string TextRenderComplete {
+            get {
+                return ResourceManager.GetString("TextRenderComplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Render in progress....
+        /// </summary>
+        public static string TextRenderInProgress {
+            get {
+                return ResourceManager.GetString("TextRenderInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sample rate.
+        /// </summary>
+        public static string TextSampleRate {
+            get {
+                return ResourceManager.GetString("TextSampleRate", resourceCulture);
             }
         }
         

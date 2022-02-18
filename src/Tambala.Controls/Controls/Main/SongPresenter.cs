@@ -4,7 +4,7 @@
  * Tambala is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License v3.0
  * Tambala is distributed in the hope that it will be useful, but without warranty of any kind.
 */
-using Restless.App.Tambala.Controls.Core;
+using Restless.Tambala.Controls.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using System.Xml.Linq;
 
-namespace Restless.App.Tambala.Controls
+namespace Restless.Tambala.Controls
 {
     /// <summary>
     /// Provides the visual for <see cref="SongContainer"/>
@@ -24,7 +24,6 @@ namespace Restless.App.Tambala.Controls
     {
         #region Private
         private readonly Dictionary<int, PointSelector> headerSelectors;
-        private Brush isSelectedBrush;
         private const string SplitterName = "Splitter";
         #endregion
 
@@ -40,7 +39,6 @@ namespace Restless.App.Tambala.Controls
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));
             headerSelectors = new Dictionary<int, PointSelector>();
             SongSelectors = new SongSelectorCollection();
-            isSelectedBrush = new SolidColorBrush(Colors.LightGray);
         }
 
         static SongPresenter()
@@ -224,11 +222,10 @@ namespace Restless.App.Tambala.Controls
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
             {
-                foreach (var child in Grid.Children.OfType<VisualSelector>())
+                foreach (var child in Grid.Children.OfType<DrumPatternSelector>())
                 {
                     child.IsSelected = child.Position == patternIdx;
                 }
-
             }));
         }
 
@@ -258,26 +255,20 @@ namespace Restless.App.Tambala.Controls
             int rowIdx = AddRowDefinition();
             int colIdx = 0;
 
-            var link = new LinkedTextBlock()
+            DrumPatternSelector button = new DrumPatternSelector(patternIdx)
             {
-                VerticalAlignment = VerticalAlignment.Center,
                 Command = new RelayCommand(RunSelectPatternCommand),
                 CommandParameter = patternIdx,
             };
 
+            /* binding keeps us in sync with user-editable track name  */
             Binding binding = new Binding(nameof(DisplayName))
             {
                 Source = Owner.Owner.DrumPatterns[patternIdx]
             };
-            link.SetBinding(TextBlock.TextProperty, binding);
+            button.SetBinding(Button.ContentProperty, binding);
 
-            var border = new VisualSelector(patternIdx)
-            {
-                IsSelectedBrush = isSelectedBrush,
-                Child = link
-            };
-
-            AddElement(border, rowIdx, colIdx);
+            AddElement(button, rowIdx, colIdx);
             // skip over the splitter column.
             colIdx++;
 

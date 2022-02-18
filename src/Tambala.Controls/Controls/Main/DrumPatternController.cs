@@ -4,8 +4,8 @@
  * Tambala is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License v3.0
  * Tambala is distributed in the hope that it will be useful, but without warranty of any kind.
 */
-using Restless.App.Tambala.Controls.Audio;
-using Restless.App.Tambala.Controls.Core;
+using Restless.Tambala.Controls.Audio;
+using Restless.Tambala.Controls.Core;
 using SharpDX.XAPO.Fx;
 using SharpDX.XAudio2;
 using System;
@@ -13,12 +13,12 @@ using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Xml.Linq;
 
-namespace Restless.App.Tambala.Controls
+namespace Restless.Tambala.Controls
 {
     /// <summary>
     /// Represents a controller for a drum pattern.
     /// </summary>
-    public sealed class DrumPatternController : AudioControlBase, IQuarterNote, IDisposable
+    public sealed class DrumPatternController : AudioControlBase, IQuarterNote, IShutdown
     {
         #region Private
         private SubmixVoice submixVoice;
@@ -365,30 +365,14 @@ namespace Restless.App.Tambala.Controls
 
         /************************************************************************/
 
-        #region IDisposable
+        #region IShutdown
         /// <summary>
-        /// Disposes resources.
+        /// Shuts down the controller.
         /// </summary>
-        public void Dispose()
+        public void Shutdown()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Disposes resources
-        /// </summary>
-        /// <param name="disposing">true if disposing</param>
-        [SuppressMessage("Microsoft.Usage", "CA2213: Disposable fields should be disposed", Justification = "Disposal happens via SharpDx.Utilities")]
-        private void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (submixVoice != null)
-                {
-                    SharpDX.Utilities.Dispose(ref submixVoice);
-                }
-            }
+            submixVoice?.DestroyVoice();
+            SharpDX.Utilities.Dispose(ref submixVoice);
         }
         #endregion
 
