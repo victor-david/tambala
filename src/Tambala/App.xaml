@@ -11,6 +11,7 @@
                 <ResourceDictionary Source="Resources/Dictionary/CheckBox.xaml"/>
                 <ResourceDictionary Source="Resources/Dictionary/TextBlock.xaml"/>
                 <ResourceDictionary Source="Resources/Dictionary/TextBox.xaml"/>
+                <ResourceDictionary Source="Resources/Dictionary/ProgressBar.xaml"/>
                 <ResourceDictionary Source="Resources/Dictionary/ScrollBar.xaml"/>
                 <ResourceDictionary Source="Resources/Dictionary/Window.xaml"/>
             </ResourceDictionary.MergedDictionaries>

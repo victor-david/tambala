@@ -44,6 +44,8 @@ namespace Restless.Tambala.ViewModel
         private WaveOutEvent outputDevice;
         private AudioFileReader audioFile;
         private string playButtonText;
+        private long fileLength;
+        private long filePosition;
         private Window window;
         #endregion
 
@@ -83,6 +85,24 @@ namespace Restless.Tambala.ViewModel
         {
             get => haveRenderedFile;
             private set => SetProperty(ref haveRenderedFile, value);
+        }
+
+        /// <summary>
+        /// Gets the length of the audio file
+        /// </summary>
+        public long FileLength
+        {
+            get => fileLength;
+            private set => SetProperty(ref fileLength, value);
+        }
+
+        /// <summary>
+        /// Gets the current playing position of the audio file
+        /// </summary>
+        public long FilePosition
+        {
+            get => filePosition;
+            private set => SetProperty(ref filePosition, value);
         }
 
         /// <summary>
@@ -126,6 +146,8 @@ namespace Restless.Tambala.ViewModel
             waveSettings = GetRendererSettings();
             outputDevice = new WaveOutEvent();
             outputDevice.PlaybackStopped += OutputDevicePlaybackStopped;
+            FileLength = 1000;
+            FilePosition = 0;
             SetHaveRenderedFile();
             CreateVisualization();
         }
@@ -327,9 +349,17 @@ namespace Restless.Tambala.ViewModel
             if (audioFile == null)
             {
                 audioFile = new AudioFileReader(Container.AudioRenderParameters.RenderFileName);
+                FileLength = audioFile.Length;
+                FilePosition = 0;
                 LoopStream loop = new LoopStream(audioFile);
+                loop.PositionChanged += PlaybackPositionChanged;
                 outputDevice.Init(loop);
             }
+        }
+
+        private void PlaybackPositionChanged(object sender, long position)
+        {
+            FilePosition = position;
         }
 
         /// <summary>

@@ -14,7 +14,7 @@
     Title="Render" 
     ResizeMode="NoResize"
     WindowStartupLocation="CenterOwner"
-    Height="560" 
+    Height="566" 
     Width="780">
 
     <Window.Resources>
@@ -101,7 +101,7 @@
         <TextBlock Text="{Binding Container.AudioRenderParameters.RenderFileName}"/>
 
         <tk:IconButton
-            Margin="2,8"
+            Margin="2,6"
             Height="26"
             Width="64"
             Padding="4,2"
@@ -112,7 +112,18 @@
             Content="{Binding PlayButtonText}"
             Command="{Binding Commands[PlayFile]}"/>
         
-        <Image Source="{Binding FileVisual}"/>
+        <ProgressBar 
+            Style="{StaticResource SmallProgressBarStyle}"
+            tk:Property.IsVisible="{Binding HaveRenderedFile}"
+            Margin="0,4"
+            Height="6"  
+            Minimum="0" 
+            Maximum="{Binding FileLength}" 
+            Value="{Binding FilePosition, Mode=OneWay}"/>
+        
+        <Image
+            tk:Property.IsVisible="{Binding HaveRenderedFile}"
+            Source="{Binding FileVisual}"/>
 
     </StackPanel>
 </tk:AppWindow>

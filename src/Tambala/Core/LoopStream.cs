@@ -68,9 +68,16 @@ namespace Restless.Tambala.Core
         }
         #endregion
 
+        
+
         /************************************************************************/
 
-        #region Public methods
+        #region Public evemts / methods
+        /// <summary>
+        /// Occurs when the position changes
+        /// </summary>
+        public event EventHandler<long> PositionChanged;
+
         public override int Read(byte[] buffer, int offset, int count)
         {
             int totalBytesRead = 0;
@@ -89,6 +96,7 @@ namespace Restless.Tambala.Core
                     sourceStream.Position = 0;
                 }
                 totalBytesRead += bytesRead;
+                PositionChanged?.Invoke(this, Position);
             }
             return totalBytesRead;
         }
