@@ -167,6 +167,7 @@ namespace Restless.Tambala.ViewModel
             try
             {
                 StopPlayback();
+                DestroyAudioFileReader();
                 IsRenderInProgress = true;
                 RenderMessage = Strings.TextRenderInProgress;
                 Container.StartRender(RenderStateChange);
@@ -271,7 +272,7 @@ namespace Restless.Tambala.ViewModel
         {
             if (HaveRenderedFile)
             {
-                CreateAudioFileReaderIf();
+                CreateAudioFileReader();
                 TogglePlayback();
             }
         }
@@ -287,7 +288,6 @@ namespace Restless.Tambala.ViewModel
                 StopPlayback();
             }
         }
-    
 
         private void StartPlayback()
         {
@@ -309,14 +309,20 @@ namespace Restless.Tambala.ViewModel
 
         private void OutputDevicePlaybackStopped(object sender, StoppedEventArgs e)
         {
-            audioFile.Position = 0;
+            if (audioFile != null)
+            {
+                audioFile.Position = 0;
+            }
             if (!HaveRenderedFile)
             {
                 DestroyAudioFileReader();
             }
         }
 
-        private void CreateAudioFileReaderIf()
+        /// <summary>
+        /// Creates the audio file reader if it's not already created.
+        /// </summary>
+        private void CreateAudioFileReader()
         {
             if (audioFile == null)
             {
@@ -326,6 +332,13 @@ namespace Restless.Tambala.ViewModel
             }
         }
 
+        /// <summary>
+        /// Destroys <see cref="audioFile"/> if it isn't null.
+        /// </summary>
+        /// <remarks>
+        /// The audio file reader must be destroyed before a render so that it's
+        /// not holding the file open.Also used when window is closed.
+        /// </remarks>
         private void DestroyAudioFileReader()
         {
             if (audioFile != null)
@@ -339,10 +352,6 @@ namespace Restless.Tambala.ViewModel
         {
             StopPlayback();
             SetHaveRenderedFile();
-            if (!HaveRenderedFile)
-            {
-                StopPlayback();
-            }
         }
 
         private void WindowOwnerClosing(object sender, CancelEventArgs e)
