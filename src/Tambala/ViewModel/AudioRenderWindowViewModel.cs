@@ -166,7 +166,7 @@ namespace Restless.Tambala.ViewModel
                 DefaultExt = DottedFileExtension,
                 Filter = $"{Strings.CaptionWaveFile} | *{DottedFileExtension}",
                 OverwritePrompt = true,
-                InitialDirectory = Path.GetDirectoryName(Container.AudioRenderParameters.FileName)
+                InitialDirectory = Container.AudioRenderParameters.FileDirectory
             };
 
             if (dialog.ShowDialog() == true)
@@ -179,7 +179,7 @@ namespace Restless.Tambala.ViewModel
                     fileName = Path.ChangeExtension(fileName, FileExtension);
                 }
 
-                Container.AudioRenderParameters.FileName = fileName;
+                Container.AudioRenderParameters.SetOutputFileName(fileName);
                 SetHaveRenderedFile();
                 CreateVisualization();
             }

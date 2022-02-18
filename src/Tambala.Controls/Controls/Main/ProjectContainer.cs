@@ -59,7 +59,7 @@ namespace Restless.Tambala.Controls
                 });
             }
 
-            AudioRenderParameters = AudioRenderParameters.CreateDefault();
+            AudioRenderParameters = new AudioRenderParameters();
             AudioRenderParameters.Changed += AudioRenderParametersChanged;
 
             // IsExpanded is used in the template to expand / contract the drum kit list.

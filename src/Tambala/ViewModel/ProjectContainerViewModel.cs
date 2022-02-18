@@ -91,11 +91,8 @@ namespace Restless.Tambala.ViewModel
                 {
                     Title = Strings.DialogTitleOpenFile,
                     DefaultExt = DottedFileExtension,
-                    Filter = $"{Strings.CaptionXmlFile} | *{DottedFileExtension}",
-#if DEBUG
-                    InitialDirectory = @"D:\MainData\Music\Drum Patterns\Xml",
-#endif
-            };
+                    Filter = $"{Strings.CaptionXmlFile} | *{DottedFileExtension}"
+                };
 
                 if (dialog.ShowDialog() == true)
                 {

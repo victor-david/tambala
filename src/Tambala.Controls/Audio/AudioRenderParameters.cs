@@ -28,6 +28,7 @@ namespace Restless.Tambala.Controls.Audio
         private int fadeTime;
         private int fadeSamples;
         private int passCount;
+        private string fileDirectory;
         private string fileName;
         private bool parmsInFileName;
         #endregion
@@ -73,11 +74,15 @@ namespace Restless.Tambala.Controls.Audio
                 public const int Default = 1;
             }
 
+            public static class IsTempDirectory
+            {
+                public const bool Default = true;
+            }
+
             public static class ParmsInFileName
             {
                 public const bool Default = false;
             }
-
         }
         #endregion
 
@@ -157,6 +162,9 @@ namespace Restless.Tambala.Controls.Audio
             }
         }
 
+        /// <summary>
+        /// Gets the text display for the fade time slider
+        /// </summary>
         public string FadeText
         {
             get => $"{FadeTime} / {FadeSamples}";
@@ -181,28 +189,39 @@ namespace Restless.Tambala.Controls.Audio
         }
 
         /// <summary>
-        /// Gets or sets the file name for the rendered output.
-        /// If you set this property to null or an empty string,
-        /// it will assign itself a random file name in the temp directory.
+        /// Gets a boolean value that indicates if <see cref="FileDirectory"/> is the system temp directory.
         /// </summary>
-        public string FileName
+        public bool IsTempDirectory 
+        { 
+            get; 
+            private set; 
+        }
+
+        /// <summary>
+        /// Gets the directory for the output file.
+        /// </summary>
+        public string FileDirectory 
         {
-            get => fileName;
-            set
+            get => fileDirectory;
+            private set
             {
-                if (string.IsNullOrEmpty(value))
-                {
-                    string file = $"{Guid.NewGuid()}.wav";
-                    value = Path.Combine(Path.GetTempPath(), file);
-                }
-                SetProperty(ref fileName, value);
+                SetProperty(ref fileDirectory, value);
+                IsTempDirectory = fileDirectory == Path.GetDirectoryName(Path.GetTempPath());
             }
         }
 
         /// <summary>
+        /// Gets the file name of the output file.
+        /// </summary>
+        public string FileName 
+        {
+            get => fileName;
+            private set => SetProperty(ref fileName, value); 
+        }
+
+        /// <summary>
         /// Gets the name of the rendered file. If <see cref="ParmsInFileName"/> is true,
-        /// this name contains the parms, ex: D:\Sounds\Rendered_44100_16_2.wav. Otherwise,
-        /// this is the same as <see cref="FileName"/>.
+        /// this name contains the parms, ex: D:\Sounds\Rendered_44100_16_2.wav.
         /// </summary>
         public string RenderFileName
         {
@@ -253,7 +272,6 @@ namespace Restless.Tambala.Controls.Audio
             storage = value;
             OnPropertyChanged(propertyName);
             SetRenderFileName();
-            OnPropertyChanged(nameof(RenderFileName));
             /* fade samples is affected by sample rate, channels, and fade time */
             SetFadeSamples();
             IsChanged = true;
@@ -273,7 +291,7 @@ namespace Restless.Tambala.Controls.Audio
         /// <summary>
         /// Initializes a new instance of the <see cref="AudioRenderParameters"/> class
         /// </summary>
-        public AudioRenderParameters()
+        internal AudioRenderParameters()
         {
             SupportedSampleRate = new List<int>()
             {
@@ -300,6 +318,7 @@ namespace Restless.Tambala.Controls.Audio
             FadeTime = Values.FadeTime.Default;
             PassCount = Values.PassCount.Default;
             ParmsInFileName = Values.ParmsInFileName.Default;
+            SetOutputFileName(null);
             IsChanged = false;
         }
         #endregion
@@ -308,17 +327,21 @@ namespace Restless.Tambala.Controls.Audio
 
         #region Public methods
         /// <summary>
-        /// Creates and returns an <see cref="AudioRenderParameters"/> object with default values.
+        /// Sets file directory and file name according to the passed (combined) value.
         /// </summary>
-        /// <returns>An <see cref="AudioRenderParameters"/> object with default values.</returns>
-        public static AudioRenderParameters CreateDefault()
+        /// <param name="value">The path and file name</param>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        public void SetOutputFileName(string value)
         {
-            return new AudioRenderParameters()
+            if (string.IsNullOrEmpty(value))
             {
-                // When setting FileName to null, it assigns itself a random file name in the temp directory
-                FileName = null,
-                IsChanged = false,
-            };
+                value = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.wav");
+            }
+
+            FileDirectory = Path.GetDirectoryName(value);
+            FileName = Path.GetFileName(value);
         }
 
         /// <summary>
@@ -327,7 +350,7 @@ namespace Restless.Tambala.Controls.Audio
         /// <returns>A string that shows the properties.</returns>
         public override string ToString()
         {
-            return $"Rate: {SampleRate} Bits: {BitDepth} Channels: {Channels} Fade: {FadeTime} File: {FileName} Render: {RenderFileName}";
+            return $"Rate: {SampleRate} Bits: {BitDepth} Channels: {Channels} Fade: {FadeTime} Dir:{FileDirectory} File: {FileName} Render: {RenderFileName}";
         }
 
         /// <summary>
@@ -349,6 +372,8 @@ namespace Restless.Tambala.Controls.Audio
                 p.BitDepth == BitDepth &&
                 p.Channels == Channels &&
                 p.FadeTime == FadeTime &&
+                p.IsTempDirectory == IsTempDirectory &&
+                p.FileDirectory == FileDirectory &&
                 p.FileName == FileName &&
                 p.ParmsInFileName == ParmsInFileName;
         }
@@ -391,6 +416,8 @@ namespace Restless.Tambala.Controls.Audio
             element.Add(new XElement(nameof(Channels), Channels));
             element.Add(new XElement(nameof(FadeTime), FadeTime));
             element.Add(new XElement(nameof(PassCount), PassCount));
+            element.Add(new XElement(nameof(IsTempDirectory), IsTempDirectory));
+            element.Add(new XElement(nameof(FileDirectory), FileDirectory));
             element.Add(new XElement(nameof(FileName), FileName));
             element.Add(new XElement(nameof(ParmsInFileName), ParmsInFileName));
             return element;
@@ -411,6 +438,8 @@ namespace Restless.Tambala.Controls.Audio
                 if (e.Name == nameof(Channels)) Channels = GetIntValue(e.Value, Values.Channel.Default);
                 if (e.Name == nameof(FadeTime)) FadeTime = GetIntValue(e.Value, Values.FadeTime.Default);
                 if (e.Name == nameof(PassCount)) PassCount = GetIntValue(e.Value, Values.PassCount.Default);
+                if (e.Name == nameof(IsTempDirectory)) IsTempDirectory = GetBoolValue(e.Value, Values.IsTempDirectory.Default);
+                if (e.Name == nameof(FileDirectory)) FileDirectory = e.Value;
                 if (e.Name == nameof(FileName)) FileName = e.Value;
                 if (e.Name == nameof(ParmsInFileName)) ParmsInFileName = GetBoolValue(e.Value, Values.ParmsInFileName.Default);
             }
@@ -467,14 +496,19 @@ namespace Restless.Tambala.Controls.Audio
 
         private void SetRenderFileName()
         {
-            RenderFileName = FileName;
-            if (!string.IsNullOrEmpty(FileName) && ParmsInFileName)
+            string dir = IsTempDirectory ? Path.GetDirectoryName(Path.GetTempPath()) : FileDirectory;
+
+            if (!string.IsNullOrEmpty(dir) && !string.IsNullOrEmpty(FileName))
             {
-                string dir = Path.GetDirectoryName(FileName);
-                string file = Path.GetFileNameWithoutExtension(FileName);
-                string ext = Path.GetExtension(FileName);
-                file = $"{file}_{SampleRate}_{BitDepth}_{Channels}{ext}";
-                RenderFileName = Path.Combine(dir, file);
+                RenderFileName = Path.Combine(dir, FileName);
+                if (ParmsInFileName)
+                {
+                    string file = Path.GetFileNameWithoutExtension(FileName);
+                    string ext = Path.GetExtension(FileName);
+                    file = $"{file}_{SampleRate}_{BitDepth}_{Channels}{ext}";
+                    RenderFileName = Path.Combine(dir, file);
+                }
+                OnPropertyChanged(nameof(RenderFileName));
             }
         }
 
