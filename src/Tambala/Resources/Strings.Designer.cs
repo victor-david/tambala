@@ -106,6 +106,15 @@ namespace Restless.Tambala.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Render.
+        /// </summary>
+        public static string DisplayNameRender {
+            get {
+                return ResourceManager.GetString("DisplayNameRender", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to About.
         /// </summary>
         public static string MenuItemAbout {
@@ -120,6 +129,15 @@ namespace Restless.Tambala.Resources {
         public static string MenuItemAlwaysOnTop {
             get {
                 return ResourceManager.GetString("MenuItemAlwaysOnTop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change output file.
+        /// </summary>
+        public static string MenuItemChangeOutput {
+            get {
+                return ResourceManager.GetString("MenuItemChangeOutput", resourceCulture);
             }
         }
         
@@ -214,6 +232,15 @@ namespace Restless.Tambala.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
+        public static string MenuItemStartRender {
+            get {
+                return ResourceManager.GetString("MenuItemStartRender", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tools.
         /// </summary>
         public static string MenuItemTools {
@@ -268,6 +295,42 @@ namespace Restless.Tambala.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bit depth.
+        /// </summary>
+        public static string TextBitDepth {
+            get {
+                return ResourceManager.GetString("TextBitDepth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Channels.
+        /// </summary>
+        public static string TextChannels {
+            get {
+                return ResourceManager.GetString("TextChannels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fade time / samples.
+        /// </summary>
+        public static string TextFadeTimeSamples {
+            get {
+                return ResourceManager.GetString("TextFadeTimeSamples", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of passes.
+        /// </summary>
+        public static string TextPasses {
+            get {
+                return ResourceManager.GetString("TextPasses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Render complete.
         /// </summary>
         public static string TextRenderComplete {
@@ -282,6 +345,15 @@ namespace Restless.Tambala.Resources {
         public static string TextRenderInProgress {
             get {
                 return ResourceManager.GetString("TextRenderInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sample rate.
+        /// </summary>
+        public static string TextSampleRate {
+            get {
+                return ResourceManager.GetString("TextSampleRate", resourceCulture);
             }
         }
         

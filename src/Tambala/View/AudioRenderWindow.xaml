@@ -11,7 +11,7 @@
     xmlns:vm="clr-namespace:Restless.Tambala.ViewModel" d:DataContext="{d:DesignInstance Type=vm:AudioRenderWindowViewModel}"
     mc:Ignorable="d"
     Style="{StaticResource DefaultAppWindowStyle}"
-    Title="Render" 
+    Title="{x:Static r:Strings.DisplayNameRender}" 
     ResizeMode="NoResize"
     WindowStartupLocation="CenterOwner"
     Height="566" 
@@ -19,8 +19,12 @@
 
     <Window.Resources>
         <Style TargetType="tk:IconButton" BasedOn="{StaticResource DefaultIconButtonStyle}">
-            <Setter Property="Margin" Value="4,2"/>
-            <Setter Property="Width" Value="84"/>
+            <Setter Property="Margin" Value="0,3"/>
+            <Setter Property="Width" Value="68"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Padding" Value="4,2,6,2"/>
+            <Setter Property="IconPadding" Value="2"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
         </Style>
         <Style TargetType="TextBlock">
             <Setter Property="Margin" Value="0,8,0,0"/>
@@ -40,33 +44,38 @@
             <Setter Property="ValueTextBrush" Value="{StaticResource DefaultForegroundBrush}"/>
         </Style>
     </Window.Resources>
-    
-    <StackPanel Margin="12,6" tk:Property.IsInverseEnabled="{Binding IsRenderInProgress}">
-        <Grid tk:Property.ColumnWidths="Auto,Auto,*">
+
+    <tk:AppWindow.Menu>
+        <Menu tk:Property.IsInverseEnabled="{Binding IsRenderInProgress}">
+            <MenuItem Header="{x:Static r:Strings.MenuItemFile}">
+                <MenuItem Header="{x:Static r:Strings.MenuItemChangeOutput}" Icon="{StaticResource SaveIconKey}" Command="{Binding Commands[ChangeOutput]}"/>
+                <Separator/>
+                <MenuItem Header="{x:Static r:Strings.MenuItemClose}" Command="{Binding Commands[CloseWindow]}"/>
+            </MenuItem>
+        </Menu>
+    </tk:AppWindow.Menu>
+
+    <StackPanel Margin="12,3" tk:Property.IsInverseEnabled="{Binding IsRenderInProgress}">
+        <Grid tk:Property.ColumnWidths="Auto,*">
             <tk:IconButton
-                Icon="{StaticResource SaveIconKey}"
-                Content="Output"
-                Command="{Binding Commands[ChangeOutput]}"/>
-            <tk:IconButton
-                Grid.Column="1"
                 Icon="{StaticResource ArrowRightIconKey}"
-                Content="Render"
+                Content="{x:Static r:Strings.MenuItemStartRender}"
                 Command="{Binding Commands[PerformRender]}"/>
             <TextBlock Grid.Column="2" HorizontalAlignment="Right" Margin="0,0,16,0" Text="{Binding RenderMessage}"/>
         </Grid>
         
-        <Separator Margin="0,4"/>
+        <Separator Margin="0,3"/>
 
-        <TextBlock Margin="0" Text="Sample Rate"/>
+        <TextBlock Margin="0" Text="{x:Static r:Strings.TextSampleRate}"/>
         <con:BoxRadioButtonPanel
             tk:Property.ColumnWidths="Auto,Auto"
             SelectedValue="{Binding Container.AudioRenderParameters.SampleRate, Mode=TwoWay}">
             <con:BoxRadioButton Grid.Column="0" Content="44100" Value="{x:Static audio:AudioRenderParameters+Values+SampleRate.Rate44100}"/>
             <!-- For now, not available -->
             <!--<con:BoxRadioButton Grid.Column="1" Content="48000" Value="{x:Static audio:AudioRenderParameters+Values+SampleRate.Rate48000}"/>-->
-        </con:BoxRadioButtonPanel>        
-        
-        <TextBlock Text="Bit Depth"/>
+        </con:BoxRadioButtonPanel>
+
+        <TextBlock Text="{x:Static r:Strings.TextBitDepth}"/>
         <con:BoxRadioButtonPanel
             tk:Property.ColumnWidths="Auto,Auto,Auto"
             SelectedValue="{Binding Container.AudioRenderParameters.BitDepth, Mode=TwoWay}">
@@ -75,7 +84,7 @@
             <con:BoxRadioButton Grid.Column="2" Content="32" Value="{x:Static audio:AudioRenderParameters+Values+BitDepth.Depth32}"/>
         </con:BoxRadioButtonPanel>
 
-        <TextBlock Text="Channels"/>
+        <TextBlock Text="{x:Static r:Strings.TextChannels}"/>
         <con:BoxRadioButtonPanel
             tk:Property.ColumnWidths="Auto,Auto"
             SelectedValue="{Binding Container.AudioRenderParameters.Channels, Mode=TwoWay}">
@@ -83,14 +92,14 @@
             <con:BoxRadioButton Grid.Column="1" Content="2" Value="{x:Static audio:AudioRenderParameters+Values+Channel.Channel2}"/>
         </con:BoxRadioButtonPanel>
 
-        <TextBlock Text="Fade time / samples"/>
+        <TextBlock Text="{x:Static r:Strings.TextFadeTimeSamples}"/>
         <con:LevelSlider
             Minimum="{x:Static audio:AudioRenderParameters+Values+FadeTime.Minimum}"
             Maximum="{x:Static audio:AudioRenderParameters+Values+FadeTime.Maximum}"
             ValueText="{Binding Container.AudioRenderParameters.FadeText}"
             Value="{Binding Container.AudioRenderParameters.FadeTime}"/>
 
-        <TextBlock Text="Number of passes"/>
+        <TextBlock Text="{x:Static r:Strings.TextPasses}"/>
         <con:LevelSlider
             Minimum="{x:Static audio:AudioRenderParameters+Values+PassCount.Minimum}"
             Maximum="{x:Static audio:AudioRenderParameters+Values+PassCount.Maximum}"
@@ -101,12 +110,8 @@
         <TextBlock Text="{Binding Container.AudioRenderParameters.RenderFileName}"/>
 
         <tk:IconButton
-            Margin="2,6"
+            Margin="0,6"
             Height="26"
-            Width="64"
-            Padding="4,2"
-            IconPadding="2"
-            HorizontalAlignment="Left"
             IsEnabled="{Binding HaveRenderedFile}"
             Icon="{StaticResource ArrowRightIconKey}"
             Content="{Binding PlayButtonText}"

@@ -138,6 +138,7 @@ namespace Restless.Tambala.ViewModel
             Commands.Add("ChangeOutput", RunChangeOutputCommand);
             Commands.Add("PerformRender", RunRenderCommand);
             Commands.Add("PlayFile", RunPlayFileCommand);
+            Commands.Add("CloseWindow", p => window.Close());
             PlayButtonText = "Play";
             projectContainer.AudioRenderParameters.PropertyChanged += AudioRenderParametersPropertyChanged;
             window.Closing += WindowOwnerClosing;
