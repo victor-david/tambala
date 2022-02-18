@@ -113,7 +113,7 @@
             Margin="0,6"
             Height="26"
             IsEnabled="{Binding HaveRenderedFile}"
-            Icon="{StaticResource ArrowRightIconKey}"
+            Icon="{StaticResource PlayIconKey}"
             Content="{Binding PlayButtonText}"
             Command="{Binding Commands[PlayFile]}"/>
         
