@@ -38,7 +38,7 @@
       <ResourcePath>Resources.DrumKit.Default</ResourcePath>
     </DrumKit>
     <DrumPatternController>
-      <Volume>0</Volume>
+      <Volume>-5.5</Volume>
       <QuarterNoteCount>4</QuarterNoteCount>
       <TicksPerQuarterNote>2</TicksPerQuarterNote>
       <Scale>300</Scale>
