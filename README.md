@@ -24,16 +24,20 @@ You can use it to create drum tracks for inclusion in other projects or to study
 Tambala has five built-in drum kits: Standard, Cuban, TR-808, Tribal, and Piano. As mentioned above, you can
 set each pattern within a project to use a different drum kit if you like.
 
+### Create Audio File
+Once your project is the way you want, you can create a loopable **.wav** file for use in other programs.
+
 ### Screen Shots
-This screenshot shows the overall layout
+#### Overall layout
 
 ![Tambala Screenshot #1](/docs/img/tambala.1.jpg)
 
-This screenshot shows one instrument focus mode with its corresponding velocity sliders.
-It's not neccessary to focus on a single instrument to adjust its individual velocities,
-but it can be helpful.
+#### One instrument focus mode with its corresponding velocity sliders
 
 ![Tambala Screenshot #2](/docs/img/tambala.2.jpg)
+
+#### Rendering window to create a .wav file from the project
+![Tambala Screenshot #3](/docs/img/tambala.3.jpg)
 
 ### Acknowledgements
 Many thanks to the following persons and projects. Without their work, this project wouldn't have been possible.
