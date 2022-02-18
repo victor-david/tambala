@@ -1,14 +1,14 @@
 <ProjectContainer>
-  <DisplayName>FlyingClaveMonkey</DisplayName>
+  <DisplayName>PotatoBeat</DisplayName>
   <MasterOutput>
-    <Tempo>125.1666666666663</Tempo>
+    <Tempo>120</Tempo>
     <Volume>0</Volume>
     <Panning>0.5</Panning>
     <Pitch>0</Pitch>
     <IsMuted>false</IsMuted>
   </MasterOutput>
   <MasterPlay>
-    <PlayMode>Song</PlayMode>
+    <PlayMode>Pattern</PlayMode>
     <MetronomeFrequency>1</MetronomeFrequency>
   </MasterPlay>
   <SongContainer>
@@ -16,16 +16,7 @@
     <SelectorSize>24</SelectorSize>
     <DivisionCount>4</DivisionCount>
     <SongPresenter>
-      <Splitter>87</Splitter>
-      <PointSelector Row="1" Position="1" Volume="0" IsSelected="true" />
-      <PointSelector Row="1" Position="2" Volume="0" IsSelected="true" />
-      <PointSelector Row="1" Position="3" Volume="0" IsSelected="true" />
-      <PointSelector Row="1" Position="4" Volume="0" IsSelected="true" />
-      <PointSelector Row="2" Position="4" Volume="0" IsSelected="true" />
-      <PointSelector Row="3" Position="1" Volume="0" IsSelected="true" />
-      <PointSelector Row="3" Position="2" Volume="0" IsSelected="true" />
-      <PointSelector Row="3" Position="3" Volume="0" IsSelected="true" />
-      <PointSelector Row="3" Position="4" Volume="0" IsSelected="true" />
+      <Splitter>64</Splitter>
     </SongPresenter>
   </SongContainer>
   <AudioRenderParameters>
@@ -36,7 +27,7 @@
     <PassCount>1</PassCount>
     <IsTempDirectory>true</IsTempDirectory>
     <FileDirectory>E:\Temp\System</FileDirectory>
-    <FileName>FlyingMonkeyClave.wav</FileName>
+    <FileName>PotatoBeat.wav</FileName>
     <ParmsInFileName>true</ParmsInFileName>
   </AudioRenderParameters>
   <DrumPattern>
@@ -47,9 +38,9 @@
       <ResourcePath>Resources.DrumKit.Default</ResourcePath>
     </DrumKit>
     <DrumPatternController>
-      <Volume>-13.5</Volume>
+      <Volume>0</Volume>
       <QuarterNoteCount>4</QuarterNoteCount>
-      <TicksPerQuarterNote>4</TicksPerQuarterNote>
+      <TicksPerQuarterNote>2</TicksPerQuarterNote>
       <Scale>300</Scale>
     </DrumPatternController>
     <EqualizerController>
@@ -62,10 +53,10 @@
     <DrumPatternPresenter>
       <InstrumentController>
         <DisplayName>Clap (Dry)</DisplayName>
-        <Volume>-4.5</Volume>
-        <Panning>0.17424242</Panning>
-        <Pitch>9</Pitch>
-        <IsMuted>true</IsMuted>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
         <IsSolo>false</IsSolo>
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
@@ -76,26 +67,18 @@
         <DrumPatternQuarter>
           <QuarterNote>1</QuarterNote>
           <QuarterType>PatternSelector</QuarterType>
-          <PointSelector Row="0" Position="0" Volume="0" IsSelected="true" />
-          <PointSelector Row="0" Position="12" Volume="5.009091" IsSelected="true" />
         </DrumPatternQuarter>
         <DrumPatternQuarter>
           <QuarterNote>2</QuarterNote>
           <QuarterType>PatternSelector</QuarterType>
-          <PointSelector Row="0" Position="0" Volume="4.8363633" IsSelected="true" />
-          <PointSelector Row="0" Position="12" Volume="0" IsSelected="true" />
         </DrumPatternQuarter>
         <DrumPatternQuarter>
           <QuarterNote>3</QuarterNote>
           <QuarterType>PatternSelector</QuarterType>
-          <PointSelector Row="0" Position="0" Volume="2.0727272" IsSelected="true" />
-          <PointSelector Row="0" Position="12" Volume="0" IsSelected="true" />
         </DrumPatternQuarter>
         <DrumPatternQuarter>
           <QuarterNote>4</QuarterNote>
           <QuarterType>PatternSelector</QuarterType>
-          <PointSelector Row="0" Position="0" Volume="2.0727272" IsSelected="true" />
-          <PointSelector Row="0" Position="12" Volume="0" IsSelected="true" />
         </DrumPatternQuarter>
         <DrumPatternQuarter>
           <QuarterNote>5</QuarterNote>
@@ -108,8 +91,8 @@
       </InstrumentController>
       <InstrumentController>
         <DisplayName>Cowbell</DisplayName>
-        <Volume>0.5</Volume>
-        <Panning>0.8333333</Panning>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
         <Pitch>0</Pitch>
         <IsMuted>false</IsMuted>
         <IsSolo>false</IsSolo>
@@ -122,26 +105,18 @@
         <DrumPatternQuarter>
           <QuarterNote>1</QuarterNote>
           <QuarterType>PatternSelector</QuarterType>
-          <PointSelector Row="0" Position="0" Volume="-1.209091" IsSelected="true" />
         </DrumPatternQuarter>
         <DrumPatternQuarter>
           <QuarterNote>2</QuarterNote>
           <QuarterType>PatternSelector</QuarterType>
-          <PointSelector Row="0" Position="0" Volume="3.9727273" IsSelected="true" />
-          <PointSelector Row="0" Position="12" Volume="0" IsSelected="true" />
         </DrumPatternQuarter>
         <DrumPatternQuarter>
           <QuarterNote>3</QuarterNote>
           <QuarterType>PatternSelector</QuarterType>
-          <PointSelector Row="0" Position="0" Volume="5.7" IsSelected="true" />
         </DrumPatternQuarter>
         <DrumPatternQuarter>
           <QuarterNote>4</QuarterNote>
           <QuarterType>PatternSelector</QuarterType>
-          <PointSelector Row="0" Position="0" Volume="7.081818" IsSelected="true" />
-          <PointSelector Row="0" Position="12" Volume="-1.9" IsSelected="true" />
-          <PointSelector Row="0" Position="6" Volume="0" IsSelected="true" />
-          <PointSelector Row="0" Position="18" Volume="-3.6272728" IsSelected="true" />
         </DrumPatternQuarter>
         <DrumPatternQuarter>
           <QuarterNote>5</QuarterNote>
@@ -154,9 +129,9 @@
       </InstrumentController>
       <InstrumentController>
         <DisplayName>Cymbal (Bell)</DisplayName>
-        <Volume>-15</Volume>
-        <Panning>0.8030303</Panning>
-        <Pitch>-10</Pitch>
+        <Volume>0</Volume>
+        <Panning>0.21969724</Panning>
+        <Pitch>0</Pitch>
         <IsMuted>false</IsMuted>
         <IsSolo>false</IsSolo>
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
@@ -173,17 +148,17 @@
         <DrumPatternQuarter>
           <QuarterNote>2</QuarterNote>
           <QuarterType>PatternSelector</QuarterType>
-          <PointSelector Row="0" Position="12" Volume="0" IsSelected="true" />
+          <PointSelector Row="0" Position="0" Volume="0" IsSelected="true" />
         </DrumPatternQuarter>
         <DrumPatternQuarter>
           <QuarterNote>3</QuarterNote>
           <QuarterType>PatternSelector</QuarterType>
-          <PointSelector Row="0" Position="0" Volume="4.318182" IsSelected="true" />
-          <PointSelector Row="0" Position="12" Volume="3.9727273" IsSelected="true" />
+          <PointSelector Row="0" Position="0" Volume="0" IsSelected="true" />
         </DrumPatternQuarter>
         <DrumPatternQuarter>
           <QuarterNote>4</QuarterNote>
           <QuarterType>PatternSelector</QuarterType>
+          <PointSelector Row="0" Position="0" Volume="0" IsSelected="true" />
         </DrumPatternQuarter>
         <DrumPatternQuarter>
           <QuarterNote>5</QuarterNote>
@@ -348,10 +323,10 @@
       </InstrumentController>
       <InstrumentController>
         <DisplayName>High Hat (Closed, wet)</DisplayName>
-        <Volume>8</Volume>
+        <Volume>0</Volume>
         <Panning>0.5</Panning>
         <Pitch>0</Pitch>
-        <IsMuted>true</IsMuted>
+        <IsMuted>false</IsMuted>
         <IsSolo>false</IsSolo>
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
@@ -362,7 +337,6 @@
         <DrumPatternQuarter>
           <QuarterNote>1</QuarterNote>
           <QuarterType>PatternSelector</QuarterType>
-          <PointSelector Row="0" Position="0" Volume="0" IsSelected="true" />
         </DrumPatternQuarter>
         <DrumPatternQuarter>
           <QuarterNote>2</QuarterNote>
@@ -371,7 +345,6 @@
         <DrumPatternQuarter>
           <QuarterNote>3</QuarterNote>
           <QuarterType>PatternSelector</QuarterType>
-          <PointSelector Row="0" Position="0" Volume="0" IsSelected="true" />
         </DrumPatternQuarter>
         <DrumPatternQuarter>
           <QuarterNote>4</QuarterNote>
@@ -426,8 +399,8 @@
       </InstrumentController>
       <InstrumentController>
         <DisplayName>Kick (Dry)</DisplayName>
-        <Volume>0.5</Volume>
-        <Panning>0.8030303</Panning>
+        <Volume>0</Volume>
+        <Panning>0.6515148</Panning>
         <Pitch>0</Pitch>
         <IsMuted>false</IsMuted>
         <IsSolo>false</IsSolo>
@@ -440,14 +413,11 @@
         <DrumPatternQuarter>
           <QuarterNote>1</QuarterNote>
           <QuarterType>PatternSelector</QuarterType>
-          <PointSelector Row="0" Position="12" Volume="-9.5" IsSelected="true" />
-          <PointSelector Row="0" Position="18" Volume="-5.7474155" IsSelected="true" />
+          <PointSelector Row="0" Position="12" Volume="0" IsSelected="true" />
         </DrumPatternQuarter>
         <DrumPatternQuarter>
           <QuarterNote>2</QuarterNote>
           <QuarterType>PatternSelector</QuarterType>
-          <PointSelector Row="0" Position="12" Volume="6.3807487" IsSelected="true" />
-          <PointSelector Row="0" Position="18" Volume="-5.77451" IsSelected="true" />
         </DrumPatternQuarter>
         <DrumPatternQuarter>
           <QuarterNote>3</QuarterNote>
@@ -456,6 +426,7 @@
         <DrumPatternQuarter>
           <QuarterNote>4</QuarterNote>
           <QuarterType>PatternSelector</QuarterType>
+          <PointSelector Row="0" Position="12" Volume="0" IsSelected="true" />
         </DrumPatternQuarter>
         <DrumPatternQuarter>
           <QuarterNote>5</QuarterNote>
@@ -469,7 +440,7 @@
       <InstrumentController>
         <DisplayName>Snare (Jazz)</DisplayName>
         <Volume>0</Volume>
-        <Panning>0.33333334</Panning>
+        <Panning>0.7878785</Panning>
         <Pitch>0</Pitch>
         <IsMuted>false</IsMuted>
         <IsSolo>false</IsSolo>
@@ -482,34 +453,20 @@
         <DrumPatternQuarter>
           <QuarterNote>1</QuarterNote>
           <QuarterType>PatternSelector</QuarterType>
-          <PointSelector Row="0" Position="0" Volume="5.7" IsSelected="true" />
-          <PointSelector Row="0" Position="12" Volume="-9.5" IsSelected="true" />
-          <PointSelector Row="0" Position="6" Volume="-9.5" IsSelected="true" />
-          <PointSelector Row="0" Position="18" Volume="5.181818" IsSelected="true" />
         </DrumPatternQuarter>
         <DrumPatternQuarter>
           <QuarterNote>2</QuarterNote>
           <QuarterType>PatternSelector</QuarterType>
-          <PointSelector Row="0" Position="0" Volume="-9.5" IsSelected="true" />
-          <PointSelector Row="0" Position="12" Volume="6.7363634" IsSelected="true" />
-          <PointSelector Row="0" Position="6" Volume="-9.5" IsSelected="true" />
-          <PointSelector Row="0" Position="18" Volume="-9.5" IsSelected="true" />
+          <PointSelector Row="0" Position="0" Volume="0" IsSelected="true" />
         </DrumPatternQuarter>
         <DrumPatternQuarter>
           <QuarterNote>3</QuarterNote>
           <QuarterType>PatternSelector</QuarterType>
-          <PointSelector Row="0" Position="0" Volume="-9.5" IsSelected="true" />
-          <PointSelector Row="0" Position="12" Volume="6.2181816" IsSelected="true" />
-          <PointSelector Row="0" Position="6" Volume="-4.473975" IsSelected="true" />
-          <PointSelector Row="0" Position="18" Volume="-9.5" IsSelected="true" />
         </DrumPatternQuarter>
         <DrumPatternQuarter>
           <QuarterNote>4</QuarterNote>
           <QuarterType>PatternSelector</QuarterType>
-          <PointSelector Row="0" Position="0" Volume="6.390909" IsSelected="true" />
-          <PointSelector Row="0" Position="12" Volume="-9.5" IsSelected="true" />
-          <PointSelector Row="0" Position="6" Volume="-9.5" IsSelected="true" />
-          <PointSelector Row="0" Position="18" Volume="-9.5" IsSelected="true" />
+          <PointSelector Row="0" Position="0" Volume="0" IsSelected="true" />
         </DrumPatternQuarter>
         <DrumPatternQuarter>
           <QuarterNote>5</QuarterNote>
@@ -522,10 +479,10 @@
       </InstrumentController>
       <InstrumentController>
         <DisplayName>Snare (Side stick)</DisplayName>
-        <Volume>-7.5</Volume>
+        <Volume>0</Volume>
         <Panning>0.5</Panning>
         <Pitch>0</Pitch>
-        <IsMuted>true</IsMuted>
+        <IsMuted>false</IsMuted>
         <IsSolo>false</IsSolo>
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
@@ -536,23 +493,18 @@
         <DrumPatternQuarter>
           <QuarterNote>1</QuarterNote>
           <QuarterType>PatternSelector</QuarterType>
-          <PointSelector Row="0" Position="0" Volume="0" IsSelected="true" />
-          <PointSelector Row="0" Position="18" Volume="0" IsSelected="true" />
         </DrumPatternQuarter>
         <DrumPatternQuarter>
           <QuarterNote>2</QuarterNote>
           <QuarterType>PatternSelector</QuarterType>
-          <PointSelector Row="0" Position="12" Volume="0" IsSelected="true" />
         </DrumPatternQuarter>
         <DrumPatternQuarter>
           <QuarterNote>3</QuarterNote>
           <QuarterType>PatternSelector</QuarterType>
-          <PointSelector Row="0" Position="12" Volume="0" IsSelected="true" />
         </DrumPatternQuarter>
         <DrumPatternQuarter>
           <QuarterNote>4</QuarterNote>
           <QuarterType>PatternSelector</QuarterType>
-          <PointSelector Row="0" Position="0" Volume="0" IsSelected="true" />
         </DrumPatternQuarter>
         <DrumPatternQuarter>
           <QuarterNote>5</QuarterNote>
@@ -718,14 +670,14 @@
     </DrumPatternPresenter>
   </DrumPattern>
   <DrumPattern>
-    <DisplayName>Ending Fill</DisplayName>
+    <DisplayName>Pattern 2</DisplayName>
     <DrumKit>
-      <Name>Standard</Name>
-      <Id>1B5E7DEF-A74B-4669-98A3-F42B6702DC05</Id>
-      <ResourcePath>Resources.DrumKit.Default</ResourcePath>
+      <Name>TR-808</Name>
+      <Id>A1841D58-4172-40CE-AE56-0E136DCCD09D</Id>
+      <ResourcePath>Resources.DrumKit.TR808</ResourcePath>
     </DrumKit>
     <DrumPatternController>
-      <Volume>-12</Volume>
+      <Volume>0</Volume>
       <QuarterNoteCount>4</QuarterNoteCount>
       <TicksPerQuarterNote>4</TicksPerQuarterNote>
       <Scale>300</Scale>
@@ -739,7 +691,7 @@
     </EqualizerController>
     <DrumPatternPresenter>
       <InstrumentController>
-        <DisplayName>Clap (Dry)</DisplayName>
+        <DisplayName>Clap</DisplayName>
         <Volume>0</Volume>
         <Panning>0.5</Panning>
         <Pitch>0</Pitch>
@@ -747,8 +699,84 @@
         <IsSolo>false</IsSolo>
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
-          <DisplayName>Clap (Dry)</DisplayName>
-          <AudioName>Restless.Tambala.Data.Resources.DrumKit.Default.Clap.Dry.wav</AudioName>
+          <DisplayName>Clap</DisplayName>
+          <AudioName>Restless.Tambala.Data.Resources.DrumKit.TR808.Clap.wav</AudioName>
+          <Type>Percussion</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>Clave</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <IsSolo>false</IsSolo>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>Clave</DisplayName>
+          <AudioName>Restless.Tambala.Data.Resources.DrumKit.TR808.Clave.wav</AudioName>
+          <Type>Percussion</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>Conga</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <IsSolo>false</IsSolo>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>Conga</DisplayName>
+          <AudioName>Restless.Tambala.Data.Resources.DrumKit.TR808.Conga.wav</AudioName>
           <Type>Percussion</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -786,7 +814,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Cowbell</DisplayName>
-          <AudioName>Restless.Tambala.Data.Resources.DrumKit.Default.Cowbell.wav</AudioName>
+          <AudioName>Restless.Tambala.Data.Resources.DrumKit.TR808.Cowbell.wav</AudioName>
           <Type>Percussion</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -815,7 +843,7 @@
         </DrumPatternQuarter>
       </InstrumentController>
       <InstrumentController>
-        <DisplayName>Cymbal (Bell)</DisplayName>
+        <DisplayName>Cymbal (Light splash)</DisplayName>
         <Volume>0</Volume>
         <Panning>0.5</Panning>
         <Pitch>0</Pitch>
@@ -823,8 +851,8 @@
         <IsSolo>false</IsSolo>
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
-          <DisplayName>Cymbal (Bell)</DisplayName>
-          <AudioName>Restless.Tambala.Data.Resources.DrumKit.Default.Cymbal.Bell.wav</AudioName>
+          <DisplayName>Cymbal (Light splash)</DisplayName>
+          <AudioName>Restless.Tambala.Data.Resources.DrumKit.TR808.Cymbal.wav</AudioName>
           <Type>Cymbal</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -853,7 +881,7 @@
         </DrumPatternQuarter>
       </InstrumentController>
       <InstrumentController>
-        <DisplayName>Cymbal (Crash, jazz)</DisplayName>
+        <DisplayName>High Hat (Closed)</DisplayName>
         <Volume>0</Volume>
         <Panning>0.5</Panning>
         <Pitch>0</Pitch>
@@ -861,122 +889,8 @@
         <IsSolo>false</IsSolo>
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
-          <DisplayName>Cymbal (Crash, jazz)</DisplayName>
-          <AudioName>Restless.Tambala.Data.Resources.DrumKit.Default.Cymbal.Crash.Jazz.wav</AudioName>
-          <Type>Cymbal</Type>
-        </Instrument>
-        <DrumPatternQuarter>
-          <QuarterNote>1</QuarterNote>
-          <QuarterType>PatternSelector</QuarterType>
-        </DrumPatternQuarter>
-        <DrumPatternQuarter>
-          <QuarterNote>2</QuarterNote>
-          <QuarterType>PatternSelector</QuarterType>
-        </DrumPatternQuarter>
-        <DrumPatternQuarter>
-          <QuarterNote>3</QuarterNote>
-          <QuarterType>PatternSelector</QuarterType>
-        </DrumPatternQuarter>
-        <DrumPatternQuarter>
-          <QuarterNote>4</QuarterNote>
-          <QuarterType>PatternSelector</QuarterType>
-        </DrumPatternQuarter>
-        <DrumPatternQuarter>
-          <QuarterNote>5</QuarterNote>
-          <QuarterType>PatternSelector</QuarterType>
-        </DrumPatternQuarter>
-        <DrumPatternQuarter>
-          <QuarterNote>6</QuarterNote>
-          <QuarterType>PatternSelector</QuarterType>
-        </DrumPatternQuarter>
-      </InstrumentController>
-      <InstrumentController>
-        <DisplayName>Cymbal (Crash, light)</DisplayName>
-        <Volume>0</Volume>
-        <Panning>0.5</Panning>
-        <Pitch>0</Pitch>
-        <IsMuted>false</IsMuted>
-        <IsSolo>false</IsSolo>
-        <InitialVoicePoolSize>16</InitialVoicePoolSize>
-        <Instrument>
-          <DisplayName>Cymbal (Crash, light)</DisplayName>
-          <AudioName>Restless.Tambala.Data.Resources.DrumKit.Default.Cymbal.Crash.Light.wav</AudioName>
-          <Type>Cymbal</Type>
-        </Instrument>
-        <DrumPatternQuarter>
-          <QuarterNote>1</QuarterNote>
-          <QuarterType>PatternSelector</QuarterType>
-        </DrumPatternQuarter>
-        <DrumPatternQuarter>
-          <QuarterNote>2</QuarterNote>
-          <QuarterType>PatternSelector</QuarterType>
-        </DrumPatternQuarter>
-        <DrumPatternQuarter>
-          <QuarterNote>3</QuarterNote>
-          <QuarterType>PatternSelector</QuarterType>
-        </DrumPatternQuarter>
-        <DrumPatternQuarter>
-          <QuarterNote>4</QuarterNote>
-          <QuarterType>PatternSelector</QuarterType>
-        </DrumPatternQuarter>
-        <DrumPatternQuarter>
-          <QuarterNote>5</QuarterNote>
-          <QuarterType>PatternSelector</QuarterType>
-        </DrumPatternQuarter>
-        <DrumPatternQuarter>
-          <QuarterNote>6</QuarterNote>
-          <QuarterType>PatternSelector</QuarterType>
-        </DrumPatternQuarter>
-      </InstrumentController>
-      <InstrumentController>
-        <DisplayName>Cymbal (Jazz)</DisplayName>
-        <Volume>0</Volume>
-        <Panning>0.5</Panning>
-        <Pitch>0</Pitch>
-        <IsMuted>false</IsMuted>
-        <IsSolo>false</IsSolo>
-        <InitialVoicePoolSize>16</InitialVoicePoolSize>
-        <Instrument>
-          <DisplayName>Cymbal (Jazz)</DisplayName>
-          <AudioName>Restless.Tambala.Data.Resources.DrumKit.Default.Cymbal.Jazz.wav</AudioName>
-          <Type>Cymbal</Type>
-        </Instrument>
-        <DrumPatternQuarter>
-          <QuarterNote>1</QuarterNote>
-          <QuarterType>PatternSelector</QuarterType>
-        </DrumPatternQuarter>
-        <DrumPatternQuarter>
-          <QuarterNote>2</QuarterNote>
-          <QuarterType>PatternSelector</QuarterType>
-        </DrumPatternQuarter>
-        <DrumPatternQuarter>
-          <QuarterNote>3</QuarterNote>
-          <QuarterType>PatternSelector</QuarterType>
-        </DrumPatternQuarter>
-        <DrumPatternQuarter>
-          <QuarterNote>4</QuarterNote>
-          <QuarterType>PatternSelector</QuarterType>
-        </DrumPatternQuarter>
-        <DrumPatternQuarter>
-          <QuarterNote>5</QuarterNote>
-          <QuarterType>PatternSelector</QuarterType>
-        </DrumPatternQuarter>
-        <DrumPatternQuarter>
-          <QuarterNote>6</QuarterNote>
-          <QuarterType>PatternSelector</QuarterType>
-        </DrumPatternQuarter>
-      </InstrumentController>
-      <InstrumentController>
-        <DisplayName>High Hat (Closed, dry)</DisplayName>
-        <Volume>0</Volume>
-        <Panning>0.5</Panning>
-        <Pitch>0</Pitch>
-        <IsMuted>false</IsMuted>
-        <IsSolo>false</IsSolo>
-        <InitialVoicePoolSize>16</InitialVoicePoolSize>
-        <Instrument>
-          <DisplayName>High Hat (Closed, dry)</DisplayName>
-          <AudioName>Restless.Tambala.Data.Resources.DrumKit.Default.HighHat.Closed.Dry.wav</AudioName>
+          <DisplayName>High Hat (Closed)</DisplayName>
+          <AudioName>Restless.Tambala.Data.Resources.DrumKit.TR808.High.Hat.Closed.wav</AudioName>
           <Type>HighHat</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1005,7 +919,7 @@
         </DrumPatternQuarter>
       </InstrumentController>
       <InstrumentController>
-        <DisplayName>High Hat (Closed, wet)</DisplayName>
+        <DisplayName>High Hat (Open)</DisplayName>
         <Volume>0</Volume>
         <Panning>0.5</Panning>
         <Pitch>0</Pitch>
@@ -1013,8 +927,8 @@
         <IsSolo>false</IsSolo>
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
-          <DisplayName>High Hat (Closed, wet)</DisplayName>
-          <AudioName>Restless.Tambala.Data.Resources.DrumKit.Default.HighHat.Closed.Wet.wav</AudioName>
+          <DisplayName>High Hat (Open)</DisplayName>
+          <AudioName>Restless.Tambala.Data.Resources.DrumKit.TR808.High.Hat.Open.wav</AudioName>
           <Type>HighHat</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1043,7 +957,7 @@
         </DrumPatternQuarter>
       </InstrumentController>
       <InstrumentController>
-        <DisplayName>High Hat (Pedal, dry)</DisplayName>
+        <DisplayName>High Hat (Pedal)</DisplayName>
         <Volume>0</Volume>
         <Panning>0.5</Panning>
         <Pitch>0</Pitch>
@@ -1051,8 +965,8 @@
         <IsSolo>false</IsSolo>
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
-          <DisplayName>High Hat (Pedal, dry)</DisplayName>
-          <AudioName>Restless.Tambala.Data.Resources.DrumKit.Default.HighHat.Pedal.Dry.wav</AudioName>
+          <DisplayName>High Hat (Pedal)</DisplayName>
+          <AudioName>Restless.Tambala.Data.Resources.DrumKit.TR808.High.Hat.Pedal.wav</AudioName>
           <Type>HighHat</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1081,7 +995,7 @@
         </DrumPatternQuarter>
       </InstrumentController>
       <InstrumentController>
-        <DisplayName>Kick (Dry)</DisplayName>
+        <DisplayName>Kick (Long)</DisplayName>
         <Volume>0</Volume>
         <Panning>0.5</Panning>
         <Pitch>0</Pitch>
@@ -1089,8 +1003,8 @@
         <IsSolo>false</IsSolo>
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
-          <DisplayName>Kick (Dry)</DisplayName>
-          <AudioName>Restless.Tambala.Data.Resources.DrumKit.Default.Kick.Dry.wav</AudioName>
+          <DisplayName>Kick (Long)</DisplayName>
+          <AudioName>Restless.Tambala.Data.Resources.DrumKit.TR808.Kick.Long.wav</AudioName>
           <Type>Kick</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1100,7 +1014,6 @@
         <DrumPatternQuarter>
           <QuarterNote>2</QuarterNote>
           <QuarterType>PatternSelector</QuarterType>
-          <PointSelector Row="0" Position="6" Volume="0" IsSelected="true" />
         </DrumPatternQuarter>
         <DrumPatternQuarter>
           <QuarterNote>3</QuarterNote>
@@ -1120,7 +1033,7 @@
         </DrumPatternQuarter>
       </InstrumentController>
       <InstrumentController>
-        <DisplayName>Snare (Jazz)</DisplayName>
+        <DisplayName>Kick (Short)</DisplayName>
         <Volume>0</Volume>
         <Panning>0.5</Panning>
         <Pitch>0</Pitch>
@@ -1128,8 +1041,84 @@
         <IsSolo>false</IsSolo>
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
-          <DisplayName>Snare (Jazz)</DisplayName>
-          <AudioName>Restless.Tambala.Data.Resources.DrumKit.Default.Snare.Jazz.wav</AudioName>
+          <DisplayName>Kick (Short)</DisplayName>
+          <AudioName>Restless.Tambala.Data.Resources.DrumKit.TR808.Kick.Short.wav</AudioName>
+          <Type>Kick</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>Shaker</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <IsSolo>false</IsSolo>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>Shaker</DisplayName>
+          <AudioName>Restless.Tambala.Data.Resources.DrumKit.TR808.Shaker.wav</AudioName>
+          <Type>Percussion</Type>
+        </Instrument>
+        <DrumPatternQuarter>
+          <QuarterNote>1</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>2</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>3</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>4</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>5</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+        <DrumPatternQuarter>
+          <QuarterNote>6</QuarterNote>
+          <QuarterType>PatternSelector</QuarterType>
+        </DrumPatternQuarter>
+      </InstrumentController>
+      <InstrumentController>
+        <DisplayName>Snare (Snap)</DisplayName>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
+        <IsMuted>false</IsMuted>
+        <IsSolo>false</IsSolo>
+        <InitialVoicePoolSize>16</InitialVoicePoolSize>
+        <Instrument>
+          <DisplayName>Snare (Snap)</DisplayName>
+          <AudioName>Restless.Tambala.Data.Resources.DrumKit.TR808.Snare.1.wav</AudioName>
           <Type>Snare</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1158,7 +1147,7 @@
         </DrumPatternQuarter>
       </InstrumentController>
       <InstrumentController>
-        <DisplayName>Snare (Side stick)</DisplayName>
+        <DisplayName>Snare (Mid)</DisplayName>
         <Volume>0</Volume>
         <Panning>0.5</Panning>
         <Pitch>0</Pitch>
@@ -1166,8 +1155,8 @@
         <IsSolo>false</IsSolo>
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
-          <DisplayName>Snare (Side stick)</DisplayName>
-          <AudioName>Restless.Tambala.Data.Resources.DrumKit.Default.Snare.SideStick.wav</AudioName>
+          <DisplayName>Snare (Mid)</DisplayName>
+          <AudioName>Restless.Tambala.Data.Resources.DrumKit.TR808.Snare.2.wav</AudioName>
           <Type>Snare</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1177,51 +1166,6 @@
         <DrumPatternQuarter>
           <QuarterNote>2</QuarterNote>
           <QuarterType>PatternSelector</QuarterType>
-        </DrumPatternQuarter>
-        <DrumPatternQuarter>
-          <QuarterNote>3</QuarterNote>
-          <QuarterType>PatternSelector</QuarterType>
-        </DrumPatternQuarter>
-        <DrumPatternQuarter>
-          <QuarterNote>4</QuarterNote>
-          <QuarterType>PatternSelector</QuarterType>
-        </DrumPatternQuarter>
-        <DrumPatternQuarter>
-          <QuarterNote>5</QuarterNote>
-          <QuarterType>PatternSelector</QuarterType>
-        </DrumPatternQuarter>
-        <DrumPatternQuarter>
-          <QuarterNote>6</QuarterNote>
-          <QuarterType>PatternSelector</QuarterType>
-        </DrumPatternQuarter>
-      </InstrumentController>
-      <InstrumentController>
-        <DisplayName>Snare (Wet)</DisplayName>
-        <Volume>0</Volume>
-        <Panning>0.5</Panning>
-        <Pitch>0</Pitch>
-        <IsMuted>false</IsMuted>
-        <IsSolo>false</IsSolo>
-        <InitialVoicePoolSize>16</InitialVoicePoolSize>
-        <Instrument>
-          <DisplayName>Snare (Wet)</DisplayName>
-          <AudioName>Restless.Tambala.Data.Resources.DrumKit.Default.Snare.Wet.wav</AudioName>
-          <Type>Snare</Type>
-        </Instrument>
-        <DrumPatternQuarter>
-          <QuarterNote>1</QuarterNote>
-          <QuarterType>PatternSelector</QuarterType>
-          <PointSelector Row="0" Position="0" Volume="-9.5" IsSelected="true" />
-          <PointSelector Row="0" Position="12" Volume="-5.9607844" IsSelected="true" />
-          <PointSelector Row="0" Position="6" Volume="-8.196078" IsSelected="true" />
-          <PointSelector Row="0" Position="18" Volume="-4.470588" IsSelected="true" />
-        </DrumPatternQuarter>
-        <DrumPatternQuarter>
-          <QuarterNote>2</QuarterNote>
-          <QuarterType>PatternSelector</QuarterType>
-          <PointSelector Row="0" Position="0" Volume="-1.4901961" IsSelected="true" />
-          <PointSelector Row="0" Position="12" Volume="0.18627451" IsSelected="true" />
-          <PointSelector Row="0" Position="6" Volume="5.2156863" IsSelected="true" />
         </DrumPatternQuarter>
         <DrumPatternQuarter>
           <QuarterNote>3</QuarterNote>
@@ -1250,7 +1194,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Tom (High)</DisplayName>
-          <AudioName>Restless.Tambala.Data.Resources.DrumKit.Default.Tom.Rock.High.wav</AudioName>
+          <AudioName>Restless.Tambala.Data.Resources.DrumKit.TR808.Tom.High.wav</AudioName>
           <Type>Tom</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1288,7 +1232,7 @@
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
         <Instrument>
           <DisplayName>Tom (Low)</DisplayName>
-          <AudioName>Restless.Tambala.Data.Resources.DrumKit.Default.Tom.Rock.Low.wav</AudioName>
+          <AudioName>Restless.Tambala.Data.Resources.DrumKit.TR808.Tom.Low.wav</AudioName>
           <Type>Tom</Type>
         </Instrument>
         <DrumPatternQuarter>
@@ -1357,7 +1301,7 @@
     </DrumPatternPresenter>
   </DrumPattern>
   <DrumPattern>
-    <DisplayName>Accents</DisplayName>
+    <DisplayName>Pattern 3</DisplayName>
     <DrumKit>
       <Name>Standard</Name>
       <Id>1B5E7DEF-A74B-4669-98A3-F42B6702DC05</Id>
@@ -1797,9 +1741,9 @@
       </InstrumentController>
       <InstrumentController>
         <DisplayName>Snare (Side stick)</DisplayName>
-        <Volume>-11.5</Volume>
-        <Panning>0.8787879</Panning>
-        <Pitch>-2</Pitch>
+        <Volume>0</Volume>
+        <Panning>0.5</Panning>
+        <Pitch>0</Pitch>
         <IsMuted>false</IsMuted>
         <IsSolo>false</IsSolo>
         <InitialVoicePoolSize>16</InitialVoicePoolSize>
@@ -1811,23 +1755,18 @@
         <DrumPatternQuarter>
           <QuarterNote>1</QuarterNote>
           <QuarterType>PatternSelector</QuarterType>
-          <PointSelector Row="0" Position="0" Volume="-2.4215686" IsSelected="true" />
         </DrumPatternQuarter>
         <DrumPatternQuarter>
           <QuarterNote>2</QuarterNote>
           <QuarterType>PatternSelector</QuarterType>
-          <PointSelector Row="0" Position="12" Volume="-5.5882354" IsSelected="true" />
         </DrumPatternQuarter>
         <DrumPatternQuarter>
           <QuarterNote>3</QuarterNote>
           <QuarterType>PatternSelector</QuarterType>
-          <PointSelector Row="0" Position="0" Volume="0" IsSelected="true" />
-          <PointSelector Row="0" Position="6" Volume="-2.7941177" IsSelected="true" />
         </DrumPatternQuarter>
         <DrumPatternQuarter>
           <QuarterNote>4</QuarterNote>
           <QuarterType>PatternSelector</QuarterType>
-          <PointSelector Row="0" Position="0" Volume="1.6764706" IsSelected="true" />
         </DrumPatternQuarter>
         <DrumPatternQuarter>
           <QuarterNote>5</QuarterNote>
@@ -1993,7 +1932,7 @@
     </DrumPatternPresenter>
   </DrumPattern>
   <DrumPattern>
-    <DisplayName>Nothing Here</DisplayName>
+    <DisplayName>Pattern 4</DisplayName>
     <DrumKit>
       <Name>Standard</Name>
       <Id>1B5E7DEF-A74B-4669-98A3-F42B6702DC05</Id>
