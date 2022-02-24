@@ -14,8 +14,8 @@
     Title="{x:Static r:Strings.DisplayNameRender}" 
     ResizeMode="NoResize"
     WindowStartupLocation="CenterOwner"
-    Height="566" 
-    Width="780">
+    Height="664" 
+    Width="768">
 
     <Window.Resources>
         <Style TargetType="tk:IconButton" BasedOn="{StaticResource DefaultIconButtonStyle}">
@@ -125,10 +125,17 @@
             Minimum="0" 
             Maximum="{Binding FileLength}" 
             Value="{Binding FilePosition, Mode=OneWay}"/>
-        
-        <Image
-            tk:Property.IsVisible="{Binding HaveRenderedFile}"
-            Source="{Binding FileVisual}"/>
+
+        <!-- Output render visual -->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="{Binding FileVisualRightRow}"/>
+            </Grid.RowDefinitions>
+
+            <Image Source="{Binding FileVisualLeft}"/>
+            <Image Grid.Row="1" Source="{Binding FileVisualRight}"/>
+        </Grid>
 
     </StackPanel>
 </tk:AppWindow>

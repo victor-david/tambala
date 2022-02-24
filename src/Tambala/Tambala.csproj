@@ -21,11 +21,11 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Restless.Toolkit" Version="2.5.12" />
+    <PackageReference Include="Restless.WaveForm" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Tambala.Controls\Tambala.Controls.csproj" />
-    <ProjectReference Include="..\Tambala.Visualization\Tambala.Visualization.csproj" />
   </ItemGroup>
 
   <ItemGroup>

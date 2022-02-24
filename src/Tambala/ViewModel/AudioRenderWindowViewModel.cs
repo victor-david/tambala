@@ -6,12 +6,14 @@
 */
 using Microsoft.Win32;
 using NAudio.Wave;
-using NAudio.WaveFormRenderer;
 using Restless.Tambala.Controls;
 using Restless.Tambala.Controls.Audio;
 using Restless.Tambala.Core;
 using Restless.Tambala.Resources;
 using Restless.Toolkit.Controls;
+using Restless.WaveForm.Calculators;
+using Restless.WaveForm.Renderer;
+using Restless.WaveForm.Settings;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -32,15 +34,18 @@ namespace Restless.Tambala.ViewModel
     public class AudioRenderWindowViewModel : ApplicationViewModel
     {
         #region Private
+        private const int BaseRenderHeight = 128;
         private bool isRenderInProgress;
         private string renderMessage;
         private const string FileExtension = "wav";
         private const string DottedFileExtension = ".wav";
         private bool haveRenderedFile;
-        private readonly WaveFormRenderer waveFormRenderer;
-        private readonly IPeakProvider peakProvider;
-        private readonly WaveFormRendererSettings waveSettings;
-        private ImageSource fileVisual;
+        private readonly IRenderer renderer;
+        private readonly RenderSettings renderSettings;
+        private readonly ISampleCalculator calculator;
+        private ImageSource fileVisualLeft;
+        private ImageSource fileVisualRight;
+        private GridLength fileVisualRightRow;
         private WaveOutEvent outputDevice;
         private AudioFileReader audioFile;
         private string playButtonText;
@@ -106,12 +111,34 @@ namespace Restless.Tambala.ViewModel
         }
 
         /// <summary>
-        /// Gets the image source for the visual representation of the rendered file.
+        /// Gets the image source for the visual representation of the rendered file (left channel).
         /// </summary>
-        public ImageSource FileVisual
+        public ImageSource FileVisualLeft
         {
-            get => fileVisual;
-            private set => SetProperty(ref fileVisual, value);
+            get => fileVisualLeft;
+            private set => SetProperty(ref fileVisualLeft, value);
+        }
+
+        /// <summary>
+        /// Gets the image source for the visual representation of the rendered file (right channel).
+        /// </summary>
+        public ImageSource FileVisualRight
+        {
+            get => fileVisualRight;
+            private set
+            {
+                SetProperty(ref fileVisualRight, value);
+                FileVisualRightRow = fileVisualRight != null ? new GridLength(1.0, GridUnitType.Star) : new GridLength(0.0, GridUnitType.Pixel);
+            }
+        }
+
+        /// <summary>
+        /// Gets the row height for the right channel, either * (when 2 channels) or zero pixels (when single channel)
+        /// </summary>
+        public GridLength FileVisualRightRow
+        {
+            get => fileVisualRightRow;
+            private set => SetProperty(ref fileVisualRightRow, value);
         }
 
         /// <summary>
@@ -142,15 +169,26 @@ namespace Restless.Tambala.ViewModel
             PlayButtonText = "Play";
             projectContainer.AudioRenderParameters.PropertyChanged += AudioRenderParametersPropertyChanged;
             window.Closing += WindowOwnerClosing;
-            waveFormRenderer = new WaveFormRenderer();
-            peakProvider = new MaxPeakProvider();
-            waveSettings = GetRendererSettings();
+            renderer = new BarRenderer();
+            calculator = new FirstCalculator();
+            renderSettings = new BarSettings()
+            {
+                Height = BaseRenderHeight,
+                Width = RenderSettings.MinWidth,
+                AutoWidth = false,
+                PrimaryLineColor = Color.DarkBlue,
+                SecondaryLineColor = Color.CadetBlue
+            };
+
+            /* Is default null, but the setter sets the right row height to zero when null */
+            FileVisualRight = null;
+
             outputDevice = new WaveOutEvent();
             outputDevice.PlaybackStopped += OutputDevicePlaybackStopped;
             FileLength = 1000;
             FilePosition = 0;
             SetHaveRenderedFile();
-            CreateVisualization();
+            CreateVisualizationIf();
         }
         #endregion
 
@@ -181,7 +219,7 @@ namespace Restless.Tambala.ViewModel
 
                 Container.AudioRenderParameters.SetOutputFileName(fileName);
                 SetHaveRenderedFile();
-                CreateVisualization();
+                CreateVisualizationIf();
             }
         }
 
@@ -207,44 +245,34 @@ namespace Restless.Tambala.ViewModel
             if (state == AudioRenderState.Complete)
             {
                 SetHaveRenderedFile();
-                CreateVisualization();
+                CreateVisualizationIf();
                 IsRenderInProgress = false;
                 RenderMessage = exception == null ? Strings.TextRenderComplete : exception.Message;
             }
         }
 
-        private void CreateVisualization()
+        private void CreateVisualizationIf()
         {
             if (HaveRenderedFile)
             {
-                Task.Factory.StartNew(() => CreateVisualization(peakProvider, waveSettings));
+                Task.Factory.StartNew(() => CreateVisualization());
             }
         }
 
-        private WaveFormRendererSettings GetRendererSettings()
+        private void CreateVisualization()
         {
-            return new SoundCloudBlockWaveFormSettings(Color.DarkBlue, Color.Transparent, Color.CadetBlue,Color.Transparent)
-            {
-                TopHeight = 68,
-                BottomHeight = 68,
-                Width = 756,
-                DecibelScale = true,
-                BackgroundColor = Color.Transparent
-            };
-        }
-
-        private void CreateVisualization(IPeakProvider peakProvider, WaveFormRendererSettings settings)
-        {
-            Image image = null;
+            RenderResult result = null;
             try
             {
                 using (var waveStream = new AudioFileReader(Container.AudioRenderParameters.RenderFileName))
                 {
-                    image = waveFormRenderer.Render(waveStream, peakProvider, settings);
+                    renderSettings.Height = BaseRenderHeight / waveStream.WaveFormat.Channels;
+                    result = WaveFormRenderer.Create(renderer, waveStream, calculator, renderSettings);
                 }
                 Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Send, new Action(() => 
                 {
-                    FileVisual = CreateBitmapSourceFromGdiBitmap((Bitmap)image);
+                    FileVisualLeft = CreateBitmapSourceFromGdiBitmap((Bitmap)result.ImageLeft);
+                    FileVisualRight = result.Channels == 2 ? CreateBitmapSourceFromGdiBitmap((Bitmap)result.ImageRight) : null;
                     SetHaveRenderedFile();
                 }));
 
