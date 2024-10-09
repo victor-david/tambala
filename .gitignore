@@ -4,4 +4,6 @@ bin/
 .docs/
 Help/
 packages/
+desktop.ini
 .vs/
+*.user
