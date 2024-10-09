@@ -1,23 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
-    <OutputType>Library</OutputType>
-    <PackageId>Restless.Tambala.Data</PackageId>
     <AssemblyName>Restless.Tambala.Data</AssemblyName>
-    <RootNamespace>Restless.Tambala.Data</RootNamespace>
-    <Description>Provides data retreival and storage services for Tambala</Description>
-    <PackageProjectUrl>https://github.com/victor-david/tambala</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/victor-david/tambala</RepositoryUrl>
     <Authors>Restless Animal Development</Authors>
     <Company>Restless Animal Development</Company>
-    <Version>1.0.0</Version>
-    <Product>Restless Tambala Data</Product>
-    <Title>Restless Tambala Data</Title>
+    <Copyright>2022-2024 Restless Animal Development</Copyright>
+    <Description>Provides data retreival and storage services for Tambala</Description>
+    <OutputType>Library</OutputType>
+    <PackageId>Restless.Tambala.Data</PackageId>
     <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
-    <Copyright>Copyright © 2022</Copyright>
-    <PackageTags>wpf</PackageTags>
+    <PackageProjectUrl>https://github.com/victor-david/tambala</PackageProjectUrl>
     <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageTags>wpf</PackageTags>
+    <Product>Restless Tambala Data</Product>
+    <RepositoryUrl>https://github.com/victor-david/tambala</RepositoryUrl>
+    <RootNamespace>Restless.Tambala.Data</RootNamespace>
+    <TargetFrameworks>net7.0-windows</TargetFrameworks>
+    <Title>Restless Tambala Data</Title>
+    <Version>1.2.0</Version>    
   </PropertyGroup>
 
   <ItemGroup>
@@ -107,7 +107,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.4"/>
+    <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.5"/>
   </ItemGroup>
   
 </Project>

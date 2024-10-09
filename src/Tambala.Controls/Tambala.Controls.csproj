@@ -1,28 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
-    <UseWpf>true</UseWpf>
-    <OutputType>Library</OutputType>
-    <PackageId>Tambala.Controls</PackageId>
     <AssemblyName>Tambala.Controls</AssemblyName>
-    <RootNamespace>Restless.Tambala.Controls</RootNamespace>
-    <Description>Provides custom controls for the Tambala application.</Description>
-    <PackageProjectUrl>https://github.com/victor-david/tambala</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/victor-david/tambala</RepositoryUrl>
     <Authors>Restless Animal Development</Authors>
     <Company>Restless Animal Development</Company>
-    <Version>2.6.0</Version>
-    <Product>Tamabla Controls</Product>
-    <Title>Tambala Controls</Title>
+    <Copyright>2022-2024 Restless Animal Development</Copyright>
+    <Description>Provides custom controls for the Tambala application.</Description>
+    <OutputType>Library</OutputType>
+    <PackageId>Tambala.Controls</PackageId>
     <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
-    <Copyright>Copyright © 2022</Copyright>
-    <PackageTags>wpf controls wpf-controls</PackageTags>
+    <PackageProjectUrl>https://github.com/victor-david/tambala</PackageProjectUrl>
     <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageTags>wpf controls wpf-controls</PackageTags>
+    <Product>Tamabla Controls</Product>
+    <RepositoryUrl>https://github.com/victor-david/tambala</RepositoryUrl>
+    <RootNamespace>Restless.Tambala.Controls</RootNamespace>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Title>Tambala Controls</Title>
+    <UseWpf>true</UseWpf>
+    <Version>2.7.0</Version>
   </PropertyGroup>
   
   <ItemGroup>
     <PackageReference Include="SharpDX.XAudio2" Version="4.2.0" />
-    <PackageReference Include="NAudio" Version="2.0.1" />
+    <PackageReference Include="NAudio" Version="2.2.1" />
   </ItemGroup>
   
   <ItemGroup>

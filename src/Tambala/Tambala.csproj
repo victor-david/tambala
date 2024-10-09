@@ -1,27 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
-    <UseWPF>true</UseWPF>
-    <Description>Tambala is an advanced drum pattern and song generator that enables you to create rhythms using different drum kits and combine them in various ways</Description>
+    <ApplicationIcon>App.Icon.128.ico</ApplicationIcon>
     <Company>Restless Animal Development</Company>
-    <Product>Tambala</Product>
-    <Copyright>2022 Restless Animal Development</Copyright>
-    <RootNamespace>Restless.Tambala</RootNamespace>
-    <PackageProjectUrl>https://github.com/victor-david/tambala</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/victor-david/tambala</RepositoryUrl>    
+    <Copyright>2022-2024 Restless Animal Development</Copyright>
+    <Description>Tambala is an advanced drum pattern and song generator that enables you to create rhythms using different drum kits and combine them in various ways</Description>
+    <OutputType>WinExe</OutputType>
     <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
-    <Version>5.0.0</Version>
-    <ApplicationIcon>App.Icon.128.ico</ApplicationIcon>    
+    <PackageProjectUrl>https://github.com/victor-david/tambala</PackageProjectUrl>
+    <Product>Tambala</Product>
+    <RepositoryUrl>https://github.com/victor-david/tambala</RepositoryUrl>
+    <RootNamespace>Restless.Tambala</RootNamespace>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Version>5.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Restless.Toolkit" Version="2.5.12" />
-    <PackageReference Include="Restless.WaveForm" Version="1.0.0" />
+    <PackageReference Include="Restless.Toolkit" Version="2.5.24" />
+    <PackageReference Include="Restless.WaveForm" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup>
